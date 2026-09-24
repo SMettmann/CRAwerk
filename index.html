@@ -20,10 +20,11 @@
       <a href="#warum">Warum CRAwerk?</a>
       <a href="#ablauf">So funktioniert's</a>
       <a href="#zielgruppe">Für wen?</a>
+      <a href="#kurzcheck">CRA-Kurzcheck</a>
       <a href="#faq">FAQ</a>
     </nav>
 
-    <a class="header-cta" href="#start">CRAwerk kennenlernen</a>
+    <a class="header-cta" href="#kurzcheck">CRA-Kurzcheck starten</a>
   </header>
 
   <main id="top">
@@ -47,8 +48,8 @@
         </p>
 
         <div class="hero-actions">
-          <a class="button button-primary" href="#ablauf">So funktioniert CRAwerk</a>
-          <a class="button button-secondary" href="#zielgruppe">Passt CRAwerk zu uns?</a>
+          <a class="button button-primary" href="#kurzcheck">CRA-Kurzcheck starten</a>
+          <a class="button button-secondary" href="#ablauf">So funktioniert CRAwerk</a>
         </div>
 
         <div class="hero-proof">
@@ -260,6 +261,110 @@
     </section>
 
 
+
+    <section class="section quickcheck-section" id="kurzcheck">
+      <div class="quickcheck-intro">
+        <span class="section-kicker">KOSTENLOSER CRA-KURZCHECK</span>
+        <h2>Passt der CRA zu Ihrem Produkt?</h2>
+        <p>
+          Sieben einfache Fragen geben Ihnen eine erste Orientierung, welche CRA-Themen Sie bei Ihrem Produkt näher prüfen sollten.
+          Ohne Anmeldung und ohne Fachbegriffe.
+        </p>
+      </div>
+
+      <form class="quickcheck" id="cra-check">
+        <div class="check-progress" aria-hidden="true">
+          <span id="check-progress-bar"></span>
+        </div>
+
+        <div class="check-question active" data-question="1">
+          <span class="check-number">FRAGE 1 VON 7</span>
+          <h3>Enthält Ihr Produkt Software oder Firmware?</h3>
+          <div class="check-options">
+            <label><input type="radio" name="q1" value="yes"><span>Ja</span></label>
+            <label><input type="radio" name="q1" value="no"><span>Nein</span></label>
+            <label><input type="radio" name="q1" value="unknown"><span>Weiß ich nicht</span></label>
+          </div>
+        </div>
+
+        <div class="check-question" data-question="2">
+          <span class="check-number">FRAGE 2 VON 7</span>
+          <h3>Kann das Produkt direkt oder indirekt mit einem Netzwerk oder einem anderen Gerät Daten austauschen?</h3>
+          <div class="check-options">
+            <label><input type="radio" name="q2" value="yes"><span>Ja</span></label>
+            <label><input type="radio" name="q2" value="no"><span>Nein</span></label>
+            <label><input type="radio" name="q2" value="unknown"><span>Weiß ich nicht</span></label>
+          </div>
+        </div>
+
+        <div class="check-question" data-question="3">
+          <span class="check-number">FRAGE 3 VON 7</span>
+          <h3>Gibt es Fernwartung, einen Netzwerkanschluss, WLAN, Mobilfunk oder eine vergleichbare Schnittstelle?</h3>
+          <div class="check-options">
+            <label><input type="radio" name="q3" value="yes"><span>Ja</span></label>
+            <label><input type="radio" name="q3" value="no"><span>Nein</span></label>
+            <label><input type="radio" name="q3" value="unknown"><span>Weiß ich nicht</span></label>
+          </div>
+        </div>
+
+        <div class="check-question" data-question="4">
+          <span class="check-number">FRAGE 4 VON 7</span>
+          <h3>Bringen Sie die Maschine oder das Produkt unter Ihrem eigenen Namen auf den EU-Markt?</h3>
+          <div class="check-options">
+            <label><input type="radio" name="q4" value="yes"><span>Ja</span></label>
+            <label><input type="radio" name="q4" value="no"><span>Nein</span></label>
+            <label><input type="radio" name="q4" value="unknown"><span>Weiß ich nicht</span></label>
+          </div>
+        </div>
+
+        <div class="check-question" data-question="5">
+          <span class="check-number">FRAGE 5 VON 7</span>
+          <h3>Verbauen Sie zugekaufte Steuerungen, Software, Firmware oder andere digitale Komponenten?</h3>
+          <div class="check-options">
+            <label><input type="radio" name="q5" value="yes"><span>Ja</span></label>
+            <label><input type="radio" name="q5" value="no"><span>Nein</span></label>
+            <label><input type="radio" name="q5" value="unknown"><span>Weiß ich nicht</span></label>
+          </div>
+        </div>
+
+        <div class="check-question" data-question="6">
+          <span class="check-number">FRAGE 6 VON 7</span>
+          <h3>Haben Sie bereits dokumentiert, welche Software- und Firmware-Bestandteile in Ihrem Produkt stecken?</h3>
+          <div class="check-options">
+            <label><input type="radio" name="q6" value="yes"><span>Ja</span></label>
+            <label><input type="radio" name="q6" value="no"><span>Nein</span></label>
+            <label><input type="radio" name="q6" value="unknown"><span>Teilweise / weiß ich nicht</span></label>
+          </div>
+        </div>
+
+        <div class="check-question" data-question="7">
+          <span class="check-number">FRAGE 7 VON 7</span>
+          <h3>Gibt es bei Ihnen schon einen festen Ablauf für Sicherheitslücken und Sicherheitsupdates Ihrer Produkte?</h3>
+          <div class="check-options">
+            <label><input type="radio" name="q7" value="yes"><span>Ja</span></label>
+            <label><input type="radio" name="q7" value="no"><span>Nein</span></label>
+            <label><input type="radio" name="q7" value="unknown"><span>Teilweise / weiß ich nicht</span></label>
+          </div>
+        </div>
+
+        <div class="check-result" id="check-result" hidden>
+          <span class="check-number">IHRE ERSTE ORIENTIERUNG</span>
+          <h3 id="result-title"></h3>
+          <p id="result-text"></p>
+          <div class="result-points" id="result-points"></div>
+          <p class="check-disclaimer">
+            Der Kurzcheck ist keine Rechtsberatung und keine verbindliche Einstufung Ihres Produkts. Er dient nur der ersten Orientierung.
+          </p>
+          <button class="button button-dark" id="restart-check" type="button">Kurzcheck neu starten</button>
+        </div>
+
+        <div class="check-controls">
+          <button class="check-back" id="check-back" type="button" disabled>Zurück</button>
+          <button class="button button-dark" id="check-next" type="button" disabled>Weiter</button>
+        </div>
+      </form>
+    </section>
+
     <section class="section faq-section" id="faq">
       <div class="faq-layout">
         <div class="section-heading faq-heading">
@@ -335,8 +440,8 @@
     <section class="cta-section" id="start">
       <span class="section-kicker">CRAwerk</span>
       <h2>CRA soll Arbeit machen.<br>Nicht unnötig kompliziert sein.</h2>
-      <p>Die erste Version von CRAwerk entsteht genau für diesen Anspruch.</p>
-      <a class="button button-primary" href="mailto:">Interesse an CRAwerk</a>
+      <p>Ein Werkzeug für Maschinenbauer, die ihre CRA-Aufgaben verständlich und strukturiert bearbeiten wollen.</p>
+      <a class="button button-primary" href="#kurzcheck">CRA-Kurzcheck starten</a>
     </section>
   </main>
 
@@ -345,5 +450,6 @@
     <span>Made in Germany</span>
     <span>© 2026 CRAwerk</span>
   </footer>
+  <script src="script.js"></script>
 </body>
 </html>
