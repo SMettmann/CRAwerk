@@ -113,13 +113,17 @@
             </div>
           </article>
 
-          <article class="module-panel">
+          <article class="module-panel module-panel-live">
             <div class="module-panel-head">
               <div><span>06</span><h3>Unterlagen & Nachweise</h3></div>
-              <small>Noch offen</small>
+              <small id="document-status">Noch offen</small>
             </div>
-            <p>PDFs und andere Unterlagen direkt dieser Maschine zuordnen.</p>
-            <button class="text-button module-action" type="button" data-placeholder="Unterlagen & Nachweise">Unterlage hinzufügen →</button>
+            <p>Vorhandene Unterlagen dieser Maschine zuordnen und den Stand nachvollziehbar halten.</p>
+            <div class="module-items" id="document-list"></div>
+            <div class="module-button-row">
+              <button class="text-button" id="add-document" type="button">+ Unterlage hinzufügen</button>
+              <button class="text-button" id="toggle-documents-complete" type="button">Unterlagen vollständig</button>
+            </div>
           </article>
         </section>
       </div>
@@ -353,6 +357,58 @@
       <div class="dialog-actions">
         <button class="app-btn app-btn-ghost" type="button" data-close-dialog="update-dialog">Abbrechen</button>
         <button class="app-btn app-btn-dark" type="submit">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog small-dialog" id="document-dialog">
+    <form class="machine-form" id="document-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">UNTERLAGEN & NACHWEISE</span>
+          <h2>Unterlage hinzufügen</h2>
+          <p>Die Datei selbst kommt später mit der Online-Speicherung dazu.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog="document-dialog" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Bezeichnung *</span>
+        <input name="title" required placeholder="z. B. Sicherheitsinformation Steuerung">
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>Art *</span>
+          <select name="type" required>
+            <option value="Lieferantenunterlage">Lieferantenunterlage</option>
+            <option value="Software- / Versionsnachweis">Software- / Versionsnachweis</option>
+            <option value="Prüf- / Testnachweis">Prüf- / Testnachweis</option>
+            <option value="Risikodokumentation">Risikodokumentation</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </label>
+        <label>
+          <span>Stand / Datum</span>
+          <input name="date" type="date">
+        </label>
+      </div>
+
+      <label>
+        <span>Gehört zu</span>
+        <select name="related" id="document-related">
+          <option value="Gesamtmaschine">Gesamtmaschine</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Notiz</span>
+        <textarea name="note" rows="3" placeholder="optional"></textarea>
+      </label>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="document-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Hinzufügen</button>
       </div>
     </form>
   </dialog>
