@@ -30,6 +30,29 @@
     {id:'support', title:'Unterstützungszeitraum festlegen', text:'Festhalten, wie lange die Maschine sicherheitsbezogen unterstützt wird.', done:false}
   ];
 
+  const duplicateMachineData = (source) => {
+    const copy = JSON.parse(JSON.stringify(source));
+    const stamp = Date.now();
+
+    copy.id = 'm_' + stamp;
+    copy.name = source.name + ' – Kopie';
+    copy.productNumber = '';
+    copy.createdAt = new Date().toISOString();
+
+    const refreshIds = (items, prefix) =>
+      Array.isArray(items)
+        ? items.map((item, index) => ({...item, id: prefix + '_' + stamp + '_' + index}))
+        : [];
+
+    copy.softwareItems = refreshIds(copy.softwareItems, 's');
+    copy.components = refreshIds(copy.components, 'c');
+    copy.riskItems = refreshIds(copy.riskItems, 'r');
+    copy.updateItems = refreshIds(copy.updateItems, 'u');
+    copy.documentItems = refreshIds(copy.documentItems, 'd');
+
+    return copy;
+  };
+
   const progressFor = (machine) => {
     const tasks = machine.tasks || [];
     if (!tasks.length) return 0;
@@ -427,6 +450,10 @@
       location.href = 'produktakte.html?id=' + encodeURIComponent(machine.id);
     });
 
+    const editMachineDialog = document.getElementById('edit-machine-dialog');
+    const deleteMachineDialog = document.getElementById('delete-machine-dialog');
+    const editMachineForm = document.getElementById('edit-machine-form');
+
     const softwareDialog = document.getElementById('software-dialog');
     const componentDialog = document.getElementById('component-dialog');
     const riskDialog = document.getElementById('risk-dialog');
@@ -441,6 +468,39 @@
     const updateForm = document.getElementById('update-form');
     const documentForm = document.getElementById('document-form');
     const supportForm = document.getElementById('support-form');
+
+    document.getElementById('edit-machine').addEventListener('click', () => {
+      editMachineForm.elements.name.value = machine.name || '';
+      editMachineForm.elements.model.value = machine.model || '';
+      editMachineForm.elements.productNumber.value = machine.productNumber || '';
+      editMachineForm.elements.owner.value = machine.owner || '';
+
+      const softwareChoice = editMachineForm.querySelector('[name="software"][value="' + (machine.software || 'unknown') + '"]');
+      const connectedChoice = editMachineForm.querySelector('[name="connected"][value="' + (machine.connected || 'unknown') + '"]');
+      if (softwareChoice) softwareChoice.checked = true;
+      if (connectedChoice) connectedChoice.checked = true;
+
+      editMachineDialog.showModal();
+    });
+
+    document.getElementById('duplicate-machine').addEventListener('click', () => {
+      const copy = duplicateMachineData(machine);
+      const all = readMachines();
+      all.unshift(copy);
+      writeMachines(all);
+      location.href = 'maschine.html?id=' + encodeURIComponent(copy.id);
+    });
+
+    document.getElementById('delete-machine').addEventListener('click', () => {
+      document.getElementById('delete-machine-name').textContent = machine.name;
+      deleteMachineDialog.showModal();
+    });
+
+    document.getElementById('confirm-delete-machine').addEventListener('click', () => {
+      const remaining = readMachines().filter(item => item.id !== machine.id);
+      writeMachines(remaining);
+      location.href = 'dashboard.html';
+    });
 
     document.getElementById('add-software').addEventListener('click', () => softwareDialog.showModal());
     document.getElementById('add-component').addEventListener('click', () => componentDialog.showModal());
@@ -484,6 +544,26 @@
         const dialog = document.getElementById(button.dataset.closeDialog);
         if (dialog) dialog.close();
       });
+    });
+
+    editMachineForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(editMachineForm);
+
+      machine.name = data.get('name').trim();
+      machine.model = data.get('model').trim();
+      machine.productNumber = data.get('productNumber').trim();
+      machine.owner = data.get('owner').trim();
+      machine.software = data.get('software');
+      machine.connected = data.get('connected');
+
+      const basicTask = machine.tasks.find(task => task.id === 'basic');
+      if (basicTask) basicTask.done = true;
+
+      editMachineDialog.close();
+      persist();
+      render();
+      showToast('Maschinendaten wurden gespeichert.');
     });
 
     softwareForm.addEventListener('submit', (event) => {
