@@ -430,3 +430,53 @@ button,a{font:inherit}
     break-inside:avoid;
   }
 }
+
+/* Company header */
+.report-company{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:30px;
+  padding:22px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.report-company-main strong{
+  display:block;
+  margin-bottom:6px;
+  font-size:14px;
+}
+
+.report-company-main p{
+  margin:0;
+  color:var(--muted);
+  font-size:9.5px;
+  line-height:1.55;
+}
+
+.report-company-contact{
+  display:grid;
+  gap:4px;
+  text-align:right;
+}
+
+.report-company-contact span{
+  color:var(--muted);
+  font-size:9.5px;
+}
+
+@media(max-width:720px){
+  .report-company{
+    flex-direction:column;
+  }
+
+  .report-company-contact{
+    text-align:left;
+  }
+}
+
+@media print{
+  .report-company{
+    break-inside:avoid;
+  }
+}
