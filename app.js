@@ -1,5 +1,6 @@
 (() => {
   const STORAGE_KEY = 'crawerk_machines_v1';
+  const COMPANY_KEY = 'crawerk_company_v1';
 
   const readMachines = () => {
     try {
@@ -11,6 +12,21 @@
 
   const writeMachines = (machines) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(machines));
+  };
+
+  const readCompany = () => {
+    try {
+      return JSON.parse(localStorage.getItem(COMPANY_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  };
+
+  const renderCompanyHeader = () => {
+    const company = readCompany();
+    document.querySelectorAll('.app-account').forEach(link => {
+      link.textContent = company.name || 'Unternehmen';
+    });
   };
 
   const escapeHtml = (value = '') => String(value)
@@ -876,6 +892,7 @@
   }
 
   const page = document.body.dataset.page;
+  renderCompanyHeader();
   if (page === 'dashboard') initDashboard();
   if (page === 'machine') initMachine();
 })();
