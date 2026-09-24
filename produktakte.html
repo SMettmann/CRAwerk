@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>CRAwerk Produktakte</title>
+  <link rel="stylesheet" href="produktakte.css">
+</head>
+<body class="report-body">
+  <div class="report-toolbar no-print">
+    <a id="report-back" href="dashboard.html">← Zur Maschine</a>
+    <button id="report-print" type="button">Als PDF speichern / drucken</button>
+  </div>
+
+  <main class="report-sheet" id="report-sheet">
+    <header class="report-head">
+      <div class="report-brand"><span>CRA</span>werk</div>
+      <div class="report-head-meta">
+        <strong>PRODUKTAKTE</strong>
+        <span id="report-generated"></span>
+      </div>
+    </header>
+
+    <section class="report-title">
+      <div>
+        <span class="report-kicker">MASCHINE / PRODUKT</span>
+        <h1 id="report-name">Produktakte</h1>
+        <p id="report-subtitle"></p>
+      </div>
+      <div class="report-progress-box">
+        <span>Arbeitsstand</span>
+        <strong id="report-progress">0%</strong>
+      </div>
+    </section>
+
+    <div class="report-progress-track"><span id="report-progress-bar"></span></div>
+
+    <section class="report-section">
+      <div class="report-section-head">
+        <span>01</span>
+        <h2>Grunddaten</h2>
+      </div>
+      <dl class="report-data-grid" id="report-basic"></dl>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head">
+        <span>02</span>
+        <h2>Arbeitsstand & offene Punkte</h2>
+      </div>
+      <div id="report-tasks"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head">
+        <span>03</span>
+        <h2>Software & Versionen</h2>
+      </div>
+      <div class="report-list" id="report-software"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head">
+        <span>04</span>
+        <h2>Zulieferer & Bauteile</h2>
+      </div>
+      <div class="report-list" id="report-components"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head">
+        <span>05</span>
+        <h2>Risiken & Aufgaben</h2>
+      </div>
+      <div class="report-list" id="report-risks"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head">
+        <span>06</span>
+        <h2>Sicherheitslücken & Updates</h2>
+      </div>
+      <div id="report-update-process"></div>
+      <div class="report-list" id="report-updates"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head">
+        <span>07</span>
+        <h2>Unterlagen & Nachweise</h2>
+      </div>
+      <div class="report-section-status" id="report-documents-status"></div>
+      <div class="report-list" id="report-documents"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head">
+        <span>08</span>
+        <h2>Unterstützungszeitraum</h2>
+      </div>
+      <div id="report-support"></div>
+    </section>
+
+    <footer class="report-footer">
+      <div>
+        <strong>CRAwerk Produktakte</strong>
+        <span id="report-footer-machine"></span>
+      </div>
+      <p>
+        Diese Produktakte dokumentiert den in CRAwerk erfassten Arbeitsstand.
+        Sie ist keine Konformitätserklärung und ersetzt keine rechtliche oder technische Bewertung.
+      </p>
+    </footer>
+  </main>
+
+  <div class="report-error" id="report-error" hidden>
+    <strong>Maschine nicht gefunden.</strong>
+    <a href="dashboard.html">Zur Übersicht</a>
+  </div>
+
+  <script src="produktakte.js"></script>
+</body>
+</html>
