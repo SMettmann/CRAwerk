@@ -800,3 +800,20 @@ a{color:inherit;text-decoration:none}
     break-inside:avoid;
   }
 }
+
+
+/* Documents & evidence */
+.document-item span{
+  white-space:normal;
+}
+
+@media print{
+  #add-document,
+  #toggle-documents-complete{
+    display:none!important;
+  }
+
+  .document-item{
+    break-inside:avoid;
+  }
+}
