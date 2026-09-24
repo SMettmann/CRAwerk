@@ -374,10 +374,10 @@
       }
 
       document.getElementById('task-checklist').innerHTML = machine.tasks.map(task =>
-        '<label class="task-check ' + (task.done ? 'done' : '') + '">' +
-          '<input type="checkbox" data-task="' + task.id + '" ' + (task.done ? 'checked' : '') + '>' +
+        '<div class="task-check ' + (task.done ? 'done' : '') + '">' +
+          '<span class="task-state ' + (task.done ? 'done' : 'open') + '">' + (task.done ? '✓' : '•') + '</span>' +
           '<span><strong>' + escapeHtml(task.title) + '</strong><span>' + escapeHtml(task.text) + '</span></span>' +
-        '</label>'
+        '</div>'
       ).join('');
 
       const yesNo = value => value === 'yes' ? 'Ja' : value === 'no' ? 'Nein' : 'Unklar';
@@ -452,7 +452,10 @@
               '<div><strong>' + escapeHtml(item.name) + '</strong>' +
               '<span>' + escapeHtml(item.type) + ' · Version ' + escapeHtml(item.version) +
               (item.vendor ? ' · ' + escapeHtml(item.vendor) : '') + '</span></div>' +
-              '<button type="button" class="item-remove" data-remove-software="' + escapeHtml(item.id) + '" aria-label="Software löschen">×</button>' +
+              '<div class="item-actions">' +
+                '<button type="button" class="item-edit" data-edit-software="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
+                '<button type="button" class="item-remove" data-remove-software="' + escapeHtml(item.id) + '" aria-label="Software löschen">×</button>' +
+              '</div>' +
             '</div>'
           ).join('')
         : '<div class="module-empty">' + (machine.software === 'no' ? 'Für diese Maschine wurde „keine Software/Firmware“ angegeben.' : 'Noch keine Software erfasst.') + '</div>';
@@ -466,7 +469,10 @@
               (item.version ? ' · Version ' + escapeHtml(item.version) : '') +
               ' · Unterlagen: ' + (item.documents === 'yes' ? 'Ja' : item.documents === 'no' ? 'Nein' : 'Unklar') +
               '</span></div>' +
-              '<button type="button" class="item-remove" data-remove-component="' + escapeHtml(item.id) + '" aria-label="Bauteil löschen">×</button>' +
+              '<div class="item-actions">' +
+                '<button type="button" class="item-edit" data-edit-component="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
+                '<button type="button" class="item-remove" data-remove-component="' + escapeHtml(item.id) + '" aria-label="Bauteil löschen">×</button>' +
+              '</div>' +
             '</div>'
           ).join('')
         : '<div class="module-empty">Noch kein digitales Bauteil erfasst.</div>';
@@ -484,9 +490,12 @@
               '</div>' +
               '<p>' + escapeHtml(item.measure) + '</p>' +
               '<div class="risk-actions">' +
-                '<button type="button" class="text-button" data-toggle-risk="' + escapeHtml(item.id) + '">' +
-                  (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') +
-                '</button>' +
+                '<div class="risk-action-links">' +
+                  '<button type="button" class="text-button" data-edit-risk="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
+                  '<button type="button" class="text-button" data-toggle-risk="' + escapeHtml(item.id) + '">' +
+                    (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') +
+                  '</button>' +
+                '</div>' +
                 '<button type="button" class="item-remove" data-remove-risk="' + escapeHtml(item.id) + '" aria-label="Punkt löschen">×</button>' +
               '</div>' +
             '</div>'
@@ -512,9 +521,12 @@
               '</div>' +
               '<p>' + escapeHtml(item.action) + '</p>' +
               '<div class="risk-actions">' +
-                '<button type="button" class="text-button" data-toggle-update="' + escapeHtml(item.id) + '">' +
-                  (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') +
-                '</button>' +
+                '<div class="risk-action-links">' +
+                  '<button type="button" class="text-button" data-edit-update="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
+                  '<button type="button" class="text-button" data-toggle-update="' + escapeHtml(item.id) + '">' +
+                    (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') +
+                  '</button>' +
+                '</div>' +
                 '<button type="button" class="item-remove" data-remove-update="' + escapeHtml(item.id) + '" aria-label="Sicherheitsproblem löschen">×</button>' +
               '</div>' +
             '</div>'
@@ -530,21 +542,14 @@
                 (item.date ? ' · ' + escapeHtml(item.date) : '') +
                 (item.note ? '<br>' + escapeHtml(item.note) : '') +
               '</span></div>' +
-              '<button type="button" class="item-remove" data-remove-document="' + escapeHtml(item.id) + '" aria-label="Unterlage löschen">×</button>' +
+              '<div class="item-actions">' +
+                '<button type="button" class="item-edit" data-edit-document="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
+                '<button type="button" class="item-remove" data-remove-document="' + escapeHtml(item.id) + '" aria-label="Unterlage löschen">×</button>' +
+              '</div>' +
             '</div>'
           ).join('')
         : '<div class="module-empty">Noch keine Unterlage erfasst.</div>';
     };
-
-    document.getElementById('task-checklist').addEventListener('change', (event) => {
-      const input = event.target.closest('input[data-task]');
-      if (!input) return;
-      const task = machine.tasks.find(t => t.id === input.dataset.task);
-      if (!task) return;
-      task.done = input.checked;
-      persist();
-      render();
-    });
 
     document.getElementById('short-report-machine').addEventListener('click', () => {
       location.href = 'kurzakte.html?id=' + encodeURIComponent(machine.id);
@@ -572,6 +577,30 @@
     const updateForm = document.getElementById('update-form');
     const documentForm = document.getElementById('document-form');
     const supportForm = document.getElementById('support-form');
+
+    let editingSoftwareId = null;
+    let editingComponentId = null;
+    let editingRiskId = null;
+    let editingUpdateId = null;
+    let editingDocumentId = null;
+
+    const setDialogMode = (dialog, form, title, submitLabel) => {
+      const heading = dialog.querySelector('.dialog-head h2');
+      const submit = form.querySelector('button[type="submit"]');
+      if (heading) heading.textContent = title;
+      if (submit) submit.textContent = submitLabel;
+    };
+
+    const populateDocumentRelated = (selectedValue = 'Gesamtmaschine') => {
+      const related = document.getElementById('document-related');
+      related.innerHTML = '';
+      const values = ['Gesamtmaschine'];
+      machine.components.forEach(item => values.push('Bauteil: ' + item.name));
+      machine.softwareItems.forEach(item => values.push('Software: ' + item.name));
+      if (selectedValue && !values.includes(selectedValue)) values.push(selectedValue);
+      values.forEach(value => related.add(new Option(value, value)));
+      related.value = selectedValue || 'Gesamtmaschine';
+    };
 
     document.getElementById('edit-machine').addEventListener('click', () => {
       editMachineForm.elements.name.value = machine.name || '';
@@ -607,21 +636,49 @@
       location.href = 'dashboard.html';
     });
 
-    document.getElementById('add-software').addEventListener('click', () => softwareDialog.showModal());
-    document.getElementById('add-component').addEventListener('click', () => componentDialog.showModal());
-    document.getElementById('add-risk').addEventListener('click', () => riskDialog.showModal());
+    document.getElementById('add-software').addEventListener('click', () => {
+      editingSoftwareId = null;
+      softwareForm.reset();
+      setDialogMode(softwareDialog, softwareForm, 'Software hinzufügen', 'Hinzufügen');
+      softwareDialog.showModal();
+    });
+
+    document.getElementById('add-component').addEventListener('click', () => {
+      editingComponentId = null;
+      componentForm.reset();
+      setDialogMode(componentDialog, componentForm, 'Bauteil hinzufügen', 'Hinzufügen');
+      componentDialog.showModal();
+    });
+
+    document.getElementById('add-risk').addEventListener('click', () => {
+      editingRiskId = null;
+      riskForm.reset();
+      const defaultStatus = riskForm.querySelector('[name="status"][value="open"]');
+      const defaultLevel = riskForm.querySelector('[name="level"]');
+      if (defaultStatus) defaultStatus.checked = true;
+      if (defaultLevel) defaultLevel.value = 'Mittel';
+      setDialogMode(riskDialog, riskForm, 'Punkt hinzufügen', 'Hinzufügen');
+      riskDialog.showModal();
+    });
     document.getElementById('set-update-process').addEventListener('click', () => {
       updateProcessForm.elements.owner.value = machine.updateProcess.owner || '';
       updateProcessForm.elements.procedure.value = machine.updateProcess.procedure || '';
       updateProcessDialog.showModal();
     });
-    document.getElementById('add-update').addEventListener('click', () => updateDialog.showModal());
+    document.getElementById('add-update').addEventListener('click', () => {
+      editingUpdateId = null;
+      updateForm.reset();
+      const defaultStatus = updateForm.querySelector('[name="status"][value="open"]');
+      if (defaultStatus) defaultStatus.checked = true;
+      setDialogMode(updateDialog, updateForm, 'Problem dokumentieren', 'Speichern');
+      updateDialog.showModal();
+    });
+
     document.getElementById('add-document').addEventListener('click', () => {
-      const related = document.getElementById('document-related');
-      related.innerHTML = '';
-      related.add(new Option('Gesamtmaschine', 'Gesamtmaschine'));
-      machine.components.forEach(item => related.add(new Option('Bauteil: ' + item.name, 'Bauteil: ' + item.name)));
-      machine.softwareItems.forEach(item => related.add(new Option('Software: ' + item.name, 'Software: ' + item.name)));
+      editingDocumentId = null;
+      documentForm.reset();
+      populateDocumentRelated('Gesamtmaschine');
+      setDialogMode(documentDialog, documentForm, 'Unterlage hinzufügen', 'Hinzufügen');
       documentDialog.showModal();
     });
 
@@ -676,59 +733,83 @@
       event.preventDefault();
       const data = new FormData(softwareForm);
 
-      machine.softwareItems.push({
-        id: 's_' + Date.now(),
+      const values = {
         name: data.get('name').trim(),
         version: data.get('version').trim(),
         type: data.get('type'),
         vendor: data.get('vendor').trim()
-      });
+      };
 
+      if (editingSoftwareId) {
+        const item = machine.softwareItems.find(entry => entry.id === editingSoftwareId);
+        if (item) Object.assign(item, values);
+      } else {
+        machine.softwareItems.push({id:'s_' + Date.now(), ...values});
+      }
+
+      const wasEditing = Boolean(editingSoftwareId);
+      editingSoftwareId = null;
       softwareForm.reset();
       softwareDialog.close();
       persist();
       render();
-      showToast('Software wurde der Maschine hinzugefügt.');
+      showToast(wasEditing ? 'Software wurde aktualisiert.' : 'Software wurde der Maschine hinzugefügt.');
     });
 
     componentForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const data = new FormData(componentForm);
 
-      machine.components.push({
-        id: 'c_' + Date.now(),
+      const values = {
         name: data.get('name').trim(),
         vendor: data.get('vendor').trim(),
         model: data.get('model').trim(),
         version: data.get('version').trim(),
         documents: data.get('documents')
-      });
+      };
 
+      if (editingComponentId) {
+        const item = machine.components.find(entry => entry.id === editingComponentId);
+        if (item) Object.assign(item, values);
+      } else {
+        machine.components.push({id:'c_' + Date.now(), ...values});
+      }
+
+      const wasEditing = Boolean(editingComponentId);
+      editingComponentId = null;
       componentForm.reset();
       componentDialog.close();
       persist();
       render();
-      showToast('Bauteil wurde der Maschine hinzugefügt.');
+      showToast(wasEditing ? 'Bauteil wurde aktualisiert.' : 'Bauteil wurde der Maschine hinzugefügt.');
     });
 
     riskForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const data = new FormData(riskForm);
 
-      machine.riskItems.push({
-        id: 'r_' + Date.now(),
+      const values = {
         topic: data.get('topic').trim(),
         level: data.get('level'),
         owner: data.get('owner').trim(),
         measure: data.get('measure').trim(),
         status: data.get('status')
-      });
+      };
 
+      if (editingRiskId) {
+        const item = machine.riskItems.find(entry => entry.id === editingRiskId);
+        if (item) Object.assign(item, values);
+      } else {
+        machine.riskItems.push({id:'r_' + Date.now(), ...values});
+      }
+
+      const wasEditing = Boolean(editingRiskId);
+      editingRiskId = null;
       riskForm.reset();
       riskDialog.close();
       persist();
       render();
-      showToast('Risiko / Aufgabe wurde hinzugefügt.');
+      showToast(wasEditing ? 'Risiko / Aufgabe wurde aktualisiert.' : 'Risiko / Aufgabe wurde hinzugefügt.');
     });
 
     updateProcessForm.addEventListener('submit', (event) => {
@@ -750,41 +831,57 @@
       event.preventDefault();
       const data = new FormData(updateForm);
 
-      machine.updateItems.push({
-        id: 'u_' + Date.now(),
+      const values = {
         title: data.get('title').trim(),
         date: data.get('date'),
         affected: data.get('affected').trim(),
         action: data.get('action').trim(),
         status: data.get('status')
-      });
+      };
 
+      if (editingUpdateId) {
+        const item = machine.updateItems.find(entry => entry.id === editingUpdateId);
+        if (item) Object.assign(item, values);
+      } else {
+        machine.updateItems.push({id:'u_' + Date.now(), ...values});
+      }
+
+      const wasEditing = Boolean(editingUpdateId);
+      editingUpdateId = null;
       updateForm.reset();
       updateDialog.close();
       persist();
       render();
-      showToast('Sicherheitsproblem wurde dokumentiert.');
+      showToast(wasEditing ? 'Sicherheitsproblem wurde aktualisiert.' : 'Sicherheitsproblem wurde dokumentiert.');
     });
 
     documentForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const data = new FormData(documentForm);
 
-      machine.documentItems.push({
-        id: 'd_' + Date.now(),
+      const values = {
         title: data.get('title').trim(),
         type: data.get('type'),
         date: data.get('date'),
         related: data.get('related'),
         note: data.get('note').trim()
-      });
+      };
 
+      if (editingDocumentId) {
+        const item = machine.documentItems.find(entry => entry.id === editingDocumentId);
+        if (item) Object.assign(item, values);
+      } else {
+        machine.documentItems.push({id:'d_' + Date.now(), ...values});
+      }
+
+      const wasEditing = Boolean(editingDocumentId);
+      editingDocumentId = null;
       machine.documentsComplete = false;
       documentForm.reset();
       documentDialog.close();
       persist();
       render();
-      showToast('Unterlage wurde der Maschine zugeordnet.');
+      showToast(wasEditing ? 'Unterlage wurde aktualisiert.' : 'Unterlage wurde der Maschine zugeordnet.');
     });
 
     supportForm.addEventListener('submit', (event) => {
