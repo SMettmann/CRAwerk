@@ -145,6 +145,7 @@
     if (machine) {
       machine.softwareItems = Array.isArray(machine.softwareItems) ? machine.softwareItems : [];
       machine.components = Array.isArray(machine.components) ? machine.components : [];
+      machine.riskItems = Array.isArray(machine.riskItems) ? machine.riskItems : [];
     }
 
     if (!machine) {
@@ -165,6 +166,7 @@
     const syncModuleTasks = () => {
       const softwareTask = machine.tasks.find(t => t.id === 'software');
       const supplierTask = machine.tasks.find(t => t.id === 'supplier');
+      const riskTask = machine.tasks.find(t => t.id === 'risks');
 
       if (softwareTask) {
         softwareTask.done = machine.software === 'no' || machine.softwareItems.length > 0;
@@ -172,6 +174,10 @@
 
       if (supplierTask) {
         supplierTask.done = machine.components.length > 0;
+      }
+
+      if (riskTask) {
+        riskTask.done = machine.riskItems.length > 0 && machine.riskItems.every(item => item.status === 'done');
       }
     };
 
@@ -217,6 +223,7 @@
 
       const softwareList = document.getElementById('software-list');
       const componentList = document.getElementById('component-list');
+      const riskList = document.getElementById('risk-list');
 
       document.getElementById('software-status').textContent =
         machine.software === 'no' ? 'Nicht erforderlich' :
@@ -224,6 +231,12 @@
 
       document.getElementById('component-status').textContent =
         machine.components.length ? machine.components.length + ' erfasst' : 'Noch offen';
+
+      const openRisks = machine.riskItems.filter(item => item.status !== 'done').length;
+      document.getElementById('risk-status').textContent =
+        machine.riskItems.length
+          ? (openRisks ? openRisks + ' offen' : 'Erledigt')
+          : 'Noch offen';
 
       softwareList.innerHTML = machine.softwareItems.length
         ? machine.softwareItems.map(item =>
@@ -249,6 +262,28 @@
             '</div>'
           ).join('')
         : '<div class="module-empty">Noch kein digitales Bauteil erfasst.</div>';
+
+      riskList.innerHTML = machine.riskItems.length
+        ? machine.riskItems.map(item =>
+            '<div class="risk-item ' + (item.status === 'done' ? 'risk-done' : '') + '">' +
+              '<div class="risk-top">' +
+                '<div><strong>' + escapeHtml(item.topic) + '</strong>' +
+                '<span class="risk-meta">' + escapeHtml(item.level) +
+                (item.owner ? ' · ' + escapeHtml(item.owner) : '') + '</span></div>' +
+                '<span class="risk-pill ' + (item.status === 'done' ? 'done' : 'open') + '">' +
+                  (item.status === 'done' ? 'Erledigt' : 'Offen') +
+                '</span>' +
+              '</div>' +
+              '<p>' + escapeHtml(item.measure) + '</p>' +
+              '<div class="risk-actions">' +
+                '<button type="button" class="text-button" data-toggle-risk="' + escapeHtml(item.id) + '">' +
+                  (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') +
+                '</button>' +
+                '<button type="button" class="item-remove" data-remove-risk="' + escapeHtml(item.id) + '" aria-label="Punkt löschen">×</button>' +
+              '</div>' +
+            '</div>'
+          ).join('')
+        : '<div class="module-empty">Noch kein Risiko oder offener Punkt erfasst.</div>';
     };
 
     document.getElementById('task-checklist').addEventListener('change', (event) => {
@@ -265,11 +300,14 @@
 
     const softwareDialog = document.getElementById('software-dialog');
     const componentDialog = document.getElementById('component-dialog');
+    const riskDialog = document.getElementById('risk-dialog');
     const softwareForm = document.getElementById('software-form');
     const componentForm = document.getElementById('component-form');
+    const riskForm = document.getElementById('risk-form');
 
     document.getElementById('add-software').addEventListener('click', () => softwareDialog.showModal());
     document.getElementById('add-component').addEventListener('click', () => componentDialog.showModal());
+    document.getElementById('add-risk').addEventListener('click', () => riskDialog.showModal());
 
     document.querySelectorAll('[data-close-dialog]').forEach(button => {
       button.addEventListener('click', () => {
@@ -317,6 +355,26 @@
       showToast('Bauteil wurde der Maschine hinzugefügt.');
     });
 
+    riskForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(riskForm);
+
+      machine.riskItems.push({
+        id: 'r_' + Date.now(),
+        topic: data.get('topic').trim(),
+        level: data.get('level'),
+        owner: data.get('owner').trim(),
+        measure: data.get('measure').trim(),
+        status: data.get('status')
+      });
+
+      riskForm.reset();
+      riskDialog.close();
+      persist();
+      render();
+      showToast('Risiko / Aufgabe wurde hinzugefügt.');
+    });
+
     document.getElementById('software-list').addEventListener('click', (event) => {
       const button = event.target.closest('[data-remove-software]');
       if (!button) return;
@@ -335,6 +393,28 @@
       persist();
       render();
       showToast('Bauteil wurde entfernt.');
+    });
+
+    document.getElementById('risk-list').addEventListener('click', (event) => {
+      const removeButton = event.target.closest('[data-remove-risk]');
+      if (removeButton) {
+        machine.riskItems = machine.riskItems.filter(item => item.id !== removeButton.dataset.removeRisk);
+        persist();
+        render();
+        showToast('Risiko / Aufgabe wurde entfernt.');
+        return;
+      }
+
+      const toggleButton = event.target.closest('[data-toggle-risk]');
+      if (!toggleButton) return;
+
+      const item = machine.riskItems.find(entry => entry.id === toggleButton.dataset.toggleRisk);
+      if (!item) return;
+
+      item.status = item.status === 'done' ? 'open' : 'done';
+      persist();
+      render();
+      showToast(item.status === 'done' ? 'Punkt wurde erledigt.' : 'Punkt wurde wieder geöffnet.');
     });
 
     document.querySelectorAll('.module-action').forEach(button => {
