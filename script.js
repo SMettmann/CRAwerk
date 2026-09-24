@@ -85,26 +85,26 @@
     let text = '';
 
     if (signals >= 4) {
-      title = 'Den CRA sollten Sie für dieses Produkt jetzt einplanen.';
-      text = 'Mehrere Ihrer Antworten sprechen dafür, dass der CRA für Ihre Maschine relevant sein kann. Sie müssen daraus aber kein eigenes Verwaltungsprojekt machen: CRAwerk soll die vorhandenen Unterlagen, Komponenten und offenen Punkte an einem Ort zusammenführen.';
+      title = 'Der CRA ist für Ihre Maschine sehr wahrscheinlich ein Thema.';
+      text = 'Mehrere Ihrer Antworten sprechen dafür. CRAwerk hilft Ihnen dabei, vorhandene Unterlagen zu ordnen, fehlende Angaben zu erkennen und den Stand Ihrer Maschine übersichtlich festzuhalten.';
     } else if (signals >= 2) {
-      title = 'Den CRA sollten Sie für dieses Produkt genauer prüfen.';
-      text = 'Einige Ihrer Antworten sprechen dafür, dass der CRA für Ihre Maschine wichtig werden kann. Der nächste Schritt ist nicht, selbst neue Listen anzulegen: CRAwerk soll Sie mit den vorhandenen Unterlagen starten lassen und nur die fehlenden Angaben abfragen.';
+      title = 'Der CRA könnte für Ihre Maschine wichtig sein.';
+      text = 'Einige Ihrer Antworten sprechen dafür. Mit CRAwerk starten Sie mit dem, was schon vorhanden ist, und ergänzen nur die Punkte, die noch fehlen.';
     } else {
-      title = 'Die CRA-Relevanz ist nach Ihren Antworten noch offen.';
-      text = 'Bei Ihrem Produkt sind nur wenige typische Merkmale erkennbar. CRAwerk soll Ihnen trotzdem helfen, die entscheidenden Punkte sauber zu prüfen, ohne dass Sie sich zuerst durch den Gesetzestext arbeiten müssen.';
+      title = 'Nach Ihren Antworten ist noch nicht klar, ob der CRA greift.';
+      text = 'Bei Ihrer Maschine sind nur wenige typische Merkmale erkennbar. CRAwerk hilft Ihnen, die entscheidenden Punkte zu prüfen, ohne sich zuerst durch den Gesetzestext arbeiten zu müssen.';
     }
 
     const focus = [];
-    if (suppliers) focus.push('Lieferantenunterlagen direkt der richtigen Maschine und Komponente zuordnen');
-    if (inventoryMissing) focus.push('Fehlende Angaben zu Software und Firmware gezielt ergänzen');
-    if (vulnProcessMissing) focus.push('Verantwortung für Sicherheitslücken und Updates eindeutig festlegen');
-    if (connected || interfacePresent) focus.push('Verbindungen, Fernwartung und erreichbare Schnittstellen sauber erfassen');
-    if (ownBrand) focus.push('Offene CRA-Punkte für Ihr eigenes Gesamtprodukt sichtbar machen');
+    if (suppliers) focus.push('Unterlagen Ihrer Zulieferer der richtigen Maschine zuordnen');
+    if (inventoryMissing) focus.push('Fehlende Angaben zu Software und Versionen ergänzen');
+    if (vulnProcessMissing) focus.push('Festlegen, wer sich um Sicherheitslücken und Updates kümmert');
+    if (connected || interfacePresent) focus.push('Netzwerk, Fernwartung und andere Verbindungen erfassen');
+    if (ownBrand) focus.push('Offene CRA-Aufgaben für Ihre eigene Maschine sichtbar machen');
 
     if (!focus.length) {
-      focus.push('Digitale Funktionen Ihrer Maschine strukturiert erfassen');
-      focus.push('Vorhandene technische Unterlagen an einem Ort zusammenführen');
+      focus.push('Digitale Funktionen Ihrer Maschine erfassen');
+      focus.push('Vorhandene Unterlagen an einem Ort zusammenführen');
     }
 
     resultTitle.textContent = title;
@@ -114,14 +114,14 @@
       '<div class="result-flow">' +
         '<span class="result-label">So geht es mit CRAwerk weiter</span>' +
         '<div class="result-flow-grid">' +
-          '<div class="result-flow-step"><b>1</b><strong>Vorhandenes hochladen</strong><span>Lieferanten-PDFs, Softwarelisten, technische Unterlagen und vorhandene Nachweise.</span></div>' +
-          '<div class="result-flow-step"><b>2</b><strong>CRAwerk ordnet</strong><span>Alles wird Ihrer Maschine, den Komponenten und den passenden Themen zugeordnet.</span></div>' +
-          '<div class="result-flow-step"><b>3</b><strong>Nur Lücken ergänzen</strong><span>Sie beantworten nur noch die Punkte, die bei Ihrem Produkt wirklich fehlen.</span></div>' +
-          '<div class="result-flow-step"><b>4</b><strong>Produktakte im Blick</strong><span>Offene Aufgaben, Nachweise, Updates und Fristen bleiben übersichtlich zusammen.</span></div>' +
+          '<div class="result-flow-step"><b>1</b><strong>Vorhandenes hinzufügen</strong><span>Zulieferer-PDFs, Softwarelisten und technische Unterlagen.</span></div>' +
+          '<div class="result-flow-step"><b>2</b><strong>CRAwerk ordnet</strong><span>Alles wird der passenden Maschine und dem richtigen Bauteil zugeordnet.</span></div>' +
+          '<div class="result-flow-step"><b>3</b><strong>Nur Fehlendes ergänzen</strong><span>Sie beantworten nur noch die Punkte, die bei Ihrer Maschine offen sind.</span></div>' +
+          '<div class="result-flow-step"><b>4</b><strong>Alles im Blick</strong><span>Aufgaben, Unterlagen, Updates und Fristen bleiben übersichtlich zusammen.</span></div>' +
         '</div>' +
       '</div>' +
       '<div class="result-focus">' +
-        '<span class="result-label">Bei Ihren Antworten besonders wichtig</span>' +
+        '<span class="result-label">Bei Ihrer Maschine besonders wichtig</span>' +
         '<ul>' + focus.map(p => '<li>' + p + '</li>').join('') + '</ul>' +
       '</div>' +
       '<a class="button button-dark result-cta" href="#preis">CRAwerk für 29,99 € ansehen</a>';
