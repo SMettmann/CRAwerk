@@ -2030,3 +2030,66 @@ h1 span{
     padding:58px 20px 72px;
   }
 }
+
+
+/* Refined homepage footer */
+.site-footer{
+  min-height:88px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+  padding:0 5vw;
+}
+
+.footer-right{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:28px;
+  margin-left:auto;
+}
+
+.footer-links{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:16px;
+  color:#9aa59f;
+}
+
+.footer-links a{
+  white-space:nowrap;
+}
+
+.footer-meta{
+  color:#6f7a74;
+  white-space:nowrap;
+}
+
+@media (max-width:900px){
+  .site-footer{
+    min-height:auto;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:18px;
+    padding:24px 20px;
+  }
+
+  .footer-right{
+    width:100%;
+    margin-left:0;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .footer-links{
+    justify-content:flex-start;
+    gap:14px;
+  }
+
+  .footer-meta{
+    white-space:normal;
+  }
+}
