@@ -39,14 +39,14 @@
         <small>über alle Maschinen</small>
       </article>
       <article class="stat-card">
-        <span>Erledigt</span>
-        <strong id="stat-done">0</strong>
-        <small>Aufgaben abgeschlossen</small>
+        <span>Arbeitsstand vollständig</span>
+        <strong id="stat-ready">0</strong>
+        <small>Maschinen ohne offene Aufgabe</small>
       </article>
       <article class="stat-card">
-        <span>Gesamtstand</span>
-        <strong id="stat-progress">0%</strong>
-        <small>über alle Maschinen</small>
+        <span>Unterstützung endet bald</span>
+        <strong id="stat-support-soon">0</strong>
+        <small>in den nächsten 6 Monaten</small>
       </article>
     </section>
 
@@ -57,6 +57,28 @@
         <p id="next-work-text">Legen Sie Ihre erste Maschine an. Danach zeigt CRAwerk die nächsten offenen Schritte.</p>
       </div>
       <a class="app-btn app-btn-light" id="next-work-link" href="#" hidden>Maschine öffnen</a>
+    </section>
+
+    <section class="dashboard-focus-grid">
+      <article class="dashboard-focus-card">
+        <div class="focus-card-head">
+          <div>
+            <span class="app-kicker">HANDLUNGSBEDARF</span>
+            <h2>Wo noch etwas offen ist</h2>
+          </div>
+        </div>
+        <div class="focus-list" id="attention-list"></div>
+      </article>
+
+      <article class="dashboard-focus-card">
+        <div class="focus-card-head">
+          <div>
+            <span class="app-kicker">UNTERSTÜTZUNGSZEITRÄUME</span>
+            <h2>Welche Termine anstehen</h2>
+          </div>
+        </div>
+        <div class="focus-list" id="support-list"></div>
+      </article>
     </section>
 
     <section class="machines-section" id="maschinen">
