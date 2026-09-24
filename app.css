@@ -1288,3 +1288,15 @@ a{color:inherit;text-decoration:none}
     width:100%;
   }
 }
+
+
+.machine-form input[type="number"]{
+  min-height:46px;
+  width:100%;
+  padding:0 12px;
+  border:1px solid #c9d1cb;
+  border-radius:6px;
+  outline:0;
+  color:#17201b;
+  background:#fff;
+}
