@@ -232,6 +232,7 @@
         owner: data.get('owner').trim(),
         software: data.get('software'),
         connected: data.get('connected'),
+        documentRevision: 1,
         createdAt: new Date().toISOString()
       };
       machine.tasks = createTasks(machine);
@@ -274,6 +275,9 @@
       machine.supportPeriod = machine.supportPeriod && typeof machine.supportPeriod === 'object'
         ? machine.supportPeriod
         : {startDate:'', endDate:'', owner:'', reason:''};
+      machine.documentRevision = Number.isFinite(Number(machine.documentRevision))
+        ? Math.max(1, parseInt(machine.documentRevision, 10))
+        : 1;
 
       if (!machine.tasks.some(task => task.id === 'documents')) {
         const supportIndex = machine.tasks.findIndex(task => task.id === 'support');
@@ -383,7 +387,8 @@
         '<div><dt>Verantwortlich</dt><dd>' + escapeHtml(machine.owner || '–') + '</dd></div>' +
         '<div><dt>Software</dt><dd>' + yesNo(machine.software) + '</dd></div>' +
         '<div><dt>Verbindung</dt><dd>' + yesNo(machine.connected) + '</dd></div>' +
-        '<div><dt>Unterstützung bis</dt><dd>' + escapeHtml(machine.supportPeriod.endDate || '–') + '</dd></div>';
+        '<div><dt>Unterstützung bis</dt><dd>' + escapeHtml(machine.supportPeriod.endDate || '–') + '</dd></div>' +
+        '<div><dt>Produktakte</dt><dd>Revision ' + escapeHtml(machine.documentRevision) + '</dd></div>';
 
       const softwareList = document.getElementById('software-list');
       const componentList = document.getElementById('component-list');
@@ -541,6 +546,10 @@
       render();
     });
 
+    document.getElementById('short-report-machine').addEventListener('click', () => {
+      location.href = 'kurzakte.html?id=' + encodeURIComponent(machine.id);
+    });
+
     document.getElementById('print-machine').addEventListener('click', () => {
       location.href = 'produktakte.html?id=' + encodeURIComponent(machine.id);
     });
@@ -569,6 +578,7 @@
       editMachineForm.elements.model.value = machine.model || '';
       editMachineForm.elements.productNumber.value = machine.productNumber || '';
       editMachineForm.elements.owner.value = machine.owner || '';
+      editMachineForm.elements.documentRevision.value = machine.documentRevision || 1;
 
       const softwareChoice = editMachineForm.querySelector('[name="software"][value="' + (machine.software || 'unknown') + '"]');
       const connectedChoice = editMachineForm.querySelector('[name="connected"][value="' + (machine.connected || 'unknown') + '"]');
@@ -651,6 +661,7 @@
       machine.owner = data.get('owner').trim();
       machine.software = data.get('software');
       machine.connected = data.get('connected');
+      machine.documentRevision = Math.max(1, parseInt(data.get('documentRevision'), 10) || 1);
 
       const basicTask = machine.tasks.find(task => task.id === 'basic');
       if (basicTask) basicTask.done = true;
