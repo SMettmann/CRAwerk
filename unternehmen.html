@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Unternehmen – CRAwerk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body" data-page="company">
+  <header class="app-header">
+    <a class="app-brand" href="dashboard.html"><span>CRA</span>werk</a>
+    <nav class="app-nav">
+      <a href="dashboard.html">Übersicht</a>
+      <a href="dashboard.html#maschinen">Maschinen</a>
+    </nav>
+    <a class="app-account active-account" href="unternehmen.html" id="company-header-name">Unternehmen</a>
+  </header>
+
+  <main class="app-main company-main">
+    <a class="back-link" href="dashboard.html">← Zur Übersicht</a>
+
+    <section class="company-intro">
+      <div>
+        <span class="app-kicker">UNTERNEHMEN</span>
+        <h1>Ihre Firmendaten</h1>
+        <p>Diese Angaben werden zentral gespeichert und automatisch in die Produktakten übernommen.</p>
+      </div>
+    </section>
+
+    <section class="company-layout">
+      <form class="company-card company-form" id="company-form">
+        <div class="company-section-head">
+          <span class="app-kicker">STAMMDATEN</span>
+          <h2>Unternehmen</h2>
+        </div>
+
+        <label>
+          <span>Firmenname *</span>
+          <input name="name" required placeholder="z. B. Muster Maschinenbau GmbH">
+        </label>
+
+        <label>
+          <span>Straße / Hausnummer</span>
+          <input name="street" placeholder="z. B. Industriestraße 12">
+        </label>
+
+        <div class="form-two">
+          <label>
+            <span>PLZ</span>
+            <input name="zip" inputmode="numeric" placeholder="z. B. 70173">
+          </label>
+          <label>
+            <span>Ort</span>
+            <input name="city" placeholder="z. B. Stuttgart">
+          </label>
+        </div>
+
+        <label>
+          <span>Land</span>
+          <input name="country" placeholder="Deutschland">
+        </label>
+
+        <div class="company-section-head company-section-gap">
+          <span class="app-kicker">KONTAKT</span>
+          <h2>Ansprechpartner</h2>
+        </div>
+
+        <label>
+          <span>Ansprechpartner</span>
+          <input name="contactName" placeholder="z. B. Max Mustermann">
+        </label>
+
+        <div class="form-two">
+          <label>
+            <span>E-Mail</span>
+            <input name="email" type="email" placeholder="max@unternehmen.de">
+          </label>
+          <label>
+            <span>Telefon</span>
+            <input name="phone" type="tel" placeholder="+49 ...">
+          </label>
+        </div>
+
+        <div class="company-form-actions">
+          <span id="company-save-state">Noch nicht gespeichert</span>
+          <button class="app-btn app-btn-dark" type="submit">Firmendaten speichern</button>
+        </div>
+      </form>
+
+      <aside class="company-side">
+        <section class="side-card">
+          <span class="app-kicker">VERWENDUNG</span>
+          <strong>Einmal pflegen, überall verwenden</strong>
+          <p>Firmenname, Anschrift und Ansprechpartner erscheinen automatisch in jeder neu erzeugten Produktakte.</p>
+        </section>
+
+        <section class="side-card">
+          <span class="app-kicker">LOGO</span>
+          <strong>Kommt mit dem Online-Speicher</strong>
+          <p>Das Firmenlogo binden wir später zusammen mit den echten Datei-Uploads über Supabase ein.</p>
+        </section>
+
+        <section class="side-card">
+          <span class="app-kicker">AKTUELL</span>
+          <strong>Lokal in diesem Browser</strong>
+          <p>Bis Supabase angeschlossen ist, liegen auch diese Firmendaten nur in diesem Browser.</p>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast" id="company-toast" hidden></div>
+  <script src="unternehmen.js"></script>
+</body>
+</html>
