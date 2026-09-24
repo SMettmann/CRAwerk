@@ -595,3 +595,119 @@ a{color:inherit;text-decoration:none}
     break-inside:avoid;
   }
 }
+
+
+/* Risks & tasks */
+.machine-form textarea{
+  width:100%;
+  min-height:110px;
+  padding:12px;
+  border:1px solid #c9d1cb;
+  border-radius:6px;
+  outline:0;
+  resize:vertical;
+  color:#17201b;
+  background:#fff;
+  font:inherit;
+  line-height:1.5;
+}
+
+.machine-form textarea:focus{
+  border-color:#68756d;
+  box-shadow:0 0 0 3px rgba(31,41,35,.08);
+}
+
+.choice-row-two{
+  grid-template-columns:1fr 1fr;
+}
+
+.risk-item{
+  padding:13px;
+  border:1px solid #d8ded9;
+  border-radius:6px;
+  background:#fff;
+}
+
+.risk-item.risk-done{
+  background:#f1f4f1;
+}
+
+.risk-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.risk-top strong{
+  display:block;
+  margin-bottom:4px;
+  font-size:12px;
+}
+
+.risk-meta{
+  color:#78837d;
+  font-size:10px;
+}
+
+.risk-item p{
+  margin:10px 0 12px;
+  color:#59655e;
+  font-size:11px;
+  line-height:1.55;
+}
+
+.risk-pill{
+  flex:0 0 auto;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.risk-pill.open{
+  color:#6a4b22;
+  background:#f0e7d8;
+}
+
+.risk-pill.done{
+  color:#365642;
+  background:#dfeae2;
+}
+
+.risk-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding-top:10px;
+  border-top:1px solid #edf0ed;
+}
+
+.risk-done .risk-top strong{
+  color:#7d8781;
+  text-decoration:line-through;
+}
+
+@media(max-width:720px){
+  .choice-row-two{
+    grid-template-columns:1fr;
+  }
+
+  .risk-top{
+    flex-direction:column;
+  }
+}
+
+@media print{
+  #add-risk,
+  .risk-actions{
+    display:none!important;
+  }
+
+  .risk-item{
+    break-inside:avoid;
+  }
+}
