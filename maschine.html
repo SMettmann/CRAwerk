@@ -89,13 +89,14 @@
             <button class="text-button" id="add-component" type="button">+ Bauteil hinzufügen</button>
           </article>
 
-          <article class="module-panel">
+          <article class="module-panel module-panel-live">
             <div class="module-panel-head">
               <div><span>04</span><h3>Risiken & Aufgaben</h3></div>
-              <small>Noch offen</small>
+              <small id="risk-status">Noch offen</small>
             </div>
-            <p>Entscheidungen, offene Punkte und Zuständigkeiten verständlich festhalten.</p>
-            <button class="text-button module-action" type="button" data-placeholder="Risiken & Aufgaben">Bereich öffnen →</button>
+            <p>Risiken, Maßnahmen und Zuständigkeiten verständlich festhalten.</p>
+            <div class="module-items" id="risk-list"></div>
+            <button class="text-button" id="add-risk" type="button">+ Risiko / Aufgabe hinzufügen</button>
           </article>
 
           <article class="module-panel">
@@ -220,6 +221,57 @@
 
       <div class="dialog-actions">
         <button class="app-btn app-btn-ghost" type="button" data-close-dialog="component-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Hinzufügen</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog small-dialog" id="risk-dialog">
+    <form class="machine-form" id="risk-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">RISIKEN & AUFGABEN</span>
+          <h2>Punkt hinzufügen</h2>
+          <p>Was ist das Thema und was soll damit passieren?</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog="risk-dialog" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Thema *</span>
+        <input name="topic" required placeholder="z. B. Fernwartungszugang absichern">
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>Einschätzung</span>
+          <select name="level">
+            <option value="Niedrig">Niedrig</option>
+            <option value="Mittel" selected>Mittel</option>
+            <option value="Hoch">Hoch</option>
+          </select>
+        </label>
+        <label>
+          <span>Verantwortlich</span>
+          <input name="owner" placeholder="z. B. Entwicklung">
+        </label>
+      </div>
+
+      <label>
+        <span>Maßnahme *</span>
+        <textarea name="measure" rows="4" required placeholder="Was soll konkret getan werden?"></textarea>
+      </label>
+
+      <fieldset>
+        <legend>Status</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="status" value="open" checked><span>Offen</span></label>
+          <label><input type="radio" name="status" value="done"><span>Erledigt</span></label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="risk-dialog">Abbrechen</button>
         <button class="app-btn app-btn-dark" type="submit">Hinzufügen</button>
       </div>
     </form>
