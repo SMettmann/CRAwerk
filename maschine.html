@@ -69,22 +69,24 @@
             <p>Name, Modell, Produktnummer und verantwortliche Person.</p>
           </article>
 
-          <article class="module-panel">
+          <article class="module-panel module-panel-live">
             <div class="module-panel-head">
               <div><span>02</span><h3>Software & Versionen</h3></div>
-              <small>Als Nächstes</small>
+              <small id="software-status">Noch offen</small>
             </div>
             <p>Welche Software steckt in der Maschine und welche Version ist verbaut?</p>
-            <button class="text-button module-action" type="button" data-placeholder="Software & Versionen">Angaben ergänzen →</button>
+            <div class="module-items" id="software-list"></div>
+            <button class="text-button" id="add-software" type="button">+ Software hinzufügen</button>
           </article>
 
-          <article class="module-panel">
+          <article class="module-panel module-panel-live">
             <div class="module-panel-head">
               <div><span>03</span><h3>Zulieferer & Bauteile</h3></div>
-              <small>Noch offen</small>
+              <small id="component-status">Noch offen</small>
             </div>
             <p>Steuerungen, Gateways und andere digitale Bauteile mit ihren Unterlagen zusammenhalten.</p>
-            <button class="text-button module-action" type="button" data-placeholder="Zulieferer & Bauteile">Bauteil hinzufügen →</button>
+            <div class="module-items" id="component-list"></div>
+            <button class="text-button" id="add-component" type="button">+ Bauteil hinzufügen</button>
           </article>
 
           <article class="module-panel">
@@ -130,6 +132,98 @@
       </aside>
     </section>
   </main>
+
+  <dialog class="machine-dialog small-dialog" id="software-dialog">
+    <form class="machine-form" id="software-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">SOFTWARE & VERSIONEN</span>
+          <h2>Software hinzufügen</h2>
+          <p>Nur die Angaben, die Sie später wirklich brauchen.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog="software-dialog" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Bezeichnung *</span>
+        <input name="name" required placeholder="z. B. HMI Software">
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>Version / Stand *</span>
+          <input name="version" required placeholder="z. B. 3.4.1">
+        </label>
+        <label>
+          <span>Art</span>
+          <select name="type">
+            <option value="Software">Software</option>
+            <option value="Firmware">Firmware</option>
+            <option value="Betriebssystem">Betriebssystem</option>
+            <option value="Sonstiges">Sonstiges</option>
+          </select>
+        </label>
+      </div>
+
+      <label>
+        <span>Anbieter / Hersteller</span>
+        <input name="vendor" placeholder="optional">
+      </label>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="software-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Hinzufügen</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog small-dialog" id="component-dialog">
+    <form class="machine-form" id="component-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">ZULIEFERER & BAUTEILE</span>
+          <h2>Bauteil hinzufügen</h2>
+          <p>Steuerung, Gateway oder anderes digitales Bauteil.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog="component-dialog" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Bauteil *</span>
+        <input name="name" required placeholder="z. B. SIMATIC S7-1500">
+      </label>
+
+      <label>
+        <span>Hersteller / Zulieferer *</span>
+        <input name="vendor" required placeholder="z. B. Siemens">
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>Typ / Modell</span>
+          <input name="model" placeholder="optional">
+        </label>
+        <label>
+          <span>Version / Stand</span>
+          <input name="version" placeholder="optional">
+        </label>
+      </div>
+
+      <fieldset>
+        <legend>Unterlagen vom Zulieferer vorhanden?</legend>
+        <div class="choice-row">
+          <label><input type="radio" name="documents" value="yes" required><span>Ja</span></label>
+          <label><input type="radio" name="documents" value="no"><span>Nein</span></label>
+          <label><input type="radio" name="documents" value="unknown"><span>Unklar</span></label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="component-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Hinzufügen</button>
+      </div>
+    </form>
+  </dialog>
 
   <div class="toast" id="app-toast" hidden></div>
   <script src="app.js"></script>
