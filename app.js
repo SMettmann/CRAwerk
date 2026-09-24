@@ -916,6 +916,20 @@
     });
 
     document.getElementById('software-list').addEventListener('click', (event) => {
+      const editButton = event.target.closest('[data-edit-software]');
+      if (editButton) {
+        const item = machine.softwareItems.find(entry => entry.id === editButton.dataset.editSoftware);
+        if (!item) return;
+        editingSoftwareId = item.id;
+        softwareForm.elements.name.value = item.name || '';
+        softwareForm.elements.version.value = item.version || '';
+        softwareForm.elements.type.value = item.type || 'Software';
+        softwareForm.elements.vendor.value = item.vendor || '';
+        setDialogMode(softwareDialog, softwareForm, 'Software bearbeiten', 'Änderungen speichern');
+        softwareDialog.showModal();
+        return;
+      }
+
       const button = event.target.closest('[data-remove-software]');
       if (!button) return;
 
@@ -926,6 +940,22 @@
     });
 
     document.getElementById('component-list').addEventListener('click', (event) => {
+      const editButton = event.target.closest('[data-edit-component]');
+      if (editButton) {
+        const item = machine.components.find(entry => entry.id === editButton.dataset.editComponent);
+        if (!item) return;
+        editingComponentId = item.id;
+        componentForm.elements.name.value = item.name || '';
+        componentForm.elements.vendor.value = item.vendor || '';
+        componentForm.elements.model.value = item.model || '';
+        componentForm.elements.version.value = item.version || '';
+        const documentChoice = componentForm.querySelector('[name="documents"][value="' + (item.documents || 'unknown') + '"]');
+        if (documentChoice) documentChoice.checked = true;
+        setDialogMode(componentDialog, componentForm, 'Bauteil bearbeiten', 'Änderungen speichern');
+        componentDialog.showModal();
+        return;
+      }
+
       const button = event.target.closest('[data-remove-component]');
       if (!button) return;
 
@@ -936,6 +966,22 @@
     });
 
     document.getElementById('risk-list').addEventListener('click', (event) => {
+      const editButton = event.target.closest('[data-edit-risk]');
+      if (editButton) {
+        const item = machine.riskItems.find(entry => entry.id === editButton.dataset.editRisk);
+        if (!item) return;
+        editingRiskId = item.id;
+        riskForm.elements.topic.value = item.topic || '';
+        riskForm.elements.level.value = item.level || 'Mittel';
+        riskForm.elements.owner.value = item.owner || '';
+        riskForm.elements.measure.value = item.measure || '';
+        const statusChoice = riskForm.querySelector('[name="status"][value="' + (item.status || 'open') + '"]');
+        if (statusChoice) statusChoice.checked = true;
+        setDialogMode(riskDialog, riskForm, 'Punkt bearbeiten', 'Änderungen speichern');
+        riskDialog.showModal();
+        return;
+      }
+
       const removeButton = event.target.closest('[data-remove-risk]');
       if (removeButton) {
         machine.riskItems = machine.riskItems.filter(item => item.id !== removeButton.dataset.removeRisk);
@@ -958,6 +1004,22 @@
     });
 
     document.getElementById('update-list').addEventListener('click', (event) => {
+      const editButton = event.target.closest('[data-edit-update]');
+      if (editButton) {
+        const item = machine.updateItems.find(entry => entry.id === editButton.dataset.editUpdate);
+        if (!item) return;
+        editingUpdateId = item.id;
+        updateForm.elements.title.value = item.title || '';
+        updateForm.elements.date.value = item.date || '';
+        updateForm.elements.affected.value = item.affected || '';
+        updateForm.elements.action.value = item.action || '';
+        const statusChoice = updateForm.querySelector('[name="status"][value="' + (item.status || 'open') + '"]');
+        if (statusChoice) statusChoice.checked = true;
+        setDialogMode(updateDialog, updateForm, 'Problem bearbeiten', 'Änderungen speichern');
+        updateDialog.showModal();
+        return;
+      }
+
       const removeButton = event.target.closest('[data-remove-update]');
       if (removeButton) {
         machine.updateItems = machine.updateItems.filter(item => item.id !== removeButton.dataset.removeUpdate);
@@ -980,6 +1042,21 @@
     });
 
     document.getElementById('document-list').addEventListener('click', (event) => {
+      const editButton = event.target.closest('[data-edit-document]');
+      if (editButton) {
+        const item = machine.documentItems.find(entry => entry.id === editButton.dataset.editDocument);
+        if (!item) return;
+        editingDocumentId = item.id;
+        documentForm.elements.title.value = item.title || '';
+        documentForm.elements.type.value = item.type || 'Sonstiges';
+        documentForm.elements.date.value = item.date || '';
+        populateDocumentRelated(item.related || 'Gesamtmaschine');
+        documentForm.elements.note.value = item.note || '';
+        setDialogMode(documentDialog, documentForm, 'Unterlage bearbeiten', 'Änderungen speichern');
+        documentDialog.showModal();
+        return;
+      }
+
       const button = event.target.closest('[data-remove-document]');
       if (!button) return;
 
