@@ -711,3 +711,10 @@ a{color:inherit;text-decoration:none}
     break-inside:avoid;
   }
 }
+
+
+/* Visibility helpers */
+.empty-state[hidden],
+.machines-list[hidden]{
+  display:none !important;
+}
