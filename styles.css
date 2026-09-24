@@ -773,3 +773,260 @@ h1 span{
     justify-content:center;
   }
 }
+
+
+/* CRA explanation */
+.cra-explained{
+  background:#eef1ed;
+}
+
+.responsibility-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+  gap:18px;
+  align-items:stretch;
+}
+
+.responsibility-card{
+  padding:28px;
+  border:1px solid #cbd2cd;
+  border-radius:8px;
+  background:#f7f8f6;
+}
+
+.responsibility-card.highlight{
+  background:#151b18;
+  color:#f2f5f3;
+  border-color:#151b18;
+}
+
+.responsibility-label{
+  display:block;
+  margin-bottom:42px;
+  color:#707b75;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.16em;
+}
+
+.responsibility-card.highlight .responsibility-label{
+  color:#96a29b;
+}
+
+.responsibility-card h3{
+  margin-bottom:14px;
+  font-size:22px;
+  line-height:1.2;
+  letter-spacing:-.025em;
+}
+
+.responsibility-card p{
+  margin-bottom:0;
+  color:#626d67;
+  font-size:14px;
+  line-height:1.65;
+}
+
+.responsibility-card.highlight p{
+  color:#aeb9b3;
+}
+
+.responsibility-arrow{
+  align-self:center;
+  color:#7c8881;
+  font-size:25px;
+}
+
+.plain-example{
+  display:grid;
+  grid-template-columns:190px 1fr;
+  gap:28px;
+  margin-top:24px;
+  padding:24px 26px;
+  border-left:3px solid #202923;
+  background:#e5e9e4;
+}
+
+.plain-example-title{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.plain-example p{
+  margin:0;
+  color:#4f5a54;
+  font-size:15px;
+  line-height:1.7;
+}
+
+.plain-example strong{
+  color:#161c18;
+}
+
+.deadline-section{
+  border-top:1px solid #2a342f;
+  border-bottom:1px solid #2a342f;
+}
+
+.deadline-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7vw;
+  align-items:start;
+}
+
+.deadline-grid h2{
+  margin-bottom:0;
+}
+
+.deadline-cards{
+  display:grid;
+  gap:14px;
+}
+
+.deadline-card{
+  padding:24px;
+  border:1px solid #36413b;
+  border-radius:8px;
+  background:#19211d;
+}
+
+.deadline-card strong,
+.deadline-card span{
+  display:block;
+}
+
+.deadline-card strong{
+  margin-bottom:10px;
+  font-size:24px;
+  letter-spacing:-.03em;
+}
+
+.deadline-card span{
+  color:#a8b3ad;
+  font-size:14px;
+  line-height:1.6;
+}
+
+.legal-note{
+  max-width:920px;
+  margin:36px 0 0;
+  padding-top:22px;
+  border-top:1px solid #344038;
+  color:#87938c;
+  font-size:12px;
+  line-height:1.65;
+}
+
+.faq-section{
+  background:#edf0ec;
+}
+
+.faq-layout{
+  display:grid;
+  grid-template-columns:.78fr 1.22fr;
+  gap:8vw;
+  align-items:start;
+}
+
+.faq-heading{
+  position:sticky;
+  top:112px;
+  margin-bottom:0;
+}
+
+.faq-heading p{
+  max-width:470px;
+}
+
+.faq-list{
+  border-top:1px solid #c9d0cb;
+}
+
+.faq-list details{
+  border-bottom:1px solid #c9d0cb;
+}
+
+.faq-list summary{
+  position:relative;
+  padding:22px 42px 22px 0;
+  cursor:pointer;
+  list-style:none;
+  font-size:17px;
+  font-weight:700;
+  line-height:1.45;
+  letter-spacing:-.01em;
+}
+
+.faq-list summary::-webkit-details-marker{
+  display:none;
+}
+
+.faq-list summary::after{
+  content:"+";
+  position:absolute;
+  right:2px;
+  top:20px;
+  color:#66716b;
+  font-size:24px;
+  font-weight:400;
+}
+
+.faq-list details[open] summary::after{
+  content:"–";
+}
+
+.faq-list details p{
+  max-width:760px;
+  margin:0;
+  padding:0 46px 24px 0;
+  color:#5f6963;
+  font-size:14px;
+  line-height:1.72;
+}
+
+@media (max-width:1050px){
+  .responsibility-grid{
+    grid-template-columns:1fr;
+  }
+
+  .responsibility-arrow{
+    transform:rotate(90deg);
+    justify-self:center;
+  }
+
+  .deadline-grid,
+  .faq-layout{
+    grid-template-columns:1fr;
+    gap:40px;
+  }
+
+  .faq-heading{
+    position:static;
+  }
+
+  .plain-example{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+}
+
+@media (max-width:760px){
+  .responsibility-card{
+    padding:22px;
+  }
+
+  .responsibility-label{
+    margin-bottom:28px;
+  }
+
+  .deadline-card{
+    padding:20px;
+  }
+
+  .faq-list summary{
+    font-size:15px;
+  }
+}
