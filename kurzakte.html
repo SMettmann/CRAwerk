@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>CRAwerk Kurzübersicht</title>
+  <link rel="stylesheet" href="kurzakte.css">
+</head>
+<body>
+  <div class="short-toolbar no-print">
+    <a id="short-back" href="dashboard.html">← Zur Maschine</a>
+    <div class="short-toolbar-actions">
+      <a id="short-full" href="#">Vollständige Produktakte</a>
+      <button id="short-print" type="button">Als PDF speichern / drucken</button>
+    </div>
+  </div>
+
+  <main class="short-sheet" id="short-sheet">
+    <header class="short-head">
+      <div class="short-brand"><span>CRA</span>werk</div>
+      <div class="short-head-meta">
+        <strong>KURZÜBERSICHT</strong>
+        <span id="short-revision">Revision 1</span>
+        <span id="short-generated"></span>
+      </div>
+    </header>
+
+    <section class="short-company" id="short-company"></section>
+
+    <section class="short-title">
+      <div>
+        <span class="short-kicker">MASCHINE / PRODUKT</span>
+        <h1 id="short-name">Maschine</h1>
+        <p id="short-subtitle"></p>
+      </div>
+      <div class="short-progress">
+        <span>Arbeitsstand</span>
+        <strong id="short-progress-value">0%</strong>
+      </div>
+    </section>
+
+    <div class="short-progress-track"><span id="short-progress-bar"></span></div>
+
+    <section class="short-summary-grid" id="short-summary"></section>
+
+    <section class="short-section">
+      <div class="short-section-head">
+        <div>
+          <span class="short-kicker">HANDLUNGSBEDARF</span>
+          <h2>Offene Punkte</h2>
+        </div>
+        <strong id="short-open-count">0 offen</strong>
+      </div>
+      <div class="short-list" id="short-open-tasks"></div>
+    </section>
+
+    <section class="short-two-column">
+      <article class="short-section short-box">
+        <div class="short-section-head">
+          <div>
+            <span class="short-kicker">RISIKEN</span>
+            <h2>Risiken & Maßnahmen</h2>
+          </div>
+        </div>
+        <div class="short-list" id="short-risks"></div>
+      </article>
+
+      <article class="short-section short-box">
+        <div class="short-section-head">
+          <div>
+            <span class="short-kicker">SICHERHEIT</span>
+            <h2>Sicherheitslücken & Updates</h2>
+          </div>
+        </div>
+        <div class="short-list" id="short-updates"></div>
+      </article>
+    </section>
+
+    <section class="short-section">
+      <div class="short-section-head">
+        <div>
+          <span class="short-kicker">NACHWEISE & UNTERSTÜTZUNG</span>
+          <h2>Dokumentationsstand</h2>
+        </div>
+      </div>
+      <div class="short-bottom-grid" id="short-bottom"></div>
+    </section>
+
+    <footer class="short-footer">
+      <div>
+        <strong>CRAwerk Kurzübersicht</strong>
+        <span id="short-footer-machine"></span>
+      </div>
+      <p>
+        Diese Übersicht zeigt den in CRAwerk erfassten Arbeitsstand.
+        Sie ist keine Konformitätserklärung und ersetzt keine rechtliche oder technische Bewertung.
+      </p>
+    </footer>
+  </main>
+
+  <div class="short-error" id="short-error" hidden>
+    <strong>Maschine nicht gefunden.</strong>
+    <a href="dashboard.html">Zur Übersicht</a>
+  </div>
+
+  <script src="kurzakte.js"></script>
+</body>
+</html>
