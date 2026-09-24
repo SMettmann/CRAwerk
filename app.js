@@ -36,7 +36,6 @@
 
     copy.id = 'm_' + stamp;
     copy.name = source.name + ' – Kopie';
-    copy.productNumber = '';
     copy.createdAt = new Date().toISOString();
 
     const refreshIds = (items, prefix) =>
