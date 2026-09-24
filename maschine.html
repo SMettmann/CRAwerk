@@ -125,6 +125,16 @@
               <button class="text-button" id="toggle-documents-complete" type="button">Unterlagen vollständig</button>
             </div>
           </article>
+
+          <article class="module-panel module-panel-live support-panel">
+            <div class="module-panel-head">
+              <div><span>07</span><h3>Unterstützungszeitraum</h3></div>
+              <small id="support-status">Noch offen</small>
+            </div>
+            <p>Festhalten, für welchen Zeitraum sicherheitsbezogene Unterstützung und Updates vorgesehen sind.</p>
+            <div id="support-summary"></div>
+            <button class="text-button" id="set-support" type="button">Zeitraum festlegen</button>
+          </article>
         </section>
       </div>
 
@@ -409,6 +419,45 @@
       <div class="dialog-actions">
         <button class="app-btn app-btn-ghost" type="button" data-close-dialog="document-dialog">Abbrechen</button>
         <button class="app-btn app-btn-dark" type="submit">Hinzufügen</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog small-dialog" id="support-dialog">
+    <form class="machine-form" id="support-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">UNTERSTÜTZUNGSZEITRAUM</span>
+          <h2>Zeitraum festlegen</h2>
+          <p>Wie lange wird diese Maschine sicherheitsbezogen unterstützt?</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog="support-dialog" aria-label="Schließen">×</button>
+      </div>
+
+      <div class="form-two">
+        <label>
+          <span>Beginn *</span>
+          <input name="startDate" type="date" required>
+        </label>
+        <label>
+          <span>Geplantes Ende *</span>
+          <input name="endDate" type="date" required>
+        </label>
+      </div>
+
+      <label>
+        <span>Verantwortlich *</span>
+        <input name="owner" required placeholder="z. B. Produktmanagement / Max Mustermann">
+      </label>
+
+      <label>
+        <span>Begründung / Hinweis</span>
+        <textarea name="reason" rows="4" placeholder="Warum wurde dieser Zeitraum gewählt?"></textarea>
+      </label>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="support-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Zeitraum speichern</button>
       </div>
     </form>
   </dialog>
