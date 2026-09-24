@@ -1,5 +1,6 @@
 (() => {
   const STORAGE_KEY = 'crawerk_machines_v1';
+  const COMPANY_KEY = 'crawerk_company_v1';
 
   const escapeHtml = (value = '') => String(value)
     .replaceAll('&','&amp;')
@@ -16,6 +17,14 @@
     }
   };
 
+  const readCompany = () => {
+    try {
+      return JSON.parse(localStorage.getItem(COMPANY_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  };
+
   const formatDate = (value) => {
     if (!value) return '–';
     const parts = String(value).split('-');
@@ -27,6 +36,7 @@
 
   const id = new URLSearchParams(location.search).get('id');
   const machine = readMachines().find(item => item.id === id);
+  const company = readCompany();
 
   if (!machine) {
     document.getElementById('report-sheet').hidden = true;
@@ -65,6 +75,28 @@
   document.getElementById('report-progress-bar').style.width = progress + '%';
   document.getElementById('report-footer-machine').textContent = machine.name + ' · Stand ' + generated;
   document.getElementById('report-back').href = 'maschine.html?id=' + encodeURIComponent(machine.id);
+
+  const companyLines = [
+    company.street,
+    [company.zip, company.city].filter(Boolean).join(' '),
+    company.country
+  ].filter(Boolean);
+
+  const contactLines = [
+    company.contactName ? 'Ansprechpartner: ' + company.contactName : '',
+    company.email,
+    company.phone
+  ].filter(Boolean);
+
+  document.getElementById('report-company').innerHTML = company.name
+    ? '<div class="report-company-main"><span class="report-kicker">UNTERNEHMEN</span><strong>' +
+        escapeHtml(company.name) + '</strong>' +
+        (companyLines.length ? '<p>' + companyLines.map(escapeHtml).join('<br>') + '</p>' : '') +
+      '</div>' +
+      '<div class="report-company-contact">' +
+        (contactLines.length ? contactLines.map(line => '<span>' + escapeHtml(line) + '</span>').join('') : '<span>Keine Kontaktdaten hinterlegt</span>') +
+      '</div>'
+    : '<div class="report-empty">Unternehmensdaten nicht hinterlegt.</div>';
 
   const basicData = [
     ['Maschine', machine.name],
