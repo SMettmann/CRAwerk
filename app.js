@@ -153,6 +153,9 @@
         : {owner:'', procedure:''};
       machine.documentItems = Array.isArray(machine.documentItems) ? machine.documentItems : [];
       machine.documentsComplete = machine.documentsComplete === true;
+      machine.supportPeriod = machine.supportPeriod && typeof machine.supportPeriod === 'object'
+        ? machine.supportPeriod
+        : {startDate:'', endDate:'', owner:'', reason:''};
 
       if (!machine.tasks.some(task => task.id === 'documents')) {
         const supportIndex = machine.tasks.findIndex(task => task.id === 'support');
@@ -188,6 +191,7 @@
       const riskTask = machine.tasks.find(t => t.id === 'risks');
       const updateTask = machine.tasks.find(t => t.id === 'updates');
       const documentTask = machine.tasks.find(t => t.id === 'documents');
+      const supportTask = machine.tasks.find(t => t.id === 'support');
 
       if (softwareTask) {
         softwareTask.done = machine.software === 'no' || machine.softwareItems.length > 0;
@@ -211,6 +215,14 @@
 
       if (documentTask) {
         documentTask.done = machine.documentsComplete === true;
+      }
+
+      if (supportTask) {
+        supportTask.done = Boolean(
+          machine.supportPeriod.startDate &&
+          machine.supportPeriod.endDate &&
+          machine.supportPeriod.owner
+        );
       }
     };
 
@@ -252,7 +264,8 @@
         '<div><dt>Produktnummer</dt><dd>' + escapeHtml(machine.productNumber || '–') + '</dd></div>' +
         '<div><dt>Verantwortlich</dt><dd>' + escapeHtml(machine.owner || '–') + '</dd></div>' +
         '<div><dt>Software</dt><dd>' + yesNo(machine.software) + '</dd></div>' +
-        '<div><dt>Verbindung</dt><dd>' + yesNo(machine.connected) + '</dd></div>';
+        '<div><dt>Verbindung</dt><dd>' + yesNo(machine.connected) + '</dd></div>' +
+        '<div><dt>Unterstützung bis</dt><dd>' + escapeHtml(machine.supportPeriod.endDate || '–') + '</dd></div>';
 
       const softwareList = document.getElementById('software-list');
       const componentList = document.getElementById('component-list');
@@ -260,6 +273,7 @@
       const updateList = document.getElementById('update-list');
       const updateProcessBox = document.getElementById('update-process');
       const documentList = document.getElementById('document-list');
+      const supportSummary = document.getElementById('support-summary');
 
       document.getElementById('software-status').textContent =
         machine.software === 'no' ? 'Nicht erforderlich' :
@@ -288,6 +302,26 @@
 
       document.getElementById('toggle-documents-complete').textContent =
         machine.documentsComplete ? 'Vollständigkeit aufheben' : 'Unterlagen vollständig';
+
+      const supportReady = Boolean(
+        machine.supportPeriod.startDate &&
+        machine.supportPeriod.endDate &&
+        machine.supportPeriod.owner
+      );
+
+      document.getElementById('support-status').textContent =
+        supportReady ? 'Festgelegt' : 'Noch offen';
+
+      supportSummary.innerHTML = supportReady
+        ? '<div class="support-card">' +
+            '<div><span>Beginn</span><strong>' + escapeHtml(machine.supportPeriod.startDate) + '</strong></div>' +
+            '<div><span>Ende</span><strong>' + escapeHtml(machine.supportPeriod.endDate) + '</strong></div>' +
+            '<div><span>Verantwortlich</span><strong>' + escapeHtml(machine.supportPeriod.owner) + '</strong></div>' +
+            (machine.supportPeriod.reason
+              ? '<p>' + escapeHtml(machine.supportPeriod.reason) + '</p>'
+              : '') +
+          '</div>'
+        : '<div class="module-empty">Noch kein Unterstützungszeitraum festgelegt.</div>';
 
       softwareList.innerHTML = machine.softwareItems.length
         ? machine.softwareItems.map(item =>
@@ -397,12 +431,14 @@
     const updateProcessDialog = document.getElementById('update-process-dialog');
     const updateDialog = document.getElementById('update-dialog');
     const documentDialog = document.getElementById('document-dialog');
+    const supportDialog = document.getElementById('support-dialog');
     const softwareForm = document.getElementById('software-form');
     const componentForm = document.getElementById('component-form');
     const riskForm = document.getElementById('risk-form');
     const updateProcessForm = document.getElementById('update-process-form');
     const updateForm = document.getElementById('update-form');
     const documentForm = document.getElementById('document-form');
+    const supportForm = document.getElementById('support-form');
 
     document.getElementById('add-software').addEventListener('click', () => softwareDialog.showModal());
     document.getElementById('add-component').addEventListener('click', () => componentDialog.showModal());
@@ -431,6 +467,14 @@
       persist();
       render();
       showToast(machine.documentsComplete ? 'Unterlagen wurden als vollständig markiert.' : 'Vollständigkeit wurde aufgehoben.');
+    });
+
+    document.getElementById('set-support').addEventListener('click', () => {
+      supportForm.elements.startDate.value = machine.supportPeriod.startDate || '';
+      supportForm.elements.endDate.value = machine.supportPeriod.endDate || '';
+      supportForm.elements.owner.value = machine.supportPeriod.owner || '';
+      supportForm.elements.reason.value = machine.supportPeriod.reason || '';
+      supportDialog.showModal();
     });
 
     document.querySelectorAll('[data-close-dialog]').forEach(button => {
@@ -553,6 +597,37 @@
       persist();
       render();
       showToast('Unterlage wurde der Maschine zugeordnet.');
+    });
+
+    supportForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(supportForm);
+      const startDate = data.get('startDate');
+      const endDate = data.get('endDate');
+
+      if (endDate < startDate) {
+        supportForm.elements.endDate.setCustomValidity('Das Enddatum darf nicht vor dem Beginn liegen.');
+        supportForm.elements.endDate.reportValidity();
+        return;
+      }
+
+      supportForm.elements.endDate.setCustomValidity('');
+
+      machine.supportPeriod = {
+        startDate,
+        endDate,
+        owner: data.get('owner').trim(),
+        reason: data.get('reason').trim()
+      };
+
+      supportDialog.close();
+      persist();
+      render();
+      showToast('Unterstützungszeitraum wurde gespeichert.');
+    });
+
+    supportForm.elements.endDate.addEventListener('input', () => {
+      supportForm.elements.endDate.setCustomValidity('');
     });
 
     document.getElementById('software-list').addEventListener('click', (event) => {
