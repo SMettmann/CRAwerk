@@ -146,6 +146,10 @@
       machine.softwareItems = Array.isArray(machine.softwareItems) ? machine.softwareItems : [];
       machine.components = Array.isArray(machine.components) ? machine.components : [];
       machine.riskItems = Array.isArray(machine.riskItems) ? machine.riskItems : [];
+      machine.updateItems = Array.isArray(machine.updateItems) ? machine.updateItems : [];
+      machine.updateProcess = machine.updateProcess && typeof machine.updateProcess === 'object'
+        ? machine.updateProcess
+        : {owner:'', procedure:''};
     }
 
     if (!machine) {
@@ -167,6 +171,7 @@
       const softwareTask = machine.tasks.find(t => t.id === 'software');
       const supplierTask = machine.tasks.find(t => t.id === 'supplier');
       const riskTask = machine.tasks.find(t => t.id === 'risks');
+      const updateTask = machine.tasks.find(t => t.id === 'updates');
 
       if (softwareTask) {
         softwareTask.done = machine.software === 'no' || machine.softwareItems.length > 0;
@@ -178,6 +183,14 @@
 
       if (riskTask) {
         riskTask.done = machine.riskItems.length > 0 && machine.riskItems.every(item => item.status === 'done');
+      }
+
+      if (updateTask) {
+        updateTask.title = 'Sicherheitslücken & Updates bearbeiten';
+        updateTask.text = 'Internen Ablauf festlegen und bekannte Sicherheitsprobleme bis zur Erledigung nachverfolgen.';
+        const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
+        const noOpenUpdates = machine.updateItems.every(item => item.status === 'done');
+        updateTask.done = processReady && noOpenUpdates;
       }
     };
 
@@ -224,6 +237,8 @@
       const softwareList = document.getElementById('software-list');
       const componentList = document.getElementById('component-list');
       const riskList = document.getElementById('risk-list');
+      const updateList = document.getElementById('update-list');
+      const updateProcessBox = document.getElementById('update-process');
 
       document.getElementById('software-status').textContent =
         machine.software === 'no' ? 'Nicht erforderlich' :
@@ -237,6 +252,13 @@
         machine.riskItems.length
           ? (openRisks ? openRisks + ' offen' : 'Erledigt')
           : 'Noch offen';
+
+      const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
+      const openUpdates = machine.updateItems.filter(item => item.status !== 'done').length;
+      document.getElementById('update-status').textContent =
+        !processReady
+          ? 'Ablauf fehlt'
+          : (openUpdates ? openUpdates + ' offen' : 'Bereit');
 
       softwareList.innerHTML = machine.softwareItems.length
         ? machine.softwareItems.map(item =>
@@ -284,6 +306,34 @@
             '</div>'
           ).join('')
         : '<div class="module-empty">Noch kein Risiko oder offener Punkt erfasst.</div>';
+
+      updateProcessBox.innerHTML = processReady
+        ? '<div class="process-card"><span>Interner Ablauf</span><strong>' + escapeHtml(machine.updateProcess.owner) + '</strong><p>' + escapeHtml(machine.updateProcess.procedure) + '</p></div>'
+        : '<div class="module-empty">Noch kein interner Ablauf festgelegt.</div>';
+
+      updateList.innerHTML = machine.updateItems.length
+        ? machine.updateItems.map(item =>
+            '<div class="risk-item ' + (item.status === 'done' ? 'risk-done' : '') + '">' +
+              '<div class="risk-top">' +
+                '<div><strong>' + escapeHtml(item.title) + '</strong>' +
+                '<span class="risk-meta">' +
+                  (item.date ? escapeHtml(item.date) : 'Datum offen') +
+                  (item.affected ? ' · ' + escapeHtml(item.affected) : '') +
+                '</span></div>' +
+                '<span class="risk-pill ' + (item.status === 'done' ? 'done' : 'open') + '">' +
+                  (item.status === 'done' ? 'Erledigt' : 'Offen') +
+                '</span>' +
+              '</div>' +
+              '<p>' + escapeHtml(item.action) + '</p>' +
+              '<div class="risk-actions">' +
+                '<button type="button" class="text-button" data-toggle-update="' + escapeHtml(item.id) + '">' +
+                  (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') +
+                '</button>' +
+                '<button type="button" class="item-remove" data-remove-update="' + escapeHtml(item.id) + '" aria-label="Sicherheitsproblem löschen">×</button>' +
+              '</div>' +
+            '</div>'
+          ).join('')
+        : '<div class="module-empty">Aktuell kein Sicherheitsproblem dokumentiert.</div>';
     };
 
     document.getElementById('task-checklist').addEventListener('change', (event) => {
@@ -301,13 +351,23 @@
     const softwareDialog = document.getElementById('software-dialog');
     const componentDialog = document.getElementById('component-dialog');
     const riskDialog = document.getElementById('risk-dialog');
+    const updateProcessDialog = document.getElementById('update-process-dialog');
+    const updateDialog = document.getElementById('update-dialog');
     const softwareForm = document.getElementById('software-form');
     const componentForm = document.getElementById('component-form');
     const riskForm = document.getElementById('risk-form');
+    const updateProcessForm = document.getElementById('update-process-form');
+    const updateForm = document.getElementById('update-form');
 
     document.getElementById('add-software').addEventListener('click', () => softwareDialog.showModal());
     document.getElementById('add-component').addEventListener('click', () => componentDialog.showModal());
     document.getElementById('add-risk').addEventListener('click', () => riskDialog.showModal());
+    document.getElementById('set-update-process').addEventListener('click', () => {
+      updateProcessForm.elements.owner.value = machine.updateProcess.owner || '';
+      updateProcessForm.elements.procedure.value = machine.updateProcess.procedure || '';
+      updateProcessDialog.showModal();
+    });
+    document.getElementById('add-update').addEventListener('click', () => updateDialog.showModal());
 
     document.querySelectorAll('[data-close-dialog]').forEach(button => {
       button.addEventListener('click', () => {
@@ -375,6 +435,41 @@
       showToast('Risiko / Aufgabe wurde hinzugefügt.');
     });
 
+    updateProcessForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(updateProcessForm);
+
+      machine.updateProcess = {
+        owner: data.get('owner').trim(),
+        procedure: data.get('procedure').trim()
+      };
+
+      updateProcessDialog.close();
+      persist();
+      render();
+      showToast('Interner Ablauf wurde gespeichert.');
+    });
+
+    updateForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(updateForm);
+
+      machine.updateItems.push({
+        id: 'u_' + Date.now(),
+        title: data.get('title').trim(),
+        date: data.get('date'),
+        affected: data.get('affected').trim(),
+        action: data.get('action').trim(),
+        status: data.get('status')
+      });
+
+      updateForm.reset();
+      updateDialog.close();
+      persist();
+      render();
+      showToast('Sicherheitsproblem wurde dokumentiert.');
+    });
+
     document.getElementById('software-list').addEventListener('click', (event) => {
       const button = event.target.closest('[data-remove-software]');
       if (!button) return;
@@ -415,6 +510,28 @@
       persist();
       render();
       showToast(item.status === 'done' ? 'Punkt wurde erledigt.' : 'Punkt wurde wieder geöffnet.');
+    });
+
+    document.getElementById('update-list').addEventListener('click', (event) => {
+      const removeButton = event.target.closest('[data-remove-update]');
+      if (removeButton) {
+        machine.updateItems = machine.updateItems.filter(item => item.id !== removeButton.dataset.removeUpdate);
+        persist();
+        render();
+        showToast('Sicherheitsproblem wurde entfernt.');
+        return;
+      }
+
+      const toggleButton = event.target.closest('[data-toggle-update]');
+      if (!toggleButton) return;
+
+      const item = machine.updateItems.find(entry => entry.id === toggleButton.dataset.toggleUpdate);
+      if (!item) return;
+
+      item.status = item.status === 'done' ? 'open' : 'done';
+      persist();
+      render();
+      showToast(item.status === 'done' ? 'Sicherheitsproblem wurde erledigt.' : 'Sicherheitsproblem wurde wieder geöffnet.');
     });
 
     document.querySelectorAll('.module-action').forEach(button => {
