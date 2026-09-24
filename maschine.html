@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Maschine – CRAwerk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body" data-page="machine">
+  <header class="app-header">
+    <a class="app-brand" href="dashboard.html"><span>CRA</span>werk</a>
+    <nav class="app-nav">
+      <a href="dashboard.html">Übersicht</a>
+      <a class="active" href="dashboard.html#maschinen">Maschinen</a>
+    </nav>
+    <div class="app-account">CRAwerk</div>
+  </header>
+
+  <main class="app-main machine-main">
+    <a class="back-link" href="dashboard.html">← Zur Übersicht</a>
+
+    <section class="machine-hero">
+      <div>
+        <span class="app-kicker">PRODUKTAKTE</span>
+        <h1 id="machine-name">Maschine</h1>
+        <p id="machine-meta"></p>
+      </div>
+      <div class="machine-actions">
+        <button class="app-btn app-btn-ghost" id="print-machine" type="button">PDF / Drucken</button>
+      </div>
+    </section>
+
+    <section class="machine-status-card">
+      <div class="status-main">
+        <span>CRA-Arbeitsstand</span>
+        <strong id="machine-progress-value">0%</strong>
+      </div>
+      <div class="status-progress"><span id="machine-progress-bar"></span></div>
+      <p id="machine-progress-text">0 von 0 Aufgaben erledigt.</p>
+    </section>
+
+    <section class="machine-next">
+      <div>
+        <span class="app-kicker">ALS NÄCHSTES</span>
+        <h2 id="machine-next-title">Grunddaten prüfen</h2>
+        <p id="machine-next-text">CRAwerk zeigt Ihnen den nächsten offenen Punkt.</p>
+      </div>
+    </section>
+
+    <section class="machine-layout">
+      <div class="machine-content">
+        <section class="app-panel">
+          <div class="panel-head">
+            <div>
+              <span class="app-kicker">AUFGABEN</span>
+              <h2>Was noch offen ist</h2>
+            </div>
+          </div>
+          <div class="task-checklist" id="task-checklist"></div>
+        </section>
+
+        <section class="module-list">
+          <article class="module-panel">
+            <div class="module-panel-head">
+              <div><span>01</span><h3>Grunddaten</h3></div>
+              <small id="module-basic-status">Vorhanden</small>
+            </div>
+            <p>Name, Modell, Produktnummer und verantwortliche Person.</p>
+          </article>
+
+          <article class="module-panel">
+            <div class="module-panel-head">
+              <div><span>02</span><h3>Software & Versionen</h3></div>
+              <small>Als Nächstes</small>
+            </div>
+            <p>Welche Software steckt in der Maschine und welche Version ist verbaut?</p>
+            <button class="text-button module-action" type="button" data-placeholder="Software & Versionen">Angaben ergänzen →</button>
+          </article>
+
+          <article class="module-panel">
+            <div class="module-panel-head">
+              <div><span>03</span><h3>Zulieferer & Bauteile</h3></div>
+              <small>Noch offen</small>
+            </div>
+            <p>Steuerungen, Gateways und andere digitale Bauteile mit ihren Unterlagen zusammenhalten.</p>
+            <button class="text-button module-action" type="button" data-placeholder="Zulieferer & Bauteile">Bauteil hinzufügen →</button>
+          </article>
+
+          <article class="module-panel">
+            <div class="module-panel-head">
+              <div><span>04</span><h3>Risiken & Aufgaben</h3></div>
+              <small>Noch offen</small>
+            </div>
+            <p>Entscheidungen, offene Punkte und Zuständigkeiten verständlich festhalten.</p>
+            <button class="text-button module-action" type="button" data-placeholder="Risiken & Aufgaben">Bereich öffnen →</button>
+          </article>
+
+          <article class="module-panel">
+            <div class="module-panel-head">
+              <div><span>05</span><h3>Sicherheitslücken & Updates</h3></div>
+              <small>Noch offen</small>
+            </div>
+            <p>Festhalten, wenn eine Sicherheitslücke bekannt wird, welche Maschine betroffen ist und was getan wurde.</p>
+            <button class="text-button module-action" type="button" data-placeholder="Sicherheitslücken & Updates">Bereich öffnen →</button>
+          </article>
+
+          <article class="module-panel">
+            <div class="module-panel-head">
+              <div><span>06</span><h3>Unterlagen & Nachweise</h3></div>
+              <small>Noch offen</small>
+            </div>
+            <p>PDFs und andere Unterlagen direkt dieser Maschine zuordnen.</p>
+            <button class="text-button module-action" type="button" data-placeholder="Unterlagen & Nachweise">Unterlage hinzufügen →</button>
+          </article>
+        </section>
+      </div>
+
+      <aside class="machine-sidebar">
+        <section class="side-card">
+          <span class="app-kicker">MASCHINENDATEN</span>
+          <dl id="machine-data"></dl>
+        </section>
+
+        <section class="side-card">
+          <span class="app-kicker">PRODUKTAKTE</span>
+          <strong>PDF-Ausgabe vorbereitet</strong>
+          <p>Über „PDF / Drucken“ können Sie die aktuelle Produktakte drucken oder im Browser als PDF speichern.</p>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast" id="app-toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>
