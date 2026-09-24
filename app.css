@@ -718,3 +718,85 @@ a{color:inherit;text-decoration:none}
 .machines-list[hidden]{
   display:none !important;
 }
+
+
+/* Security issues & updates */
+.machine-form input[type="date"]{
+  min-height:46px;
+  width:100%;
+  padding:0 12px;
+  border:1px solid #c9d1cb;
+  border-radius:6px;
+  outline:0;
+  color:#17201b;
+  background:#fff;
+}
+
+.machine-form input[type="date"]:focus{
+  border-color:#68756d;
+  box-shadow:0 0 0 3px rgba(31,41,35,.08);
+}
+
+.update-process{
+  margin-bottom:10px;
+}
+
+.process-card{
+  padding:13px;
+  border:1px solid #d8ded9;
+  border-radius:6px;
+  background:#eef2ee;
+}
+
+.process-card > span,
+.process-card > strong{
+  display:block;
+}
+
+.process-card > span{
+  margin-bottom:4px;
+  color:#78837d;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.process-card > strong{
+  margin-bottom:7px;
+  font-size:12px;
+}
+
+.process-card p{
+  margin:0;
+  color:#5f6b64;
+  font-size:10px;
+  line-height:1.55;
+  white-space:pre-wrap;
+}
+
+.module-button-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-top:auto;
+}
+
+@media(max-width:720px){
+  .module-button-row{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:10px;
+  }
+}
+
+@media print{
+  #set-update-process,
+  #add-update{
+    display:none!important;
+  }
+
+  .process-card{
+    break-inside:avoid;
+  }
+}
