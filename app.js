@@ -799,10 +799,6 @@
     });
 
     document.getElementById('toggle-components-complete').addEventListener('click', () => {
-      if (!machine.componentsComplete && machine.components.length === 0) {
-        showToast('Bitte zuerst die digitalen Bauteile erfassen. Falls keine vorhanden sind, prüfen Sie die Grunddaten der Maschine.');
-        return;
-      }
       machine.componentsComplete = !machine.componentsComplete;
       persist();
       render();
