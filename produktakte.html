@@ -10,7 +10,10 @@
 <body class="report-body">
   <div class="report-toolbar no-print">
     <a id="report-back" href="dashboard.html">← Zur Maschine</a>
-    <button id="report-print" type="button">Als PDF speichern / drucken</button>
+    <div class="report-toolbar-actions">
+      <a class="report-toolbar-link" id="report-short" href="#">Kurzübersicht</a>
+      <button id="report-print" type="button">Als PDF speichern / drucken</button>
+    </div>
   </div>
 
   <main class="report-sheet" id="report-sheet">
@@ -18,6 +21,7 @@
       <div class="report-brand"><span>CRA</span>werk</div>
       <div class="report-head-meta">
         <strong>PRODUKTAKTE</strong>
+        <span id="report-revision">Revision 1</span>
         <span id="report-generated"></span>
       </div>
     </header>
