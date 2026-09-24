@@ -84,32 +84,32 @@
     let text = '';
 
     if (signals >= 4) {
-      title = 'Mehrere Merkmale sprechen für einen näheren CRA-Check.';
-      text = 'Ihr Produkt weist mehrere Merkmale auf, die bei der CRA-Einordnung relevant sein können. Besonders wichtig ist jetzt, den konkreten Anwendungsbereich für das Produkt zu prüfen und die vorhandene Dokumentation strukturiert zusammenzuführen.';
+      title = 'Der CRA ist für Ihr Produkt sehr wahrscheinlich ein Thema.';
+      text = 'Ihr Produkt enthält mehrere Merkmale, bei denen Sie sich mit dem CRA beschäftigen sollten. Sie müssen jetzt nicht alles selbst überblicken: Entscheidend ist zuerst, sauber festzuhalten, was in Ihrer Maschine steckt, wie sie verbunden ist und welche Unterlagen bereits vorhanden sind.';
     } else if (signals >= 2) {
-      title = 'Der CRA könnte für Ihr Produkt relevant sein.';
-      text = 'Es gibt Anhaltspunkte, die eine genauere Prüfung sinnvoll machen. Entscheidend sind das konkrete Produkt, seine digitalen Funktionen, seine Verbindungen und die Rolle Ihres Unternehmens beim Inverkehrbringen.';
+      title = 'Der CRA könnte für Ihr Produkt wichtig sein.';
+      text = 'Einige Ihrer Antworten sprechen dafür, dass Sie das Thema genauer prüfen sollten. Als Nächstes sollten Sie klären, welche digitalen Funktionen Ihre Maschine hat und welche Unterlagen dazu schon vorhanden sind.';
     } else {
-      title = 'Aus Ihren Antworten ergibt sich noch kein klares Bild.';
-      text = 'Der Kurzcheck zeigt nur wenige typische CRA-Merkmale. Das schließt eine Relevanz aber nicht verbindlich aus. Für die Einordnung kommt es auf das konkrete Produkt und seine vorgesehenen Funktionen an.';
+      title = 'Nach Ihren Antworten ist der CRA nicht sofort eindeutig.';
+      text = 'Bei Ihrem Produkt sind nur wenige typische Merkmale erkennbar. Das bedeutet nicht automatisch, dass der CRA keine Rolle spielt. Prüfen Sie im nächsten Schritt, ob Software, Netzwerkfunktionen oder digitale Komponenten Teil Ihres Produkts sind.';
     }
 
     const points = [];
-    if (suppliers) points.push('Zulieferer-Unterlagen und eigene Integrationsbewertung zusammenführen');
-    if (inventoryMissing) points.push('Software- und Firmware-Bestandteile sauber dokumentieren');
-    if (vulnProcessMissing) points.push('Ablauf für Sicherheitslücken und Sicherheitsupdates festlegen');
-    if (connected || interfacePresent) points.push('Netzwerk-, Fernwartungs- und Schnittstellenrisiken bewerten');
-    if (ownBrand) points.push('Herstellerpflichten für das eigene Gesamtprodukt strukturiert prüfen');
+    if (suppliers) points.push('Unterlagen Ihrer Steuerungs- und Softwarelieferanten zusammensuchen');
+    if (inventoryMissing) points.push('Festhalten, welche Software und Firmware in Ihrer Maschine steckt');
+    if (vulnProcessMissing) points.push('Festlegen, wer sich um Sicherheitslücken und Updates kümmert');
+    if (connected || interfacePresent) points.push('Prüfen, wie Ihre Maschine von außen erreichbar oder verbunden ist');
+    if (ownBrand) points.push('Festhalten, welche CRA-Aufgaben für Ihre eigene Maschine noch offen sind');
 
     if (!points.length) {
-      points.push('Konkretes Produkt anhand des CRA-Anwendungsbereichs einordnen');
-      points.push('Vorhandene technische Unterlagen und Sicherheitsprozesse erfassen');
+      points.push('Prüfen, welche digitalen Funktionen Ihre Maschine überhaupt hat');
+      points.push('Vorhandene Unterlagen zu Software, Steuerung und Updates zusammensuchen');
     }
 
     resultTitle.textContent = title;
     resultText.textContent = text;
     resultPoints.innerHTML =
-      '<span class="result-label">Sinnvolle nächste Prüfpunkte</span>' +
+      '<span class="result-label">Das sollten Sie als Nächstes tun</span>' +
       '<ul>' + points.map(p => '<li>' + p + '</li>').join('') + '</ul>';
 
     questions.forEach(q => q.classList.remove('active'));
