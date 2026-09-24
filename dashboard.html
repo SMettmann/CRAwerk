@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Dashboard – CRAwerk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body" data-page="dashboard">
+  <header class="app-header">
+    <a class="app-brand" href="dashboard.html"><span>CRA</span>werk</a>
+    <nav class="app-nav">
+      <a class="active" href="dashboard.html">Übersicht</a>
+      <a href="#maschinen">Maschinen</a>
+    </nav>
+    <div class="app-account">CRAwerk</div>
+  </header>
+
+  <main class="app-main">
+    <section class="app-intro">
+      <div>
+        <span class="app-kicker">ÜBERSICHT</span>
+        <h1>Was ist als Nächstes dran?</h1>
+        <p>CRAwerk zeigt Ihnen nur die offenen Punkte, die für Ihre Maschinen noch erledigt werden müssen.</p>
+      </div>
+      <button class="app-btn app-btn-dark" id="new-machine-button" type="button">+ Neue Maschine</button>
+    </section>
+
+    <section class="stats-grid" aria-label="CRAwerk Übersicht">
+      <article class="stat-card">
+        <span>Maschinen</span>
+        <strong id="stat-machines">0</strong>
+        <small>im CRAwerk</small>
+      </article>
+      <article class="stat-card">
+        <span>Offene Aufgaben</span>
+        <strong id="stat-open">0</strong>
+        <small>über alle Maschinen</small>
+      </article>
+      <article class="stat-card">
+        <span>Erledigt</span>
+        <strong id="stat-done">0</strong>
+        <small>Aufgaben abgeschlossen</small>
+      </article>
+      <article class="stat-card">
+        <span>Gesamtstand</span>
+        <strong id="stat-progress">0%</strong>
+        <small>über alle Maschinen</small>
+      </article>
+    </section>
+
+    <section class="next-work-card" id="next-work">
+      <div>
+        <span class="app-kicker">ALS NÄCHSTES</span>
+        <h2 id="next-work-title">Erste Maschine anlegen</h2>
+        <p id="next-work-text">Legen Sie Ihre erste Maschine an. Danach zeigt CRAwerk die nächsten offenen Schritte.</p>
+      </div>
+      <a class="app-btn app-btn-light" id="next-work-link" href="#" hidden>Maschine öffnen</a>
+    </section>
+
+    <section class="machines-section" id="maschinen">
+      <div class="section-row">
+        <div>
+          <span class="app-kicker">IHRE MASCHINEN</span>
+          <h2>Produkte im Überblick</h2>
+        </div>
+        <button class="text-button" id="new-machine-button-secondary" type="button">+ Neue Maschine</button>
+      </div>
+
+      <div class="machines-list" id="machines-list"></div>
+
+      <div class="empty-state" id="machines-empty">
+        <strong>Noch keine Maschine angelegt.</strong>
+        <span>Starten Sie mit den wichtigsten Grunddaten. Alles Weitere ergänzt CRAwerk Schritt für Schritt.</span>
+        <button class="app-btn app-btn-dark" id="empty-new-machine" type="button">Erste Maschine anlegen</button>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="machine-dialog" id="machine-dialog">
+    <form class="machine-form" id="machine-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">NEUE MASCHINE</span>
+          <h2>Mit den Grunddaten starten</h2>
+          <p>Mehr brauchen wir am Anfang nicht.</p>
+        </div>
+        <button class="dialog-close" id="dialog-close" type="button" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Name der Maschine *</span>
+        <input name="name" required placeholder="z. B. Fräsanlage MX200">
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>Baureihe / Modell</span>
+          <input name="model" placeholder="z. B. MX200">
+        </label>
+        <label>
+          <span>Interne Produktnummer</span>
+          <input name="productNumber" placeholder="optional">
+        </label>
+      </div>
+
+      <label>
+        <span>Verantwortlich im Unternehmen</span>
+        <input name="owner" placeholder="z. B. Max Mustermann">
+      </label>
+
+      <fieldset>
+        <legend>Steckt Software oder Firmware in der Maschine?</legend>
+        <div class="choice-row">
+          <label><input type="radio" name="software" value="yes" required><span>Ja</span></label>
+          <label><input type="radio" name="software" value="no"><span>Nein</span></label>
+          <label><input type="radio" name="software" value="unknown"><span>Unklar</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Hat die Maschine Netzwerk, Fernwartung oder eine andere Verbindung?</legend>
+        <div class="choice-row">
+          <label><input type="radio" name="connected" value="yes" required><span>Ja</span></label>
+          <label><input type="radio" name="connected" value="no"><span>Nein</span></label>
+          <label><input type="radio" name="connected" value="unknown"><span>Unklar</span></label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" id="dialog-cancel" type="button">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Maschine anlegen</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
