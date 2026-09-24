@@ -884,3 +884,90 @@ a{color:inherit;text-decoration:none}
     break-inside:avoid;
   }
 }
+
+
+/* Machine management */
+.machine-actions{
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.app-btn-danger{
+  color:#8a2f2f;
+  border-color:#d7bcbc;
+  background:#fff7f7;
+}
+
+.app-btn-danger:hover{
+  color:#6f1f1f;
+  border-color:#c89d9d;
+  background:#fbecec;
+}
+
+.app-btn-danger-solid{
+  color:#fff;
+  border-color:#8d2f2f;
+  background:#8d2f2f;
+}
+
+.app-btn-danger-solid:hover{
+  background:#732424;
+}
+
+.confirm-dialog{
+  width:min(560px,calc(100vw - 32px));
+}
+
+.delete-confirm{
+  padding:30px;
+}
+
+.delete-confirm h2{
+  margin:0 0 12px;
+  font-size:28px;
+  letter-spacing:-.04em;
+}
+
+.delete-confirm p{
+  margin:0 0 10px;
+  color:#67736c;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.delete-confirm .delete-warning{
+  margin-top:18px;
+  padding:12px 14px;
+  border:1px solid #e0c8c8;
+  border-radius:6px;
+  color:#7b3333;
+  background:#fff3f3;
+  font-weight:700;
+}
+
+.delete-confirm .dialog-actions{
+  margin-top:22px;
+}
+
+@media(max-width:720px){
+  .machine-actions{
+    width:100%;
+    justify-content:flex-start;
+  }
+
+  .machine-actions .app-btn{
+    flex:1 1 calc(50% - 6px);
+  }
+
+  .delete-confirm .dialog-actions{
+    align-items:stretch;
+    flex-direction:column-reverse;
+  }
+}
+
+@media print{
+  .confirm-dialog,
+  #edit-machine-dialog{
+    display:none!important;
+  }
+}
