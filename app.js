@@ -142,6 +142,11 @@
     const machines = readMachines();
     let machine = machines.find(m => m.id === id);
 
+    if (machine) {
+      machine.softwareItems = Array.isArray(machine.softwareItems) ? machine.softwareItems : [];
+      machine.components = Array.isArray(machine.components) ? machine.components : [];
+    }
+
     if (!machine) {
       document.querySelector('.machine-main').innerHTML =
         '<section class="empty-state"><strong>Maschine nicht gefunden.</strong><span>Die Daten liegen aktuell nur in diesem Browser.</span><a class="app-btn app-btn-dark" href="dashboard.html">Zur Übersicht</a></section>';
@@ -157,7 +162,23 @@
       }
     };
 
+    const syncModuleTasks = () => {
+      const softwareTask = machine.tasks.find(t => t.id === 'software');
+      const supplierTask = machine.tasks.find(t => t.id === 'supplier');
+
+      if (softwareTask) {
+        softwareTask.done = machine.software === 'no' || machine.softwareItems.length > 0;
+      }
+
+      if (supplierTask) {
+        supplierTask.done = machine.components.length > 0;
+      }
+    };
+
     const render = () => {
+      syncModuleTasks();
+      persist();
+
       const p = progressFor(machine);
       const done = machine.tasks.filter(t => t.done).length;
       const next = nextTaskFor(machine);
@@ -193,6 +214,41 @@
         '<div><dt>Verantwortlich</dt><dd>' + escapeHtml(machine.owner || '–') + '</dd></div>' +
         '<div><dt>Software</dt><dd>' + yesNo(machine.software) + '</dd></div>' +
         '<div><dt>Verbindung</dt><dd>' + yesNo(machine.connected) + '</dd></div>';
+
+      const softwareList = document.getElementById('software-list');
+      const componentList = document.getElementById('component-list');
+
+      document.getElementById('software-status').textContent =
+        machine.software === 'no' ? 'Nicht erforderlich' :
+        machine.softwareItems.length ? machine.softwareItems.length + ' erfasst' : 'Noch offen';
+
+      document.getElementById('component-status').textContent =
+        machine.components.length ? machine.components.length + ' erfasst' : 'Noch offen';
+
+      softwareList.innerHTML = machine.softwareItems.length
+        ? machine.softwareItems.map(item =>
+            '<div class="module-item">' +
+              '<div><strong>' + escapeHtml(item.name) + '</strong>' +
+              '<span>' + escapeHtml(item.type) + ' · Version ' + escapeHtml(item.version) +
+              (item.vendor ? ' · ' + escapeHtml(item.vendor) : '') + '</span></div>' +
+              '<button type="button" class="item-remove" data-remove-software="' + escapeHtml(item.id) + '" aria-label="Software löschen">×</button>' +
+            '</div>'
+          ).join('')
+        : '<div class="module-empty">' + (machine.software === 'no' ? 'Für diese Maschine wurde „keine Software/Firmware“ angegeben.' : 'Noch keine Software erfasst.') + '</div>';
+
+      componentList.innerHTML = machine.components.length
+        ? machine.components.map(item =>
+            '<div class="module-item">' +
+              '<div><strong>' + escapeHtml(item.name) + '</strong>' +
+              '<span>' + escapeHtml(item.vendor) +
+              (item.model ? ' · ' + escapeHtml(item.model) : '') +
+              (item.version ? ' · Version ' + escapeHtml(item.version) : '') +
+              ' · Unterlagen: ' + (item.documents === 'yes' ? 'Ja' : item.documents === 'no' ? 'Nein' : 'Unklar') +
+              '</span></div>' +
+              '<button type="button" class="item-remove" data-remove-component="' + escapeHtml(item.id) + '" aria-label="Bauteil löschen">×</button>' +
+            '</div>'
+          ).join('')
+        : '<div class="module-empty">Noch kein digitales Bauteil erfasst.</div>';
     };
 
     document.getElementById('task-checklist').addEventListener('change', (event) => {
@@ -206,6 +262,80 @@
     });
 
     document.getElementById('print-machine').addEventListener('click', () => window.print());
+
+    const softwareDialog = document.getElementById('software-dialog');
+    const componentDialog = document.getElementById('component-dialog');
+    const softwareForm = document.getElementById('software-form');
+    const componentForm = document.getElementById('component-form');
+
+    document.getElementById('add-software').addEventListener('click', () => softwareDialog.showModal());
+    document.getElementById('add-component').addEventListener('click', () => componentDialog.showModal());
+
+    document.querySelectorAll('[data-close-dialog]').forEach(button => {
+      button.addEventListener('click', () => {
+        const dialog = document.getElementById(button.dataset.closeDialog);
+        if (dialog) dialog.close();
+      });
+    });
+
+    softwareForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(softwareForm);
+
+      machine.softwareItems.push({
+        id: 's_' + Date.now(),
+        name: data.get('name').trim(),
+        version: data.get('version').trim(),
+        type: data.get('type'),
+        vendor: data.get('vendor').trim()
+      });
+
+      softwareForm.reset();
+      softwareDialog.close();
+      persist();
+      render();
+      showToast('Software wurde der Maschine hinzugefügt.');
+    });
+
+    componentForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(componentForm);
+
+      machine.components.push({
+        id: 'c_' + Date.now(),
+        name: data.get('name').trim(),
+        vendor: data.get('vendor').trim(),
+        model: data.get('model').trim(),
+        version: data.get('version').trim(),
+        documents: data.get('documents')
+      });
+
+      componentForm.reset();
+      componentDialog.close();
+      persist();
+      render();
+      showToast('Bauteil wurde der Maschine hinzugefügt.');
+    });
+
+    document.getElementById('software-list').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-remove-software]');
+      if (!button) return;
+
+      machine.softwareItems = machine.softwareItems.filter(item => item.id !== button.dataset.removeSoftware);
+      persist();
+      render();
+      showToast('Software wurde entfernt.');
+    });
+
+    document.getElementById('component-list').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-remove-component]');
+      if (!button) return;
+
+      machine.components = machine.components.filter(item => item.id !== button.dataset.removeComponent);
+      persist();
+      render();
+      showToast('Bauteil wurde entfernt.');
+    });
 
     document.querySelectorAll('.module-action').forEach(button => {
       button.addEventListener('click', () => {
