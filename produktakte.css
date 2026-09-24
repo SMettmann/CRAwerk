@@ -480,3 +480,84 @@ button,a{font:inherit}
     break-inside:avoid;
   }
 }
+
+
+/* Report toolbar actions */
+.report-toolbar-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.report-toolbar-link{
+  min-height:44px;
+  display:inline-flex;
+  align-items:center;
+  padding:0 15px;
+  border:1px solid #c8d0ca;
+  border-radius:6px;
+  color:#344038!important;
+  background:#fff;
+}
+
+@media(max-width:620px){
+  .report-toolbar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .report-toolbar-actions{
+    width:100%;
+  }
+
+  .report-toolbar-actions > *{
+    flex:1;
+    justify-content:center;
+    text-align:center;
+  }
+}
+
+@media print{
+  html{
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+
+  .report-head,
+  .report-company,
+  .report-title,
+  .report-progress-track,
+  .report-data-grid{
+    break-inside:avoid;
+  }
+
+  .report-section-head{
+    break-after:avoid-page;
+  }
+
+  .report-item{
+    break-inside:avoid-page;
+  }
+
+  p{
+    orphans:3;
+    widows:3;
+  }
+}
+
+@page{
+  size:A4;
+  margin:14mm 14mm 18mm;
+
+  @bottom-left{
+    content:"CRAwerk Produktakte";
+    font-size:8pt;
+    color:#65716a;
+  }
+
+  @bottom-right{
+    content:"Seite " counter(page) " von " counter(pages);
+    font-size:8pt;
+    color:#65716a;
+  }
+}
