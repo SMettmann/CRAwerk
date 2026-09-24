@@ -26,6 +26,7 @@
     {id:'supplier', title:'Zulieferer & digitale Bauteile ergänzen', text:'Steuerungen und andere digitale Bauteile der Maschine zuordnen.', done:false},
     {id:'risks', title:'Risiken & Aufgaben durchgehen', text:'Offene Punkte und Zuständigkeiten festhalten.', done:false},
     {id:'updates', title:'Ablauf für Sicherheitslücken & Updates festlegen', text:'Wer reagiert und wie wird ein Update dokumentiert?', done:false},
+    {id:'documents', title:'Unterlagen & Nachweise zusammenstellen', text:'Vorhandene Unterlagen der Maschine zuordnen und den Stand als vollständig bestätigen.', done:false},
     {id:'support', title:'Unterstützungszeitraum festlegen', text:'Festhalten, wie lange die Maschine sicherheitsbezogen unterstützt wird.', done:false}
   ];
 
@@ -150,6 +151,20 @@
       machine.updateProcess = machine.updateProcess && typeof machine.updateProcess === 'object'
         ? machine.updateProcess
         : {owner:'', procedure:''};
+      machine.documentItems = Array.isArray(machine.documentItems) ? machine.documentItems : [];
+      machine.documentsComplete = machine.documentsComplete === true;
+
+      if (!machine.tasks.some(task => task.id === 'documents')) {
+        const supportIndex = machine.tasks.findIndex(task => task.id === 'support');
+        const documentTask = {
+          id:'documents',
+          title:'Unterlagen & Nachweise zusammenstellen',
+          text:'Vorhandene Unterlagen der Maschine zuordnen und den Stand als vollständig bestätigen.',
+          done:false
+        };
+        if (supportIndex >= 0) machine.tasks.splice(supportIndex, 0, documentTask);
+        else machine.tasks.push(documentTask);
+      }
     }
 
     if (!machine) {
@@ -172,6 +187,7 @@
       const supplierTask = machine.tasks.find(t => t.id === 'supplier');
       const riskTask = machine.tasks.find(t => t.id === 'risks');
       const updateTask = machine.tasks.find(t => t.id === 'updates');
+      const documentTask = machine.tasks.find(t => t.id === 'documents');
 
       if (softwareTask) {
         softwareTask.done = machine.software === 'no' || machine.softwareItems.length > 0;
@@ -191,6 +207,10 @@
         const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
         const noOpenUpdates = machine.updateItems.every(item => item.status === 'done');
         updateTask.done = processReady && noOpenUpdates;
+      }
+
+      if (documentTask) {
+        documentTask.done = machine.documentsComplete === true;
       }
     };
 
@@ -239,6 +259,7 @@
       const riskList = document.getElementById('risk-list');
       const updateList = document.getElementById('update-list');
       const updateProcessBox = document.getElementById('update-process');
+      const documentList = document.getElementById('document-list');
 
       document.getElementById('software-status').textContent =
         machine.software === 'no' ? 'Nicht erforderlich' :
@@ -259,6 +280,14 @@
         !processReady
           ? 'Ablauf fehlt'
           : (openUpdates ? openUpdates + ' offen' : 'Bereit');
+
+      document.getElementById('document-status').textContent =
+        machine.documentsComplete
+          ? 'Vollständig'
+          : (machine.documentItems.length ? machine.documentItems.length + ' erfasst' : 'Noch offen');
+
+      document.getElementById('toggle-documents-complete').textContent =
+        machine.documentsComplete ? 'Vollständigkeit aufheben' : 'Unterlagen vollständig';
 
       softwareList.innerHTML = machine.softwareItems.length
         ? machine.softwareItems.map(item =>
@@ -334,6 +363,20 @@
             '</div>'
           ).join('')
         : '<div class="module-empty">Aktuell kein Sicherheitsproblem dokumentiert.</div>';
+
+      documentList.innerHTML = machine.documentItems.length
+        ? machine.documentItems.map(item =>
+            '<div class="module-item document-item">' +
+              '<div><strong>' + escapeHtml(item.title) + '</strong>' +
+              '<span>' + escapeHtml(item.type) +
+                ' · ' + escapeHtml(item.related || 'Gesamtmaschine') +
+                (item.date ? ' · ' + escapeHtml(item.date) : '') +
+                (item.note ? '<br>' + escapeHtml(item.note) : '') +
+              '</span></div>' +
+              '<button type="button" class="item-remove" data-remove-document="' + escapeHtml(item.id) + '" aria-label="Unterlage löschen">×</button>' +
+            '</div>'
+          ).join('')
+        : '<div class="module-empty">Noch keine Unterlage erfasst.</div>';
     };
 
     document.getElementById('task-checklist').addEventListener('change', (event) => {
@@ -353,11 +396,13 @@
     const riskDialog = document.getElementById('risk-dialog');
     const updateProcessDialog = document.getElementById('update-process-dialog');
     const updateDialog = document.getElementById('update-dialog');
+    const documentDialog = document.getElementById('document-dialog');
     const softwareForm = document.getElementById('software-form');
     const componentForm = document.getElementById('component-form');
     const riskForm = document.getElementById('risk-form');
     const updateProcessForm = document.getElementById('update-process-form');
     const updateForm = document.getElementById('update-form');
+    const documentForm = document.getElementById('document-form');
 
     document.getElementById('add-software').addEventListener('click', () => softwareDialog.showModal());
     document.getElementById('add-component').addEventListener('click', () => componentDialog.showModal());
@@ -368,6 +413,25 @@
       updateProcessDialog.showModal();
     });
     document.getElementById('add-update').addEventListener('click', () => updateDialog.showModal());
+    document.getElementById('add-document').addEventListener('click', () => {
+      const related = document.getElementById('document-related');
+      related.innerHTML = '';
+      related.add(new Option('Gesamtmaschine', 'Gesamtmaschine'));
+      machine.components.forEach(item => related.add(new Option('Bauteil: ' + item.name, 'Bauteil: ' + item.name)));
+      machine.softwareItems.forEach(item => related.add(new Option('Software: ' + item.name, 'Software: ' + item.name)));
+      documentDialog.showModal();
+    });
+
+    document.getElementById('toggle-documents-complete').addEventListener('click', () => {
+      if (!machine.documentsComplete && machine.documentItems.length === 0) {
+        showToast('Bitte zuerst mindestens eine vorhandene Unterlage erfassen.');
+        return;
+      }
+      machine.documentsComplete = !machine.documentsComplete;
+      persist();
+      render();
+      showToast(machine.documentsComplete ? 'Unterlagen wurden als vollständig markiert.' : 'Vollständigkeit wurde aufgehoben.');
+    });
 
     document.querySelectorAll('[data-close-dialog]').forEach(button => {
       button.addEventListener('click', () => {
@@ -470,6 +534,27 @@
       showToast('Sicherheitsproblem wurde dokumentiert.');
     });
 
+    documentForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(documentForm);
+
+      machine.documentItems.push({
+        id: 'd_' + Date.now(),
+        title: data.get('title').trim(),
+        type: data.get('type'),
+        date: data.get('date'),
+        related: data.get('related'),
+        note: data.get('note').trim()
+      });
+
+      machine.documentsComplete = false;
+      documentForm.reset();
+      documentDialog.close();
+      persist();
+      render();
+      showToast('Unterlage wurde der Maschine zugeordnet.');
+    });
+
     document.getElementById('software-list').addEventListener('click', (event) => {
       const button = event.target.closest('[data-remove-software]');
       if (!button) return;
@@ -532,6 +617,17 @@
       persist();
       render();
       showToast(item.status === 'done' ? 'Sicherheitsproblem wurde erledigt.' : 'Sicherheitsproblem wurde wieder geöffnet.');
+    });
+
+    document.getElementById('document-list').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-remove-document]');
+      if (!button) return;
+
+      machine.documentItems = machine.documentItems.filter(item => item.id !== button.dataset.removeDocument);
+      machine.documentsComplete = false;
+      persist();
+      render();
+      showToast('Unterlage wurde entfernt.');
     });
 
     document.querySelectorAll('.module-action').forEach(button => {
