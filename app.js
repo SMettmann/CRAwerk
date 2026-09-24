@@ -76,34 +76,114 @@
     document.getElementById('dialog-close').addEventListener('click', () => dialog.close());
     document.getElementById('dialog-cancel').addEventListener('click', () => dialog.close());
 
+    const formatDashboardDate = (value) => {
+      if (!value) return 'Nicht festgelegt';
+      const parts = String(value).split('-');
+      return parts.length === 3 ? parts[2] + '.' + parts[1] + '.' + parts[0] : value;
+    };
+
+    const daysUntil = (value) => {
+      if (!value) return null;
+      const target = new Date(value + 'T00:00:00');
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      return Math.ceil((target - today) / 86400000);
+    };
+
     const render = () => {
       const machines = readMachines();
       empty.hidden = machines.length > 0;
       list.hidden = machines.length === 0;
 
-      const allTasks = machines.flatMap(m => m.tasks || []);
-      const done = allTasks.filter(t => t.done).length;
-      const open = allTasks.length - done;
-      const overall = allTasks.length ? Math.round(done / allTasks.length * 100) : 0;
+      const openCountFor = machine => (machine.tasks || []).filter(task => !task.done).length;
+      const readyMachines = machines.filter(machine =>
+        (machine.tasks || []).length > 0 && openCountFor(machine) === 0
+      );
+      const allTasks = machines.flatMap(machine => machine.tasks || []);
+      const openTasks = allTasks.filter(task => !task.done).length;
+
+      const supportSoon = machines.filter(machine => {
+        const endDate = machine.supportPeriod && machine.supportPeriod.endDate;
+        const days = daysUntil(endDate);
+        return days !== null && days >= 0 && days <= 180;
+      }).length;
 
       document.getElementById('stat-machines').textContent = machines.length;
-      document.getElementById('stat-open').textContent = open;
-      document.getElementById('stat-done').textContent = done;
-      document.getElementById('stat-progress').textContent = overall + '%';
+      document.getElementById('stat-open').textContent = openTasks;
+      document.getElementById('stat-ready').textContent = readyMachines.length;
+      document.getElementById('stat-support-soon').textContent = supportSoon;
+
+      const attentionList = document.getElementById('attention-list');
+      const attentionMachines = machines
+        .filter(machine => openCountFor(machine) > 0)
+        .sort((a,b) => openCountFor(b) - openCountFor(a))
+        .slice(0,5);
+
+      attentionList.innerHTML = attentionMachines.length
+        ? attentionMachines.map(machine => {
+            const task = nextTaskFor(machine);
+            const open = openCountFor(machine);
+            return '<a class="focus-row" href="maschine.html?id=' + encodeURIComponent(machine.id) + '">' +
+              '<div><strong>' + escapeHtml(machine.name) + '</strong>' +
+              '<span>' + escapeHtml(task ? task.title : 'Offene Punkte prüfen') + '</span></div>' +
+              '<div class="focus-row-right"><span class="status-chip open">' + open + ' offen</span><b>→</b></div>' +
+            '</a>';
+          }).join('')
+        : '<div class="focus-empty">Aktuell keine offene Aufgabe.</div>';
+
+      const supportList = document.getElementById('support-list');
+      const supportMachines = machines
+        .filter(machine => machine.supportPeriod && machine.supportPeriod.endDate)
+        .sort((a,b) => a.supportPeriod.endDate.localeCompare(b.supportPeriod.endDate))
+        .slice(0,5);
+
+      supportList.innerHTML = supportMachines.length
+        ? supportMachines.map(machine => {
+            const endDate = machine.supportPeriod.endDate;
+            const days = daysUntil(endDate);
+            let label = formatDashboardDate(endDate);
+            let chipClass = '';
+
+            if (days < 0) {
+              label = 'abgelaufen · ' + formatDashboardDate(endDate);
+              chipClass = 'alert';
+            } else if (days === 0) {
+              label = 'endet heute';
+              chipClass = 'alert';
+            } else if (days <= 180) {
+              label = 'in ' + days + ' Tagen';
+              chipClass = 'soon';
+            }
+
+            return '<a class="focus-row" href="maschine.html?id=' + encodeURIComponent(machine.id) + '">' +
+              '<div><strong>' + escapeHtml(machine.name) + '</strong>' +
+              '<span>Unterstützung bis ' + escapeHtml(formatDashboardDate(endDate)) + '</span></div>' +
+              '<div class="focus-row-right"><span class="status-chip ' + chipClass + '">' + escapeHtml(label) + '</span><b>→</b></div>' +
+            '</a>';
+          }).join('')
+        : '<div class="focus-empty">Noch kein Unterstützungszeitraum festgelegt.</div>';
 
       list.innerHTML = machines.map(machine => {
         const p = progressFor(machine);
-        const next = nextTaskFor(machine);
-        return '<a class="machine-row" href="maschine.html?id=' + encodeURIComponent(machine.id) + '">' +
+        const open = openCountFor(machine);
+        const supportEnd = machine.supportPeriod && machine.supportPeriod.endDate
+          ? formatDashboardDate(machine.supportPeriod.endDate)
+          : 'Noch offen';
+        const status = open === 0 && (machine.tasks || []).length
+          ? '<span class="status-chip ready">Arbeitsstand vollständig</span>'
+          : '<span class="status-chip open">' + open + ' offen</span>';
+
+        return '<a class="machine-row dashboard-machine-row" href="maschine.html?id=' + encodeURIComponent(machine.id) + '">' +
           '<div class="machine-name"><strong>' + escapeHtml(machine.name) + '</strong><span>' + escapeHtml(machine.model || 'Keine Baureihe angegeben') + '</span></div>' +
+          '<div class="machine-status-cell">' + status + '</div>' +
           '<div class="machine-cell"><small>Arbeitsstand</small><strong>' + p + '%</strong><div class="row-progress"><span style="width:' + p + '%"></span></div></div>' +
+          '<div class="machine-cell hide-tablet"><small>Unterstützung bis</small><strong>' + escapeHtml(supportEnd) + '</strong></div>' +
           '<div class="machine-cell hide-tablet"><small>Verantwortlich</small><strong>' + escapeHtml(machine.owner || 'Noch offen') + '</strong></div>' +
-          '<div class="machine-cell"><small>Offene Aufgaben</small><strong>' + (machine.tasks || []).filter(t => !t.done).length + '</strong></div>' +
-          '<div>→</div>' +
+          '<div class="machine-row-arrow">→</div>' +
         '</a>';
       }).join('');
 
-      const machineWithNext = machines.find(m => nextTaskFor(m));
+      const machineWithNext = machines.find(machine => nextTaskFor(machine));
       const nextTitle = document.getElementById('next-work-title');
       const nextText = document.getElementById('next-work-text');
       const nextLink = document.getElementById('next-work-link');
@@ -116,7 +196,7 @@
         nextLink.hidden = false;
       } else if (machines.length) {
         nextTitle.textContent = 'Aktuell keine offene Aufgabe';
-        nextText.textContent = 'Alle angelegten Aufgaben sind erledigt.';
+        nextText.textContent = 'Die angelegten Arbeitspunkte sind bei allen Maschinen erledigt.';
         nextLink.hidden = true;
       } else {
         nextTitle.textContent = 'Erste Maschine anlegen';
