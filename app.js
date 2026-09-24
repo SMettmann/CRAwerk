@@ -423,7 +423,9 @@
       render();
     });
 
-    document.getElementById('print-machine').addEventListener('click', () => window.print());
+    document.getElementById('print-machine').addEventListener('click', () => {
+      location.href = 'produktakte.html?id=' + encodeURIComponent(machine.id);
+    });
 
     const softwareDialog = document.getElementById('software-dialog');
     const componentDialog = document.getElementById('component-dialog');
