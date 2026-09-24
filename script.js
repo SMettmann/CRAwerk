@@ -3,6 +3,7 @@
   if (!form) return;
 
   const questions = [...form.querySelectorAll('.check-question')];
+  const controls = form.querySelector('.check-controls');
   const nextBtn = document.getElementById('check-next');
   const backBtn = document.getElementById('check-back');
   const restartBtn = document.getElementById('restart-check');
@@ -21,7 +22,7 @@
   const updateUi = () => {
     questions.forEach((q, i) => q.classList.toggle('active', i === index));
     result.hidden = true;
-    document.querySelector('.check-controls').hidden = false;
+    controls.hidden = false;
     backBtn.disabled = index === 0;
     nextBtn.disabled = !currentAnswer();
     nextBtn.textContent = index === questions.length - 1 ? 'Auswertung anzeigen' : 'Weiter';
@@ -55,7 +56,7 @@
     form.reset();
     index = 0;
     result.hidden = true;
-    document.querySelector('.check-controls').hidden = false;
+    controls.hidden = false;
     updateUi();
     form.scrollIntoView({behavior:'smooth', block:'start'});
   });
@@ -84,36 +85,49 @@
     let text = '';
 
     if (signals >= 4) {
-      title = 'Der CRA ist für Ihr Produkt sehr wahrscheinlich ein Thema.';
-      text = 'Ihr Produkt enthält mehrere Merkmale, bei denen Sie sich mit dem CRA beschäftigen sollten. Sie müssen jetzt nicht alles selbst überblicken: Entscheidend ist zuerst, sauber festzuhalten, was in Ihrer Maschine steckt, wie sie verbunden ist und welche Unterlagen bereits vorhanden sind.';
+      title = 'Den CRA sollten Sie für dieses Produkt jetzt einplanen.';
+      text = 'Mehrere Ihrer Antworten sprechen dafür, dass der CRA für Ihre Maschine relevant sein kann. Sie müssen daraus aber kein eigenes Verwaltungsprojekt machen: CRAwerk soll die vorhandenen Unterlagen, Komponenten und offenen Punkte an einem Ort zusammenführen.';
     } else if (signals >= 2) {
-      title = 'Der CRA könnte für Ihr Produkt wichtig sein.';
-      text = 'Einige Ihrer Antworten sprechen dafür, dass Sie das Thema genauer prüfen sollten. Als Nächstes sollten Sie klären, welche digitalen Funktionen Ihre Maschine hat und welche Unterlagen dazu schon vorhanden sind.';
+      title = 'Den CRA sollten Sie für dieses Produkt genauer prüfen.';
+      text = 'Einige Ihrer Antworten sprechen dafür, dass der CRA für Ihre Maschine wichtig werden kann. Der nächste Schritt ist nicht, selbst neue Listen anzulegen: CRAwerk soll Sie mit den vorhandenen Unterlagen starten lassen und nur die fehlenden Angaben abfragen.';
     } else {
-      title = 'Nach Ihren Antworten ist der CRA nicht sofort eindeutig.';
-      text = 'Bei Ihrem Produkt sind nur wenige typische Merkmale erkennbar. Das bedeutet nicht automatisch, dass der CRA keine Rolle spielt. Prüfen Sie im nächsten Schritt, ob Software, Netzwerkfunktionen oder digitale Komponenten Teil Ihres Produkts sind.';
+      title = 'Die CRA-Relevanz ist nach Ihren Antworten noch offen.';
+      text = 'Bei Ihrem Produkt sind nur wenige typische Merkmale erkennbar. CRAwerk soll Ihnen trotzdem helfen, die entscheidenden Punkte sauber zu prüfen, ohne dass Sie sich zuerst durch den Gesetzestext arbeiten müssen.';
     }
 
-    const points = [];
-    if (suppliers) points.push('Unterlagen Ihrer Steuerungs- und Softwarelieferanten zusammensuchen');
-    if (inventoryMissing) points.push('Festhalten, welche Software und Firmware in Ihrer Maschine steckt');
-    if (vulnProcessMissing) points.push('Festlegen, wer sich um Sicherheitslücken und Updates kümmert');
-    if (connected || interfacePresent) points.push('Prüfen, wie Ihre Maschine von außen erreichbar oder verbunden ist');
-    if (ownBrand) points.push('Festhalten, welche CRA-Aufgaben für Ihre eigene Maschine noch offen sind');
+    const focus = [];
+    if (suppliers) focus.push('Lieferantenunterlagen direkt der richtigen Maschine und Komponente zuordnen');
+    if (inventoryMissing) focus.push('Fehlende Angaben zu Software und Firmware gezielt ergänzen');
+    if (vulnProcessMissing) focus.push('Verantwortung für Sicherheitslücken und Updates eindeutig festlegen');
+    if (connected || interfacePresent) focus.push('Verbindungen, Fernwartung und erreichbare Schnittstellen sauber erfassen');
+    if (ownBrand) focus.push('Offene CRA-Punkte für Ihr eigenes Gesamtprodukt sichtbar machen');
 
-    if (!points.length) {
-      points.push('Prüfen, welche digitalen Funktionen Ihre Maschine überhaupt hat');
-      points.push('Vorhandene Unterlagen zu Software, Steuerung und Updates zusammensuchen');
+    if (!focus.length) {
+      focus.push('Digitale Funktionen Ihrer Maschine strukturiert erfassen');
+      focus.push('Vorhandene technische Unterlagen an einem Ort zusammenführen');
     }
 
     resultTitle.textContent = title;
     resultText.textContent = text;
+
     resultPoints.innerHTML =
-      '<span class="result-label">Das sollten Sie als Nächstes tun</span>' +
-      '<ul>' + points.map(p => '<li>' + p + '</li>').join('') + '</ul>';
+      '<div class="result-flow">' +
+        '<span class="result-label">So geht es mit CRAwerk weiter</span>' +
+        '<div class="result-flow-grid">' +
+          '<div class="result-flow-step"><b>1</b><strong>Vorhandenes hochladen</strong><span>Lieferanten-PDFs, Softwarelisten, technische Unterlagen und vorhandene Nachweise.</span></div>' +
+          '<div class="result-flow-step"><b>2</b><strong>CRAwerk ordnet</strong><span>Alles wird Ihrer Maschine, den Komponenten und den passenden Themen zugeordnet.</span></div>' +
+          '<div class="result-flow-step"><b>3</b><strong>Nur Lücken ergänzen</strong><span>Sie beantworten nur noch die Punkte, die bei Ihrem Produkt wirklich fehlen.</span></div>' +
+          '<div class="result-flow-step"><b>4</b><strong>Produktakte im Blick</strong><span>Offene Aufgaben, Nachweise, Updates und Fristen bleiben übersichtlich zusammen.</span></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="result-focus">' +
+        '<span class="result-label">Bei Ihren Antworten besonders wichtig</span>' +
+        '<ul>' + focus.map(p => '<li>' + p + '</li>').join('') + '</ul>' +
+      '</div>' +
+      '<a class="button button-dark result-cta" href="#preis">CRAwerk für 29,99 € ansehen</a>';
 
     questions.forEach(q => q.classList.remove('active'));
-    document.querySelector('.check-controls').hidden = true;
+    controls.hidden = true;
     result.hidden = false;
     progressBar.style.width = '100%';
     result.scrollIntoView({behavior:'smooth', block:'center'});
