@@ -99,13 +99,18 @@
             <button class="text-button" id="add-risk" type="button">+ Risiko / Aufgabe hinzufügen</button>
           </article>
 
-          <article class="module-panel">
+          <article class="module-panel module-panel-live">
             <div class="module-panel-head">
               <div><span>05</span><h3>Sicherheitslücken & Updates</h3></div>
-              <small>Noch offen</small>
+              <small id="update-status">Noch offen</small>
             </div>
-            <p>Festhalten, wenn eine Sicherheitslücke bekannt wird, welche Maschine betroffen ist und was getan wurde.</p>
-            <button class="text-button module-action" type="button" data-placeholder="Sicherheitslücken & Updates">Bereich öffnen →</button>
+            <p>Einmal den internen Ablauf festlegen. Sicherheitsprobleme werden anschließend nur bei Bedarf ergänzt.</p>
+            <div class="update-process" id="update-process"></div>
+            <div class="module-items" id="update-list"></div>
+            <div class="module-button-row">
+              <button class="text-button" id="set-update-process" type="button">Ablauf festlegen</button>
+              <button class="text-button" id="add-update" type="button">+ Sicherheitsproblem</button>
+            </div>
           </article>
 
           <article class="module-panel">
@@ -273,6 +278,81 @@
       <div class="dialog-actions">
         <button class="app-btn app-btn-ghost" type="button" data-close-dialog="risk-dialog">Abbrechen</button>
         <button class="app-btn app-btn-dark" type="submit">Hinzufügen</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog small-dialog" id="update-process-dialog">
+    <form class="machine-form" id="update-process-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">SICHERHEITSLÜCKEN & UPDATES</span>
+          <h2>Internen Ablauf festlegen</h2>
+          <p>Wer kümmert sich darum und wie wird vorgegangen?</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog="update-process-dialog" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Verantwortlich *</span>
+        <input name="owner" required placeholder="z. B. Entwicklung / Max Mustermann">
+      </label>
+
+      <label>
+        <span>Unser Ablauf *</span>
+        <textarea name="procedure" rows="5" required placeholder="z. B. Meldung prüfen → betroffene Maschine ermitteln → Maßnahme festlegen → Update dokumentieren"></textarea>
+      </label>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="update-process-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Ablauf speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog small-dialog" id="update-dialog">
+    <form class="machine-form" id="update-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">SICHERHEITSPROBLEM</span>
+          <h2>Problem dokumentieren</h2>
+          <p>Nur die Angaben, die für die Nachverfolgung wichtig sind.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog="update-dialog" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Bezeichnung *</span>
+        <input name="title" required placeholder="z. B. Sicherheitslücke in Steuerungssoftware">
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>Bekannt seit</span>
+          <input name="date" type="date">
+        </label>
+        <label>
+          <span>Betroffenes Bauteil / Software</span>
+          <input name="affected" placeholder="optional">
+        </label>
+      </div>
+
+      <label>
+        <span>Maßnahme / Update *</span>
+        <textarea name="action" rows="4" required placeholder="Was wurde oder wird getan?"></textarea>
+      </label>
+
+      <fieldset>
+        <legend>Status</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="status" value="open" checked><span>Offen</span></label>
+          <label><input type="radio" name="status" value="done"><span>Erledigt</span></label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="update-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Speichern</button>
       </div>
     </form>
   </dialog>
