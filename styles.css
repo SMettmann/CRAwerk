@@ -1641,3 +1641,276 @@ h1 span{
     padding:22px;
   }
 }
+
+
+/* Registration */
+.register-page{
+  min-height:100vh;
+  background:#0d1110;
+}
+
+.register-header{
+  min-height:74px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:0 5vw;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.register-back{
+  color:#aab5af;
+  font-size:13px;
+  font-weight:600;
+}
+
+.register-back:hover{
+  color:#fff;
+}
+
+.register-main{
+  min-height:calc(100vh - 74px);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(420px,.82fr);
+  gap:7vw;
+  align-items:center;
+  padding:70px 5vw;
+}
+
+.register-copy h1{
+  margin-bottom:24px;
+  font-size:clamp(48px,5.5vw,78px);
+}
+
+.register-lead{
+  max-width:710px;
+  margin-bottom:34px;
+  color:#aeb8b3;
+  font-size:17px;
+  line-height:1.7;
+}
+
+.register-price-card{
+  max-width:680px;
+  display:grid;
+  grid-template-columns:.8fr 1.2fr;
+  gap:34px;
+  padding:26px;
+  border:1px solid #344038;
+  border-radius:9px;
+  background:#151b18;
+}
+
+.register-price-card > div{
+  padding-right:28px;
+  border-right:1px solid #344038;
+}
+
+.register-price-label{
+  display:block;
+  margin-bottom:10px;
+  color:#8c9891;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+
+.register-price-card strong{
+  display:block;
+  font-size:42px;
+  letter-spacing:-.045em;
+}
+
+.register-price-card small{
+  color:#8f9a94;
+}
+
+.register-price-card ul{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.register-price-card li{
+  position:relative;
+  padding:7px 0 7px 22px;
+  color:#bdc6c1;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.register-price-card li::before{
+  content:"✓";
+  position:absolute;
+  left:0;
+}
+
+.register-trust{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 24px;
+  margin-top:20px;
+  color:#7f8b84;
+  font-size:11px;
+}
+
+.register-panel{
+  padding:34px;
+  border:1px solid #d3d9d5;
+  border-radius:10px;
+  background:#f5f7f4;
+  color:#151b18;
+  box-shadow:0 30px 100px rgba(0,0,0,.28);
+}
+
+.register-panel .section-kicker{
+  color:#6c7771;
+}
+
+.register-panel-head h2{
+  margin-bottom:10px;
+  font-size:34px;
+  letter-spacing:-.035em;
+}
+
+.register-panel-head p{
+  margin-bottom:28px;
+  color:#69746e;
+  font-size:14px;
+  line-height:1.6;
+}
+
+.register-form{
+  display:grid;
+  gap:18px;
+}
+
+.form-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.form-field{
+  display:grid;
+  gap:7px;
+}
+
+.form-field label{
+  color:#38433d;
+  font-size:12px;
+  font-weight:700;
+}
+
+.form-field input{
+  width:100%;
+  min-height:48px;
+  padding:0 13px;
+  border:1px solid #c9d0cb;
+  border-radius:6px;
+  outline:0;
+  background:#fff;
+  color:#151b18;
+  font:inherit;
+  font-size:14px;
+}
+
+.form-field input:focus{
+  border-color:#59655e;
+  box-shadow:0 0 0 3px rgba(21,27,24,.08);
+}
+
+.form-check{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  color:#58635d;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.form-check input{
+  margin-top:2px;
+}
+
+.register-submit{
+  width:100%;
+}
+
+.register-form-note,
+.register-message{
+  display:grid;
+  gap:5px;
+  padding:14px 16px;
+  border-radius:6px;
+  background:#e9ede9;
+}
+
+.register-form-note strong,
+.register-message strong{
+  font-size:12px;
+}
+
+.register-form-note span,
+.register-message span{
+  color:#6d7771;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.register-message{
+  border:1px solid #c4ccc6;
+  background:#fff;
+}
+
+.register-message[hidden]{
+  display:none;
+}
+
+@media (max-width:1000px){
+  .register-main{
+    grid-template-columns:1fr;
+    align-items:start;
+  }
+
+  .register-copy{
+    max-width:760px;
+  }
+
+  .register-panel{
+    max-width:760px;
+    width:100%;
+  }
+}
+
+@media (max-width:650px){
+  .register-header{
+    padding:0 20px;
+  }
+
+  .register-back{
+    font-size:11px;
+  }
+
+  .register-main{
+    padding:46px 20px;
+  }
+
+  .register-price-card,
+  .form-row{
+    grid-template-columns:1fr;
+  }
+
+  .register-price-card > div{
+    padding-right:0;
+    padding-bottom:22px;
+    border-right:0;
+    border-bottom:1px solid #344038;
+  }
+
+  .register-panel{
+    padding:24px 20px;
+  }
+}
