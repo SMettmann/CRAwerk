@@ -817,3 +817,70 @@ a{color:inherit;text-decoration:none}
     break-inside:avoid;
   }
 }
+
+
+/* Support period */
+.support-card{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:16px;
+  padding:13px;
+  border:1px solid #d8ded9;
+  border-radius:6px;
+  background:#eef2ee;
+}
+
+.support-card div{
+  min-width:0;
+}
+
+.support-card span,
+.support-card strong{
+  display:block;
+}
+
+.support-card span{
+  margin-bottom:4px;
+  color:#7a857f;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.support-card strong{
+  font-size:11px;
+  overflow-wrap:anywhere;
+}
+
+.support-card p{
+  grid-column:1 / -1;
+  margin:4px 0 0;
+  padding-top:10px;
+  border-top:1px solid #d8ded9;
+  color:#647069;
+  font-size:10px;
+  line-height:1.55;
+  white-space:pre-wrap;
+}
+
+@media(max-width:720px){
+  .support-card{
+    grid-template-columns:1fr;
+  }
+
+  .support-card p{
+    grid-column:auto;
+  }
+}
+
+@media print{
+  #set-support{
+    display:none!important;
+  }
+
+  .support-card{
+    break-inside:avoid;
+  }
+}
