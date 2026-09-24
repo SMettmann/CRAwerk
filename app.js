@@ -76,6 +76,58 @@
 
   const nextTaskFor = (machine) => (machine.tasks || []).find(t => !t.done);
 
+  const GUIDE_CONTENT = {
+    basic:{
+      title:'Grunddaten der Maschine prüfen',
+      why:'Damit jede spätere Angabe eindeutig der richtigen Maschine und der zuständigen Person zugeordnet ist.',
+      what:'Name, Modell, Produktnummer und verantwortliche Person.',
+      example:'Fräsanlage MX200 · Modell MX200 · Verantwortlich: Max Mustermann',
+      action:'Grunddaten bearbeiten'
+    },
+    software:{
+      title:'Software der Maschine vollständig erfassen',
+      why:'Damit nachvollziehbar ist, welche Software- und Firmwarestände zu dieser Maschine gehören.',
+      what:'Bezeichnung und Version der eingesetzten Software oder Firmware. Danach bestätigen Sie, dass die Liste vollständig ist.',
+      example:'HMI Runtime · Version 3.4.1 · Hersteller ABC',
+      action:'Software erfassen'
+    },
+    supplier:{
+      title:'Digitale Bauteile und Zulieferer erfassen',
+      why:'Damit Sie später schnell erkennen können, welche Maschine von einer Meldung oder Änderung eines Zulieferers betroffen sein kann.',
+      what:'Digitale Bauteile wie Steuerungen, Gateways oder vernetzte Komponenten mit Hersteller und Typ.',
+      example:'SIMATIC S7-1500 · Siemens · Typ CPU 1511',
+      action:'Bauteile erfassen'
+    },
+    risks:{
+      title:'Sicherheitsrisiken der Maschine durchgehen',
+      why:'Damit bekannte Sicherheitsfragen eine klare Maßnahme und Zuständigkeit bekommen und nicht nur im Kopf einzelner Personen bleiben.',
+      what:'Prüfen Sie die Maschine auf relevante Risiken. Gefundene Punkte werden mit Maßnahme und Verantwortlichem erfasst. Wenn keine offenen Punkte mehr bestehen, schließen Sie die Prüfung ab.',
+      example:'Fernwartungszugang · Maßnahme: Zugang absichern · Verantwortlich: Entwicklung',
+      action:'Risikoprüfung öffnen'
+    },
+    updates:{
+      title:'Umgang mit Sicherheitsproblemen festlegen',
+      why:'Damit im Fall eines Sicherheitsproblems sofort klar ist, wer reagiert und wie der Vorgang dokumentiert wird.',
+      what:'Einmal den internen Ablauf und die verantwortliche Stelle festlegen. Bekannte Sicherheitsprobleme werden anschließend nur bei Bedarf ergänzt.',
+      example:'Meldung prüfen → betroffene Maschinen ermitteln → Maßnahme festlegen → Umsetzung dokumentieren',
+      action:'Ablauf festlegen'
+    },
+    documents:{
+      title:'Vorhandene Unterlagen zuordnen',
+      why:'Damit relevante Nachweise nicht verteilt liegen, sondern nachvollziehbar zu dieser Maschine gehören.',
+      what:'Vorhandene Lieferantenunterlagen, Prüfungen, Versionsnachweise oder Risikodokumente erfassen. Danach bestätigen Sie die Vollständigkeit.',
+      example:'Sicherheitsinformation Steuerung · Lieferantenunterlage · Stand 09/2026',
+      action:'Unterlagen erfassen'
+    },
+    support:{
+      title:'Unterstützungszeitraum festlegen',
+      why:'Damit intern eindeutig dokumentiert ist, bis wann Sicherheitsprobleme und notwendige Updates für diese Maschine betreut werden sollen.',
+      what:'Beginn, geplantes Ende und die verantwortliche Person.',
+      example:'Beginn 01.01.2027 · Ende 31.12.2032 · Verantwortlich: Produktmanagement',
+      action:'Zeitraum festlegen'
+    }
+  };
+
   function initDashboard() {
     const list = document.getElementById('machines-list');
     const empty = document.getElementById('machines-empty');
@@ -278,6 +330,9 @@
       machine.documentRevision = Number.isFinite(Number(machine.documentRevision))
         ? Math.max(1, parseInt(machine.documentRevision, 10))
         : 1;
+      machine.softwareComplete = machine.software === 'no' ? true : machine.softwareComplete === true;
+      machine.componentsComplete = machine.componentsComplete === true;
+      machine.riskReviewComplete = machine.riskReviewComplete === true;
 
       if (!machine.tasks.some(task => task.id === 'documents')) {
         const supportIndex = machine.tasks.findIndex(task => task.id === 'support');
@@ -316,15 +371,22 @@
       const supportTask = machine.tasks.find(t => t.id === 'support');
 
       if (softwareTask) {
-        softwareTask.done = machine.software === 'no' || machine.softwareItems.length > 0;
+        softwareTask.title = 'Software & Versionen vollständig erfassen';
+        softwareTask.text = 'Alle Software- und Firmwarestände erfassen und die Liste als vollständig bestätigen.';
+        softwareTask.done = machine.software === 'no' || machine.softwareComplete === true;
       }
 
       if (supplierTask) {
-        supplierTask.done = machine.components.length > 0;
+        supplierTask.title = 'Digitale Bauteile & Zulieferer vollständig erfassen';
+        supplierTask.text = 'Digitale Bauteile erfassen und die Liste anschließend als vollständig bestätigen.';
+        supplierTask.done = machine.componentsComplete === true;
       }
 
       if (riskTask) {
-        riskTask.done = machine.riskItems.length > 0 && machine.riskItems.every(item => item.status === 'done');
+        riskTask.title = 'Risikoprüfung abschließen';
+        riskTask.text = 'Risiken prüfen, offene Maßnahmen erledigen und die Prüfung anschließend abschließen.';
+        const noOpenRisks = machine.riskItems.every(item => item.status === 'done');
+        riskTask.done = machine.riskReviewComplete === true && noOpenRisks;
       }
 
       if (updateTask) {
@@ -365,12 +427,43 @@
       document.getElementById('machine-progress-bar').style.width = p + '%';
       document.getElementById('machine-progress-text').textContent = done + ' von ' + machine.tasks.length + ' Aufgaben erledigt.';
 
+      const guideAction = document.getElementById('guide-action');
+      const guideStepLabel = document.getElementById('guide-step-label');
+      const guideProgressLabel = document.getElementById('guide-progress-label');
+      const guideWhy = document.getElementById('guide-why');
+      const guideWhat = document.getElementById('guide-what');
+      const guideExample = document.getElementById('guide-example');
+
       if (next) {
-        document.getElementById('machine-next-title').textContent = next.title;
-        document.getElementById('machine-next-text').textContent = next.text;
+        const guide = GUIDE_CONTENT[next.id] || {
+          title:next.title,
+          why:'Damit der aktuelle Arbeitsstand nachvollziehbar dokumentiert ist.',
+          what:next.text,
+          example:'CRAwerk führt Sie direkt zum passenden Bereich.',
+          action:'Jetzt erledigen'
+        };
+        const stepIndex = Math.max(1, machine.tasks.findIndex(task => task.id === next.id) + 1);
+        guideStepLabel.textContent = 'IHR NÄCHSTER SCHRITT';
+        guideProgressLabel.textContent = 'Schritt ' + stepIndex + ' von ' + machine.tasks.length;
+        document.getElementById('machine-next-title').textContent = guide.title;
+        document.getElementById('machine-next-text').textContent = 'Sie brauchen dafür kein CRA-Fachwissen. Beantworten bzw. erfassen Sie nur die folgenden Angaben.';
+        guideWhy.textContent = guide.why;
+        guideWhat.textContent = guide.what;
+        guideExample.textContent = guide.example;
+        guideAction.textContent = guide.action;
+        guideAction.dataset.guideTask = next.id;
+        guideAction.hidden = false;
       } else {
-        document.getElementById('machine-next-title').textContent = 'Alle angelegten Aufgaben erledigt';
-        document.getElementById('machine-next-text').textContent = 'Der aktuelle Arbeitsstand ist vollständig.';
+        guideStepLabel.textContent = 'AKTUELLER ARBEITSSTAND';
+        guideProgressLabel.textContent = machine.tasks.length + ' von ' + machine.tasks.length + ' Schritten';
+        document.getElementById('machine-next-title').textContent = 'Diese Maschinenakte hat einen vollständigen Arbeitsstand';
+        document.getElementById('machine-next-text').textContent = 'Alle vorgesehenen Bereiche haben derzeit einen nachvollziehbaren Stand.';
+        guideWhy.textContent = 'Sie sehen auf einen Blick, welche Angaben für diese Maschine erfasst und welche offenen Punkte abgeschlossen wurden.';
+        guideWhat.textContent = 'Bei Änderungen an Software, Bauteilen, Risiken oder Unterlagen öffnen Sie einfach den jeweiligen Bereich erneut.';
+        guideExample.textContent = 'Für Weitergabe oder Ablage können Sie jetzt die Kurzübersicht oder die vollständige Produktakte erzeugen.';
+        guideAction.textContent = 'Kurzübersicht ansehen';
+        guideAction.dataset.guideTask = 'complete';
+        guideAction.hidden = false;
       }
 
       document.getElementById('task-checklist').innerHTML = machine.tasks.map(task =>
@@ -400,16 +493,24 @@
 
       document.getElementById('software-status').textContent =
         machine.software === 'no' ? 'Nicht erforderlich' :
-        machine.softwareItems.length ? machine.softwareItems.length + ' erfasst' : 'Noch offen';
+        machine.softwareComplete ? 'Vollständig' :
+        machine.softwareItems.length ? machine.softwareItems.length + ' erfasst · prüfen' : 'Noch offen';
+      document.getElementById('toggle-software-complete').textContent =
+        machine.softwareComplete ? 'Vollständigkeit aufheben' : 'Softwareliste vollständig';
 
       document.getElementById('component-status').textContent =
-        machine.components.length ? machine.components.length + ' erfasst' : 'Noch offen';
+        machine.componentsComplete ? 'Vollständig' :
+        machine.components.length ? machine.components.length + ' erfasst · prüfen' : 'Noch offen';
+      document.getElementById('toggle-components-complete').textContent =
+        machine.componentsComplete ? 'Vollständigkeit aufheben' : 'Bauteilliste vollständig';
 
       const openRisks = machine.riskItems.filter(item => item.status !== 'done').length;
       document.getElementById('risk-status').textContent =
-        machine.riskItems.length
-          ? (openRisks ? openRisks + ' offen' : 'Erledigt')
-          : 'Noch offen';
+        openRisks
+          ? openRisks + ' offen'
+          : (machine.riskReviewComplete ? 'Prüfung abgeschlossen' : 'Prüfung offen');
+      document.getElementById('toggle-risk-review').textContent =
+        machine.riskReviewComplete ? 'Prüfung wieder öffnen' : 'Risikoprüfung abgeschlossen';
 
       const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
       const openUpdates = machine.updateItems.filter(item => item.status !== 'done').length;
@@ -682,6 +783,44 @@
       documentDialog.showModal();
     });
 
+    document.getElementById('toggle-software-complete').addEventListener('click', () => {
+      if (machine.software === 'no') {
+        showToast('Für diese Maschine wurde keine Software / Firmware angegeben.');
+        return;
+      }
+      if (!machine.softwareComplete && machine.softwareItems.length === 0) {
+        showToast('Bitte zuerst die vorhandene Software oder Firmware erfassen.');
+        return;
+      }
+      machine.softwareComplete = !machine.softwareComplete;
+      persist();
+      render();
+      showToast(machine.softwareComplete ? 'Softwareliste wurde als vollständig markiert.' : 'Vollständigkeit der Softwareliste wurde aufgehoben.');
+    });
+
+    document.getElementById('toggle-components-complete').addEventListener('click', () => {
+      if (!machine.componentsComplete && machine.components.length === 0) {
+        showToast('Bitte zuerst die digitalen Bauteile erfassen. Falls keine vorhanden sind, prüfen Sie die Grunddaten der Maschine.');
+        return;
+      }
+      machine.componentsComplete = !machine.componentsComplete;
+      persist();
+      render();
+      showToast(machine.componentsComplete ? 'Bauteilliste wurde als vollständig markiert.' : 'Vollständigkeit der Bauteilliste wurde aufgehoben.');
+    });
+
+    document.getElementById('toggle-risk-review').addEventListener('click', () => {
+      const openRisks = machine.riskItems.filter(item => item.status !== 'done').length;
+      if (!machine.riskReviewComplete && openRisks > 0) {
+        showToast('Bitte zuerst die offenen Risiken und Maßnahmen erledigen.');
+        return;
+      }
+      machine.riskReviewComplete = !machine.riskReviewComplete;
+      persist();
+      render();
+      showToast(machine.riskReviewComplete ? 'Risikoprüfung wurde abgeschlossen.' : 'Risikoprüfung wurde wieder geöffnet.');
+    });
+
     document.getElementById('toggle-documents-complete').addEventListener('click', () => {
       if (!machine.documentsComplete && machine.documentItems.length === 0) {
         showToast('Bitte zuerst mindestens eine vorhandene Unterlage erfassen.');
@@ -739,6 +878,7 @@
         type: data.get('type'),
         vendor: data.get('vendor').trim()
       };
+      machine.softwareComplete = false;
 
       if (editingSoftwareId) {
         const item = machine.softwareItems.find(entry => entry.id === editingSoftwareId);
@@ -767,6 +907,7 @@
         version: data.get('version').trim(),
         documents: data.get('documents')
       };
+      machine.componentsComplete = false;
 
       if (editingComponentId) {
         const item = machine.components.find(entry => entry.id === editingComponentId);
@@ -795,6 +936,7 @@
         measure: data.get('measure').trim(),
         status: data.get('status')
       };
+      machine.riskReviewComplete = false;
 
       if (editingRiskId) {
         const item = machine.riskItems.find(entry => entry.id === editingRiskId);
@@ -934,6 +1076,7 @@
       if (!button) return;
 
       machine.softwareItems = machine.softwareItems.filter(item => item.id !== button.dataset.removeSoftware);
+      machine.softwareComplete = false;
       persist();
       render();
       showToast('Software wurde entfernt.');
@@ -960,6 +1103,7 @@
       if (!button) return;
 
       machine.components = machine.components.filter(item => item.id !== button.dataset.removeComponent);
+      machine.componentsComplete = false;
       persist();
       render();
       showToast('Bauteil wurde entfernt.');
@@ -985,6 +1129,7 @@
       const removeButton = event.target.closest('[data-remove-risk]');
       if (removeButton) {
         machine.riskItems = machine.riskItems.filter(item => item.id !== removeButton.dataset.removeRisk);
+        machine.riskReviewComplete = false;
         persist();
         render();
         showToast('Risiko / Aufgabe wurde entfernt.');
@@ -998,6 +1143,7 @@
       if (!item) return;
 
       item.status = item.status === 'done' ? 'open' : 'done';
+      if (item.status === 'open') machine.riskReviewComplete = false;
       persist();
       render();
       showToast(item.status === 'done' ? 'Punkt wurde erledigt.' : 'Punkt wurde wieder geöffnet.');
@@ -1065,6 +1211,41 @@
       persist();
       render();
       showToast('Unterlage wurde entfernt.');
+    });
+
+    document.getElementById('guide-show-details').addEventListener('click', () => {
+      document.getElementById('machine-details').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+
+    document.getElementById('guide-action').addEventListener('click', () => {
+      const task = document.getElementById('guide-action').dataset.guideTask;
+      const scrollTo = id => {
+        const target = document.getElementById(id);
+        if (target) target.scrollIntoView({behavior:'smooth', block:'center'});
+      };
+
+      if (task === 'complete') {
+        document.getElementById('short-report-machine').click();
+      } else if (task === 'basic') {
+        document.getElementById('edit-machine').click();
+      } else if (task === 'software') {
+        if (machine.softwareItems.length === 0) document.getElementById('add-software').click();
+        else scrollTo('module-software');
+      } else if (task === 'supplier') {
+        if (machine.components.length === 0) document.getElementById('add-component').click();
+        else scrollTo('module-supplier');
+      } else if (task === 'risks') {
+        scrollTo('module-risks');
+      } else if (task === 'updates') {
+        const ready = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
+        if (!ready) document.getElementById('set-update-process').click();
+        else scrollTo('module-updates');
+      } else if (task === 'documents') {
+        if (machine.documentItems.length === 0) document.getElementById('add-document').click();
+        else scrollTo('module-documents');
+      } else if (task === 'support') {
+        document.getElementById('set-support').click();
+      }
     });
 
     document.querySelectorAll('.module-action').forEach(button => {
