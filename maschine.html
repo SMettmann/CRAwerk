@@ -44,28 +44,61 @@
       <p id="machine-progress-text">0 von 0 Aufgaben erledigt.</p>
     </section>
 
-    <section class="machine-next">
-      <div>
-        <span class="app-kicker">ALS NÄCHSTES</span>
-        <h2 id="machine-next-title">Grunddaten prüfen</h2>
-        <p id="machine-next-text">CRAwerk zeigt Ihnen den nächsten offenen Punkt.</p>
+    <section class="guided-next" id="guided-next">
+      <div class="guided-next-head">
+        <div>
+          <span class="app-kicker" id="guide-step-label">IHR NÄCHSTER SCHRITT</span>
+          <h2 id="machine-next-title">CRAwerk führt Sie durch die Maschine</h2>
+        </div>
+        <span class="guide-progress-label" id="guide-progress-label">Schritt für Schritt</span>
+      </div>
+
+      <p class="guide-lead" id="machine-next-text">Sie müssen nicht wissen, was der CRA im Detail verlangt. CRAwerk führt Sie durch die Punkte, die Sie für diese Maschine sauber festhalten sollten.</p>
+
+      <div class="guide-explain-grid">
+        <div class="guide-explain">
+          <span>WARUM?</span>
+          <p id="guide-why">Damit der aktuelle Stand nachvollziehbar dokumentiert ist.</p>
+        </div>
+        <div class="guide-explain">
+          <span>WAS BRAUCHEN WIR?</span>
+          <p id="guide-what">CRAwerk zeigt Ihnen nur die Angaben, die für den nächsten Schritt benötigt werden.</p>
+        </div>
+        <div class="guide-explain">
+          <span>BEISPIEL</span>
+          <p id="guide-example">Sie tragen die Information ein – CRAwerk ordnet sie automatisch der Produktakte zu.</p>
+        </div>
+      </div>
+
+      <div class="guide-actions">
+        <button class="app-btn app-btn-light" id="guide-action" type="button">Jetzt erledigen</button>
+        <button class="guide-secondary" id="guide-show-details" type="button">Alle Bereiche ansehen</button>
       </div>
     </section>
 
     <section class="machine-layout">
       <div class="machine-content">
-        <section class="app-panel">
+        <section class="app-panel guide-steps-panel">
           <div class="panel-head">
             <div>
-              <span class="app-kicker">AUFGABEN</span>
-              <h2>Was noch offen ist</h2>
+              <span class="app-kicker">IHR WEG DURCH CRAWERK</span>
+              <h2>7 einfache Schritte</h2>
+              <p class="panel-help">Grün bedeutet: für den aktuellen Arbeitsstand erledigt. Offene Punkte werden von CRAwerk automatisch erkannt.</p>
             </div>
           </div>
           <div class="task-checklist" id="task-checklist"></div>
         </section>
 
+        <section class="modules-heading" id="machine-details">
+          <div>
+            <span class="app-kicker">DETAILS & NACHWEISE</span>
+            <h2>Ihre Maschinenakte</h2>
+            <p>Hier finden Sie alle erfassten Angaben wieder. Für die normale Bearbeitung können Sie einfach dem nächsten Schritt oben folgen.</p>
+          </div>
+        </section>
+
         <section class="module-list">
-          <article class="module-panel">
+          <article class="module-panel" id="module-basic">
             <div class="module-panel-head">
               <div><span>01</span><h3>Grunddaten</h3></div>
               <small id="module-basic-status">Vorhanden</small>
@@ -73,42 +106,42 @@
             <p>Name, Modell, Produktnummer und verantwortliche Person.</p>
           </article>
 
-          <article class="module-panel module-panel-live">
+          <article class="module-panel module-panel-live" id="module-software">
             <div class="module-panel-head">
               <div><span>02</span><h3>Software & Versionen</h3></div>
               <small id="software-status">Noch offen</small>
             </div>
-            <p>Welche Software steckt in der Maschine und welche Version ist verbaut?</p>
+            <p><strong class="module-why">Warum?</strong> Damit später klar ist, welcher Softwarestand zu genau dieser Maschine gehört.</p>
             <div class="module-items" id="software-list"></div>
             <button class="text-button" id="add-software" type="button">+ Software hinzufügen</button>
           </article>
 
-          <article class="module-panel module-panel-live">
+          <article class="module-panel module-panel-live" id="module-supplier">
             <div class="module-panel-head">
               <div><span>03</span><h3>Zulieferer & Bauteile</h3></div>
               <small id="component-status">Noch offen</small>
             </div>
-            <p>Steuerungen, Gateways und andere digitale Bauteile mit ihren Unterlagen zusammenhalten.</p>
+            <p><strong class="module-why">Warum?</strong> Damit Sie bei einer Meldung eines Zulieferers sofort sehen, welche Maschine betroffen sein kann.</p>
             <div class="module-items" id="component-list"></div>
             <button class="text-button" id="add-component" type="button">+ Bauteil hinzufügen</button>
           </article>
 
-          <article class="module-panel module-panel-live">
+          <article class="module-panel module-panel-live" id="module-risks">
             <div class="module-panel-head">
               <div><span>04</span><h3>Risiken & Aufgaben</h3></div>
               <small id="risk-status">Noch offen</small>
             </div>
-            <p>Risiken, Maßnahmen und Zuständigkeiten verständlich festhalten.</p>
+            <p><strong class="module-why">Warum?</strong> Damit offene Sicherheitsfragen nicht nur bekannt sind, sondern eine Maßnahme und Zuständigkeit haben.</p>
             <div class="module-items" id="risk-list"></div>
             <button class="text-button" id="add-risk" type="button">+ Risiko / Aufgabe hinzufügen</button>
           </article>
 
-          <article class="module-panel module-panel-live">
+          <article class="module-panel module-panel-live" id="module-updates">
             <div class="module-panel-head">
               <div><span>05</span><h3>Sicherheitslücken & Updates</h3></div>
               <small id="update-status">Noch offen</small>
             </div>
-            <p>Einmal den internen Ablauf festlegen. Sicherheitsprobleme werden anschließend nur bei Bedarf ergänzt.</p>
+            <p><strong class="module-why">Warum?</strong> Damit im Ernstfall klar ist, wer reagiert und wie ein Sicherheitsproblem bis zur Lösung verfolgt wird.</p>
             <div class="update-process" id="update-process"></div>
             <div class="module-items" id="update-list"></div>
             <div class="module-button-row">
@@ -117,12 +150,12 @@
             </div>
           </article>
 
-          <article class="module-panel module-panel-live">
+          <article class="module-panel module-panel-live" id="module-documents">
             <div class="module-panel-head">
               <div><span>06</span><h3>Unterlagen & Nachweise</h3></div>
               <small id="document-status">Noch offen</small>
             </div>
-            <p>Vorhandene Unterlagen dieser Maschine zuordnen und den Stand nachvollziehbar halten.</p>
+            <p><strong class="module-why">Warum?</strong> Damit vorhandene Nachweise nicht verteilt liegen, sondern nachvollziehbar dieser Maschine zugeordnet sind.</p>
             <div class="module-items" id="document-list"></div>
             <div class="module-button-row">
               <button class="text-button" id="add-document" type="button">+ Unterlage hinzufügen</button>
@@ -130,12 +163,12 @@
             </div>
           </article>
 
-          <article class="module-panel module-panel-live support-panel">
+          <article class="module-panel module-panel-live support-panel" id="module-support">
             <div class="module-panel-head">
               <div><span>07</span><h3>Unterstützungszeitraum</h3></div>
               <small id="support-status">Noch offen</small>
             </div>
-            <p>Festhalten, für welchen Zeitraum sicherheitsbezogene Unterstützung und Updates vorgesehen sind.</p>
+            <p><strong class="module-why">Warum?</strong> Damit intern eindeutig feststeht, wie lange Sicherheitsprobleme und notwendige Updates für diese Maschine betreut werden.</p>
             <div id="support-summary"></div>
             <button class="text-button" id="set-support" type="button">Zeitraum festlegen</button>
           </article>
