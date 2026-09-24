@@ -27,7 +27,10 @@
         <p id="machine-meta"></p>
       </div>
       <div class="machine-actions">
-        <button class="app-btn app-btn-ghost" id="print-machine" type="button">Produktakte erstellen</button>
+        <button class="app-btn app-btn-ghost" id="edit-machine" type="button">Bearbeiten</button>
+        <button class="app-btn app-btn-ghost" id="duplicate-machine" type="button">Duplizieren</button>
+        <button class="app-btn app-btn-danger" id="delete-machine" type="button">Löschen</button>
+        <button class="app-btn app-btn-dark" id="print-machine" type="button">Produktakte erstellen</button>
       </div>
     </section>
 
@@ -152,6 +155,76 @@
       </aside>
     </section>
   </main>
+
+  <dialog class="machine-dialog small-dialog" id="edit-machine-dialog">
+    <form class="machine-form" id="edit-machine-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">MASCHINE BEARBEITEN</span>
+          <h2>Grunddaten ändern</h2>
+          <p>Änderungen wirken sich direkt auf diese Produktakte aus.</p>
+        </div>
+        <button class="dialog-close" type="button" data-close-dialog="edit-machine-dialog" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Name der Maschine *</span>
+        <input name="name" required>
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>Baureihe / Modell</span>
+          <input name="model">
+        </label>
+        <label>
+          <span>Interne Produktnummer</span>
+          <input name="productNumber">
+        </label>
+      </div>
+
+      <label>
+        <span>Verantwortlich im Unternehmen</span>
+        <input name="owner">
+      </label>
+
+      <fieldset>
+        <legend>Steckt Software oder Firmware in der Maschine?</legend>
+        <div class="choice-row">
+          <label><input type="radio" name="software" value="yes" required><span>Ja</span></label>
+          <label><input type="radio" name="software" value="no"><span>Nein</span></label>
+          <label><input type="radio" name="software" value="unknown"><span>Unklar</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Hat die Maschine Netzwerk, Fernwartung oder eine andere Verbindung?</legend>
+        <div class="choice-row">
+          <label><input type="radio" name="connected" value="yes" required><span>Ja</span></label>
+          <label><input type="radio" name="connected" value="no"><span>Nein</span></label>
+          <label><input type="radio" name="connected" value="unknown"><span>Unklar</span></label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="edit-machine-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Änderungen speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog confirm-dialog" id="delete-machine-dialog">
+    <div class="delete-confirm">
+      <span class="app-kicker">MASCHINE LÖSCHEN</span>
+      <h2>Diese Maschine wirklich löschen?</h2>
+      <p>Die Maschine <strong id="delete-machine-name"></strong> und alle lokal gespeicherten Inhalte dieser Produktakte werden gelöscht.</p>
+      <p class="delete-warning">Dieser Schritt kann aktuell nicht rückgängig gemacht werden.</p>
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" type="button" data-close-dialog="delete-machine-dialog">Abbrechen</button>
+        <button class="app-btn app-btn-danger-solid" id="confirm-delete-machine" type="button">Maschine endgültig löschen</button>
+      </div>
+    </div>
+  </dialog>
 
   <dialog class="machine-dialog small-dialog" id="software-dialog">
     <form class="machine-form" id="software-form" method="dialog">
