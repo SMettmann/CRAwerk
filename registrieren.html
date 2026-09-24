@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="CRAwerk registrieren – CRA einfach für Maschinenbauer." />
+  <title>CRAwerk – Registrierung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="register-page">
+  <header class="register-header">
+    <a class="brand" href="index.html" aria-label="CRAwerk Startseite">
+      <span class="brand-mark">CRA</span><span class="brand-word">werk</span>
+    </a>
+    <a class="register-back" href="index.html">Zurück zur Startseite</a>
+  </header>
+
+  <main class="register-main">
+    <section class="register-copy">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        CRAwerk starten
+      </div>
+
+      <h1>Einfach anfangen.<br><span>CRAwerk hält den Überblick.</span></h1>
+
+      <p class="register-lead">
+        Legen Sie Ihr Unternehmen an. Danach können Produkte, Unterlagen, offene Aufgaben
+        und CRA-relevante Informationen Schritt für Schritt zusammengeführt werden.
+      </p>
+
+      <div class="register-price-card">
+        <div>
+          <span class="register-price-label">CRAwerk</span>
+          <strong>29,99 €</strong>
+          <small>pro Monat</small>
+        </div>
+        <ul>
+          <li>Ein klarer Tarif</li>
+          <li>Keine Angebotsanfrage</li>
+          <li>Für kleine und mittlere Maschinenbauer</li>
+        </ul>
+      </div>
+
+      <div class="register-trust">
+        <span>Made in Germany</span>
+        <span>Deutsche Oberfläche</span>
+        <span>Klare Sprache</span>
+      </div>
+    </section>
+
+    <section class="register-panel">
+      <div class="register-panel-head">
+        <span class="section-kicker">UNTERNEHMEN ANLEGEN</span>
+        <h2>Ihre Zugangsdaten</h2>
+        <p>Nur die wichtigsten Angaben. Alles Weitere kommt später direkt in CRAwerk.</p>
+      </div>
+
+      <form class="register-form" id="register-form">
+        <div class="form-field form-field-full">
+          <label for="company">Unternehmen</label>
+          <input id="company" name="company" type="text" autocomplete="organization" placeholder="Muster Maschinenbau GmbH" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="first-name">Vorname</label>
+            <input id="first-name" name="firstName" type="text" autocomplete="given-name" required>
+          </div>
+          <div class="form-field">
+            <label for="last-name">Nachname</label>
+            <input id="last-name" name="lastName" type="text" autocomplete="family-name" required>
+          </div>
+        </div>
+
+        <div class="form-field form-field-full">
+          <label for="email">Geschäftliche E-Mail-Adresse</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="name@unternehmen.de" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="password">Passwort</label>
+            <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </div>
+          <div class="form-field">
+            <label for="password-repeat">Passwort wiederholen</label>
+            <input id="password-repeat" name="passwordRepeat" type="password" autocomplete="new-password" minlength="8" required>
+          </div>
+        </div>
+
+        <label class="form-check">
+          <input type="checkbox" required>
+          <span>Ich möchte ein CRAwerk-Konto für mein Unternehmen anlegen.</span>
+        </label>
+
+        <button class="button button-dark register-submit" type="submit">CRAwerk-Konto anlegen</button>
+
+        <div class="register-form-note">
+          <strong>Noch keine Zahlung an dieser Stelle.</strong>
+          <span>Der technische Registrierungs- und Zahlungsprozess wird mit der Anwendung verbunden.</span>
+        </div>
+
+        <div class="register-message" id="register-message" hidden>
+          <strong>Die Registrierungsseite ist vorbereitet.</strong>
+          <span>Die echte Kontoanlage wird mit der CRAwerk-Anwendung freigeschaltet.</span>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="register.js"></script>
+</body>
+</html>
