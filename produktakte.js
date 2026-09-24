@@ -52,6 +52,7 @@
   machine.tasks = Array.isArray(machine.tasks) ? machine.tasks : [];
   machine.updateProcess = machine.updateProcess || {owner:'', procedure:''};
   machine.supportPeriod = machine.supportPeriod || {startDate:'', endDate:'', owner:'', reason:''};
+  machine.documentRevision = Math.max(1, parseInt(machine.documentRevision, 10) || 1);
 
   const progress = machine.tasks.length
     ? Math.round(machine.tasks.filter(task => task.done).length / machine.tasks.length * 100)
@@ -67,14 +68,17 @@
   }).format(now);
 
   document.title = 'Produktakte ' + machine.name + ' – CRAwerk';
+  document.getElementById('report-revision').textContent = 'Revision ' + machine.documentRevision;
   document.getElementById('report-generated').textContent = 'Stand: ' + generated;
   document.getElementById('report-name').textContent = machine.name;
   document.getElementById('report-subtitle').textContent =
     [machine.model, machine.productNumber ? 'Produktnummer ' + machine.productNumber : ''].filter(Boolean).join(' · ') || 'CRAwerk Produktakte';
   document.getElementById('report-progress').textContent = progress + '%';
   document.getElementById('report-progress-bar').style.width = progress + '%';
-  document.getElementById('report-footer-machine').textContent = machine.name + ' · Stand ' + generated;
+  document.getElementById('report-footer-machine').textContent =
+    machine.name + ' · Revision ' + machine.documentRevision + ' · Stand ' + generated;
   document.getElementById('report-back').href = 'maschine.html?id=' + encodeURIComponent(machine.id);
+  document.getElementById('report-short').href = 'kurzakte.html?id=' + encodeURIComponent(machine.id);
 
   const companyLines = [
     company.street,
