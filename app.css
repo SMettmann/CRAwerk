@@ -1145,3 +1145,146 @@ a{color:inherit;text-decoration:none}
     display:none;
   }
 }
+
+
+/* Company area */
+.active-account{
+  color:#fff;
+}
+
+.company-main{
+  max-width:1180px;
+}
+
+.company-intro{
+  margin-bottom:30px;
+}
+
+.company-intro h1{
+  margin:0 0 12px;
+  font-size:clamp(38px,4.5vw,60px);
+  line-height:1;
+  letter-spacing:-.05em;
+}
+
+.company-intro p{
+  max-width:720px;
+  margin:0;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.65;
+}
+
+.company-layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 320px;
+  gap:18px;
+  align-items:start;
+}
+
+.company-card{
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#f8f9f7;
+}
+
+.company-form{
+  display:grid;
+  gap:18px;
+}
+
+.company-form label{
+  display:grid;
+  gap:7px;
+}
+
+.company-form label > span{
+  color:#445049;
+  font-size:12px;
+  font-weight:700;
+}
+
+.company-form input{
+  min-height:46px;
+  width:100%;
+  padding:0 12px;
+  border:1px solid #c9d1cb;
+  border-radius:6px;
+  outline:0;
+  color:#17201b;
+  background:#fff;
+}
+
+.company-form input:focus{
+  border-color:#68756d;
+  box-shadow:0 0 0 3px rgba(31,41,35,.08);
+}
+
+.company-section-head{
+  margin-bottom:2px;
+}
+
+.company-section-head h2{
+  margin:0;
+  font-size:24px;
+  letter-spacing:-.035em;
+}
+
+.company-section-gap{
+  margin-top:14px;
+  padding-top:24px;
+  border-top:1px solid #d8ddd9;
+}
+
+.company-form-actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-top:8px;
+  padding-top:20px;
+  border-top:1px solid #d8ddd9;
+}
+
+.company-form-actions > span{
+  color:#78837d;
+  font-size:11px;
+}
+
+.company-side{
+  position:sticky;
+  top:88px;
+  display:grid;
+  gap:12px;
+}
+
+@media(max-width:900px){
+  .company-layout{
+    grid-template-columns:1fr;
+  }
+
+  .company-side{
+    position:static;
+    grid-template-columns:repeat(3,1fr);
+  }
+}
+
+@media(max-width:720px){
+  .company-card{
+    padding:22px 18px;
+  }
+
+  .company-side{
+    grid-template-columns:1fr;
+  }
+
+  .company-form-actions{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .company-form-actions .app-btn{
+    width:100%;
+  }
+}
