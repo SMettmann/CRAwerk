@@ -1,9 +1,27 @@
 (() => {
   const form = document.getElementById('register-form');
   const message = document.getElementById('register-message');
-  if (!form || !message) return;
+  const submit = form && form.querySelector('button[type="submit"]');
+  if (!form || !message || !window.CRAwerkSupabase) return;
 
-  form.addEventListener('submit', (event) => {
+  const escapeHtml = (value = '') => String(value)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#039;');
+
+  const showMessage = (title, text, isError = false, actionHtml = '') => {
+    message.classList.toggle('auth-error', isError);
+    message.innerHTML =
+      '<strong>' + escapeHtml(title) + '</strong>' +
+      '<span>' + escapeHtml(text) + '</span>' +
+      actionHtml;
+    message.hidden = false;
+    message.scrollIntoView({behavior:'smooth', block:'nearest'});
+  };
+
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const password = document.getElementById('password');
@@ -16,8 +34,51 @@
     }
 
     repeat.setCustomValidity('');
-    message.hidden = false;
-    message.scrollIntoView({behavior:'smooth', block:'nearest'});
+    message.hidden = true;
+    submit.disabled = true;
+    submit.textContent = 'Konto wird angelegt…';
+
+    try {
+      const data = new FormData(form);
+      const redirectUrl = new URL('login.html?confirmed=1', window.location.href).href;
+
+      const { data: signUpData, error } = await CRAwerkSupabase.client.auth.signUp({
+        email: data.get('email').trim(),
+        password: data.get('password'),
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            company_name: data.get('company').trim(),
+            first_name: data.get('firstName').trim(),
+            last_name: data.get('lastName').trim()
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      if (signUpData.session) {
+        await CRAwerkSupabase.ensureCompany();
+        location.href = 'dashboard.html';
+        return;
+      }
+
+      form.reset();
+      showMessage(
+        'Fast geschafft.',
+        'Wir haben Ihnen eine Bestätigungs-E-Mail geschickt. Bitte den Link darin öffnen und anschließend bei CRAwerk anmelden.',
+        false,
+        '<a class="button button-dark" href="login.html">Zur Anmeldung</a>'
+      );
+    } catch (error) {
+      const text = /already registered|already been registered/i.test(error.message || '')
+        ? 'Für diese E-Mail-Adresse gibt es bereits ein Konto. Bitte melden Sie sich an.'
+        : 'Das Konto konnte nicht angelegt werden. Bitte prüfen Sie Ihre Angaben und versuchen Sie es erneut.';
+      showMessage('Registrierung nicht möglich.', text, true);
+    } finally {
+      submit.disabled = false;
+      submit.textContent = 'CRAwerk-Konto anlegen';
+    }
   });
 
   document.getElementById('password-repeat').addEventListener('input', (event) => {
