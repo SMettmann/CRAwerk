@@ -28,16 +28,21 @@
         <p id="machine-meta"></p>
       </div>
       <div class="machine-actions">
-        <button class="app-btn app-btn-ghost" id="edit-machine" type="button">Bearbeiten</button>
-        <button class="app-btn app-btn-ghost" id="duplicate-machine" type="button">Duplizieren</button>
-        <button class="app-btn app-btn-danger" id="delete-machine" type="button">Löschen</button>
-        <button class="app-btn app-btn-ghost" id="cra-machine" type="button">CRA-Prüfung</button>
-        <button class="app-btn app-btn-ghost" id="short-report-machine" type="button">Kurzübersicht</button>
+        <details class="machine-more-menu">
+          <summary>Weitere Aktionen</summary>
+          <div>
+            <button id="edit-machine" type="button">Grunddaten bearbeiten</button>
+            <button id="cra-machine" type="button">CRA-Abschluss öffnen</button>
+            <button id="short-report-machine" type="button">Kurzübersicht</button>
+            <button id="duplicate-machine" type="button">Maschine duplizieren</button>
+            <button class="danger" id="delete-machine" type="button">Maschine löschen</button>
+          </div>
+        </details>
         <button class="app-btn app-btn-dark" id="print-machine" type="button">Produktakte erstellen</button>
       </div>
     </section>
 
-    <section class="machine-status-card">
+    <section class="machine-status-card machine-status-secondary">
       <div class="status-main">
         <span>CRA-Arbeitsstand</span>
         <strong id="machine-progress-value">0%</strong>
@@ -78,7 +83,7 @@
       </div>
     </section>
 
-    <section class="machine-layout">
+    <section class="machine-layout machine-details-area">
       <div class="machine-content">
         <section class="app-panel guide-steps-panel">
           <div class="panel-head">
