@@ -47,7 +47,8 @@
       a.declarationPlace &&
       a.declarationDate &&
       a.declarationSigner &&
-      a.declarationFunction
+      a.declarationFunction &&
+      a.declarationSignedCopyReference
     );
 
     const ceReady = Boolean(a.ceStatus === 'marked' && a.ceMarkingLocation);
@@ -1113,6 +1114,10 @@
         remediatedAt:data.get('remediatedAt'),
         status:data.get('status')
       };
+      if (values.status === 'done' && !values.remediatedAt) {
+        showToast('Zum Abschließen bitte das Behebungsdatum eintragen.');
+        return;
+      }
       try {
         if (editingUpdateId) await backend.updateUpdate(editingUpdateId, values);
         else await backend.addUpdate(machine.id, values);
@@ -1158,6 +1163,22 @@
       if (!toggle) return;
       const item = machine.updateItems.find(x => x.id === toggle.dataset.toggleUpdate);
       if (!item) return;
+      if (item.status !== 'done' && !item.remediatedAt) {
+        editingUpdateId = item.id;
+        updateForm.elements.title.value = item.title;
+        updateForm.elements.date.value = item.date || '';
+        updateForm.elements.affected.value = item.affected || '';
+        updateForm.elements.assessment.value = item.assessment || '';
+        updateForm.elements.action.value = item.action || '';
+        updateForm.elements.patchVersion.value = item.patchVersion || '';
+        updateForm.elements.remediatedAt.value = '';
+        const doneChoice = updateForm.querySelector('[name="status"][value="done"]');
+        if (doneChoice) doneChoice.checked = true;
+        setDialogMode(updateDialog, updateForm, 'Problem abschließen', 'Abschluss speichern');
+        updateDialog.showModal();
+        showToast('Bitte noch das Behebungsdatum dokumentieren.');
+        return;
+      }
       item.status = item.status === 'done' ? 'open' : 'done';
       await backend.updateUpdate(item.id, item);
       await refresh(item.status === 'done' ? 'Sicherheitsproblem wurde erledigt.' : 'Sicherheitsproblem wurde wieder geöffnet.');
