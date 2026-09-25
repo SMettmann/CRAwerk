@@ -2093,3 +2093,312 @@ h1 span{
     white-space:normal;
   }
 }
+
+
+/* Homepage readability refinement */
+.nav{
+  font-size:15px;
+}
+
+.header-cta{
+  font-size:15px;
+}
+
+.eyebrow,
+.section-kicker{
+  font-size:13px;
+  line-height:1.4;
+}
+
+.hero-text{
+  font-size:19px;
+  line-height:1.72;
+}
+
+.button{
+  min-height:50px;
+  font-size:15px;
+}
+
+.hero-proof strong{
+  font-size:14px;
+}
+
+.hero-proof span{
+  font-size:13.5px;
+  line-height:1.58;
+}
+
+.germany-badge small{
+  font-size:9px;
+}
+
+.germany-badge strong{
+  font-size:12px;
+}
+
+.window-status{
+  font-size:12px;
+}
+
+.score-card .label{
+  font-size:13px;
+}
+
+.score-card strong{
+  font-size:17px;
+}
+
+.task strong{
+  font-size:14px;
+}
+
+.task small{
+  font-size:12px;
+}
+
+.next-step small{
+  font-size:10px;
+}
+
+.next-step strong{
+  font-size:15px;
+}
+
+.next-step span{
+  font-size:12.5px;
+  line-height:1.58;
+}
+
+.trust-strip span{
+  font-size:13.5px;
+  line-height:1.45;
+}
+
+.section-heading p{
+  font-size:18px;
+  line-height:1.72;
+}
+
+.feature-number{
+  font-size:12px;
+}
+
+.feature-card h3{
+  font-size:22px;
+}
+
+.feature-card p{
+  font-size:15.5px;
+  line-height:1.68;
+}
+
+.step b{
+  font-size:13px;
+}
+
+.step span{
+  font-size:16px;
+  line-height:1.48;
+}
+
+.target-box p{
+  font-size:18px;
+  line-height:1.72;
+}
+
+.cta-section p{
+  font-size:16px;
+  line-height:1.65;
+}
+
+.responsibility-label{
+  font-size:11px;
+}
+
+.responsibility-card p{
+  font-size:15.5px;
+  line-height:1.68;
+}
+
+.plain-example-title{
+  font-size:13px;
+}
+
+.plain-example p{
+  font-size:16px;
+  line-height:1.72;
+}
+
+.deadline-card span{
+  font-size:15.5px;
+  line-height:1.65;
+}
+
+.legal-note{
+  font-size:13.5px;
+  line-height:1.7;
+}
+
+.faq-list summary{
+  font-size:18px;
+}
+
+.faq-list details p{
+  font-size:15.5px;
+  line-height:1.75;
+}
+
+.quickcheck-intro p{
+  font-size:18px;
+}
+
+.check-number{
+  font-size:11px;
+}
+
+.check-options span{
+  font-size:15px;
+}
+
+.check-back{
+  font-size:15px;
+}
+
+.check-result > p{
+  font-size:17px;
+}
+
+.result-label{
+  font-size:11px;
+}
+
+.result-points li,
+.result-focus li{
+  font-size:15px;
+  line-height:1.6;
+}
+
+.check-disclaimer{
+  font-size:13px !important;
+  line-height:1.65 !important;
+}
+
+.result-flow-step strong{
+  font-size:15px;
+}
+
+.result-flow-step span{
+  font-size:13.5px;
+  line-height:1.6;
+}
+
+.modules-promise-label{
+  font-size:11px;
+}
+
+.modules-promise p{
+  font-size:14.5px;
+  line-height:1.65;
+}
+
+.module-no{
+  font-size:11px;
+}
+
+.module-card h3{
+  font-size:22px;
+}
+
+.module-card p{
+  font-size:15.5px;
+  line-height:1.68;
+}
+
+.module-benefit{
+  font-size:13.5px;
+  line-height:1.6;
+}
+
+.effort-box p{
+  font-size:16px;
+  line-height:1.75;
+}
+
+.pricing-label{
+  font-size:12px;
+}
+
+.pricing-price span{
+  font-size:15px;
+}
+
+.pricing-list li{
+  font-size:15.5px;
+  line-height:1.6;
+}
+
+.pricing-note{
+  font-size:12.5px;
+  line-height:1.55;
+}
+
+.site-footer{
+  font-size:13px;
+}
+
+.footer-links{
+  font-size:13px;
+}
+
+@media (max-width:760px){
+  .eyebrow,
+  .section-kicker{
+    font-size:12px;
+  }
+
+  .hero-text{
+    font-size:17px;
+    line-height:1.68;
+  }
+
+  .hero-proof strong{
+    font-size:14px;
+  }
+
+  .hero-proof span{
+    font-size:13px;
+  }
+
+  .trust-strip span{
+    padding:18px 14px;
+    font-size:13px;
+  }
+
+  .section-heading p,
+  .quickcheck-intro p,
+  .target-box p{
+    font-size:16.5px;
+    line-height:1.7;
+  }
+
+  .feature-card p,
+  .module-card p,
+  .responsibility-card p,
+  .deadline-card span,
+  .faq-list details p,
+  .pricing-list li{
+    font-size:15px;
+  }
+
+  .faq-list summary{
+    font-size:16px;
+    line-height:1.5;
+  }
+
+  .module-benefit,
+  .legal-note,
+  .check-disclaimer{
+    font-size:13px !important;
+  }
+}
