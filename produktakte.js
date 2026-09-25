@@ -21,6 +21,8 @@
     if (!a) return false;
     const requirements = machine.craRequirements || [];
     const reporting = machine.craReportingEvents || [];
+    const nonconformities = machine.craNonconformityEvents || [];
+    const noOpenNonconformities = nonconformities.every(item => item.status === 'closed');
     const requirementsComplete = requirements.length >= 22 && requirements.every(requirementDocumented);
     const classCategoryReady = a.classification === 'standard' || Boolean(a.classificationCategory);
     const routeDetailsReady =
@@ -61,7 +63,8 @@
       routeValid && classCategoryReady && routeDetailsReady &&
       a.classificationReason && requirementsComplete && annexViiReady &&
       ceReady && declarationReady &&
-      reporting.every(item => item.status === 'closed')
+      reporting.every(item => item.status === 'closed') &&
+      noOpenNonconformities
     );
   };
 
