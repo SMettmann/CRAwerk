@@ -58,7 +58,8 @@
       routeValid && classCategoryReady && routeDetailsReady &&
       requirementsComplete && annexReady && ceReady && declarationReady &&
       (machine.craReportingEvents || []).every(item => item.status === 'closed') &&
-      (machine.craNonconformityEvents || []).every(item => item.status === 'closed')
+      (machine.craNonconformityEvents || []).every(item => item.status === 'closed') &&
+      (machine.craAuthorityRequests || []).every(item => item.status === 'closed')
     );
   };
 
@@ -102,6 +103,7 @@
     const openRisks = machine.riskItems.filter(item => item.status !== 'done');
     const openUpdates = machine.updateItems.filter(item => item.status !== 'done');
     const openNonconformities = (machine.craNonconformityEvents || []).filter(item => item.status !== 'closed');
+    const openAuthorityRequests = (machine.craAuthorityRequests || []).filter(item => item.status !== 'closed');
     const generated = new Intl.DateTimeFormat('de-DE', {
       day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'
     }).format(new Date());
@@ -200,7 +202,9 @@
       '<div class="short-bottom-card"><span>Sicherheitsprobleme</span><strong>' + openUpdates.length + ' offen</strong><small>' +
       machine.updateItems.length + ' insgesamt erfasst</small></div>' +
       '<div class="short-bottom-card"><span>Nichtkonformität</span><strong>' + openNonconformities.length + ' offen</strong><small>' +
-      (machine.craNonconformityEvents || []).length + ' Vorgänge insgesamt</small></div>';
+      (machine.craNonconformityEvents || []).length + ' Vorgänge insgesamt</small></div>' +
+      '<div class="short-bottom-card"><span>Behördenanfragen</span><strong>' + openAuthorityRequests.length + ' offen</strong><small>' +
+      (machine.craAuthorityRequests || []).length + ' Vorgänge insgesamt</small></div>';
 
     document.getElementById('short-print').addEventListener('click', () => window.print());
   };
