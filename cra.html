@@ -80,8 +80,8 @@
           </label>
 
           <label>
-            <span>Kategorie / Kernfunktion</span>
-            <input name="classificationCategory" placeholder="z. B. Produktkategorie nach Anhang III / IV">
+            <span>Kategorie / Kernfunktion nach Anhang III / IV und (EU) 2025/2392</span>
+            <input name="classificationCategory" placeholder="z. B. konkrete Produktkategorie / Kernfunktion">
           </label>
 
           <label class="cra-span-2">
@@ -308,6 +308,10 @@
             <input name="declarationFunction">
           </label>
           <label class="cra-span-2">
+            <span>Verweis auf die unterzeichnete Fassung *</span>
+            <input name="declarationSignedCopyReference" placeholder="z. B. Dokument-ID, DMS-Pfad oder abgelegte PDF-Datei">
+          </label>
+          <label class="cra-span-2">
             <span>Weitere einschlägige Unionsrechtsakte</span>
             <textarea name="otherUnionLegislation" rows="3" placeholder="z. B. weitere für das Produkt geltende EU-Harmonisierungsrechtsakte"></textarea>
           </label>
@@ -367,6 +371,13 @@
       <label>
         <span>Bezeichnung *</span>
         <input name="title" required>
+      </label>
+
+      <label>
+        <span>Verknüpftes Sicherheitsproblem</span>
+        <select name="updateItemId" id="reporting-update-item">
+          <option value="">Kein Eintrag verknüpft</option>
+        </select>
       </label>
 
       <label>
