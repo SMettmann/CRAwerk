@@ -81,6 +81,7 @@
       a.productionMonitoringProcess &&
       a.vulnerabilityContact &&
       a.cvdPolicy &&
+      a.cvdPolicyLocation &&
       a.secureUpdateDistribution &&
       machine.riskReviewComplete &&
       machine.supportPeriod.startDate &&
