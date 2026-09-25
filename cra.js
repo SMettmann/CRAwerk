@@ -265,6 +265,7 @@
       assessment.updateInstallation,
       assessment.secureDecommissioning,
       assessment.automaticUpdatesOptOut,
+      assessment.integratorInformation,
       assessment.supportType
     ].every(Boolean);
 
@@ -709,6 +710,7 @@
     document.getElementById('cra-company-name').textContent = company.name || 'Unternehmen';
     document.getElementById('cra-back').href = 'maschine.html?id=' + encodeURIComponent(machine.id);
     document.getElementById('back-to-updates').href = 'maschine.html?id=' + encodeURIComponent(machine.id) + '#module-updates';
+    document.getElementById('open-user-info').href = 'nutzerinfo.html?id=' + encodeURIComponent(machine.id);
     document.getElementById('open-declaration').href = 'konformitaet.html?id=' + encodeURIComponent(machine.id);
     document.getElementById('existing-update-count').textContent =
       machine.updateItems.length + (machine.updateItems.length === 1 ? ' Eintrag' : ' Einträge');
