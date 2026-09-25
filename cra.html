@@ -21,11 +21,11 @@
   <main class="app-main cra-main">
     <a class="back-link" id="cra-back" href="dashboard.html">← Zur Maschine</a>
 
-    <section class="cra-hero">
+    <section class="cra-hero cra-hero-simple">
       <div>
-        <span class="app-kicker">CRA-PRÜFUNG & ABSCHLUSS</span>
+        <span class="app-kicker">GEFÜHRTER CRA-ABSCHLUSS</span>
         <h1 id="cra-machine-name">Maschine</h1>
-        <p>Nur die Punkte, die zur bestehenden Maschinenakte noch fehlen. Keine zweite Produktakte.</p>
+        <p>CRAwerk führt Sie Schritt für Schritt durch die noch fehlenden Angaben. Sie müssen den CRA nicht auswendig kennen.</p>
       </div>
       <div class="cra-hero-actions">
         <button class="app-btn app-btn-ghost" id="download-sbom" type="button">SBOM herunterladen</button>
@@ -35,7 +35,30 @@
       </div>
     </section>
 
-    <section class="cra-summary-grid" aria-label="CRA-Abschlussstand">
+    <section class="cra-guide-overview" aria-label="Geführter CRA-Abschluss">
+      <div class="cra-guide-progress">
+        <div>
+          <span class="app-kicker">IHR NÄCHSTER SCHRITT</span>
+          <strong id="guide-current-title">Produkt einordnen</strong>
+          <p id="guide-current-help">Beantworten Sie nur die Fragen in diesem Schritt. CRAwerk hält die rechtliche Zuordnung im Hintergrund fest.</p>
+        </div>
+        <div class="cra-guide-progress-number">
+          <strong id="guide-progress-percent">0 %</strong>
+          <span id="guide-open-count">6 Schritte offen</span>
+        </div>
+      </div>
+      <div class="cra-guide-bar"><span id="guide-progress-bar"></span></div>
+      <nav class="cra-guide-nav" id="cra-guide-nav" aria-label="Arbeitsschritte">
+        <button type="button" data-guide-go="0"><span>1</span>Produkt einordnen</button>
+        <button type="button" data-guide-go="1"><span>2</span>Schutz prüfen</button>
+        <button type="button" data-guide-go="2"><span>3</span>Maschine beschreiben</button>
+        <button type="button" data-guide-go="3"><span>4</span>Sicherheitsprozess</button>
+        <button type="button" data-guide-go="4"><span>5</span>Konformität</button>
+        <button type="button" data-guide-go="5"><span>6</span>Akte prüfen</button>
+      </nav>
+    </section>
+
+    <section class="cra-summary-grid cra-legal-summary" aria-label="CRA-Abschlussstand">
       <article class="cra-summary-card">
         <span>Einstufung</span>
         <strong id="summary-classification">Offen</strong>
@@ -59,18 +82,18 @@
     </section>
 
     <form id="cra-form">
-      <section class="cra-section" id="cra-classification">
+      <section class="cra-section cra-guide-step" data-guide-step="0" id="cra-classification">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">01 · EINSTUFUNG</span>
-            <h2>Produktklasse & Konformitätsweg</h2>
-            <p>Die Einstufung bezieht sich auf die Kernfunktion des Gesamtprodukts.</p>
+            <span class="app-kicker">SCHRITT 1 VON 6</span>
+            <h2>Welche Art Produkt ist das?</h2>
+            <p>Hier ordnen Sie die Maschine ein. CRAwerk zeigt danach, welcher Konformitätsweg dazu passt.</p>
           </div>
         </div>
 
         <div class="cra-form-grid">
           <label>
-            <span>CRA-Einstufung *</span>
+            <span>Wie ist das Produkt nach CRA einzuordnen? *</span>
             <select name="classification" required>
               <option value="unset">Noch nicht festgelegt</option>
               <option value="standard">Standardprodukt</option>
@@ -81,17 +104,17 @@
           </label>
 
           <label>
-            <span>Kategorie / Kernfunktion nach Anhang III / IV und (EU) 2025/2392</span>
+            <span>Welche digitale Kernfunktion hat die Maschine?</span>
             <input name="classificationCategory" placeholder="z. B. konkrete Produktkategorie / Kernfunktion">
           </label>
 
           <label class="cra-span-2">
-            <span>Begründung der Einstufung *</span>
+            <span>Warum passt diese Einstufung? *</span>
             <textarea name="classificationReason" rows="3" placeholder="Warum fällt das Gesamtprodukt in diese Einstufung?"></textarea>
           </label>
 
           <label>
-            <span>Normen / Spezifikationen für relevante Anforderungen</span>
+            <span>Decken einschlägige Normen die Anforderungen vollständig ab?</span>
             <select name="standardsCoverage">
               <option value="unknown">Noch ungeklärt</option>
               <option value="full">Vollständig angewandt</option>
@@ -101,7 +124,7 @@
           </label>
 
           <label>
-            <span>Gewähltes Konformitätsverfahren *</span>
+            <span>Welcher Konformitätsweg wird genutzt? *</span>
             <select name="conformityRoute">
               <option value="unset">Noch nicht festgelegt</option>
               <option value="module_a">Interne Kontrolle · Modul A</option>
@@ -115,12 +138,12 @@
         <div class="cra-guidance" id="conformity-guidance"></div>
       </section>
 
-      <section class="cra-section" id="cra-annex-i">
+      <section class="cra-section cra-guide-step" data-guide-step="1" id="cra-annex-i">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">02 · ANHANG I</span>
-            <h2>Grundlegende Cybersicherheitsanforderungen</h2>
-            <p>Jeder Punkt bekommt einen nachvollziehbaren Stand: erfüllt, offen oder nicht anwendbar.</p>
+            <span class="app-kicker">SCHRITT 2 VON 6</span>
+            <h2>Ist die Maschine ausreichend geschützt?</h2>
+            <p>Wir haben die gesetzlichen Anforderungen in verständliche Themen gruppiert. Arbeiten Sie einen Block nach dem anderen durch.</p>
           </div>
           <div class="cra-section-counter" id="requirements-counter">0 / 22 bewertet</div>
         </div>
@@ -128,12 +151,12 @@
         <div class="requirements-list" id="requirements-list"></div>
       </section>
 
-      <section class="cra-section" id="cra-documentation">
+      <section class="cra-section cra-guide-step" data-guide-step="2" id="cra-documentation">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">03 · TECHNISCHE DOKUMENTATION</span>
-            <h2>Fehlende Angaben für Anhang VII</h2>
-            <p>Vorhandene Maschinen-, Software-, Risiko-, Support- und Nachweisdaten werden automatisch mitverwendet.</p>
+            <span class="app-kicker">SCHRITT 3 VON 6</span>
+            <h2>Was müssen wir über die Maschine wissen?</h2>
+            <p>Beschreiben Sie die Maschine in normaler Sprache. Vorhandene Daten aus den anderen Bereichen verwendet CRAwerk automatisch weiter.</p>
           </div>
         </div>
 
@@ -221,12 +244,12 @@
         </div>
       </section>
 
-      <section class="cra-section" id="cra-vulnerability">
+      <section class="cra-section cra-guide-step" data-guide-step="3" id="cra-vulnerability">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">04 · SCHWACHSTELLEN</span>
-            <h2>Offenlegung, Kontakt & sichere Updates</h2>
-            <p>Der vorhandene Sicherheitsproblem-Bereich bleibt bestehen. Hier dokumentieren Sie den übergeordneten Herstellerprozess.</p>
+            <span class="app-kicker">SCHRITT 4 VON 6</span>
+            <h2>Was passiert, wenn eine Sicherheitslücke auftaucht?</h2>
+            <p>Hinterlegen Sie nur den festen Ablauf Ihres Unternehmens: Kontakt, Bearbeitung, Updates und Umgang mit Zulieferern.</p>
           </div>
         </div>
 
@@ -263,7 +286,20 @@
         </div>
       </section>
 
-      <section class="cra-section" id="cra-reporting">
+      <section class="cra-special-hub" id="cra-special-hub">
+        <div>
+          <span class="app-kicker">NUR WENN ETWAS PASSIERT</span>
+          <h2>Sonderfall eingetreten?</h2>
+          <p>Diese Bereiche brauchen Sie im normalen Arbeitsablauf nicht. Öffnen Sie nur den passenden Fall.</p>
+        </div>
+        <div class="cra-special-actions">
+          <button type="button" data-special-target="cra-reporting">Sicherheitsvorfall / aktive Schwachstelle</button>
+          <button type="button" data-special-target="cra-nonconformity">Produkt nicht mehr konform</button>
+          <button type="button" data-special-target="cra-authority">Behördenanfrage erhalten</button>
+        </div>
+      </section>
+
+      <section class="cra-section cra-special-case" id="cra-reporting">
         <div class="cra-section-head">
           <div>
             <span class="app-kicker">05 · CRA-MELDUNGEN</span>
@@ -275,7 +311,7 @@
         <div class="reporting-list" id="reporting-list"></div>
       </section>
 
-      <section class="cra-section" id="cra-nonconformity">
+      <section class="cra-section cra-special-case" id="cra-nonconformity">
         <div class="cra-section-head">
           <div>
             <span class="app-kicker">06 · NICHTKONFORMITÄT</span>
@@ -287,7 +323,7 @@
         <div class="reporting-list" id="nonconformity-list"></div>
       </section>
 
-      <section class="cra-section" id="cra-authority">
+      <section class="cra-section cra-special-case" id="cra-authority">
         <div class="cra-section-head">
           <div>
             <span class="app-kicker">07 · MARKTÜBERWACHUNGSBEHÖRDE</span>
@@ -299,12 +335,12 @@
         <div class="reporting-list" id="authority-request-list"></div>
       </section>
 
-      <section class="cra-section" id="cra-conformity">
+      <section class="cra-section cra-guide-step" data-guide-step="4" id="cra-conformity">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">08 · KONFORMITÄTSABSCHLUSS</span>
-            <h2>EU-Erklärung & CE</h2>
-            <p>Die Erklärung wird aus den hinterlegten Daten erzeugt. Die Herstellerverantwortung bleibt beim Hersteller.</p>
+            <span class="app-kicker">SCHRITT 5 VON 6</span>
+            <h2>Konformität abschließen</h2>
+            <p>Zum Schluss dokumentieren Sie CE-Kennzeichnung und die unterschriebene EU-Konformitätserklärung.</p>
           </div>
         </div>
 
@@ -367,21 +403,25 @@
         </div>
       </section>
 
-      <section class="cra-section" id="cra-annex-vii">
+      <section class="cra-section cra-guide-step" data-guide-step="5" id="cra-annex-vii">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">09 · ANHANG VII</span>
-            <h2>Technische Dokumentation – Vollständigkeitscheck</h2>
-            <p>CRAwerk prüft nur, ob die vorgeschriebenen Dokumentationsbereiche belegt sind. Es bewertet nicht die technische Qualität des Inhalts.</p>
+            <span class="app-kicker">SCHRITT 6 VON 6</span>
+            <h2>Ist die Akte vollständig?</h2>
+            <p>CRAwerk zeigt hier nur noch, ob alle benötigten Bereiche belegt sind. Offene Punkte können Sie direkt zurückverfolgen.</p>
           </div>
           <div class="cra-section-counter" id="annex-vii-counter">0 / 8 belegt</div>
         </div>
         <div class="annex-vii-list" id="annex-vii-list"></div>
       </section>
 
-      <div class="cra-save-bar">
-        <span id="cra-save-state">Noch nicht gespeichert</span>
-        <button class="app-btn app-btn-dark" type="submit">CRA-Stand speichern</button>
+      <div class="cra-guide-controls">
+        <button class="app-btn app-btn-ghost" id="guide-prev" type="button">← Zurück</button>
+        <div>
+          <span id="cra-save-state">Noch nicht gespeichert</span>
+          <button class="app-btn app-btn-dark" type="submit">Speichern</button>
+          <button class="app-btn app-btn-dark" id="guide-next" type="button">Speichern & weiter →</button>
+        </div>
       </div>
     </form>
   </main>
