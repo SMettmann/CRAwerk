@@ -69,7 +69,7 @@
       'vulnerabilityContact','cvdPolicy','secureUpdateDistribution','secureCommissioning','securityChangeEffects',
       'updateInstallation','secureDecommissioning','automaticUpdatesOptOut','integratorInformation','supportType',
       'declarationUrl','ceStatus','ceMarkingLocation','euDeclarationStatus','declarationPlace','declarationDate',
-      'declarationSigner','declarationFunction','notifiedBodyName','notifiedBodyNumber','certificateReference',
+      'declarationSigner','declarationFunction','declarationSignedCopyReference','notifiedBodyName','notifiedBodyNumber','certificateReference',
       'otherUnionLegislation'
     ];
     return Object.fromEntries(names.map(name => [name, String(data.get(name) || '').trim()]));
@@ -110,6 +110,7 @@
       declarationDate:a.declarationDate || '',
       declarationSigner:a.declarationSigner || '',
       declarationFunction:a.declarationFunction || '',
+      declarationSignedCopyReference:a.declarationSignedCopyReference || '',
       notifiedBodyName:a.notifiedBodyName || '',
       notifiedBodyNumber:a.notifiedBodyNumber || '',
       certificateReference:a.certificateReference || '',
@@ -205,8 +206,23 @@
     return ['module_bc','module_h','eu_certification'].includes(route);
   };
 
+  const updateRouteOptions = assessment => {
+    const select = form.elements.conformityRoute;
+    const moduleA = select.querySelector('option[value="module_a"]');
+    if (!moduleA) return;
+    moduleA.disabled =
+      assessment.classification === 'important_ii' ||
+      assessment.classification === 'critical' ||
+      (assessment.classification === 'important_i' && assessment.standardsCoverage !== 'full');
+
+    if (moduleA.disabled && select.value === 'module_a') {
+      select.value = 'unset';
+    }
+  };
+
   const renderGuidance = () => {
     const a = getAssessmentFromForm();
+    updateRouteOptions(a);
     const guide = conformityGuidance(a);
     const valid = routeLooksValid(a);
     document.getElementById('conformity-guidance').innerHTML =
@@ -222,7 +238,8 @@
     assessment.declarationPlace &&
     assessment.declarationDate &&
     assessment.declarationSigner &&
-    assessment.declarationFunction
+    assessment.declarationFunction &&
+    assessment.declarationSignedCopyReference
   );
 
   const conformityDetailsComplete = assessment => {
@@ -556,6 +573,7 @@
     event.preventDefault();
     const data = new FormData(reportingForm);
     const value = {
+      updateItemId:data.get('updateItemId') || '',
       eventType:data.get('eventType'),
       title:data.get('title').trim(),
       affectedVersion:data.get('affectedVersion').trim(),
@@ -568,6 +586,17 @@
       notes:data.get('notes').trim(),
       status:data.get('status')
     };
+
+    if (value.status === 'closed') {
+      if (!value.earlyWarningAt || !value.fullNotificationAt || !value.finalReportAt) {
+        showToast('Zum Abschließen müssen 24-h-Frühwarnung, 72-h-Meldung und Abschlussbericht dokumentiert sein.');
+        return;
+      }
+      if (value.eventType === 'actively_exploited_vulnerability' && !value.correctiveMeasureAvailableAt) {
+        showToast('Bei einer aktiv ausgenutzten Schwachstelle bitte auch den Zeitpunkt der verfügbaren Korrekturmaßnahme dokumentieren.');
+        return;
+      }
+    }
 
     try {
       if (editingReportingId) await backend.updateReportingEvent(editingReportingId, value);
@@ -589,6 +618,7 @@
       if (!item) return;
       editingReportingId = item.id;
       reportingForm.elements.eventType.value = item.eventType;
+      reportingForm.elements.updateItemId.value = item.updateItemId || '';
       reportingForm.elements.title.value = item.title;
       reportingForm.elements.affectedVersion.value = item.affectedVersion || '';
       reportingForm.elements.assessment.value = item.assessment || '';
@@ -646,6 +676,15 @@
     document.getElementById('open-declaration').href = 'konformitaet.html?id=' + encodeURIComponent(machine.id);
     document.getElementById('existing-update-count').textContent =
       machine.updateItems.length + (machine.updateItems.length === 1 ? ' Eintrag' : ' Einträge');
+
+    const reportingUpdateSelect = document.getElementById('reporting-update-item');
+    reportingUpdateSelect.innerHTML =
+      '<option value="">Kein Eintrag verknüpft</option>' +
+      machine.updateItems.map(item =>
+        '<option value="' + escapeHtml(item.id) + '">' +
+        escapeHtml(item.title + (item.affected ? ' · ' + item.affected : '')) +
+        '</option>'
+      ).join('');
 
     fillAssessment(bundle.assessment);
     renderRequirements();
