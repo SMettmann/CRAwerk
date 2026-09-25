@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>CRA-Prüfung – CRAwerk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body" data-page="cra">
+  <header class="app-header">
+    <a class="app-brand" href="dashboard.html"><span>CRA</span>werk</a>
+    <nav class="app-nav">
+      <a href="dashboard.html">Übersicht</a>
+      <a href="dashboard.html#maschinen">Maschinen</a>
+      <a href="admin.html" data-system-admin-link hidden>Systemadmin</a>
+    </nav>
+    <a class="app-account" href="unternehmen.html" id="cra-company-name">Unternehmen</a>
+  </header>
+
+  <main class="app-main cra-main">
+    <a class="back-link" id="cra-back" href="dashboard.html">← Zur Maschine</a>
+
+    <section class="cra-hero">
+      <div>
+        <span class="app-kicker">CRA-PRÜFUNG & ABSCHLUSS</span>
+        <h1 id="cra-machine-name">Maschine</h1>
+        <p>Nur die Punkte, die zur bestehenden Maschinenakte noch fehlen. Keine zweite Produktakte.</p>
+      </div>
+      <div class="cra-hero-actions">
+        <button class="app-btn app-btn-ghost" id="download-sbom" type="button">SBOM herunterladen</button>
+        <a class="app-btn app-btn-ghost" id="open-declaration" href="#">EU-Erklärung</a>
+        <button class="app-btn app-btn-dark" id="save-cra-top" type="button">CRA-Stand speichern</button>
+      </div>
+    </section>
+
+    <section class="cra-summary-grid" aria-label="CRA-Abschlussstand">
+      <article class="cra-summary-card">
+        <span>Einstufung</span>
+        <strong id="summary-classification">Offen</strong>
+        <small id="summary-route">Konformitätsweg offen</small>
+      </article>
+      <article class="cra-summary-card">
+        <span>Anhang I</span>
+        <strong id="summary-annex-i">0 / 22</strong>
+        <small>Anforderungen bewertet</small>
+      </article>
+      <article class="cra-summary-card">
+        <span>Anhang VII</span>
+        <strong id="summary-annex-vii">0 / 8</strong>
+        <small>Dokumentationsbereiche belegt</small>
+      </article>
+      <article class="cra-summary-card">
+        <span>Meldungen</span>
+        <strong id="summary-reporting">0 offen</strong>
+        <small>CRA-Meldevorgänge</small>
+      </article>
+    </section>
+
+    <form id="cra-form">
+      <section class="cra-section" id="cra-classification">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">01 · EINSTUFUNG</span>
+            <h2>Produktklasse & Konformitätsweg</h2>
+            <p>Die Einstufung bezieht sich auf die Kernfunktion des Gesamtprodukts.</p>
+          </div>
+        </div>
+
+        <div class="cra-form-grid">
+          <label>
+            <span>CRA-Einstufung *</span>
+            <select name="classification" required>
+              <option value="unset">Noch nicht festgelegt</option>
+              <option value="standard">Standardprodukt</option>
+              <option value="important_i">Wichtiges Produkt · Klasse I</option>
+              <option value="important_ii">Wichtiges Produkt · Klasse II</option>
+              <option value="critical">Kritisches Produkt</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Kategorie / Kernfunktion</span>
+            <input name="classificationCategory" placeholder="z. B. Produktkategorie nach Anhang III / IV">
+          </label>
+
+          <label class="cra-span-2">
+            <span>Begründung der Einstufung *</span>
+            <textarea name="classificationReason" rows="3" placeholder="Warum fällt das Gesamtprodukt in diese Einstufung?"></textarea>
+          </label>
+
+          <label>
+            <span>Normen / Spezifikationen für relevante Anforderungen</span>
+            <select name="standardsCoverage">
+              <option value="unknown">Noch ungeklärt</option>
+              <option value="full">Vollständig angewandt</option>
+              <option value="partial">Teilweise angewandt</option>
+              <option value="none">Nicht angewandt / nicht vorhanden</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Gewähltes Konformitätsverfahren *</span>
+            <select name="conformityRoute">
+              <option value="unset">Noch nicht festgelegt</option>
+              <option value="module_a">Interne Kontrolle · Modul A</option>
+              <option value="module_bc">EU-Baumusterprüfung B + interne Fertigungskontrolle C</option>
+              <option value="module_h">Umfassende Qualitätssicherung · Modul H</option>
+              <option value="eu_certification">Europäisches Cybersicherheitszertifizierungsschema</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="cra-guidance" id="conformity-guidance"></div>
+      </section>
+
+      <section class="cra-section" id="cra-annex-i">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">02 · ANHANG I</span>
+            <h2>Grundlegende Cybersicherheitsanforderungen</h2>
+            <p>Jeder Punkt bekommt einen nachvollziehbaren Stand: erfüllt, offen oder nicht anwendbar.</p>
+          </div>
+          <div class="cra-section-counter" id="requirements-counter">0 / 22 bewertet</div>
+        </div>
+
+        <div class="requirements-list" id="requirements-list"></div>
+      </section>
+
+      <section class="cra-section" id="cra-documentation">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">03 · TECHNISCHE DOKUMENTATION</span>
+            <h2>Fehlende Angaben für Anhang VII</h2>
+            <p>Vorhandene Maschinen-, Software-, Risiko-, Support- und Nachweisdaten werden automatisch mitverwendet.</p>
+          </div>
+        </div>
+
+        <div class="cra-form-grid">
+          <label class="cra-span-2">
+            <span>Zweckbestimmung *</span>
+            <textarea name="intendedPurpose" rows="3" placeholder="Wofür ist das Produkt bestimmt?"></textarea>
+          </label>
+          <label>
+            <span>Sicherheitsumgebung *</span>
+            <textarea name="securityEnvironment" rows="3" placeholder="Vorausgesetzte Umgebung, Netzwerk, Zugriffe ..."></textarea>
+          </label>
+          <label>
+            <span>Wesentliche Funktionen & Sicherheitseigenschaften *</span>
+            <textarea name="securityProperties" rows="3" placeholder="Wesentliche digitale Funktionen und Sicherheitsmerkmale"></textarea>
+          </label>
+          <label class="cra-span-2">
+            <span>Vorhersehbare Fehlanwendung / erhebliche Cyberrisiken *</span>
+            <textarea name="foreseeableMisuse" rows="3" placeholder="Welche vorhersehbare Nutzung kann zu erheblichen Risiken führen?"></textarea>
+          </label>
+          <label class="cra-span-2">
+            <span>Systemarchitektur / Zusammenspiel der Softwarekomponenten *</span>
+            <textarea name="architectureDescription" rows="4" placeholder="Architektur, Schnittstellen und Zusammenspiel der Softwarekomponenten"></textarea>
+          </label>
+          <label class="cra-span-2">
+            <span>Verweis auf Fotos / Zeichnungen / internes Layout *</span>
+            <input name="hardwareVisualsReference" placeholder="z. B. Zeichnung 4711, Schaltplan E-12, Dokument im DMS">
+          </label>
+          <label class="cra-span-2">
+            <span>Produktions- und Überwachungsprozess *</span>
+            <textarea name="productionMonitoringProcess" rows="3" placeholder="Wie werden Produktion, Änderungen und relevante Prüfungen überwacht?"></textarea>
+          </label>
+          <label class="cra-span-2">
+            <span>Angewandte Normen / gemeinsame Spezifikationen / Zertifizierungen *</span>
+            <textarea name="appliedStandards" rows="3" placeholder="Normen und angewandte Teile; wenn keine: technische Lösungen beschreiben"></textarea>
+          </label>
+          <label class="cra-span-2">
+            <span>Berichte über Sicherheitsprüfungen / Tests *</span>
+            <textarea name="testReportsSummary" rows="3" placeholder="Prüfberichte oder Verweis auf vorhandene Nachweise"></textarea>
+          </label>
+        </div>
+
+        <div class="cra-subhead">
+          <h3>Nutzerinformationen, die in der technischen Dokumentation mitgeführt werden</h3>
+          <p>Kurze Angaben oder Verweise reichen. „Nicht anwendbar“ kann dokumentiert werden, wenn es begründet ist.</p>
+        </div>
+
+        <div class="cra-form-grid">
+          <label>
+            <span>Sichere Erstinbetriebnahme *</span>
+            <textarea name="secureCommissioning" rows="3"></textarea>
+          </label>
+          <label>
+            <span>Auswirkung von Änderungen auf die Sicherheit *</span>
+            <textarea name="securityChangeEffects" rows="3"></textarea>
+          </label>
+          <label>
+            <span>Installation sicherheitsrelevanter Updates *</span>
+            <textarea name="updateInstallation" rows="3"></textarea>
+          </label>
+          <label>
+            <span>Sichere Außerbetriebnahme / Datenlöschung *</span>
+            <textarea name="secureDecommissioning" rows="3"></textarea>
+          </label>
+          <label>
+            <span>Automatische Updates / Opt-out *</span>
+            <textarea name="automaticUpdatesOptOut" rows="3" placeholder="Oder begründet: nicht anwendbar"></textarea>
+          </label>
+          <label>
+            <span>Informationen für Integratoren</span>
+            <textarea name="integratorInformation" rows="3" placeholder="Falls das Produkt zur Integration bestimmt ist"></textarea>
+          </label>
+          <label>
+            <span>Art des technischen Sicherheitssupports *</span>
+            <textarea name="supportType" rows="3"></textarea>
+          </label>
+          <label>
+            <span>URL der EU-Konformitätserklärung</span>
+            <input name="declarationUrl" type="url" placeholder="optional">
+          </label>
+        </div>
+      </section>
+
+      <section class="cra-section" id="cra-vulnerability">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">04 · SCHWACHSTELLEN</span>
+            <h2>Offenlegung, Kontakt & sichere Updates</h2>
+            <p>Der vorhandene Sicherheitsproblem-Bereich bleibt bestehen. Hier dokumentieren Sie den übergeordneten Herstellerprozess.</p>
+          </div>
+        </div>
+
+        <div class="cra-form-grid">
+          <label>
+            <span>Kontaktadresse für Schwachstellenmeldungen *</span>
+            <input name="vulnerabilityContact" placeholder="z. B. security@unternehmen.de oder Meldeformular">
+          </label>
+          <label class="cra-span-2">
+            <span>Konzept zur koordinierten Offenlegung von Schwachstellen (CVD) *</span>
+            <textarea name="cvdPolicy" rows="4" placeholder="Wie externe Meldungen angenommen, bestätigt, bewertet und koordiniert veröffentlicht werden"></textarea>
+          </label>
+          <label class="cra-span-2">
+            <span>Sichere Verteilung von Sicherheitsupdates *</span>
+            <textarea name="secureUpdateDistribution" rows="4" placeholder="Wie Updates authentisch, integer und sicher verteilt werden"></textarea>
+          </label>
+        </div>
+
+        <div class="cra-existing-box">
+          <div>
+            <span class="app-kicker">VORHANDENE SICHERHEITSPROBLEME</span>
+            <strong id="existing-update-count">0 Einträge</strong>
+            <p>Bewertung, betroffene Version, Maßnahme/Patch und Abschluss werden weiterhin im vorhandenen Maschinenbereich gepflegt.</p>
+          </div>
+          <a class="text-button" id="back-to-updates" href="#">Sicherheitsprobleme bearbeiten →</a>
+        </div>
+      </section>
+
+      <section class="cra-section" id="cra-reporting">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">05 · CRA-MELDUNGEN</span>
+            <h2>24 h · 72 h · Abschlussbericht</h2>
+            <p>Nur dokumentieren und Fristen führen. CRAwerk sendet keine Meldung an Behörden.</p>
+          </div>
+          <button class="app-btn app-btn-ghost" id="add-reporting-event" type="button">+ Meldevorgang</button>
+        </div>
+        <div class="reporting-list" id="reporting-list"></div>
+      </section>
+
+      <section class="cra-section" id="cra-conformity">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">06 · KONFORMITÄTSABSCHLUSS</span>
+            <h2>EU-Erklärung & CE</h2>
+            <p>Die Erklärung wird aus den hinterlegten Daten erzeugt. Die Herstellerverantwortung bleibt beim Hersteller.</p>
+          </div>
+        </div>
+
+        <div class="cra-form-grid">
+          <label>
+            <span>CE-Status *</span>
+            <select name="ceStatus">
+              <option value="open">Noch offen</option>
+              <option value="marked">CE-Kennzeichnung angebracht</option>
+            </select>
+          </label>
+          <label>
+            <span>Ort der CE-Kennzeichnung</span>
+            <input name="ceMarkingLocation" placeholder="z. B. Typenschild der Maschine">
+          </label>
+          <label>
+            <span>EU-Konformitätserklärung *</span>
+            <select name="euDeclarationStatus">
+              <option value="open">Noch offen</option>
+              <option value="prepared">Vorbereitet</option>
+              <option value="signed">Unterzeichnet</option>
+            </select>
+          </label>
+          <label>
+            <span>Ort der Ausstellung</span>
+            <input name="declarationPlace">
+          </label>
+          <label>
+            <span>Datum der Ausstellung</span>
+            <input name="declarationDate" type="date">
+          </label>
+          <label>
+            <span>Name der unterzeichnenden Person</span>
+            <input name="declarationSigner">
+          </label>
+          <label>
+            <span>Funktion</span>
+            <input name="declarationFunction">
+          </label>
+          <label class="cra-span-2">
+            <span>Weitere einschlägige Unionsrechtsakte</span>
+            <textarea name="otherUnionLegislation" rows="3" placeholder="z. B. weitere für das Produkt geltende EU-Harmonisierungsrechtsakte"></textarea>
+          </label>
+          <label>
+            <span>Notifizierte Stelle</span>
+            <input name="notifiedBodyName" placeholder="falls erforderlich">
+          </label>
+          <label>
+            <span>Kennnummer</span>
+            <input name="notifiedBodyNumber" placeholder="falls erforderlich">
+          </label>
+          <label class="cra-span-2">
+            <span>Zertifikat / Referenz</span>
+            <input name="certificateReference" placeholder="falls vorhanden">
+          </label>
+        </div>
+      </section>
+
+      <section class="cra-section" id="cra-annex-vii">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">07 · ANHANG VII</span>
+            <h2>Technische Dokumentation – Vollständigkeitscheck</h2>
+            <p>CRAwerk prüft nur, ob die vorgeschriebenen Dokumentationsbereiche belegt sind. Es bewertet nicht die technische Qualität des Inhalts.</p>
+          </div>
+          <div class="cra-section-counter" id="annex-vii-counter">0 / 8 belegt</div>
+        </div>
+        <div class="annex-vii-list" id="annex-vii-list"></div>
+      </section>
+
+      <div class="cra-save-bar">
+        <span id="cra-save-state">Noch nicht gespeichert</span>
+        <button class="app-btn app-btn-dark" type="submit">CRA-Stand speichern</button>
+      </div>
+    </form>
+  </main>
+
+  <dialog class="machine-dialog small-dialog" id="reporting-dialog">
+    <form class="machine-form" id="reporting-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">CRA-MELDEVORGANG</span>
+          <h2 id="reporting-dialog-title">Meldevorgang anlegen</h2>
+          <p>Fristen werden aus dem Zeitpunkt der Kenntnis berechnet.</p>
+        </div>
+        <button class="dialog-close" id="reporting-close" type="button" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Art *</span>
+        <select name="eventType" required>
+          <option value="actively_exploited_vulnerability">Aktiv ausgenutzte Schwachstelle</option>
+          <option value="severe_incident">Schwerwiegender Sicherheitsvorfall</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Bezeichnung *</span>
+        <input name="title" required>
+      </label>
+
+      <label>
+        <span>Betroffenes Produkt / Version</span>
+        <input name="affectedVersion">
+      </label>
+
+      <label>
+        <span>Bewertung</span>
+        <textarea name="assessment" rows="3"></textarea>
+      </label>
+
+      <label>
+        <span>Zeitpunkt der Kenntnis *</span>
+        <input name="awarenessAt" type="datetime-local" required>
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>24-h-Frühwarnung gesendet</span>
+          <input name="earlyWarningAt" type="datetime-local">
+        </label>
+        <label>
+          <span>72-h-Meldung gesendet</span>
+          <input name="fullNotificationAt" type="datetime-local">
+        </label>
+      </div>
+
+      <label>
+        <span>Korrekturmaßnahme verfügbar</span>
+        <input name="correctiveMeasureAvailableAt" type="datetime-local">
+      </label>
+
+      <label>
+        <span>Abschlussbericht gesendet</span>
+        <input name="finalReportAt" type="datetime-local">
+      </label>
+
+      <label>
+        <span>Notizen</span>
+        <textarea name="notes" rows="3"></textarea>
+      </label>
+
+      <fieldset>
+        <legend>Status</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="status" value="open" checked><span>Offen</span></label>
+          <label><input type="radio" name="status" value="closed"><span>Abgeschlossen</span></label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" id="reporting-cancel" type="button">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="app-toast" hidden></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="backend.js"></script>
+  <script src="cra.js"></script>
+</body>
+</html>
