@@ -161,6 +161,14 @@
     const session = await auth.requireSession();
     if (!session) return false;
     await setCompanyHeader();
+    try {
+      const systemAdmin = await backend.isSystemAdmin();
+      if (systemAdmin) {
+        document.querySelectorAll('[data-system-admin-link]').forEach(link => link.hidden = false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
     return true;
   };
 
