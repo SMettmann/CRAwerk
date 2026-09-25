@@ -367,6 +367,27 @@
         ).join('')
       : '<div class="report-empty">Kein Nichtkonformitätsvorgang dokumentiert.</div>';
 
+    const authorityRequests = machine.craAuthorityRequests || [];
+    document.getElementById('report-authority-requests').innerHTML = authorityRequests.length
+      ? authorityRequests.map(item =>
+          '<div class="report-item"><div><strong>' + escapeHtml(item.authorityName) + '</strong>' +
+          '<span>' +
+          (item.referenceNumber ? 'Referenz ' + escapeHtml(item.referenceNumber) + ' · ' : '') +
+          'Eingang ' + escapeHtml(item.receivedAt ? new Date(item.receivedAt).toLocaleString('de-DE') : '–') +
+          '</span><p><strong>Anfrage:</strong> ' + escapeHtml(item.requestSummary || '–') +
+          (item.requestedDocuments ? '<br><strong>Verlangte Unterlagen:</strong> ' + escapeHtml(item.requestedDocuments) : '') +
+          (item.sbomRequested ? '<br><strong>SBOM:</strong> ausdrücklich verlangt' : '') +
+          (item.authorityLanguage ? '<br><strong>Sprache:</strong> ' + escapeHtml(item.authorityLanguage) : '') +
+          (item.cooperationRequested ? '<br><strong>Mitwirkung an Maßnahmen:</strong> verlangt' : '') +
+          (item.cooperationMeasures ? '<br><strong>Maßnahmen:</strong> ' + escapeHtml(item.cooperationMeasures) : '') +
+          (item.responseAt ? '<br><strong>Übermittelt am:</strong> ' + escapeHtml(new Date(item.responseAt).toLocaleString('de-DE')) : '') +
+          (item.transmittedInformation ? '<br><strong>Übermittelt:</strong> ' + escapeHtml(item.transmittedInformation) : '') +
+          (item.evidenceReference ? '<br><strong>Nachweis:</strong> ' + escapeHtml(item.evidenceReference) : '') +
+          '</p></div><span class="report-badge ' + (item.status === 'closed' ? '' : 'open') + '">' +
+          (item.status === 'closed' ? 'Erledigt' : 'Offen') + '</span></div>'
+        ).join('')
+      : '<div class="report-empty">Keine Anfrage einer Marktüberwachungsbehörde dokumentiert.</div>';
+
     const annexViiRows = a ? [
       ['Zweckbestimmung', a.intendedPurpose],
       ['Sicherheitsumgebung', a.securityEnvironment],
