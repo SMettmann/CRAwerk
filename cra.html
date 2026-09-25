@@ -162,8 +162,8 @@
             <input name="hardwareVisualsReference" placeholder="z. B. Zeichnung 4711, Schaltplan E-12, Dokument im DMS">
           </label>
           <label class="cra-span-2">
-            <span>Produktions- und Überwachungsprozess *</span>
-            <textarea name="productionMonitoringProcess" rows="3" placeholder="Wie werden Produktion, Änderungen und relevante Prüfungen überwacht?"></textarea>
+            <span>Produktions-, Änderungs- und Überwachungsprozess *</span>
+            <textarea name="productionMonitoringProcess" rows="3" placeholder="Wie bleiben Serienprodukte bei Änderungen an Entwicklung, Herstellung, Produktmerkmalen, Normen oder Zertifizierungen konform?"></textarea>
           </label>
           <label class="cra-span-2">
             <span>Angewandte Normen / gemeinsame Spezifikationen / Zertifizierungen *</span>
@@ -172,6 +172,10 @@
           <label class="cra-span-2">
             <span>Berichte über Sicherheitsprüfungen / Tests *</span>
             <textarea name="testReportsSummary" rows="3" placeholder="Prüfberichte oder Verweis auf vorhandene Nachweise"></textarea>
+          </label>
+          <label class="cra-span-2">
+            <span>Aufbewahrung & Verfügbarkeit *</span>
+            <textarea name="retentionProcess" rows="3" placeholder="Wie technische Dokumentation, EU-Erklärung und Nutzerinformationen sowie bereitgestellte Sicherheitsupdates über die vorgeschriebenen Zeiträume verfügbar gehalten werden"></textarea>
           </label>
         </div>
 
@@ -226,9 +230,9 @@
         </div>
 
         <div class="cra-form-grid">
-          <label>
-            <span>Kontaktadresse für Schwachstellenmeldungen *</span>
-            <input name="vulnerabilityContact" placeholder="z. B. security@unternehmen.de oder Meldeformular">
+          <label class="cra-span-2">
+            <span>Zentrale Kontaktstelle für Schwachstellenmeldungen *</span>
+            <input name="vulnerabilityContact" placeholder="z. B. security@unternehmen.de und weitere direkte Kontaktmöglichkeit; nicht nur automatisierte Kommunikation">
           </label>
           <label class="cra-span-2">
             <span>Konzept zur koordinierten Offenlegung von Schwachstellen (CVD) *</span>
@@ -239,8 +243,12 @@
             <input name="cvdPolicyLocation" placeholder="z. B. https://unternehmen.de/security oder Dokument-/Portalverweis">
           </label>
           <label class="cra-span-2">
-            <span>Sichere Verteilung von Sicherheitsupdates *</span>
-            <textarea name="secureUpdateDistribution" rows="4" placeholder="Wie Updates authentisch, integer und sicher verteilt werden"></textarea>
+            <span>Sichere Verteilung & Verfügbarkeit von Sicherheitsupdates *</span>
+            <textarea name="secureUpdateDistribution" rows="4" placeholder="Wie Updates authentisch, integer und zeitnah verteilt werden und wie ihre Verfügbarkeit über die vorgeschriebene Dauer sichergestellt wird"></textarea>
+          </label>
+          <label class="cra-span-2">
+            <span>Drittkomponenten / Zulieferer *</span>
+            <textarea name="thirdPartyComponentProcess" rows="4" placeholder="Wie Drittkomponenten vor Integration geprüft werden und wie erkannte Schwachstellen an Hersteller/Maintainer gemeldet sowie gemeinsam behoben werden"></textarea>
           </label>
         </div>
 
@@ -385,13 +393,38 @@
       </label>
 
       <label>
-        <span>Betroffenes Produkt / Version</span>
-        <input name="affectedVersion">
+        <span>Betroffenes Produkt / Version *</span>
+        <input name="affectedVersion" placeholder="Produkt, Modell und betroffene Version">
       </label>
 
       <label>
-        <span>Bewertung</span>
-        <textarea name="assessment" rows="3"></textarea>
+        <span>Betroffene Mitgliedstaaten</span>
+        <input name="affectedMemberStates" placeholder="Soweit bekannt / anwendbar">
+      </label>
+
+      <label>
+        <span>Bewertung, Schweregrad & Auswirkungen *</span>
+        <textarea name="assessment" rows="3" placeholder="Art des Vorgangs, Schweregrad und Auswirkungen"></textarea>
+      </label>
+
+      <label>
+        <span>Korrektur- / Risikominderungsmaßnahmen *</span>
+        <textarea name="correctiveMeasures" rows="3" placeholder="Bereitgestellte oder laufende Maßnahmen / Sicherheitsupdate"></textarea>
+      </label>
+
+      <label>
+        <span>Maßnahmen, die Nutzer ergreifen können *</span>
+        <textarea name="userMitigation" rows="3" placeholder="Konkrete Hinweise zur Risikominderung für Nutzer"></textarea>
+      </label>
+
+      <label>
+        <span>Bedrohungsakteur / Ursache</span>
+        <textarea name="threatOrRootCause" rows="3" placeholder="Bei Vorfällen: wahrscheinliche Ursache; bei Schwachstellen: böswilliger Akteur, soweit bekannt"></textarea>
+      </label>
+
+      <label>
+        <span>Sensibilität der gemeldeten Informationen</span>
+        <input name="sensitivityNote" placeholder="Soweit anwendbar">
       </label>
 
       <label>
@@ -419,6 +452,17 @@
         <span>Abschlussbericht gesendet</span>
         <input name="finalReportAt" type="datetime-local">
       </label>
+
+      <div class="form-two">
+        <label>
+          <span>Betroffene Nutzer informiert *</span>
+          <input name="usersInformedAt" type="datetime-local">
+        </label>
+        <label>
+          <span>Nachweis der Nutzerinformation *</span>
+          <input name="userNotificationReference" placeholder="URL, Mailing, Kundeninformation, Ticket ...">
+        </label>
+      </div>
 
       <label>
         <span>Notizen</span>
