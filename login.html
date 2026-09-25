@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Bei CRAwerk anmelden." />
+  <title>CRAwerk – Anmelden</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="register-page">
+  <header class="register-header">
+    <a class="brand" href="index.html" aria-label="CRAwerk Startseite">
+      <span class="brand-mark">CRA</span><span class="brand-word">werk</span>
+    </a>
+    <a class="register-back" href="index.html">Zurück zur Startseite</a>
+  </header>
+
+  <main class="register-main login-main">
+    <section class="register-copy">
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        CRAwerk
+      </div>
+      <h1>Willkommen zurück.<br><span>Weiter, wo Sie aufgehört haben.</span></h1>
+      <p class="register-lead">
+        Melden Sie sich mit Ihrer E-Mail-Adresse und Ihrem Passwort an.
+        Ihre Maschinen und Produktakten werden Ihrem Unternehmen zugeordnet gespeichert.
+      </p>
+    </section>
+
+    <section class="register-panel">
+      <div class="register-panel-head">
+        <span class="section-kicker">ANMELDEN</span>
+        <h2>Ihr CRAwerk-Zugang</h2>
+        <p>Mit den Zugangsdaten anmelden, die Sie bei der Registrierung gewählt haben.</p>
+      </div>
+
+      <form class="register-form" id="login-form">
+        <div class="form-field form-field-full">
+          <label for="login-email">E-Mail-Adresse</label>
+          <input id="login-email" name="email" type="email" autocomplete="email" required>
+        </div>
+
+        <div class="form-field form-field-full">
+          <label for="login-password">Passwort</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" minlength="8" required>
+        </div>
+
+        <button class="button button-dark register-submit" id="login-submit" type="submit">Anmelden</button>
+
+        <div class="register-message auth-message" id="login-message" hidden></div>
+
+        <p class="auth-switch">Noch kein Konto? <a href="registrieren.html">CRAwerk-Konto anlegen</a></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="legal-footer register-legal-footer">
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="rechtliches.html">Rechtliche Hinweise</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
