@@ -75,6 +75,7 @@
       a.updateInstallation &&
       a.secureDecommissioning &&
       a.automaticUpdatesOptOut &&
+      a.integratorInformation &&
       a.supportType
     );
 
