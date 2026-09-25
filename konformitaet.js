@@ -70,7 +70,8 @@
       ['Ausgestellt in', a.declarationPlace || '–'],
       ['Datum', formatDate(a.declarationDate)],
       ['Name', a.declarationSigner || '–'],
-      ['Funktion', a.declarationFunction || '–']
+      ['Funktion', a.declarationFunction || '–'],
+      ['Unterzeichnete Fassung / Ablage', a.declarationSignedCopyReference || '–']
     ];
     document.getElementById('declaration-signature').innerHTML = signature.map(([label,value]) =>
       '<div class="report-data"><dt>' + escapeHtml(label) + '</dt><dd>' + escapeHtml(value) + '</dd></div>'
