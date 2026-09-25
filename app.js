@@ -21,6 +21,8 @@
     const a = machine.craAssessment;
     const requirements = machine.craRequirements || [];
     const reporting = machine.craReportingEvents || [];
+    const nonconformities = machine.craNonconformityEvents || [];
+    const noOpenNonconformities = nonconformities.every(item => item.status === 'closed');
     if (!a) return false;
 
     const company = machine.company || {};
@@ -115,7 +117,8 @@
       annexViiReady &&
       ceReady &&
       declarationReady &&
-      reporting.every(item => item.status === 'closed')
+      reporting.every(item => item.status === 'closed') &&
+      noOpenNonconformities
     );
   };
 
