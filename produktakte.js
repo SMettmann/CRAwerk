@@ -43,7 +43,7 @@
       !(['important_ii','critical'].includes(a.classification) && a.conformityRoute === 'module_a');
     const userInfo = Boolean(
       a.secureCommissioning && a.securityChangeEffects && a.updateInstallation &&
-      a.secureDecommissioning && a.automaticUpdatesOptOut && a.supportType
+      a.secureDecommissioning && a.automaticUpdatesOptOut && a.integratorInformation && a.supportType
     );
     const annexViiReady = Boolean(
       a.intendedPurpose && a.securityEnvironment && a.securityProperties &&
