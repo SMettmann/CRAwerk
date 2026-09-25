@@ -475,6 +475,7 @@
     securityProperties:row.security_properties || '',
     foreseeableMisuse:row.foreseeable_misuse || '',
     architectureDescription:row.architecture_description || '',
+    hardwareVisualsReference:row.hardware_visuals_reference || '',
     productionMonitoringProcess:row.production_monitoring_process || '',
     appliedStandards:row.applied_standards || '',
     testReportsSummary:row.test_reports_summary || '',
@@ -498,7 +499,8 @@
     declarationFunction:row.declaration_function || '',
     notifiedBodyName:row.notified_body_name || '',
     notifiedBodyNumber:row.notified_body_number || '',
-    certificateReference:row.certificate_reference || ''
+    certificateReference:row.certificate_reference || '',
+    otherUnionLegislation:row.other_union_legislation || ''
   }) : null;
 
   const mapReportingEvent = row => ({
@@ -552,6 +554,7 @@
       security_properties:v.securityProperties || null,
       foreseeable_misuse:v.foreseeableMisuse || null,
       architecture_description:v.architectureDescription || null,
+      hardware_visuals_reference:v.hardwareVisualsReference || null,
       production_monitoring_process:v.productionMonitoringProcess || null,
       applied_standards:v.appliedStandards || null,
       test_reports_summary:v.testReportsSummary || null,
@@ -575,7 +578,8 @@
       declaration_function:v.declarationFunction || null,
       notified_body_name:v.notifiedBodyName || null,
       notified_body_number:v.notifiedBodyNumber || null,
-      certificate_reference:v.certificateReference || null
+      certificate_reference:v.certificateReference || null,
+      other_union_legislation:v.otherUnionLegislation || null
     }, {onConflict:'machine_id'}).select().single();
     if (error) throw error;
     return mapCraAssessment(data);
