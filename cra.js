@@ -216,6 +216,27 @@
       (valid ? 'Gewählter Weg passt zur Einstufung' : 'Konformitätsweg noch prüfen') + '</span>';
   };
 
+  const declarationComplete = assessment => Boolean(
+    assessment &&
+    assessment.euDeclarationStatus === 'signed' &&
+    assessment.declarationPlace &&
+    assessment.declarationDate &&
+    assessment.declarationSigner &&
+    assessment.declarationFunction
+  );
+
+  const conformityDetailsComplete = assessment => {
+    if (!assessment || assessment.conformityRoute === 'unset') return false;
+    if (assessment.conformityRoute === 'module_a') return true;
+    if (['module_bc','module_h'].includes(assessment.conformityRoute)) {
+      return Boolean(assessment.notifiedBodyName && assessment.notifiedBodyNumber && assessment.certificateReference);
+    }
+    if (assessment.conformityRoute === 'eu_certification') {
+      return Boolean(assessment.certificateReference);
+    }
+    return false;
+  };
+
   const annexViiChecks = (assessment, requirements) => {
     const annexIComplete = requirements.length === REQUIREMENTS.length && requirements.every(requirementIsDocumented);
     const userInfo = [
@@ -258,7 +279,8 @@
       },
       {
         title:'7. EU-Konformitätserklärung',
-        done:['prepared','signed'].includes(assessment.euDeclarationStatus)
+        done:declarationComplete(assessment) && conformityDetailsComplete(assessment) &&
+          assessment.ceStatus === 'marked' && Boolean(assessment.ceMarkingLocation)
       },
       {
         title:'8. Software-Stückliste (soweit anwendbar)',
