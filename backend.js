@@ -10,7 +10,9 @@
     name:item.name,
     version:item.version,
     type:item.type,
-    vendor:item.vendor || ''
+    vendor:item.vendor || '',
+    purl:item.purl || '',
+    sbomScope:item.sbom_scope || 'top_level'
   });
 
   const mapComponent = item => ({
@@ -37,6 +39,9 @@
     date:item.known_since || '',
     affected:item.affected || '',
     action:item.action,
+    assessment:item.assessment || '',
+    patchVersion:item.patch_version || '',
+    remediatedAt:item.remediated_at || '',
     status:item.status
   });
 
@@ -168,7 +173,9 @@
       name:v.name,
       version:v.version,
       type:v.type,
-      vendor:v.vendor || null
+      vendor:v.vendor || null,
+      purl:v.purl || null,
+      sbom_scope:v.sbomScope || 'top_level'
     }).select().single();
     if (error) throw error;
     return mapSoftware(data);
@@ -176,7 +183,12 @@
 
   const updateSoftware = async (id, v) => {
     const { error } = await db.from('software_items').update({
-      name:v.name, version:v.version, type:v.type, vendor:v.vendor || null
+      name:v.name,
+      version:v.version,
+      type:v.type,
+      vendor:v.vendor || null,
+      purl:v.purl || null,
+      sbom_scope:v.sbomScope || 'top_level'
     }).eq('id', id);
     if (error) throw error;
   };
@@ -260,6 +272,9 @@
       known_since:v.date || null,
       affected:v.affected || null,
       action:v.action,
+      assessment:v.assessment || null,
+      patch_version:v.patchVersion || null,
+      remediated_at:v.remediatedAt || null,
       status:v.status
     }).select().single();
     if (error) throw error;
@@ -272,6 +287,9 @@
       known_since:v.date || null,
       affected:v.affected || null,
       action:v.action,
+      assessment:v.assessment || null,
+      patch_version:v.patchVersion || null,
+      remediated_at:v.remediatedAt || null,
       status:v.status
     }).eq('id', id);
     if (error) throw error;
@@ -444,6 +462,181 @@
     }));
   };
 
+
+  const mapCraAssessment = row => row ? ({
+    machineId:row.machine_id,
+    classification:row.classification || 'unset',
+    classificationCategory:row.classification_category || '',
+    classificationReason:row.classification_reason || '',
+    standardsCoverage:row.standards_coverage || 'unknown',
+    conformityRoute:row.conformity_route || 'unset',
+    intendedPurpose:row.intended_purpose || '',
+    securityEnvironment:row.security_environment || '',
+    securityProperties:row.security_properties || '',
+    foreseeableMisuse:row.foreseeable_misuse || '',
+    architectureDescription:row.architecture_description || '',
+    productionMonitoringProcess:row.production_monitoring_process || '',
+    appliedStandards:row.applied_standards || '',
+    testReportsSummary:row.test_reports_summary || '',
+    vulnerabilityContact:row.vulnerability_contact || '',
+    cvdPolicy:row.cvd_policy || '',
+    secureUpdateDistribution:row.secure_update_distribution || '',
+    secureCommissioning:row.secure_commissioning || '',
+    securityChangeEffects:row.security_change_effects || '',
+    updateInstallation:row.update_installation || '',
+    secureDecommissioning:row.secure_decommissioning || '',
+    automaticUpdatesOptOut:row.automatic_updates_opt_out || '',
+    integratorInformation:row.integrator_information || '',
+    supportType:row.support_type || '',
+    declarationUrl:row.declaration_url || '',
+    ceStatus:row.ce_status || 'open',
+    ceMarkingLocation:row.ce_marking_location || '',
+    euDeclarationStatus:row.eu_declaration_status || 'open',
+    declarationPlace:row.declaration_place || '',
+    declarationDate:row.declaration_date || '',
+    declarationSigner:row.declaration_signer || '',
+    declarationFunction:row.declaration_function || '',
+    notifiedBodyName:row.notified_body_name || '',
+    notifiedBodyNumber:row.notified_body_number || '',
+    certificateReference:row.certificate_reference || ''
+  }) : null;
+
+  const mapReportingEvent = row => ({
+    id:row.id,
+    machineId:row.machine_id,
+    updateItemId:row.update_item_id || '',
+    eventType:row.event_type,
+    title:row.title,
+    affectedVersion:row.affected_version || '',
+    assessment:row.assessment || '',
+    awarenessAt:row.awareness_at || '',
+    earlyWarningAt:row.early_warning_at || '',
+    fullNotificationAt:row.full_notification_at || '',
+    correctiveMeasureAvailableAt:row.corrective_measure_available_at || '',
+    finalReportAt:row.final_report_at || '',
+    notes:row.notes || '',
+    status:row.status || 'open'
+  });
+
+  const loadCraBundle = async machineId => {
+    const [assessmentResult, requirementsResult, reportingResult] = await Promise.all([
+      db.from('cra_assessments').select('*').eq('machine_id', machineId).maybeSingle(),
+      db.from('cra_requirements').select('*').eq('machine_id', machineId).order('requirement_key'),
+      db.from('cra_reporting_events').select('*').eq('machine_id', machineId).order('awareness_at', {ascending:false})
+    ]);
+    if (assessmentResult.error) throw assessmentResult.error;
+    if (requirementsResult.error) throw requirementsResult.error;
+    if (reportingResult.error) throw reportingResult.error;
+    return {
+      assessment:mapCraAssessment(assessmentResult.data),
+      requirements:(requirementsResult.data || []).map(row => ({
+        key:row.requirement_key,
+        status:row.status,
+        justification:row.justification || '',
+        evidence:row.evidence || ''
+      })),
+      reportingEvents:(reportingResult.data || []).map(mapReportingEvent)
+    };
+  };
+
+  const saveCraAssessment = async (machineId, v) => {
+    const { data, error } = await db.from('cra_assessments').upsert({
+      machine_id:machineId,
+      classification:v.classification || 'unset',
+      classification_category:v.classificationCategory || null,
+      classification_reason:v.classificationReason || null,
+      standards_coverage:v.standardsCoverage || 'unknown',
+      conformity_route:v.conformityRoute || 'unset',
+      intended_purpose:v.intendedPurpose || null,
+      security_environment:v.securityEnvironment || null,
+      security_properties:v.securityProperties || null,
+      foreseeable_misuse:v.foreseeableMisuse || null,
+      architecture_description:v.architectureDescription || null,
+      production_monitoring_process:v.productionMonitoringProcess || null,
+      applied_standards:v.appliedStandards || null,
+      test_reports_summary:v.testReportsSummary || null,
+      vulnerability_contact:v.vulnerabilityContact || null,
+      cvd_policy:v.cvdPolicy || null,
+      secure_update_distribution:v.secureUpdateDistribution || null,
+      secure_commissioning:v.secureCommissioning || null,
+      security_change_effects:v.securityChangeEffects || null,
+      update_installation:v.updateInstallation || null,
+      secure_decommissioning:v.secureDecommissioning || null,
+      automatic_updates_opt_out:v.automaticUpdatesOptOut || null,
+      integrator_information:v.integratorInformation || null,
+      support_type:v.supportType || null,
+      declaration_url:v.declarationUrl || null,
+      ce_status:v.ceStatus || 'open',
+      ce_marking_location:v.ceMarkingLocation || null,
+      eu_declaration_status:v.euDeclarationStatus || 'open',
+      declaration_place:v.declarationPlace || null,
+      declaration_date:v.declarationDate || null,
+      declaration_signer:v.declarationSigner || null,
+      declaration_function:v.declarationFunction || null,
+      notified_body_name:v.notifiedBodyName || null,
+      notified_body_number:v.notifiedBodyNumber || null,
+      certificate_reference:v.certificateReference || null
+    }, {onConflict:'machine_id'}).select().single();
+    if (error) throw error;
+    return mapCraAssessment(data);
+  };
+
+  const saveCraRequirements = async (machineId, values) => {
+    if (!values.length) return;
+    const rows = values.map(item => ({
+      machine_id:machineId,
+      requirement_key:item.key,
+      status:item.status || 'open',
+      justification:item.justification || null,
+      evidence:item.evidence || null
+    }));
+    const { error } = await db.from('cra_requirements').upsert(rows, {onConflict:'machine_id,requirement_key'});
+    if (error) throw error;
+  };
+
+  const addReportingEvent = async (machineId, v) => {
+    const { data, error } = await db.from('cra_reporting_events').insert({
+      machine_id:machineId,
+      update_item_id:v.updateItemId || null,
+      event_type:v.eventType,
+      title:v.title,
+      affected_version:v.affectedVersion || null,
+      assessment:v.assessment || null,
+      awareness_at:v.awarenessAt,
+      early_warning_at:v.earlyWarningAt || null,
+      full_notification_at:v.fullNotificationAt || null,
+      corrective_measure_available_at:v.correctiveMeasureAvailableAt || null,
+      final_report_at:v.finalReportAt || null,
+      notes:v.notes || null,
+      status:v.status || 'open'
+    }).select().single();
+    if (error) throw error;
+    return mapReportingEvent(data);
+  };
+
+  const updateReportingEvent = async (id, v) => {
+    const { error } = await db.from('cra_reporting_events').update({
+      update_item_id:v.updateItemId || null,
+      event_type:v.eventType,
+      title:v.title,
+      affected_version:v.affectedVersion || null,
+      assessment:v.assessment || null,
+      awareness_at:v.awarenessAt,
+      early_warning_at:v.earlyWarningAt || null,
+      full_notification_at:v.fullNotificationAt || null,
+      corrective_measure_available_at:v.correctiveMeasureAvailableAt || null,
+      final_report_at:v.finalReportAt || null,
+      notes:v.notes || null,
+      status:v.status || 'open'
+    }).eq('id', id);
+    if (error) throw error;
+  };
+
+  const deleteReportingEvent = async id => {
+    const { error } = await db.from('cra_reporting_events').delete().eq('id', id);
+    if (error) throw error;
+  };
+
   const adminSetCompanyStatus = async (companyId, status) => {
     const allowed = ['trial','active','paused','cancelled'];
     if (!allowed.includes(status)) throw new Error('Ungültiger Firmenstatus.');
@@ -461,6 +654,12 @@
     adminOverview,
     adminCompanies,
     adminSetCompanyStatus,
+    loadCraBundle,
+    saveCraAssessment,
+    saveCraRequirements,
+    addReportingEvent,
+    updateReportingEvent,
+    deleteReportingEvent,
     loadMachines,
     loadMachine,
     createMachine,
