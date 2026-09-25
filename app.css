@@ -1581,3 +1581,288 @@ a{color:inherit;text-decoration:none}
     display:none!important;
   }
 }
+
+
+/* Systemadmin */
+.admin-main{
+  max-width:1320px;
+}
+
+.admin-intro{
+  margin-bottom:24px;
+}
+
+.admin-stats-grid{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:24px;
+}
+
+.admin-stat-card{
+  min-width:0;
+}
+
+.admin-stat-card strong{
+  font-size:34px;
+}
+
+.admin-stat-highlight{
+  border-color:#1b261f;
+  background:#17201b;
+}
+
+.admin-stat-highlight span,
+.admin-stat-highlight small{
+  color:#b7c0ba;
+}
+
+.admin-stat-highlight strong{
+  color:#fff;
+}
+
+.admin-panel{
+  padding:26px;
+  border:1px solid #d9dfda;
+  border-radius:10px;
+  background:#fff;
+}
+
+.admin-panel-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:24px;
+  margin-bottom:20px;
+}
+
+.admin-panel-head h2{
+  margin:0 0 6px;
+  font-size:27px;
+  letter-spacing:-.035em;
+}
+
+.admin-panel-head p{
+  margin:0;
+  color:#68746d;
+  font-size:12px;
+}
+
+.admin-filters{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.admin-filter{
+  min-height:34px;
+  padding:0 11px;
+  border:1px solid #d1d8d3;
+  border-radius:999px;
+  color:#5d6962;
+  background:#fff;
+  cursor:pointer;
+  font-size:10px;
+  font-weight:750;
+}
+
+.admin-filter.active{
+  color:#fff;
+  border-color:#17201b;
+  background:#17201b;
+}
+
+.admin-company-list{
+  display:grid;
+  gap:10px;
+}
+
+.admin-company-row{
+  display:grid;
+  grid-template-columns:minmax(220px,1.25fr) minmax(420px,2fr) 150px;
+  align-items:center;
+  gap:22px;
+  padding:16px 18px;
+  border:1px solid #dce2dd;
+  border-radius:8px;
+  background:#fbfcfb;
+}
+
+.admin-company-main{
+  min-width:0;
+  display:grid;
+  gap:5px;
+}
+
+.admin-company-title{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.admin-company-title strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:14px;
+  white-space:nowrap;
+}
+
+.admin-company-main > span{
+  overflow:hidden;
+  color:#718078;
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.admin-status{
+  display:inline-flex;
+  align-items:center;
+  min-height:22px;
+  padding:0 7px;
+  border-radius:999px;
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+
+.status-trial{
+  color:#6f521f;
+  background:#f2ead7;
+}
+
+.status-active{
+  color:#2f5f42;
+  background:#dfeee4;
+}
+
+.status-paused{
+  color:#5e6670;
+  background:#e8ebee;
+}
+
+.status-cancelled{
+  color:#7a3b3b;
+  background:#f2e0e0;
+}
+
+.admin-company-meta{
+  display:grid;
+  grid-template-columns:1.35fr 1.35fr .65fr .65fr;
+  gap:16px;
+}
+
+.admin-company-meta div{
+  min-width:0;
+}
+
+.admin-company-meta small,
+.admin-status-control span{
+  display:block;
+  margin-bottom:4px;
+  color:#849087;
+  font-size:8px;
+  font-weight:750;
+  text-transform:uppercase;
+}
+
+.admin-company-meta strong{
+  display:block;
+  overflow:hidden;
+  color:#29332d;
+  font-size:10px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.admin-status-control select{
+  width:100%;
+  min-height:38px;
+  padding:0 9px;
+  border:1px solid #cbd3cd;
+  border-radius:6px;
+  background:#fff;
+  color:#202a24;
+  font:inherit;
+  font-size:10px;
+  font-weight:700;
+}
+
+.admin-empty{
+  display:grid;
+  gap:5px;
+  padding:30px;
+  border:1px dashed #cbd3cd;
+  border-radius:8px;
+  color:#6c7871;
+  text-align:center;
+}
+
+.admin-empty[hidden],
+[data-system-admin-link][hidden]{
+  display:none!important;
+}
+
+@media(max-width:1180px){
+  .admin-stats-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .admin-company-row{
+    grid-template-columns:1fr 150px;
+  }
+
+  .admin-company-meta{
+    grid-column:1 / -1;
+    grid-row:2;
+  }
+
+  .admin-status-control{
+    grid-column:2;
+    grid-row:1;
+  }
+}
+
+@media(max-width:760px){
+  .admin-stats-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .admin-panel{
+    padding:20px 16px;
+  }
+
+  .admin-panel-head{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .admin-company-row{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+
+  .admin-company-meta{
+    grid-column:auto;
+    grid-row:auto;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .admin-status-control{
+    grid-column:auto;
+    grid-row:auto;
+  }
+}
+
+@media(max-width:460px){
+  .admin-stats-grid{
+    grid-template-columns:1fr;
+  }
+
+  .admin-company-meta{
+    grid-template-columns:1fr;
+  }
+}
