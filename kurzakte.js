@@ -46,6 +46,7 @@
       a.hardwareVisualsReference && a.architectureDescription && a.productionMonitoringProcess &&
       a.appliedStandards && a.testReportsSummary &&
       a.vulnerabilityContact && a.cvdPolicy && a.cvdPolicyLocation && a.secureUpdateDistribution &&
+      a.thirdPartyComponentProcess && a.retentionProcess &&
       a.secureCommissioning && a.securityChangeEffects && a.updateInstallation &&
       a.secureDecommissioning && a.automaticUpdatesOptOut && a.supportType &&
       machine.riskReviewComplete &&
