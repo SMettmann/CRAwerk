@@ -659,10 +659,18 @@
               (item.date ? escapeHtml(formatDate(item.date)) : 'Datum offen') +
               (item.affected ? ' · ' + escapeHtml(item.affected) : '') + '</span></div>' +
               '<span class="risk-pill ' + (item.status === 'done' ? 'done' : 'open') + '">' + (item.status === 'done' ? 'Erledigt' : 'Offen') + '</span></div>' +
-              '<p>' + (item.assessment ? '<strong>Bewertung:</strong> ' + escapeHtml(item.assessment) + '<br>' : '') +
+              '<p>' +
+              '<strong>Schweregrad:</strong> ' + escapeHtml(
+                item.severity === 'critical' ? 'Kritisch' :
+                item.severity === 'high' ? 'Hoch' :
+                item.severity === 'medium' ? 'Mittel' :
+                item.severity === 'low' ? 'Niedrig' : 'Nicht bewertet'
+              ) + '<br>' +
+              (item.assessment ? '<strong>Bewertung:</strong> ' + escapeHtml(item.assessment) + '<br>' : '') +
               '<strong>Maßnahme:</strong> ' + escapeHtml(item.action) +
               (item.patchVersion ? '<br><strong>Patch:</strong> ' + escapeHtml(item.patchVersion) : '') +
-              (item.remediatedAt ? ' · behoben ' + escapeHtml(formatDate(item.remediatedAt)) : '') + '</p>' +
+              (item.remediatedAt ? '<br><strong>Behoben:</strong> ' + escapeHtml(formatDate(item.remediatedAt)) : '') +
+              (item.advisoryReference ? '<br><strong>Sicherheitshinweis:</strong> ' + escapeHtml(item.advisoryReference) : '') + '</p>' +
               '<div class="risk-actions"><div class="risk-action-links">' +
                 '<button type="button" class="text-button" data-edit-update="' + item.id + '">Bearbeiten</button>' +
                 '<button type="button" class="text-button" data-toggle-update="' + item.id + '">' + (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') + '</button>' +
@@ -1109,13 +1117,23 @@
         date:data.get('date'),
         affected:data.get('affected').trim(),
         assessment:data.get('assessment').trim(),
+        severity:data.get('severity') || 'unknown',
         action:data.get('action').trim(),
         patchVersion:data.get('patchVersion').trim(),
         remediatedAt:data.get('remediatedAt'),
+        advisoryReference:data.get('advisoryReference').trim(),
         status:data.get('status')
       };
       if (values.status === 'done' && !values.remediatedAt) {
         showToast('Zum Abschließen bitte das Behebungsdatum eintragen.');
+        return;
+      }
+      if (values.status === 'done' && values.severity === 'unknown') {
+        showToast('Zum Abschließen bitte den Schweregrad bewerten.');
+        return;
+      }
+      if (values.status === 'done' && !values.advisoryReference) {
+        showToast('Zum Abschließen bitte Sicherheitshinweis / Veröffentlichungsnachweis oder die Begründung einer verzögerten Veröffentlichung dokumentieren.');
         return;
       }
       try {
@@ -1142,9 +1160,11 @@
         updateForm.elements.date.value = item.date || '';
         updateForm.elements.affected.value = item.affected || '';
         updateForm.elements.assessment.value = item.assessment || '';
+        updateForm.elements.severity.value = item.severity || 'unknown';
         updateForm.elements.action.value = item.action;
         updateForm.elements.patchVersion.value = item.patchVersion || '';
         updateForm.elements.remediatedAt.value = item.remediatedAt || '';
+        updateForm.elements.advisoryReference.value = item.advisoryReference || '';
         const choice = updateForm.querySelector('[name="status"][value="' + item.status + '"]');
         if (choice) choice.checked = true;
         setDialogMode(updateDialog, updateForm, 'Problem bearbeiten', 'Änderungen speichern');
@@ -1163,20 +1183,25 @@
       if (!toggle) return;
       const item = machine.updateItems.find(x => x.id === toggle.dataset.toggleUpdate);
       if (!item) return;
-      if (item.status !== 'done' && !item.remediatedAt) {
+      if (
+        item.status !== 'done' &&
+        (!item.remediatedAt || item.severity === 'unknown' || !item.advisoryReference)
+      ) {
         editingUpdateId = item.id;
         updateForm.elements.title.value = item.title;
         updateForm.elements.date.value = item.date || '';
         updateForm.elements.affected.value = item.affected || '';
         updateForm.elements.assessment.value = item.assessment || '';
+        updateForm.elements.severity.value = item.severity || 'unknown';
         updateForm.elements.action.value = item.action || '';
         updateForm.elements.patchVersion.value = item.patchVersion || '';
-        updateForm.elements.remediatedAt.value = '';
+        updateForm.elements.remediatedAt.value = item.remediatedAt || '';
+        updateForm.elements.advisoryReference.value = item.advisoryReference || '';
         const doneChoice = updateForm.querySelector('[name="status"][value="done"]');
         if (doneChoice) doneChoice.checked = true;
         setDialogMode(updateDialog, updateForm, 'Problem abschließen', 'Abschluss speichern');
         updateDialog.showModal();
-        showToast('Bitte noch das Behebungsdatum dokumentieren.');
+        showToast('Bitte Schweregrad, Behebungsdatum und Veröffentlichungshinweis vollständig dokumentieren.');
         return;
       }
       item.status = item.status === 'done' ? 'open' : 'done';
