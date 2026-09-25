@@ -27,13 +27,13 @@
     {key:'I-2l', part:'Teil I', title:'Sicherheitsrelevante Protokollierung', text:'Relevante interne Vorgänge können aufgezeichnet bzw. überwacht werden; ein Opt-out wird berücksichtigt, soweit erforderlich.'},
     {key:'I-2m', part:'Teil I', title:'Sichere Datenlöschung und Übertragung', text:'Nutzer können Daten und Einstellungen sicher dauerhaft entfernen; Übertragungen erfolgen sicher.'},
     {key:'II-1', part:'Teil II', title:'Komponenten & SBOM', text:'Schwachstellen und Komponenten werden dokumentiert; eine maschinenlesbare SBOM deckt mindestens die obersten Softwareabhängigkeiten ab.'},
-    {key:'II-2', part:'Teil II', title:'Schwachstellen unverzüglich behandeln', text:'Schwachstellen werden risikobasiert ohne unnötige Verzögerung behoben, einschließlich Sicherheitsupdates.'},
+    {key:'II-2', part:'Teil II', title:'Schwachstellen unverzüglich behandeln', text:'Schwachstellen werden risikobasiert ohne unnötige Verzögerung behoben, einschließlich Sicherheitsupdates; soweit technisch machbar werden Sicherheitsupdates getrennt von Funktionsupdates bereitgestellt.'},
     {key:'II-3', part:'Teil II', title:'Regelmäßige Sicherheitstests', text:'Die Sicherheit des Produkts wird wirksam und regelmäßig getestet bzw. überprüft.'},
-    {key:'II-4', part:'Teil II', title:'Information zu behobenen Schwachstellen', text:'Nach Bereitstellung eines Sicherheitsupdates werden erforderliche Informationen über behobene Schwachstellen veröffentlicht oder begründet zurückgestellt.'},
+    {key:'II-4', part:'Teil II', title:'Information zu behobenen Schwachstellen', text:'Nach Bereitstellung eines Sicherheitsupdates werden Beschreibung, betroffenes Produkt, Auswirkungen, Schwere und Hinweise zur Behebung veröffentlicht; eine Verzögerung wird nur begründet dokumentiert.'},
     {key:'II-5', part:'Teil II', title:'Koordinierte Offenlegung (CVD)', text:'Eine Strategie zur koordinierten Offenlegung von Schwachstellen ist festgelegt und wird umgesetzt.'},
-    {key:'II-6', part:'Teil II', title:'Kontakt für Schwachstellenmeldungen', text:'Es gibt eine erreichbare Kontaktmöglichkeit für Meldungen zu Produkt- und Drittkomponenten-Schwachstellen.'},
+    {key:'II-6', part:'Teil II', title:'Kontakt & Informationsaustausch zu Schwachstellen', text:'Der Austausch über mögliche Schwachstellen im Produkt und in Drittkomponenten wird ermöglicht; dafür steht eine erreichbare Kontaktadresse bereit.'},
     {key:'II-7', part:'Teil II', title:'Sichere Update-Verteilung', text:'Updates werden über Mechanismen verteilt, die eine sichere und zeitnahe Behebung ermöglichen.'},
-    {key:'II-8', part:'Teil II', title:'Sicherheitsupdates bereitstellen', text:'Verfügbare Sicherheitsupdates werden ohne unnötige Verzögerung und mit verständlichen Hinweisen bereitgestellt.'}
+    {key:'II-8', part:'Teil II', title:'Sicherheitsupdates bereitstellen', text:'Verfügbare Sicherheitsupdates werden ohne unnötige Verzögerung, grundsätzlich kostenfrei und mit verständlichen Hinweisen zu erforderlichen Nutzermaßnahmen bereitgestellt; zulässige B2B-Sondervereinbarungen werden dokumentiert.'}
   ];
 
   const labels = {
@@ -448,10 +448,13 @@
   };
 
   const validateBeforeSave = (assessment, requirements) => {
-    if (assessment.classification === 'unset') return 'Bitte die CRA-Einstufung festlegen.';
-    if (!assessment.classificationReason) return 'Bitte die Einstufung begründen.';
-    if (assessment.conformityRoute === 'unset') return 'Bitte das gewählte Konformitätsverfahren dokumentieren.';
-    if (!routeLooksValid(assessment)) return 'Der gewählte Konformitätsweg passt noch nicht zur dokumentierten Einstufung bzw. Normenabdeckung.';
+    if (
+      assessment.classification !== 'unset' &&
+      assessment.conformityRoute !== 'unset' &&
+      !routeLooksValid(assessment)
+    ) {
+      return 'Der gewählte Konformitätsweg passt noch nicht zur dokumentierten Einstufung bzw. Normenabdeckung.';
+    }
     const invalidNa = requirements.find(item => item.status === 'not_applicable' && !item.justification);
     if (invalidNa) return 'Bei „Nicht anwendbar“ braucht ' + invalidNa.key + ' eine Begründung.';
     return '';
