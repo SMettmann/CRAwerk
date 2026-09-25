@@ -159,37 +159,37 @@
     return [
       {
         id:'basic',
-        title:'Grunddaten prüfen',
-        text:'Name, Modell und Verantwortlichkeit kontrollieren.',
+        title:'Maschine eindeutig beschreiben',
+        text:'Name, Modell bzw. Produktnummer und verantwortliche Person festhalten.',
         done:basicReady
       },
       {
         id:'software',
-        title:'Software & Versionen vollständig erfassen',
+        title:'Software der Maschine erfassen',
         text:'Alle Software- und Firmwarestände erfassen und die Liste als vollständig bestätigen.',
         done:machine.software === 'no' || machine.softwareComplete === true
       },
       {
         id:'supplier',
-        title:'Digitale Bauteile & Zulieferer vollständig erfassen',
+        title:'Digitale Bauteile erfassen',
         text:'Digitale Bauteile erfassen und die Liste anschließend als vollständig bestätigen.',
         done:machine.componentsComplete === true
       },
       {
         id:'risks',
-        title:'Risikoprüfung abschließen',
+        title:'Sicherheitsrisiken prüfen',
         text:'Risiken prüfen, offene Maßnahmen erledigen und die Prüfung anschließend abschließen.',
         done:machine.riskReviewComplete === true && noOpenRisks
       },
       {
         id:'updates',
-        title:'Sicherheitslücken & Updates bearbeiten',
+        title:'Ablauf für Sicherheitsprobleme festlegen',
         text:'Internen Ablauf festlegen und bekannte Sicherheitsprobleme bis zur Erledigung nachverfolgen.',
         done:processReady && noOpenUpdates
       },
       {
         id:'documents',
-        title:'Unterlagen & Nachweise zusammenstellen',
+        title:'Vorhandene Unterlagen zuordnen',
         text:'Vorhandene Unterlagen der Maschine zuordnen und den Stand als vollständig bestätigen.',
         done:machine.documentsComplete === true
       },
@@ -201,7 +201,7 @@
       },
       {
         id:'cra',
-        title:'CRA-Prüfung & Konformitätsabschluss',
+        title:'CRA-Abschluss durchführen',
         text:'Produktklasse, Anhang-I-Nachweis, technische Dokumentation, Meldeprozess sowie EU-Erklärung und CE abschließen.',
         done:craCompleteForMachine(machine)
       }
@@ -526,6 +526,16 @@
     let editingRiskId = null;
     let editingUpdateId = null;
     let editingDocumentId = null;
+    const machineMain = document.querySelector('.machine-main');
+
+    const showMachineDetails = (open = true, scroll = false) => {
+      machineMain.classList.toggle('details-open', open);
+      const button = document.getElementById('guide-show-details');
+      if (button) button.textContent = open ? 'Bereiche schließen' : 'Alle Bereiche ansehen';
+      if (open && scroll) {
+        document.getElementById('machine-details')?.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    };
 
     const setDialogMode = (dialog, form, title, submitLabel) => {
       const heading = dialog.querySelector('.dialog-head h2');
@@ -635,7 +645,7 @@
       document.getElementById('toggle-documents-complete').textContent =
         machine.documentsComplete ? 'Vollständigkeit aufheben' : 'Unterlagen vollständig';
 
-      const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner && machine.supportPeriod.reason);
+      const supportReady = supportCommunicationReadyFor(machine);
       const support = machine.supportPeriod || {};
       const supportEndReached = support.endDate
         ? new Date(support.endDate + 'T23:59:59').getTime() <= Date.now()
@@ -1421,12 +1431,14 @@
     });
 
     document.getElementById('guide-show-details').addEventListener('click', () => {
-      document.getElementById('machine-details').scrollIntoView({behavior:'smooth', block:'start'});
+      const open = !machineMain.classList.contains('details-open');
+      showMachineDetails(open, open);
     });
 
     document.getElementById('guide-action').addEventListener('click', () => {
       const task = document.getElementById('guide-action').dataset.guideTask;
       const scrollTo = targetId => {
+        showMachineDetails(true);
         const target = document.getElementById(targetId);
         if (target) target.scrollIntoView({behavior:'smooth', block:'center'});
       };
@@ -1445,6 +1457,7 @@
       else if (task === 'cra') location.href = 'cra.html?id=' + encodeURIComponent(machine.id);
     });
 
+    showMachineDetails(false);
     render();
   }
 
