@@ -305,7 +305,8 @@
         '<strong>' + escapeHtml(a.vulnerabilityContact || 'Kontakt noch offen') + '</strong>' +
         '<p><strong>CVD:</strong> ' + escapeHtml(a.cvdPolicy || 'Noch nicht dokumentiert') +
         '<br><strong>Öffentlich auffindbar:</strong> ' + escapeHtml(a.cvdPolicyLocation || 'Noch nicht dokumentiert') +
-        '<br><strong>Sichere Update-Verteilung:</strong> ' + escapeHtml(a.secureUpdateDistribution || 'Noch nicht dokumentiert') +
+        '<br><strong>Sichere Update-Verteilung / Verfügbarkeit:</strong> ' + escapeHtml(a.secureUpdateDistribution || 'Noch nicht dokumentiert') +
+        '<br><strong>Drittkomponenten / Zulieferer:</strong> ' + escapeHtml(a.thirdPartyComponentProcess || 'Noch nicht dokumentiert') +
         '</p></div>'
       : '<div class="report-empty">Schwachstellenprozess noch nicht dokumentiert.</div>';
 
@@ -314,9 +315,18 @@
           '<div class="report-item"><div><strong>' + escapeHtml(item.title) + '</strong>' +
           '<span>' + (item.eventType === 'actively_exploited_vulnerability' ? 'Aktiv ausgenutzte Schwachstelle' : 'Schwerwiegender Sicherheitsvorfall') +
           ' · Kenntnis: ' + escapeHtml(item.awarenessAt ? new Date(item.awarenessAt).toLocaleString('de-DE') : '–') + '</span>' +
-          '<p>24-h-Frühwarnung: ' + escapeHtml(item.earlyWarningAt ? new Date(item.earlyWarningAt).toLocaleString('de-DE') : 'offen') +
+          '<p>' +
+          (item.affectedVersion ? '<strong>Betroffen:</strong> ' + escapeHtml(item.affectedVersion) + '<br>' : '') +
+          (item.affectedMemberStates ? '<strong>Mitgliedstaaten:</strong> ' + escapeHtml(item.affectedMemberStates) + '<br>' : '') +
+          (item.assessment ? '<strong>Bewertung:</strong> ' + escapeHtml(item.assessment) + '<br>' : '') +
+          (item.correctiveMeasures ? '<strong>Korrekturmaßnahmen:</strong> ' + escapeHtml(item.correctiveMeasures) + '<br>' : '') +
+          (item.userMitigation ? '<strong>Nutzermaßnahmen:</strong> ' + escapeHtml(item.userMitigation) + '<br>' : '') +
+          (item.threatOrRootCause ? '<strong>Akteur / Ursache:</strong> ' + escapeHtml(item.threatOrRootCause) + '<br>' : '') +
+          '24-h-Frühwarnung: ' + escapeHtml(item.earlyWarningAt ? new Date(item.earlyWarningAt).toLocaleString('de-DE') : 'offen') +
           '<br>72-h-Meldung: ' + escapeHtml(item.fullNotificationAt ? new Date(item.fullNotificationAt).toLocaleString('de-DE') : 'offen') +
           '<br>Abschlussbericht: ' + escapeHtml(item.finalReportAt ? new Date(item.finalReportAt).toLocaleString('de-DE') : 'offen') +
+          '<br>Nutzer informiert: ' + escapeHtml(item.usersInformedAt ? new Date(item.usersInformedAt).toLocaleString('de-DE') : 'offen') +
+          (item.userNotificationReference ? ' · ' + escapeHtml(item.userNotificationReference) : '') +
           '</p></div><span class="report-badge ' + (item.status === 'closed' ? '' : 'open') + '">' +
           (item.status === 'closed' ? 'Abgeschlossen' : 'Offen') + '</span></div>'
         ).join('')
@@ -332,6 +342,8 @@
       ['Produktions- und Überwachungsprozess', a.productionMonitoringProcess],
       ['Normen / Spezifikationen / technische Lösungen', a.appliedStandards],
       ['Prüf- / Testberichte', a.testReportsSummary],
+      ['Aufbewahrung & Verfügbarkeit', a.retentionProcess],
+      ['Drittkomponenten / Zulieferer', a.thirdPartyComponentProcess],
       ['Sichere Erstinbetriebnahme', a.secureCommissioning],
       ['Auswirkungen von Änderungen auf Sicherheit', a.securityChangeEffects],
       ['Installation von Sicherheitsupdates', a.updateInstallation],
