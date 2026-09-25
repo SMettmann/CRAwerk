@@ -275,10 +275,22 @@
         <div class="reporting-list" id="reporting-list"></div>
       </section>
 
+      <section class="cra-section" id="cra-nonconformity">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">06 · NICHTKONFORMITÄT</span>
+            <h2>Korrektur, Rücknahme oder Rückruf</h2>
+            <p>Nur anlegen, wenn bekannt wird oder Grund zu der Annahme besteht, dass Produkt oder Herstellerprozess die CRA-Anforderungen nicht mehr erfüllt.</p>
+          </div>
+          <button class="app-btn app-btn-ghost" id="add-nonconformity" type="button">+ Vorgang</button>
+        </div>
+        <div class="reporting-list" id="nonconformity-list"></div>
+      </section>
+
       <section class="cra-section" id="cra-conformity">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">06 · KONFORMITÄTSABSCHLUSS</span>
+            <span class="app-kicker">07 · KONFORMITÄTSABSCHLUSS</span>
             <h2>EU-Erklärung & CE</h2>
             <p>Die Erklärung wird aus den hinterlegten Daten erzeugt. Die Herstellerverantwortung bleibt beim Hersteller.</p>
           </div>
@@ -346,7 +358,7 @@
       <section class="cra-section" id="cra-annex-vii">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">07 · ANHANG VII</span>
+            <span class="app-kicker">08 · ANHANG VII</span>
             <h2>Technische Dokumentation – Vollständigkeitscheck</h2>
             <p>CRAwerk prüft nur, ob die vorgeschriebenen Dokumentationsbereiche belegt sind. Es bewertet nicht die technische Qualität des Inhalts.</p>
           </div>
@@ -480,6 +492,91 @@
 
       <div class="dialog-actions">
         <button class="app-btn app-btn-ghost" id="reporting-cancel" type="button">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog small-dialog" id="nonconformity-dialog">
+    <form class="machine-form" id="nonconformity-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">NICHTKONFORMITÄT</span>
+          <h2 id="nonconformity-dialog-title">Vorgang anlegen</h2>
+          <p>Korrekturmaßnahmen und – falls erforderlich – Rücknahme oder Rückruf nachvollziehbar dokumentieren.</p>
+        </div>
+        <button class="dialog-close" id="nonconformity-close" type="button" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Betroffen *</span>
+        <select name="subjectType" required>
+          <option value="product">Produkt</option>
+          <option value="process">Herstellerprozess</option>
+          <option value="both">Produkt und Herstellerprozess</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Bezeichnung *</span>
+        <input name="title" required placeholder="z. B. unsichere Standardkonfiguration">
+      </label>
+
+      <label>
+        <span>Festgestellt am *</span>
+        <input name="detectedAt" type="datetime-local" required>
+      </label>
+
+      <label>
+        <span>Betroffene Version / Ausführung</span>
+        <input name="affectedVersion" placeholder="optional">
+      </label>
+
+      <label>
+        <span>Beschreibung der Nichtkonformität *</span>
+        <textarea name="description" rows="4" required placeholder="Was entspricht nicht mehr den CRA-Anforderungen?"></textarea>
+      </label>
+
+      <label>
+        <span>Korrekturmaßnahme</span>
+        <textarea name="correctiveAction" rows="4" placeholder="Welche Maßnahme wurde ergriffen oder ist geplant?"></textarea>
+      </label>
+
+      <label>
+        <span>Entscheidung</span>
+        <select name="disposition">
+          <option value="open">Noch offen</option>
+          <option value="brought_into_conformity">Konformität wiederhergestellt</option>
+          <option value="withdrawn">Vom Markt genommen</option>
+          <option value="recalled">Zurückgerufen</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Maßnahme umgesetzt am</span>
+        <input name="actionAt" type="datetime-local">
+      </label>
+
+      <label>
+        <span>Nachweis / Referenz</span>
+        <input name="evidenceReference" placeholder="Ticket, Rückrufschreiben, Prüfbericht, Dokument-ID ...">
+      </label>
+
+      <label>
+        <span>Notizen</span>
+        <textarea name="notes" rows="3"></textarea>
+      </label>
+
+      <fieldset>
+        <legend>Status</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="status" value="open" checked><span>Offen</span></label>
+          <label><input type="radio" name="status" value="closed"><span>Abgeschlossen</span></label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" id="nonconformity-cancel" type="button">Abbrechen</button>
         <button class="app-btn app-btn-dark" type="submit">Speichern</button>
       </div>
     </form>
