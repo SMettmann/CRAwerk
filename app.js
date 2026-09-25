@@ -1,33 +1,6 @@
 (() => {
-  const STORAGE_KEY = 'crawerk_machines_v1';
-  const COMPANY_KEY = 'crawerk_company_v1';
-
-  const readMachines = () => {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    } catch {
-      return [];
-    }
-  };
-
-  const writeMachines = (machines) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(machines));
-  };
-
-  const readCompany = () => {
-    try {
-      return JSON.parse(localStorage.getItem(COMPANY_KEY) || '{}');
-    } catch {
-      return {};
-    }
-  };
-
-  const renderCompanyHeader = () => {
-    const company = readCompany();
-    document.querySelectorAll('.app-account').forEach(link => {
-      link.textContent = company.name || 'Unternehmen';
-    });
-  };
+  const backend = window.CRAwerkBackend;
+  const auth = window.CRAwerkSupabase;
 
   const escapeHtml = (value = '') => String(value)
     .replaceAll('&','&amp;')
@@ -36,45 +9,77 @@
     .replaceAll('"','&quot;')
     .replaceAll("'",'&#039;');
 
-  const createTasks = (machine) => [
-    {id:'basic', title:'Grunddaten prüfen', text:'Name, Modell und Verantwortlichkeit kontrollieren.', done:true},
-    {id:'software', title:'Software & Versionen ergänzen', text:'Festhalten, welche Software und welche Version in der Maschine steckt.', done:machine.software === 'no'},
-    {id:'supplier', title:'Zulieferer & digitale Bauteile ergänzen', text:'Steuerungen und andere digitale Bauteile der Maschine zuordnen.', done:false},
-    {id:'risks', title:'Risiken & Aufgaben durchgehen', text:'Offene Punkte und Zuständigkeiten festhalten.', done:false},
-    {id:'updates', title:'Ablauf für Sicherheitslücken & Updates festlegen', text:'Wer reagiert und wie wird ein Update dokumentiert?', done:false},
-    {id:'documents', title:'Unterlagen & Nachweise zusammenstellen', text:'Vorhandene Unterlagen der Maschine zuordnen und den Stand als vollständig bestätigen.', done:false},
-    {id:'support', title:'Unterstützungszeitraum festlegen', text:'Festhalten, wie lange die Maschine sicherheitsbezogen unterstützt wird.', done:false}
-  ];
+  const yesNo = value => value === 'yes' ? 'Ja' : value === 'no' ? 'Nein' : 'Unklar';
 
-  const duplicateMachineData = (source) => {
-    const copy = JSON.parse(JSON.stringify(source));
-    const stamp = Date.now();
-
-    copy.id = 'm_' + stamp;
-    copy.name = source.name + ' – Kopie';
-    copy.createdAt = new Date().toISOString();
-
-    const refreshIds = (items, prefix) =>
-      Array.isArray(items)
-        ? items.map((item, index) => ({...item, id: prefix + '_' + stamp + '_' + index}))
-        : [];
-
-    copy.softwareItems = refreshIds(copy.softwareItems, 's');
-    copy.components = refreshIds(copy.components, 'c');
-    copy.riskItems = refreshIds(copy.riskItems, 'r');
-    copy.updateItems = refreshIds(copy.updateItems, 'u');
-    copy.documentItems = refreshIds(copy.documentItems, 'd');
-
-    return copy;
+  const formatDate = value => {
+    if (!value) return '–';
+    const parts = String(value).split('-');
+    return parts.length === 3 ? parts[2] + '.' + parts[1] + '.' + parts[0] : value;
   };
 
-  const progressFor = (machine) => {
-    const tasks = machine.tasks || [];
-    if (!tasks.length) return 0;
+  const tasksForMachine = machine => {
+    const processReady = Boolean(machine.updateProcess && machine.updateProcess.owner && machine.updateProcess.procedure);
+    const noOpenUpdates = (machine.updateItems || []).every(item => item.status === 'done');
+    const noOpenRisks = (machine.riskItems || []).every(item => item.status === 'done');
+    const supportReady = Boolean(
+      machine.supportPeriod &&
+      machine.supportPeriod.startDate &&
+      machine.supportPeriod.endDate &&
+      machine.supportPeriod.owner
+    );
+
+    return [
+      {
+        id:'basic',
+        title:'Grunddaten prüfen',
+        text:'Name, Modell und Verantwortlichkeit kontrollieren.',
+        done:true
+      },
+      {
+        id:'software',
+        title:'Software & Versionen vollständig erfassen',
+        text:'Alle Software- und Firmwarestände erfassen und die Liste als vollständig bestätigen.',
+        done:machine.software === 'no' || machine.softwareComplete === true
+      },
+      {
+        id:'supplier',
+        title:'Digitale Bauteile & Zulieferer vollständig erfassen',
+        text:'Digitale Bauteile erfassen und die Liste anschließend als vollständig bestätigen.',
+        done:machine.componentsComplete === true
+      },
+      {
+        id:'risks',
+        title:'Risikoprüfung abschließen',
+        text:'Risiken prüfen, offene Maßnahmen erledigen und die Prüfung anschließend abschließen.',
+        done:machine.riskReviewComplete === true && noOpenRisks
+      },
+      {
+        id:'updates',
+        title:'Sicherheitslücken & Updates bearbeiten',
+        text:'Internen Ablauf festlegen und bekannte Sicherheitsprobleme bis zur Erledigung nachverfolgen.',
+        done:processReady && noOpenUpdates
+      },
+      {
+        id:'documents',
+        title:'Unterlagen & Nachweise zusammenstellen',
+        text:'Vorhandene Unterlagen der Maschine zuordnen und den Stand als vollständig bestätigen.',
+        done:machine.documentsComplete === true
+      },
+      {
+        id:'support',
+        title:'Unterstützungszeitraum festlegen',
+        text:'Festhalten, wie lange die Maschine sicherheitsbezogen unterstützt wird.',
+        done:supportReady
+      }
+    ];
+  };
+
+  const progressFor = machine => {
+    const tasks = tasksForMachine(machine);
     return Math.round(tasks.filter(t => t.done).length / tasks.length * 100);
   };
 
-  const nextTaskFor = (machine) => (machine.tasks || []).find(t => !t.done);
+  const nextTaskFor = machine => tasksForMachine(machine).find(t => !t.done);
 
   const GUIDE_CONTENT = {
     basic:{
@@ -128,11 +133,45 @@
     }
   };
 
-  function initDashboard() {
+  const showToast = message => {
+    const toast = document.getElementById('app-toast');
+    if (!toast) return;
+    toast.textContent = message;
+    toast.hidden = false;
+    clearTimeout(window.__crawerkToast);
+    window.__crawerkToast = setTimeout(() => toast.hidden = true, 3200);
+  };
+
+  const setCompanyHeader = async () => {
+    try {
+      const company = await backend.currentCompany();
+      document.querySelectorAll('.app-account').forEach(link => {
+        link.textContent = company.name || 'Unternehmen';
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const requireApp = async () => {
+    if (!auth || !backend) {
+      location.replace('login.html');
+      return false;
+    }
+    const session = await auth.requireSession();
+    if (!session) return false;
+    await setCompanyHeader();
+    return true;
+  };
+
+  async function initDashboard() {
+    if (!await requireApp()) return;
+
     const list = document.getElementById('machines-list');
     const empty = document.getElementById('machines-empty');
     const dialog = document.getElementById('machine-dialog');
     const form = document.getElementById('machine-form');
+    let machines = [];
 
     const openers = [
       document.getElementById('new-machine-button'),
@@ -144,13 +183,7 @@
     document.getElementById('dialog-close').addEventListener('click', () => dialog.close());
     document.getElementById('dialog-cancel').addEventListener('click', () => dialog.close());
 
-    const formatDashboardDate = (value) => {
-      if (!value) return 'Nicht festgelegt';
-      const parts = String(value).split('-');
-      return parts.length === 3 ? parts[2] + '.' + parts[1] + '.' + parts[0] : value;
-    };
-
-    const daysUntil = (value) => {
+    const daysUntil = value => {
       if (!value) return null;
       const target = new Date(value + 'T00:00:00');
       const today = new Date();
@@ -159,20 +192,15 @@
     };
 
     const render = () => {
-      const machines = readMachines();
       empty.hidden = machines.length > 0;
       list.hidden = machines.length === 0;
 
-      const openCountFor = machine => (machine.tasks || []).filter(task => !task.done).length;
-      const readyMachines = machines.filter(machine =>
-        (machine.tasks || []).length > 0 && openCountFor(machine) === 0
-      );
-      const allTasks = machines.flatMap(machine => machine.tasks || []);
-      const openTasks = allTasks.filter(task => !task.done).length;
+      const openCountFor = machine => tasksForMachine(machine).filter(task => !task.done).length;
+      const readyMachines = machines.filter(machine => openCountFor(machine) === 0);
+      const openTasks = machines.reduce((sum, machine) => sum + openCountFor(machine), 0);
 
       const supportSoon = machines.filter(machine => {
-        const endDate = machine.supportPeriod && machine.supportPeriod.endDate;
-        const days = daysUntil(endDate);
+        const days = daysUntil(machine.supportPeriod && machine.supportPeriod.endDate);
         return days !== null && days >= 0 && days <= 180;
       }).length;
 
@@ -209,11 +237,10 @@
         ? supportMachines.map(machine => {
             const endDate = machine.supportPeriod.endDate;
             const days = daysUntil(endDate);
-            let label = formatDashboardDate(endDate);
+            let label = formatDate(endDate);
             let chipClass = '';
-
             if (days < 0) {
-              label = 'abgelaufen · ' + formatDashboardDate(endDate);
+              label = 'abgelaufen · ' + formatDate(endDate);
               chipClass = 'alert';
             } else if (days === 0) {
               label = 'endet heute';
@@ -222,10 +249,9 @@
               label = 'in ' + days + ' Tagen';
               chipClass = 'soon';
             }
-
             return '<a class="focus-row" href="maschine.html?id=' + encodeURIComponent(machine.id) + '">' +
               '<div><strong>' + escapeHtml(machine.name) + '</strong>' +
-              '<span>Unterstützung bis ' + escapeHtml(formatDashboardDate(endDate)) + '</span></div>' +
+              '<span>Unterstützung bis ' + escapeHtml(formatDate(endDate)) + '</span></div>' +
               '<div class="focus-row-right"><span class="status-chip ' + chipClass + '">' + escapeHtml(label) + '</span><b>→</b></div>' +
             '</a>';
           }).join('')
@@ -235,9 +261,9 @@
         const p = progressFor(machine);
         const open = openCountFor(machine);
         const supportEnd = machine.supportPeriod && machine.supportPeriod.endDate
-          ? formatDashboardDate(machine.supportPeriod.endDate)
+          ? formatDate(machine.supportPeriod.endDate)
           : 'Noch offen';
-        const status = open === 0 && (machine.tasks || []).length
+        const status = open === 0
           ? '<span class="status-chip ready">Arbeitsstand vollständig</span>'
           : '<span class="status-chip open">' + open + ' offen</span>';
 
@@ -273,397 +299,64 @@
       }
     };
 
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = new FormData(form);
-      const machine = {
-        id: 'm_' + Date.now(),
-        name: data.get('name').trim(),
-        model: data.get('model').trim(),
-        productNumber: data.get('productNumber').trim(),
-        owner: data.get('owner').trim(),
-        software: data.get('software'),
-        connected: data.get('connected'),
-        documentRevision: 1,
-        createdAt: new Date().toISOString()
-      };
-      machine.tasks = createTasks(machine);
+    const reload = async () => {
+      machines = await backend.loadMachines();
+      render();
+    };
 
-      const machines = readMachines();
-      machines.unshift(machine);
-      writeMachines(machines);
-      form.reset();
-      dialog.close();
-      location.href = 'maschine.html?id=' + encodeURIComponent(machine.id);
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      const submit = form.querySelector('button[type="submit"]');
+      const data = new FormData(form);
+      submit.disabled = true;
+      submit.textContent = 'Wird angelegt…';
+      try {
+        const id = await backend.createMachine({
+          name:data.get('name').trim(),
+          model:data.get('model').trim(),
+          productNumber:data.get('productNumber').trim(),
+          owner:data.get('owner').trim(),
+          software:data.get('software'),
+          connected:data.get('connected')
+        });
+        location.href = 'maschine.html?id=' + encodeURIComponent(id);
+      } catch (error) {
+        console.error(error);
+        showToast('Maschine konnte nicht angelegt werden.');
+        submit.disabled = false;
+        submit.textContent = 'Maschine anlegen';
+      }
     });
 
-    render();
+    try {
+      await reload();
+    } catch (error) {
+      console.error(error);
+      showToast('Maschinen konnten nicht geladen werden.');
+    }
   }
 
-  function showToast(message) {
-    const toast = document.getElementById('app-toast');
-    if (!toast) return;
-    toast.textContent = message;
-    toast.hidden = false;
-    clearTimeout(window.__crawerkToast);
-    window.__crawerkToast = setTimeout(() => toast.hidden = true, 3200);
-  }
+  async function initMachine() {
+    if (!await requireApp()) return;
 
-  function initMachine() {
     const id = new URLSearchParams(location.search).get('id');
-    const machines = readMachines();
-    let machine = machines.find(m => m.id === id);
+    let machine = null;
 
-    if (machine) {
-      machine.softwareItems = Array.isArray(machine.softwareItems) ? machine.softwareItems : [];
-      machine.components = Array.isArray(machine.components) ? machine.components : [];
-      machine.riskItems = Array.isArray(machine.riskItems) ? machine.riskItems : [];
-      machine.updateItems = Array.isArray(machine.updateItems) ? machine.updateItems : [];
-      machine.updateProcess = machine.updateProcess && typeof machine.updateProcess === 'object'
-        ? machine.updateProcess
-        : {owner:'', procedure:''};
-      machine.documentItems = Array.isArray(machine.documentItems) ? machine.documentItems : [];
-      machine.documentsComplete = machine.documentsComplete === true;
-      machine.supportPeriod = machine.supportPeriod && typeof machine.supportPeriod === 'object'
-        ? machine.supportPeriod
-        : {startDate:'', endDate:'', owner:'', reason:''};
-      machine.documentRevision = Number.isFinite(Number(machine.documentRevision))
-        ? Math.max(1, parseInt(machine.documentRevision, 10))
-        : 1;
-      machine.softwareComplete = machine.software === 'no' ? true : machine.softwareComplete === true;
-      machine.componentsComplete = machine.componentsComplete === true;
-      machine.riskReviewComplete = machine.riskReviewComplete === true;
-
-      if (!machine.tasks.some(task => task.id === 'documents')) {
-        const supportIndex = machine.tasks.findIndex(task => task.id === 'support');
-        const documentTask = {
-          id:'documents',
-          title:'Unterlagen & Nachweise zusammenstellen',
-          text:'Vorhandene Unterlagen der Maschine zuordnen und den Stand als vollständig bestätigen.',
-          done:false
-        };
-        if (supportIndex >= 0) machine.tasks.splice(supportIndex, 0, documentTask);
-        else machine.tasks.push(documentTask);
-      }
+    try {
+      machine = await backend.loadMachine(id);
+    } catch (error) {
+      console.error(error);
     }
 
     if (!machine) {
       document.querySelector('.machine-main').innerHTML =
-        '<section class="empty-state"><strong>Maschine nicht gefunden.</strong><span>Die Daten liegen aktuell nur in diesem Browser.</span><a class="app-btn app-btn-dark" href="dashboard.html">Zur Übersicht</a></section>';
+        '<section class="empty-state"><strong>Maschine nicht gefunden.</strong><span>Die Maschine existiert nicht oder gehört nicht zu Ihrem Unternehmen.</span><a class="app-btn app-btn-dark" href="dashboard.html">Zur Übersicht</a></section>';
       return;
     }
-
-    const persist = () => {
-      const all = readMachines();
-      const idx = all.findIndex(m => m.id === machine.id);
-      if (idx >= 0) {
-        all[idx] = machine;
-        writeMachines(all);
-      }
-    };
-
-    const syncModuleTasks = () => {
-      const softwareTask = machine.tasks.find(t => t.id === 'software');
-      const supplierTask = machine.tasks.find(t => t.id === 'supplier');
-      const riskTask = machine.tasks.find(t => t.id === 'risks');
-      const updateTask = machine.tasks.find(t => t.id === 'updates');
-      const documentTask = machine.tasks.find(t => t.id === 'documents');
-      const supportTask = machine.tasks.find(t => t.id === 'support');
-
-      if (softwareTask) {
-        softwareTask.title = 'Software & Versionen vollständig erfassen';
-        softwareTask.text = 'Alle Software- und Firmwarestände erfassen und die Liste als vollständig bestätigen.';
-        softwareTask.done = machine.software === 'no' || machine.softwareComplete === true;
-      }
-
-      if (supplierTask) {
-        supplierTask.title = 'Digitale Bauteile & Zulieferer vollständig erfassen';
-        supplierTask.text = 'Digitale Bauteile erfassen und die Liste anschließend als vollständig bestätigen.';
-        supplierTask.done = machine.componentsComplete === true;
-      }
-
-      if (riskTask) {
-        riskTask.title = 'Risikoprüfung abschließen';
-        riskTask.text = 'Risiken prüfen, offene Maßnahmen erledigen und die Prüfung anschließend abschließen.';
-        const noOpenRisks = machine.riskItems.every(item => item.status === 'done');
-        riskTask.done = machine.riskReviewComplete === true && noOpenRisks;
-      }
-
-      if (updateTask) {
-        updateTask.title = 'Sicherheitslücken & Updates bearbeiten';
-        updateTask.text = 'Internen Ablauf festlegen und bekannte Sicherheitsprobleme bis zur Erledigung nachverfolgen.';
-        const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
-        const noOpenUpdates = machine.updateItems.every(item => item.status === 'done');
-        updateTask.done = processReady && noOpenUpdates;
-      }
-
-      if (documentTask) {
-        documentTask.done = machine.documentsComplete === true;
-      }
-
-      if (supportTask) {
-        supportTask.done = Boolean(
-          machine.supportPeriod.startDate &&
-          machine.supportPeriod.endDate &&
-          machine.supportPeriod.owner
-        );
-      }
-    };
-
-    const render = () => {
-      syncModuleTasks();
-      persist();
-
-      const p = progressFor(machine);
-      const done = machine.tasks.filter(t => t.done).length;
-      const next = nextTaskFor(machine);
-
-      document.title = machine.name + ' – CRAwerk';
-      document.getElementById('machine-name').textContent = machine.name;
-      document.getElementById('machine-meta').textContent =
-        [machine.model, machine.productNumber ? 'Nr. ' + machine.productNumber : ''].filter(Boolean).join(' · ') || 'Produktakte';
-
-      document.getElementById('machine-progress-value').textContent = p + '%';
-      document.getElementById('machine-progress-bar').style.width = p + '%';
-      document.getElementById('machine-progress-text').textContent = done + ' von ' + machine.tasks.length + ' Aufgaben erledigt.';
-
-      const guideAction = document.getElementById('guide-action');
-      const guideStepLabel = document.getElementById('guide-step-label');
-      const guideProgressLabel = document.getElementById('guide-progress-label');
-      const guideWhy = document.getElementById('guide-why');
-      const guideWhat = document.getElementById('guide-what');
-      const guideExample = document.getElementById('guide-example');
-
-      if (next) {
-        const guide = GUIDE_CONTENT[next.id] || {
-          title:next.title,
-          why:'Damit der aktuelle Arbeitsstand nachvollziehbar dokumentiert ist.',
-          what:next.text,
-          example:'CRAwerk führt Sie direkt zum passenden Bereich.',
-          action:'Jetzt erledigen'
-        };
-        const stepIndex = Math.max(1, machine.tasks.findIndex(task => task.id === next.id) + 1);
-        guideStepLabel.textContent = 'IHR NÄCHSTER SCHRITT';
-        guideProgressLabel.textContent = 'Schritt ' + stepIndex + ' von ' + machine.tasks.length;
-        document.getElementById('machine-next-title').textContent = guide.title;
-        document.getElementById('machine-next-text').textContent = 'Sie brauchen dafür kein CRA-Fachwissen. Beantworten bzw. erfassen Sie nur die folgenden Angaben.';
-        guideWhy.textContent = guide.why;
-        guideWhat.textContent = guide.what;
-        guideExample.textContent = guide.example;
-        guideAction.textContent = guide.action;
-        guideAction.dataset.guideTask = next.id;
-        guideAction.hidden = false;
-      } else {
-        guideStepLabel.textContent = 'AKTUELLER ARBEITSSTAND';
-        guideProgressLabel.textContent = machine.tasks.length + ' von ' + machine.tasks.length + ' Schritten';
-        document.getElementById('machine-next-title').textContent = 'Diese Maschinenakte hat einen vollständigen Arbeitsstand';
-        document.getElementById('machine-next-text').textContent = 'Alle vorgesehenen Bereiche haben derzeit einen nachvollziehbaren Stand.';
-        guideWhy.textContent = 'Sie sehen auf einen Blick, welche Angaben für diese Maschine erfasst und welche offenen Punkte abgeschlossen wurden.';
-        guideWhat.textContent = 'Bei Änderungen an Software, Bauteilen, Risiken oder Unterlagen öffnen Sie einfach den jeweiligen Bereich erneut.';
-        guideExample.textContent = 'Für Weitergabe oder Ablage können Sie jetzt die Kurzübersicht oder die vollständige Produktakte erzeugen.';
-        guideAction.textContent = 'Kurzübersicht ansehen';
-        guideAction.dataset.guideTask = 'complete';
-        guideAction.hidden = false;
-      }
-
-      document.getElementById('task-checklist').innerHTML = machine.tasks.map(task =>
-        '<div class="task-check ' + (task.done ? 'done' : '') + '">' +
-          '<span class="task-state ' + (task.done ? 'done' : 'open') + '">' + (task.done ? '✓' : '•') + '</span>' +
-          '<span><strong>' + escapeHtml(task.title) + '</strong><span>' + escapeHtml(task.text) + '</span></span>' +
-        '</div>'
-      ).join('');
-
-      const yesNo = value => value === 'yes' ? 'Ja' : value === 'no' ? 'Nein' : 'Unklar';
-      document.getElementById('machine-data').innerHTML =
-        '<div><dt>Modell</dt><dd>' + escapeHtml(machine.model || '–') + '</dd></div>' +
-        '<div><dt>Produktnummer</dt><dd>' + escapeHtml(machine.productNumber || '–') + '</dd></div>' +
-        '<div><dt>Verantwortlich</dt><dd>' + escapeHtml(machine.owner || '–') + '</dd></div>' +
-        '<div><dt>Software</dt><dd>' + yesNo(machine.software) + '</dd></div>' +
-        '<div><dt>Verbindung</dt><dd>' + yesNo(machine.connected) + '</dd></div>' +
-        '<div><dt>Unterstützung bis</dt><dd>' + escapeHtml(machine.supportPeriod.endDate || '–') + '</dd></div>' +
-        '<div><dt>Produktakte</dt><dd>Revision ' + escapeHtml(machine.documentRevision) + '</dd></div>';
-
-      const softwareList = document.getElementById('software-list');
-      const componentList = document.getElementById('component-list');
-      const riskList = document.getElementById('risk-list');
-      const updateList = document.getElementById('update-list');
-      const updateProcessBox = document.getElementById('update-process');
-      const documentList = document.getElementById('document-list');
-      const supportSummary = document.getElementById('support-summary');
-
-      document.getElementById('software-status').textContent =
-        machine.software === 'no' ? 'Nicht erforderlich' :
-        machine.softwareComplete ? 'Vollständig' :
-        machine.softwareItems.length ? machine.softwareItems.length + ' erfasst · prüfen' : 'Noch offen';
-      document.getElementById('toggle-software-complete').textContent =
-        machine.softwareComplete ? 'Vollständigkeit aufheben' : 'Softwareliste vollständig';
-
-      document.getElementById('component-status').textContent =
-        machine.componentsComplete ? 'Vollständig' :
-        machine.components.length ? machine.components.length + ' erfasst · prüfen' : 'Noch offen';
-      document.getElementById('toggle-components-complete').textContent =
-        machine.componentsComplete ? 'Vollständigkeit aufheben' : 'Bauteilliste vollständig';
-
-      const openRisks = machine.riskItems.filter(item => item.status !== 'done').length;
-      document.getElementById('risk-status').textContent =
-        openRisks
-          ? openRisks + ' offen'
-          : (machine.riskReviewComplete ? 'Prüfung abgeschlossen' : 'Prüfung offen');
-      document.getElementById('toggle-risk-review').textContent =
-        machine.riskReviewComplete ? 'Prüfung wieder öffnen' : 'Risikoprüfung abgeschlossen';
-
-      const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
-      const openUpdates = machine.updateItems.filter(item => item.status !== 'done').length;
-      document.getElementById('update-status').textContent =
-        !processReady
-          ? 'Ablauf fehlt'
-          : (openUpdates ? openUpdates + ' offen' : 'Bereit');
-
-      document.getElementById('document-status').textContent =
-        machine.documentsComplete
-          ? 'Vollständig'
-          : (machine.documentItems.length ? machine.documentItems.length + ' erfasst' : 'Noch offen');
-
-      document.getElementById('toggle-documents-complete').textContent =
-        machine.documentsComplete ? 'Vollständigkeit aufheben' : 'Unterlagen vollständig';
-
-      const supportReady = Boolean(
-        machine.supportPeriod.startDate &&
-        machine.supportPeriod.endDate &&
-        machine.supportPeriod.owner
-      );
-
-      document.getElementById('support-status').textContent =
-        supportReady ? 'Festgelegt' : 'Noch offen';
-
-      supportSummary.innerHTML = supportReady
-        ? '<div class="support-card">' +
-            '<div><span>Beginn</span><strong>' + escapeHtml(machine.supportPeriod.startDate) + '</strong></div>' +
-            '<div><span>Ende</span><strong>' + escapeHtml(machine.supportPeriod.endDate) + '</strong></div>' +
-            '<div><span>Verantwortlich</span><strong>' + escapeHtml(machine.supportPeriod.owner) + '</strong></div>' +
-            (machine.supportPeriod.reason
-              ? '<p>' + escapeHtml(machine.supportPeriod.reason) + '</p>'
-              : '') +
-          '</div>'
-        : '<div class="module-empty">Noch kein Unterstützungszeitraum festgelegt.</div>';
-
-      softwareList.innerHTML = machine.softwareItems.length
-        ? machine.softwareItems.map(item =>
-            '<div class="module-item">' +
-              '<div><strong>' + escapeHtml(item.name) + '</strong>' +
-              '<span>' + escapeHtml(item.type) + ' · Version ' + escapeHtml(item.version) +
-              (item.vendor ? ' · ' + escapeHtml(item.vendor) : '') + '</span></div>' +
-              '<div class="item-actions">' +
-                '<button type="button" class="item-edit" data-edit-software="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
-                '<button type="button" class="item-remove" data-remove-software="' + escapeHtml(item.id) + '" aria-label="Software löschen">×</button>' +
-              '</div>' +
-            '</div>'
-          ).join('')
-        : '<div class="module-empty">' + (machine.software === 'no' ? 'Für diese Maschine wurde „keine Software/Firmware“ angegeben.' : 'Noch keine Software erfasst.') + '</div>';
-
-      componentList.innerHTML = machine.components.length
-        ? machine.components.map(item =>
-            '<div class="module-item">' +
-              '<div><strong>' + escapeHtml(item.name) + '</strong>' +
-              '<span>' + escapeHtml(item.vendor) +
-              (item.model ? ' · ' + escapeHtml(item.model) : '') +
-              (item.version ? ' · Version ' + escapeHtml(item.version) : '') +
-              ' · Unterlagen: ' + (item.documents === 'yes' ? 'Ja' : item.documents === 'no' ? 'Nein' : 'Unklar') +
-              '</span></div>' +
-              '<div class="item-actions">' +
-                '<button type="button" class="item-edit" data-edit-component="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
-                '<button type="button" class="item-remove" data-remove-component="' + escapeHtml(item.id) + '" aria-label="Bauteil löschen">×</button>' +
-              '</div>' +
-            '</div>'
-          ).join('')
-        : '<div class="module-empty">Noch kein digitales Bauteil erfasst.</div>';
-
-      riskList.innerHTML = machine.riskItems.length
-        ? machine.riskItems.map(item =>
-            '<div class="risk-item ' + (item.status === 'done' ? 'risk-done' : '') + '">' +
-              '<div class="risk-top">' +
-                '<div><strong>' + escapeHtml(item.topic) + '</strong>' +
-                '<span class="risk-meta">' + escapeHtml(item.level) +
-                (item.owner ? ' · ' + escapeHtml(item.owner) : '') + '</span></div>' +
-                '<span class="risk-pill ' + (item.status === 'done' ? 'done' : 'open') + '">' +
-                  (item.status === 'done' ? 'Erledigt' : 'Offen') +
-                '</span>' +
-              '</div>' +
-              '<p>' + escapeHtml(item.measure) + '</p>' +
-              '<div class="risk-actions">' +
-                '<div class="risk-action-links">' +
-                  '<button type="button" class="text-button" data-edit-risk="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
-                  '<button type="button" class="text-button" data-toggle-risk="' + escapeHtml(item.id) + '">' +
-                    (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') +
-                  '</button>' +
-                '</div>' +
-                '<button type="button" class="item-remove" data-remove-risk="' + escapeHtml(item.id) + '" aria-label="Punkt löschen">×</button>' +
-              '</div>' +
-            '</div>'
-          ).join('')
-        : '<div class="module-empty">Noch kein Risiko oder offener Punkt erfasst.</div>';
-
-      updateProcessBox.innerHTML = processReady
-        ? '<div class="process-card"><span>Interner Ablauf</span><strong>' + escapeHtml(machine.updateProcess.owner) + '</strong><p>' + escapeHtml(machine.updateProcess.procedure) + '</p></div>'
-        : '<div class="module-empty">Noch kein interner Ablauf festgelegt.</div>';
-
-      updateList.innerHTML = machine.updateItems.length
-        ? machine.updateItems.map(item =>
-            '<div class="risk-item ' + (item.status === 'done' ? 'risk-done' : '') + '">' +
-              '<div class="risk-top">' +
-                '<div><strong>' + escapeHtml(item.title) + '</strong>' +
-                '<span class="risk-meta">' +
-                  (item.date ? escapeHtml(item.date) : 'Datum offen') +
-                  (item.affected ? ' · ' + escapeHtml(item.affected) : '') +
-                '</span></div>' +
-                '<span class="risk-pill ' + (item.status === 'done' ? 'done' : 'open') + '">' +
-                  (item.status === 'done' ? 'Erledigt' : 'Offen') +
-                '</span>' +
-              '</div>' +
-              '<p>' + escapeHtml(item.action) + '</p>' +
-              '<div class="risk-actions">' +
-                '<div class="risk-action-links">' +
-                  '<button type="button" class="text-button" data-edit-update="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
-                  '<button type="button" class="text-button" data-toggle-update="' + escapeHtml(item.id) + '">' +
-                    (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') +
-                  '</button>' +
-                '</div>' +
-                '<button type="button" class="item-remove" data-remove-update="' + escapeHtml(item.id) + '" aria-label="Sicherheitsproblem löschen">×</button>' +
-              '</div>' +
-            '</div>'
-          ).join('')
-        : '<div class="module-empty">Aktuell kein Sicherheitsproblem dokumentiert.</div>';
-
-      documentList.innerHTML = machine.documentItems.length
-        ? machine.documentItems.map(item =>
-            '<div class="module-item document-item">' +
-              '<div><strong>' + escapeHtml(item.title) + '</strong>' +
-              '<span>' + escapeHtml(item.type) +
-                ' · ' + escapeHtml(item.related || 'Gesamtmaschine') +
-                (item.date ? ' · ' + escapeHtml(item.date) : '') +
-                (item.note ? '<br>' + escapeHtml(item.note) : '') +
-              '</span></div>' +
-              '<div class="item-actions">' +
-                '<button type="button" class="item-edit" data-edit-document="' + escapeHtml(item.id) + '">Bearbeiten</button>' +
-                '<button type="button" class="item-remove" data-remove-document="' + escapeHtml(item.id) + '" aria-label="Unterlage löschen">×</button>' +
-              '</div>' +
-            '</div>'
-          ).join('')
-        : '<div class="module-empty">Noch keine Unterlage erfasst.</div>';
-    };
-
-    document.getElementById('short-report-machine').addEventListener('click', () => {
-      location.href = 'kurzakte.html?id=' + encodeURIComponent(machine.id);
-    });
-
-    document.getElementById('print-machine').addEventListener('click', () => {
-      location.href = 'produktakte.html?id=' + encodeURIComponent(machine.id);
-    });
 
     const editMachineDialog = document.getElementById('edit-machine-dialog');
     const deleteMachineDialog = document.getElementById('delete-machine-dialog');
     const editMachineForm = document.getElementById('edit-machine-form');
-
     const softwareDialog = document.getElementById('software-dialog');
     const componentDialog = document.getElementById('component-dialog');
     const riskDialog = document.getElementById('risk-dialog');
@@ -703,27 +396,240 @@
       related.value = selectedValue || 'Gesamtmaschine';
     };
 
+    const render = () => {
+      const tasks = tasksForMachine(machine);
+      const p = progressFor(machine);
+      const done = tasks.filter(t => t.done).length;
+      const next = tasks.find(t => !t.done);
+
+      document.title = machine.name + ' – CRAwerk';
+      document.getElementById('machine-name').textContent = machine.name;
+      document.getElementById('machine-meta').textContent =
+        [machine.model, machine.productNumber ? 'Nr. ' + machine.productNumber : ''].filter(Boolean).join(' · ') || 'Produktakte';
+
+      document.getElementById('machine-progress-value').textContent = p + '%';
+      document.getElementById('machine-progress-bar').style.width = p + '%';
+      document.getElementById('machine-progress-text').textContent = done + ' von ' + tasks.length + ' Aufgaben erledigt.';
+
+      const guideAction = document.getElementById('guide-action');
+      const guideStepLabel = document.getElementById('guide-step-label');
+      const guideProgressLabel = document.getElementById('guide-progress-label');
+
+      if (next) {
+        const guide = GUIDE_CONTENT[next.id];
+        const stepIndex = tasks.findIndex(task => task.id === next.id) + 1;
+        guideStepLabel.textContent = 'IHR NÄCHSTER SCHRITT';
+        guideProgressLabel.textContent = 'Schritt ' + stepIndex + ' von ' + tasks.length;
+        document.getElementById('machine-next-title').textContent = guide.title;
+        document.getElementById('machine-next-text').textContent = 'Sie brauchen dafür kein CRA-Fachwissen. Beantworten bzw. erfassen Sie nur die folgenden Angaben.';
+        document.getElementById('guide-why').textContent = guide.why;
+        document.getElementById('guide-what').textContent = guide.what;
+        document.getElementById('guide-example').textContent = guide.example;
+        guideAction.textContent = guide.action;
+        guideAction.dataset.guideTask = next.id;
+      } else {
+        guideStepLabel.textContent = 'AKTUELLER ARBEITSSTAND';
+        guideProgressLabel.textContent = tasks.length + ' von ' + tasks.length + ' Schritten';
+        document.getElementById('machine-next-title').textContent = 'Diese Maschinenakte hat einen vollständigen Arbeitsstand';
+        document.getElementById('machine-next-text').textContent = 'Alle vorgesehenen Bereiche haben derzeit einen nachvollziehbaren Stand.';
+        document.getElementById('guide-why').textContent = 'Sie sehen auf einen Blick, welche Angaben für diese Maschine erfasst und welche offenen Punkte abgeschlossen wurden.';
+        document.getElementById('guide-what').textContent = 'Bei Änderungen an Software, Bauteilen, Risiken oder Unterlagen öffnen Sie einfach den jeweiligen Bereich erneut.';
+        document.getElementById('guide-example').textContent = 'Für Weitergabe oder Ablage können Sie jetzt die Kurzübersicht oder die vollständige Produktakte erzeugen.';
+        guideAction.textContent = 'Kurzübersicht ansehen';
+        guideAction.dataset.guideTask = 'complete';
+      }
+
+      document.getElementById('task-checklist').innerHTML = tasks.map(task =>
+        '<div class="task-check ' + (task.done ? 'done' : '') + '">' +
+          '<span class="task-state ' + (task.done ? 'done' : 'open') + '">' + (task.done ? '✓' : '•') + '</span>' +
+          '<span><strong>' + escapeHtml(task.title) + '</strong><span>' + escapeHtml(task.text) + '</span></span>' +
+        '</div>'
+      ).join('');
+
+      document.getElementById('machine-data').innerHTML =
+        '<div><dt>Modell</dt><dd>' + escapeHtml(machine.model || '–') + '</dd></div>' +
+        '<div><dt>Produktnummer</dt><dd>' + escapeHtml(machine.productNumber || '–') + '</dd></div>' +
+        '<div><dt>Verantwortlich</dt><dd>' + escapeHtml(machine.owner || '–') + '</dd></div>' +
+        '<div><dt>Software</dt><dd>' + yesNo(machine.software) + '</dd></div>' +
+        '<div><dt>Verbindung</dt><dd>' + yesNo(machine.connected) + '</dd></div>' +
+        '<div><dt>Unterstützung bis</dt><dd>' + escapeHtml(formatDate(machine.supportPeriod.endDate)) + '</dd></div>' +
+        '<div><dt>Produktakte</dt><dd>Revision ' + escapeHtml(machine.documentRevision) + '</dd></div>';
+
+      document.getElementById('software-status').textContent =
+        machine.software === 'no' ? 'Nicht erforderlich' :
+        machine.softwareComplete ? 'Vollständig' :
+        machine.softwareItems.length ? machine.softwareItems.length + ' erfasst · prüfen' : 'Noch offen';
+      document.getElementById('toggle-software-complete').textContent =
+        machine.softwareComplete ? 'Vollständigkeit aufheben' : 'Softwareliste vollständig';
+
+      document.getElementById('component-status').textContent =
+        machine.componentsComplete ? 'Vollständig' :
+        machine.components.length ? machine.components.length + ' erfasst · prüfen' : 'Noch offen';
+      document.getElementById('toggle-components-complete').textContent =
+        machine.componentsComplete ? 'Vollständigkeit aufheben' : 'Bauteilliste vollständig';
+
+      const openRisks = machine.riskItems.filter(item => item.status !== 'done').length;
+      document.getElementById('risk-status').textContent =
+        openRisks ? openRisks + ' offen' : (machine.riskReviewComplete ? 'Prüfung abgeschlossen' : 'Prüfung offen');
+      document.getElementById('toggle-risk-review').textContent =
+        machine.riskReviewComplete ? 'Prüfung wieder öffnen' : 'Risikoprüfung abgeschlossen';
+
+      const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
+      const openUpdates = machine.updateItems.filter(item => item.status !== 'done').length;
+      document.getElementById('update-status').textContent =
+        !processReady ? 'Ablauf fehlt' : (openUpdates ? openUpdates + ' offen' : 'Bereit');
+
+      document.getElementById('document-status').textContent =
+        machine.documentsComplete ? 'Vollständig' :
+        machine.documentItems.length ? machine.documentItems.length + ' erfasst' : 'Noch offen';
+      document.getElementById('toggle-documents-complete').textContent =
+        machine.documentsComplete ? 'Vollständigkeit aufheben' : 'Unterlagen vollständig';
+
+      const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner);
+      document.getElementById('support-status').textContent = supportReady ? 'Festgelegt' : 'Noch offen';
+
+      document.getElementById('support-summary').innerHTML = supportReady
+        ? '<div class="support-card">' +
+            '<div><span>Beginn</span><strong>' + escapeHtml(formatDate(machine.supportPeriod.startDate)) + '</strong></div>' +
+            '<div><span>Ende</span><strong>' + escapeHtml(formatDate(machine.supportPeriod.endDate)) + '</strong></div>' +
+            '<div><span>Verantwortlich</span><strong>' + escapeHtml(machine.supportPeriod.owner) + '</strong></div>' +
+            (machine.supportPeriod.reason ? '<p>' + escapeHtml(machine.supportPeriod.reason) + '</p>' : '') +
+          '</div>'
+        : '<div class="module-empty">Noch kein Unterstützungszeitraum festgelegt.</div>';
+
+      document.getElementById('software-list').innerHTML = machine.softwareItems.length
+        ? machine.softwareItems.map(item =>
+            '<div class="module-item"><div><strong>' + escapeHtml(item.name) + '</strong>' +
+            '<span>' + escapeHtml(item.type) + ' · Version ' + escapeHtml(item.version) +
+            (item.vendor ? ' · ' + escapeHtml(item.vendor) : '') + '</span></div>' +
+            '<div class="item-actions"><button type="button" class="item-edit" data-edit-software="' + item.id + '">Bearbeiten</button>' +
+            '<button type="button" class="item-remove" data-remove-software="' + item.id + '" aria-label="Software löschen">×</button></div></div>'
+          ).join('')
+        : '<div class="module-empty">' + (machine.software === 'no' ? 'Für diese Maschine wurde „keine Software/Firmware“ angegeben.' : 'Noch keine Software erfasst.') + '</div>';
+
+      document.getElementById('component-list').innerHTML = machine.components.length
+        ? machine.components.map(item =>
+            '<div class="module-item"><div><strong>' + escapeHtml(item.name) + '</strong><span>' +
+            escapeHtml(item.vendor) + (item.model ? ' · ' + escapeHtml(item.model) : '') +
+            (item.version ? ' · Version ' + escapeHtml(item.version) : '') +
+            ' · Unterlagen: ' + (item.documents === 'yes' ? 'Ja' : item.documents === 'no' ? 'Nein' : 'Unklar') +
+            '</span></div><div class="item-actions"><button type="button" class="item-edit" data-edit-component="' + item.id + '">Bearbeiten</button>' +
+            '<button type="button" class="item-remove" data-remove-component="' + item.id + '" aria-label="Bauteil löschen">×</button></div></div>'
+          ).join('')
+        : '<div class="module-empty">Noch kein digitales Bauteil erfasst.</div>';
+
+      document.getElementById('risk-list').innerHTML = machine.riskItems.length
+        ? machine.riskItems.map(item =>
+            '<div class="risk-item ' + (item.status === 'done' ? 'risk-done' : '') + '">' +
+              '<div class="risk-top"><div><strong>' + escapeHtml(item.topic) + '</strong><span class="risk-meta">' +
+              escapeHtml(item.level) + (item.owner ? ' · ' + escapeHtml(item.owner) : '') + '</span></div>' +
+              '<span class="risk-pill ' + (item.status === 'done' ? 'done' : 'open') + '">' + (item.status === 'done' ? 'Erledigt' : 'Offen') + '</span></div>' +
+              '<p>' + escapeHtml(item.measure) + '</p>' +
+              '<div class="risk-actions"><div class="risk-action-links">' +
+                '<button type="button" class="text-button" data-edit-risk="' + item.id + '">Bearbeiten</button>' +
+                '<button type="button" class="text-button" data-toggle-risk="' + item.id + '">' + (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') + '</button>' +
+              '</div><button type="button" class="item-remove" data-remove-risk="' + item.id + '" aria-label="Punkt löschen">×</button></div>' +
+            '</div>'
+          ).join('')
+        : '<div class="module-empty">Noch kein Risiko oder offener Punkt erfasst.</div>';
+
+      document.getElementById('update-process').innerHTML = processReady
+        ? '<div class="process-card"><span>Interner Ablauf</span><strong>' + escapeHtml(machine.updateProcess.owner) + '</strong><p>' + escapeHtml(machine.updateProcess.procedure) + '</p></div>'
+        : '<div class="module-empty">Noch kein interner Ablauf festgelegt.</div>';
+
+      document.getElementById('update-list').innerHTML = machine.updateItems.length
+        ? machine.updateItems.map(item =>
+            '<div class="risk-item ' + (item.status === 'done' ? 'risk-done' : '') + '">' +
+              '<div class="risk-top"><div><strong>' + escapeHtml(item.title) + '</strong><span class="risk-meta">' +
+              (item.date ? escapeHtml(formatDate(item.date)) : 'Datum offen') +
+              (item.affected ? ' · ' + escapeHtml(item.affected) : '') + '</span></div>' +
+              '<span class="risk-pill ' + (item.status === 'done' ? 'done' : 'open') + '">' + (item.status === 'done' ? 'Erledigt' : 'Offen') + '</span></div>' +
+              '<p>' + escapeHtml(item.action) + '</p>' +
+              '<div class="risk-actions"><div class="risk-action-links">' +
+                '<button type="button" class="text-button" data-edit-update="' + item.id + '">Bearbeiten</button>' +
+                '<button type="button" class="text-button" data-toggle-update="' + item.id + '">' + (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') + '</button>' +
+              '</div><button type="button" class="item-remove" data-remove-update="' + item.id + '" aria-label="Sicherheitsproblem löschen">×</button></div>' +
+            '</div>'
+          ).join('')
+        : '<div class="module-empty">Aktuell kein Sicherheitsproblem dokumentiert.</div>';
+
+      document.getElementById('document-list').innerHTML = machine.documentItems.length
+        ? machine.documentItems.map(item =>
+            '<div class="module-item document-item"><div><strong>' + escapeHtml(item.title) + '</strong><span>' +
+            escapeHtml(item.type) + ' · ' + escapeHtml(item.related || 'Gesamtmaschine') +
+            (item.date ? ' · ' + escapeHtml(formatDate(item.date)) : '') +
+            (item.note ? '<br>' + escapeHtml(item.note) : '') +
+            '</span></div><div class="item-actions"><button type="button" class="item-edit" data-edit-document="' + item.id + '">Bearbeiten</button>' +
+            '<button type="button" class="item-remove" data-remove-document="' + item.id + '" aria-label="Unterlage löschen">×</button></div></div>'
+          ).join('')
+        : '<div class="module-empty">Noch keine Unterlage erfasst.</div>';
+    };
+
+    const refresh = async message => {
+      machine = await backend.loadMachine(id);
+      render();
+      if (message) showToast(message);
+    };
+
+    document.querySelectorAll('[data-close-dialog]').forEach(button => {
+      button.addEventListener('click', () => {
+        const dialog = document.getElementById(button.dataset.closeDialog);
+        if (dialog) dialog.close();
+      });
+    });
+
+    document.getElementById('short-report-machine').addEventListener('click', () => {
+      location.href = 'kurzakte.html?id=' + encodeURIComponent(machine.id);
+    });
+
+    document.getElementById('print-machine').addEventListener('click', () => {
+      location.href = 'produktakte.html?id=' + encodeURIComponent(machine.id);
+    });
+
     document.getElementById('edit-machine').addEventListener('click', () => {
       editMachineForm.elements.name.value = machine.name || '';
       editMachineForm.elements.model.value = machine.model || '';
       editMachineForm.elements.productNumber.value = machine.productNumber || '';
       editMachineForm.elements.owner.value = machine.owner || '';
       editMachineForm.elements.documentRevision.value = machine.documentRevision || 1;
-
       const softwareChoice = editMachineForm.querySelector('[name="software"][value="' + (machine.software || 'unknown') + '"]');
       const connectedChoice = editMachineForm.querySelector('[name="connected"][value="' + (machine.connected || 'unknown') + '"]');
       if (softwareChoice) softwareChoice.checked = true;
       if (connectedChoice) connectedChoice.checked = true;
-
       editMachineDialog.showModal();
     });
 
-    document.getElementById('duplicate-machine').addEventListener('click', () => {
-      const copy = duplicateMachineData(machine);
-      const all = readMachines();
-      all.unshift(copy);
-      writeMachines(all);
-      location.href = 'maschine.html?id=' + encodeURIComponent(copy.id);
+    editMachineForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const data = new FormData(editMachineForm);
+      const oldSoftware = machine.software;
+      machine.name = data.get('name').trim();
+      machine.model = data.get('model').trim();
+      machine.productNumber = data.get('productNumber').trim();
+      machine.owner = data.get('owner').trim();
+      machine.software = data.get('software');
+      machine.connected = data.get('connected');
+      machine.documentRevision = Math.max(1, parseInt(data.get('documentRevision'),10) || 1);
+      if (machine.software === 'no') machine.softwareComplete = true;
+      if (oldSoftware === 'no' && machine.software !== 'no') machine.softwareComplete = false;
+      try {
+        await backend.updateMachine(machine);
+        editMachineDialog.close();
+        await refresh('Maschinendaten wurden gespeichert.');
+      } catch (error) {
+        console.error(error);
+        showToast('Maschinendaten konnten nicht gespeichert werden.');
+      }
+    });
+
+    document.getElementById('duplicate-machine').addEventListener('click', async () => {
+      try {
+        const newId = await backend.duplicateMachine(machine);
+        location.href = 'maschine.html?id=' + encodeURIComponent(newId);
+      } catch (error) {
+        console.error(error);
+        showToast('Maschine konnte nicht dupliziert werden.');
+      }
     });
 
     document.getElementById('delete-machine').addEventListener('click', () => {
@@ -731,10 +637,14 @@
       deleteMachineDialog.showModal();
     });
 
-    document.getElementById('confirm-delete-machine').addEventListener('click', () => {
-      const remaining = readMachines().filter(item => item.id !== machine.id);
-      writeMachines(remaining);
-      location.href = 'dashboard.html';
+    document.getElementById('confirm-delete-machine').addEventListener('click', async () => {
+      try {
+        await backend.deleteMachine(machine.id);
+        location.href = 'dashboard.html';
+      } catch (error) {
+        console.error(error);
+        showToast('Maschine konnte nicht gelöscht werden.');
+      }
     });
 
     document.getElementById('add-software').addEventListener('click', () => {
@@ -744,6 +654,72 @@
       softwareDialog.showModal();
     });
 
+    softwareForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const data = new FormData(softwareForm);
+      const values = {
+        name:data.get('name').trim(),
+        version:data.get('version').trim(),
+        type:data.get('type'),
+        vendor:data.get('vendor').trim()
+      };
+      try {
+        if (editingSoftwareId) await backend.updateSoftware(editingSoftwareId, values);
+        else await backend.addSoftware(machine.id, values);
+        machine.softwareComplete = false;
+        await backend.updateMachine(machine);
+        const wasEditing = Boolean(editingSoftwareId);
+        editingSoftwareId = null;
+        softwareForm.reset();
+        softwareDialog.close();
+        await refresh(wasEditing ? 'Software wurde aktualisiert.' : 'Software wurde hinzugefügt.');
+      } catch (error) {
+        console.error(error);
+        showToast('Software konnte nicht gespeichert werden.');
+      }
+    });
+
+    document.getElementById('software-list').addEventListener('click', async event => {
+      const edit = event.target.closest('[data-edit-software]');
+      if (edit) {
+        const item = machine.softwareItems.find(x => x.id === edit.dataset.editSoftware);
+        if (!item) return;
+        editingSoftwareId = item.id;
+        softwareForm.elements.name.value = item.name;
+        softwareForm.elements.version.value = item.version;
+        softwareForm.elements.type.value = item.type;
+        softwareForm.elements.vendor.value = item.vendor || '';
+        setDialogMode(softwareDialog, softwareForm, 'Software bearbeiten', 'Änderungen speichern');
+        softwareDialog.showModal();
+        return;
+      }
+      const remove = event.target.closest('[data-remove-software]');
+      if (!remove) return;
+      try {
+        await backend.deleteSoftware(remove.dataset.removeSoftware);
+        machine.softwareComplete = false;
+        await backend.updateMachine(machine);
+        await refresh('Software wurde entfernt.');
+      } catch (error) {
+        console.error(error);
+        showToast('Software konnte nicht entfernt werden.');
+      }
+    });
+
+    document.getElementById('toggle-software-complete').addEventListener('click', async () => {
+      if (machine.software === 'no') {
+        showToast('Für diese Maschine wurde keine Software / Firmware angegeben.');
+        return;
+      }
+      if (!machine.softwareComplete && machine.softwareItems.length === 0) {
+        showToast('Bitte zuerst die vorhandene Software oder Firmware erfassen.');
+        return;
+      }
+      machine.softwareComplete = !machine.softwareComplete;
+      await backend.updateMachine(machine);
+      await refresh(machine.softwareComplete ? 'Softwareliste wurde als vollständig markiert.' : 'Vollständigkeit der Softwareliste wurde aufgehoben.');
+    });
+
     document.getElementById('add-component').addEventListener('click', () => {
       editingComponentId = null;
       componentForm.reset();
@@ -751,28 +727,247 @@
       componentDialog.showModal();
     });
 
+    componentForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const data = new FormData(componentForm);
+      const values = {
+        name:data.get('name').trim(),
+        vendor:data.get('vendor').trim(),
+        model:data.get('model').trim(),
+        version:data.get('version').trim(),
+        documents:data.get('documents')
+      };
+      try {
+        if (editingComponentId) await backend.updateComponent(editingComponentId, values);
+        else await backend.addComponent(machine.id, values);
+        machine.componentsComplete = false;
+        await backend.updateMachine(machine);
+        const wasEditing = Boolean(editingComponentId);
+        editingComponentId = null;
+        componentForm.reset();
+        componentDialog.close();
+        await refresh(wasEditing ? 'Bauteil wurde aktualisiert.' : 'Bauteil wurde hinzugefügt.');
+      } catch (error) {
+        console.error(error);
+        showToast('Bauteil konnte nicht gespeichert werden.');
+      }
+    });
+
+    document.getElementById('component-list').addEventListener('click', async event => {
+      const edit = event.target.closest('[data-edit-component]');
+      if (edit) {
+        const item = machine.components.find(x => x.id === edit.dataset.editComponent);
+        if (!item) return;
+        editingComponentId = item.id;
+        componentForm.elements.name.value = item.name;
+        componentForm.elements.vendor.value = item.vendor;
+        componentForm.elements.model.value = item.model || '';
+        componentForm.elements.version.value = item.version || '';
+        const choice = componentForm.querySelector('[name="documents"][value="' + (item.documents || 'unknown') + '"]');
+        if (choice) choice.checked = true;
+        setDialogMode(componentDialog, componentForm, 'Bauteil bearbeiten', 'Änderungen speichern');
+        componentDialog.showModal();
+        return;
+      }
+      const remove = event.target.closest('[data-remove-component]');
+      if (!remove) return;
+      try {
+        await backend.deleteComponent(remove.dataset.removeComponent);
+        machine.componentsComplete = false;
+        await backend.updateMachine(machine);
+        await refresh('Bauteil wurde entfernt.');
+      } catch (error) {
+        console.error(error);
+        showToast('Bauteil konnte nicht entfernt werden.');
+      }
+    });
+
+    document.getElementById('toggle-components-complete').addEventListener('click', async () => {
+      machine.componentsComplete = !machine.componentsComplete;
+      await backend.updateMachine(machine);
+      await refresh(machine.componentsComplete ? 'Bauteilliste wurde als vollständig markiert.' : 'Vollständigkeit der Bauteilliste wurde aufgehoben.');
+    });
+
     document.getElementById('add-risk').addEventListener('click', () => {
       editingRiskId = null;
       riskForm.reset();
-      const defaultStatus = riskForm.querySelector('[name="status"][value="open"]');
-      const defaultLevel = riskForm.querySelector('[name="level"]');
-      if (defaultStatus) defaultStatus.checked = true;
-      if (defaultLevel) defaultLevel.value = 'Mittel';
+      riskForm.elements.level.value = 'Mittel';
+      const open = riskForm.querySelector('[name="status"][value="open"]');
+      if (open) open.checked = true;
       setDialogMode(riskDialog, riskForm, 'Punkt hinzufügen', 'Hinzufügen');
       riskDialog.showModal();
     });
+
+    riskForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const data = new FormData(riskForm);
+      const values = {
+        topic:data.get('topic').trim(),
+        level:data.get('level'),
+        owner:data.get('owner').trim(),
+        measure:data.get('measure').trim(),
+        status:data.get('status')
+      };
+      try {
+        if (editingRiskId) await backend.updateRisk(editingRiskId, values);
+        else await backend.addRisk(machine.id, values);
+        machine.riskReviewComplete = false;
+        await backend.updateMachine(machine);
+        const wasEditing = Boolean(editingRiskId);
+        editingRiskId = null;
+        riskForm.reset();
+        riskDialog.close();
+        await refresh(wasEditing ? 'Risiko / Aufgabe wurde aktualisiert.' : 'Risiko / Aufgabe wurde hinzugefügt.');
+      } catch (error) {
+        console.error(error);
+        showToast('Risiko / Aufgabe konnte nicht gespeichert werden.');
+      }
+    });
+
+    document.getElementById('risk-list').addEventListener('click', async event => {
+      const edit = event.target.closest('[data-edit-risk]');
+      if (edit) {
+        const item = machine.riskItems.find(x => x.id === edit.dataset.editRisk);
+        if (!item) return;
+        editingRiskId = item.id;
+        riskForm.elements.topic.value = item.topic;
+        riskForm.elements.level.value = item.level;
+        riskForm.elements.owner.value = item.owner || '';
+        riskForm.elements.measure.value = item.measure;
+        const choice = riskForm.querySelector('[name="status"][value="' + item.status + '"]');
+        if (choice) choice.checked = true;
+        setDialogMode(riskDialog, riskForm, 'Punkt bearbeiten', 'Änderungen speichern');
+        riskDialog.showModal();
+        return;
+      }
+
+      const remove = event.target.closest('[data-remove-risk]');
+      if (remove) {
+        try {
+          await backend.deleteRisk(remove.dataset.removeRisk);
+          machine.riskReviewComplete = false;
+          await backend.updateMachine(machine);
+          await refresh('Risiko / Aufgabe wurde entfernt.');
+        } catch (error) {
+          console.error(error);
+          showToast('Punkt konnte nicht entfernt werden.');
+        }
+        return;
+      }
+
+      const toggle = event.target.closest('[data-toggle-risk]');
+      if (!toggle) return;
+      const item = machine.riskItems.find(x => x.id === toggle.dataset.toggleRisk);
+      if (!item) return;
+      item.status = item.status === 'done' ? 'open' : 'done';
+      if (item.status === 'open') machine.riskReviewComplete = false;
+      try {
+        await backend.updateRisk(item.id, item);
+        await backend.updateMachine(machine);
+        await refresh(item.status === 'done' ? 'Punkt wurde erledigt.' : 'Punkt wurde wieder geöffnet.');
+      } catch (error) {
+        console.error(error);
+        showToast('Status konnte nicht geändert werden.');
+      }
+    });
+
+    document.getElementById('toggle-risk-review').addEventListener('click', async () => {
+      const openRisks = machine.riskItems.filter(item => item.status !== 'done').length;
+      if (!machine.riskReviewComplete && openRisks > 0) {
+        showToast('Bitte zuerst die offenen Risiken und Maßnahmen erledigen.');
+        return;
+      }
+      machine.riskReviewComplete = !machine.riskReviewComplete;
+      await backend.updateMachine(machine);
+      await refresh(machine.riskReviewComplete ? 'Risikoprüfung wurde abgeschlossen.' : 'Risikoprüfung wurde wieder geöffnet.');
+    });
+
     document.getElementById('set-update-process').addEventListener('click', () => {
       updateProcessForm.elements.owner.value = machine.updateProcess.owner || '';
       updateProcessForm.elements.procedure.value = machine.updateProcess.procedure || '';
       updateProcessDialog.showModal();
     });
+
+    updateProcessForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const data = new FormData(updateProcessForm);
+      try {
+        await backend.setUpdateProcess(machine.id, {
+          owner:data.get('owner').trim(),
+          procedure:data.get('procedure').trim()
+        });
+        updateProcessDialog.close();
+        await refresh('Interner Ablauf wurde gespeichert.');
+      } catch (error) {
+        console.error(error);
+        showToast('Ablauf konnte nicht gespeichert werden.');
+      }
+    });
+
     document.getElementById('add-update').addEventListener('click', () => {
       editingUpdateId = null;
       updateForm.reset();
-      const defaultStatus = updateForm.querySelector('[name="status"][value="open"]');
-      if (defaultStatus) defaultStatus.checked = true;
+      const open = updateForm.querySelector('[name="status"][value="open"]');
+      if (open) open.checked = true;
       setDialogMode(updateDialog, updateForm, 'Problem dokumentieren', 'Speichern');
       updateDialog.showModal();
+    });
+
+    updateForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const data = new FormData(updateForm);
+      const values = {
+        title:data.get('title').trim(),
+        date:data.get('date'),
+        affected:data.get('affected').trim(),
+        action:data.get('action').trim(),
+        status:data.get('status')
+      };
+      try {
+        if (editingUpdateId) await backend.updateUpdate(editingUpdateId, values);
+        else await backend.addUpdate(machine.id, values);
+        const wasEditing = Boolean(editingUpdateId);
+        editingUpdateId = null;
+        updateForm.reset();
+        updateDialog.close();
+        await refresh(wasEditing ? 'Sicherheitsproblem wurde aktualisiert.' : 'Sicherheitsproblem wurde dokumentiert.');
+      } catch (error) {
+        console.error(error);
+        showToast('Sicherheitsproblem konnte nicht gespeichert werden.');
+      }
+    });
+
+    document.getElementById('update-list').addEventListener('click', async event => {
+      const edit = event.target.closest('[data-edit-update]');
+      if (edit) {
+        const item = machine.updateItems.find(x => x.id === edit.dataset.editUpdate);
+        if (!item) return;
+        editingUpdateId = item.id;
+        updateForm.elements.title.value = item.title;
+        updateForm.elements.date.value = item.date || '';
+        updateForm.elements.affected.value = item.affected || '';
+        updateForm.elements.action.value = item.action;
+        const choice = updateForm.querySelector('[name="status"][value="' + item.status + '"]');
+        if (choice) choice.checked = true;
+        setDialogMode(updateDialog, updateForm, 'Problem bearbeiten', 'Änderungen speichern');
+        updateDialog.showModal();
+        return;
+      }
+
+      const remove = event.target.closest('[data-remove-update]');
+      if (remove) {
+        await backend.deleteUpdate(remove.dataset.removeUpdate);
+        await refresh('Sicherheitsproblem wurde entfernt.');
+        return;
+      }
+
+      const toggle = event.target.closest('[data-toggle-update]');
+      if (!toggle) return;
+      const item = machine.updateItems.find(x => x.id === toggle.dataset.toggleUpdate);
+      if (!item) return;
+      item.status = item.status === 'done' ? 'open' : 'done';
+      await backend.updateUpdate(item.id, item);
+      await refresh(item.status === 'done' ? 'Sicherheitsproblem wurde erledigt.' : 'Sicherheitsproblem wurde wieder geöffnet.');
     });
 
     document.getElementById('add-document').addEventListener('click', () => {
@@ -783,49 +978,68 @@
       documentDialog.showModal();
     });
 
-    document.getElementById('toggle-software-complete').addEventListener('click', () => {
-      if (machine.software === 'no') {
-        showToast('Für diese Maschine wurde keine Software / Firmware angegeben.');
-        return;
+    documentForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const data = new FormData(documentForm);
+      const values = {
+        title:data.get('title').trim(),
+        type:data.get('type'),
+        date:data.get('date'),
+        related:data.get('related'),
+        note:data.get('note').trim()
+      };
+      try {
+        if (editingDocumentId) await backend.updateDocument(editingDocumentId, values);
+        else await backend.addDocument(machine.id, values);
+        machine.documentsComplete = false;
+        await backend.updateMachine(machine);
+        const wasEditing = Boolean(editingDocumentId);
+        editingDocumentId = null;
+        documentForm.reset();
+        documentDialog.close();
+        await refresh(wasEditing ? 'Unterlage wurde aktualisiert.' : 'Unterlage wurde zugeordnet.');
+      } catch (error) {
+        console.error(error);
+        showToast('Unterlage konnte nicht gespeichert werden.');
       }
-      if (!machine.softwareComplete && machine.softwareItems.length === 0) {
-        showToast('Bitte zuerst die vorhandene Software oder Firmware erfassen.');
-        return;
-      }
-      machine.softwareComplete = !machine.softwareComplete;
-      persist();
-      render();
-      showToast(machine.softwareComplete ? 'Softwareliste wurde als vollständig markiert.' : 'Vollständigkeit der Softwareliste wurde aufgehoben.');
     });
 
-    document.getElementById('toggle-components-complete').addEventListener('click', () => {
-      machine.componentsComplete = !machine.componentsComplete;
-      persist();
-      render();
-      showToast(machine.componentsComplete ? 'Bauteilliste wurde als vollständig markiert.' : 'Vollständigkeit der Bauteilliste wurde aufgehoben.');
-    });
-
-    document.getElementById('toggle-risk-review').addEventListener('click', () => {
-      const openRisks = machine.riskItems.filter(item => item.status !== 'done').length;
-      if (!machine.riskReviewComplete && openRisks > 0) {
-        showToast('Bitte zuerst die offenen Risiken und Maßnahmen erledigen.');
+    document.getElementById('document-list').addEventListener('click', async event => {
+      const edit = event.target.closest('[data-edit-document]');
+      if (edit) {
+        const item = machine.documentItems.find(x => x.id === edit.dataset.editDocument);
+        if (!item) return;
+        editingDocumentId = item.id;
+        documentForm.elements.title.value = item.title;
+        documentForm.elements.type.value = item.type;
+        documentForm.elements.date.value = item.date || '';
+        populateDocumentRelated(item.related || 'Gesamtmaschine');
+        documentForm.elements.note.value = item.note || '';
+        setDialogMode(documentDialog, documentForm, 'Unterlage bearbeiten', 'Änderungen speichern');
+        documentDialog.showModal();
         return;
       }
-      machine.riskReviewComplete = !machine.riskReviewComplete;
-      persist();
-      render();
-      showToast(machine.riskReviewComplete ? 'Risikoprüfung wurde abgeschlossen.' : 'Risikoprüfung wurde wieder geöffnet.');
+      const remove = event.target.closest('[data-remove-document]');
+      if (!remove) return;
+      try {
+        await backend.deleteDocument(remove.dataset.removeDocument);
+        machine.documentsComplete = false;
+        await backend.updateMachine(machine);
+        await refresh('Unterlage wurde entfernt.');
+      } catch (error) {
+        console.error(error);
+        showToast('Unterlage konnte nicht entfernt werden.');
+      }
     });
 
-    document.getElementById('toggle-documents-complete').addEventListener('click', () => {
+    document.getElementById('toggle-documents-complete').addEventListener('click', async () => {
       if (!machine.documentsComplete && machine.documentItems.length === 0) {
         showToast('Bitte zuerst mindestens eine vorhandene Unterlage erfassen.');
         return;
       }
       machine.documentsComplete = !machine.documentsComplete;
-      persist();
-      render();
-      showToast(machine.documentsComplete ? 'Unterlagen wurden als vollständig markiert.' : 'Vollständigkeit wurde aufgehoben.');
+      await backend.updateMachine(machine);
+      await refresh(machine.documentsComplete ? 'Unterlagen wurden als vollständig markiert.' : 'Vollständigkeit wurde aufgehoben.');
     });
 
     document.getElementById('set-support').addEventListener('click', () => {
@@ -836,377 +1050,34 @@
       supportDialog.showModal();
     });
 
-    document.querySelectorAll('[data-close-dialog]').forEach(button => {
-      button.addEventListener('click', () => {
-        const dialog = document.getElementById(button.dataset.closeDialog);
-        if (dialog) dialog.close();
-      });
-    });
-
-    editMachineForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = new FormData(editMachineForm);
-
-      machine.name = data.get('name').trim();
-      machine.model = data.get('model').trim();
-      machine.productNumber = data.get('productNumber').trim();
-      machine.owner = data.get('owner').trim();
-      machine.software = data.get('software');
-      machine.connected = data.get('connected');
-      machine.documentRevision = Math.max(1, parseInt(data.get('documentRevision'), 10) || 1);
-
-      const basicTask = machine.tasks.find(task => task.id === 'basic');
-      if (basicTask) basicTask.done = true;
-
-      editMachineDialog.close();
-      persist();
-      render();
-      showToast('Maschinendaten wurden gespeichert.');
-    });
-
-    softwareForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = new FormData(softwareForm);
-
-      const values = {
-        name: data.get('name').trim(),
-        version: data.get('version').trim(),
-        type: data.get('type'),
-        vendor: data.get('vendor').trim()
-      };
-      machine.softwareComplete = false;
-
-      if (editingSoftwareId) {
-        const item = machine.softwareItems.find(entry => entry.id === editingSoftwareId);
-        if (item) Object.assign(item, values);
-      } else {
-        machine.softwareItems.push({id:'s_' + Date.now(), ...values});
-      }
-
-      const wasEditing = Boolean(editingSoftwareId);
-      editingSoftwareId = null;
-      softwareForm.reset();
-      softwareDialog.close();
-      persist();
-      render();
-      showToast(wasEditing ? 'Software wurde aktualisiert.' : 'Software wurde der Maschine hinzugefügt.');
-    });
-
-    componentForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = new FormData(componentForm);
-
-      const values = {
-        name: data.get('name').trim(),
-        vendor: data.get('vendor').trim(),
-        model: data.get('model').trim(),
-        version: data.get('version').trim(),
-        documents: data.get('documents')
-      };
-      machine.componentsComplete = false;
-
-      if (editingComponentId) {
-        const item = machine.components.find(entry => entry.id === editingComponentId);
-        if (item) Object.assign(item, values);
-      } else {
-        machine.components.push({id:'c_' + Date.now(), ...values});
-      }
-
-      const wasEditing = Boolean(editingComponentId);
-      editingComponentId = null;
-      componentForm.reset();
-      componentDialog.close();
-      persist();
-      render();
-      showToast(wasEditing ? 'Bauteil wurde aktualisiert.' : 'Bauteil wurde der Maschine hinzugefügt.');
-    });
-
-    riskForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = new FormData(riskForm);
-
-      const values = {
-        topic: data.get('topic').trim(),
-        level: data.get('level'),
-        owner: data.get('owner').trim(),
-        measure: data.get('measure').trim(),
-        status: data.get('status')
-      };
-      machine.riskReviewComplete = false;
-
-      if (editingRiskId) {
-        const item = machine.riskItems.find(entry => entry.id === editingRiskId);
-        if (item) Object.assign(item, values);
-      } else {
-        machine.riskItems.push({id:'r_' + Date.now(), ...values});
-      }
-
-      const wasEditing = Boolean(editingRiskId);
-      editingRiskId = null;
-      riskForm.reset();
-      riskDialog.close();
-      persist();
-      render();
-      showToast(wasEditing ? 'Risiko / Aufgabe wurde aktualisiert.' : 'Risiko / Aufgabe wurde hinzugefügt.');
-    });
-
-    updateProcessForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = new FormData(updateProcessForm);
-
-      machine.updateProcess = {
-        owner: data.get('owner').trim(),
-        procedure: data.get('procedure').trim()
-      };
-
-      updateProcessDialog.close();
-      persist();
-      render();
-      showToast('Interner Ablauf wurde gespeichert.');
-    });
-
-    updateForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = new FormData(updateForm);
-
-      const values = {
-        title: data.get('title').trim(),
-        date: data.get('date'),
-        affected: data.get('affected').trim(),
-        action: data.get('action').trim(),
-        status: data.get('status')
-      };
-
-      if (editingUpdateId) {
-        const item = machine.updateItems.find(entry => entry.id === editingUpdateId);
-        if (item) Object.assign(item, values);
-      } else {
-        machine.updateItems.push({id:'u_' + Date.now(), ...values});
-      }
-
-      const wasEditing = Boolean(editingUpdateId);
-      editingUpdateId = null;
-      updateForm.reset();
-      updateDialog.close();
-      persist();
-      render();
-      showToast(wasEditing ? 'Sicherheitsproblem wurde aktualisiert.' : 'Sicherheitsproblem wurde dokumentiert.');
-    });
-
-    documentForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const data = new FormData(documentForm);
-
-      const values = {
-        title: data.get('title').trim(),
-        type: data.get('type'),
-        date: data.get('date'),
-        related: data.get('related'),
-        note: data.get('note').trim()
-      };
-
-      if (editingDocumentId) {
-        const item = machine.documentItems.find(entry => entry.id === editingDocumentId);
-        if (item) Object.assign(item, values);
-      } else {
-        machine.documentItems.push({id:'d_' + Date.now(), ...values});
-      }
-
-      const wasEditing = Boolean(editingDocumentId);
-      editingDocumentId = null;
-      machine.documentsComplete = false;
-      documentForm.reset();
-      documentDialog.close();
-      persist();
-      render();
-      showToast(wasEditing ? 'Unterlage wurde aktualisiert.' : 'Unterlage wurde der Maschine zugeordnet.');
-    });
-
-    supportForm.addEventListener('submit', (event) => {
+    supportForm.addEventListener('submit', async event => {
       event.preventDefault();
       const data = new FormData(supportForm);
       const startDate = data.get('startDate');
       const endDate = data.get('endDate');
-
       if (endDate < startDate) {
         supportForm.elements.endDate.setCustomValidity('Das Enddatum darf nicht vor dem Beginn liegen.');
         supportForm.elements.endDate.reportValidity();
         return;
       }
-
       supportForm.elements.endDate.setCustomValidity('');
-
-      machine.supportPeriod = {
-        startDate,
-        endDate,
-        owner: data.get('owner').trim(),
-        reason: data.get('reason').trim()
-      };
-
-      supportDialog.close();
-      persist();
-      render();
-      showToast('Unterstützungszeitraum wurde gespeichert.');
+      try {
+        await backend.setSupportPeriod(machine.id, {
+          startDate,
+          endDate,
+          owner:data.get('owner').trim(),
+          reason:data.get('reason').trim()
+        });
+        supportDialog.close();
+        await refresh('Unterstützungszeitraum wurde gespeichert.');
+      } catch (error) {
+        console.error(error);
+        showToast('Unterstützungszeitraum konnte nicht gespeichert werden.');
+      }
     });
 
     supportForm.elements.endDate.addEventListener('input', () => {
       supportForm.elements.endDate.setCustomValidity('');
-    });
-
-    document.getElementById('software-list').addEventListener('click', (event) => {
-      const editButton = event.target.closest('[data-edit-software]');
-      if (editButton) {
-        const item = machine.softwareItems.find(entry => entry.id === editButton.dataset.editSoftware);
-        if (!item) return;
-        editingSoftwareId = item.id;
-        softwareForm.elements.name.value = item.name || '';
-        softwareForm.elements.version.value = item.version || '';
-        softwareForm.elements.type.value = item.type || 'Software';
-        softwareForm.elements.vendor.value = item.vendor || '';
-        setDialogMode(softwareDialog, softwareForm, 'Software bearbeiten', 'Änderungen speichern');
-        softwareDialog.showModal();
-        return;
-      }
-
-      const button = event.target.closest('[data-remove-software]');
-      if (!button) return;
-
-      machine.softwareItems = machine.softwareItems.filter(item => item.id !== button.dataset.removeSoftware);
-      machine.softwareComplete = false;
-      persist();
-      render();
-      showToast('Software wurde entfernt.');
-    });
-
-    document.getElementById('component-list').addEventListener('click', (event) => {
-      const editButton = event.target.closest('[data-edit-component]');
-      if (editButton) {
-        const item = machine.components.find(entry => entry.id === editButton.dataset.editComponent);
-        if (!item) return;
-        editingComponentId = item.id;
-        componentForm.elements.name.value = item.name || '';
-        componentForm.elements.vendor.value = item.vendor || '';
-        componentForm.elements.model.value = item.model || '';
-        componentForm.elements.version.value = item.version || '';
-        const documentChoice = componentForm.querySelector('[name="documents"][value="' + (item.documents || 'unknown') + '"]');
-        if (documentChoice) documentChoice.checked = true;
-        setDialogMode(componentDialog, componentForm, 'Bauteil bearbeiten', 'Änderungen speichern');
-        componentDialog.showModal();
-        return;
-      }
-
-      const button = event.target.closest('[data-remove-component]');
-      if (!button) return;
-
-      machine.components = machine.components.filter(item => item.id !== button.dataset.removeComponent);
-      machine.componentsComplete = false;
-      persist();
-      render();
-      showToast('Bauteil wurde entfernt.');
-    });
-
-    document.getElementById('risk-list').addEventListener('click', (event) => {
-      const editButton = event.target.closest('[data-edit-risk]');
-      if (editButton) {
-        const item = machine.riskItems.find(entry => entry.id === editButton.dataset.editRisk);
-        if (!item) return;
-        editingRiskId = item.id;
-        riskForm.elements.topic.value = item.topic || '';
-        riskForm.elements.level.value = item.level || 'Mittel';
-        riskForm.elements.owner.value = item.owner || '';
-        riskForm.elements.measure.value = item.measure || '';
-        const statusChoice = riskForm.querySelector('[name="status"][value="' + (item.status || 'open') + '"]');
-        if (statusChoice) statusChoice.checked = true;
-        setDialogMode(riskDialog, riskForm, 'Punkt bearbeiten', 'Änderungen speichern');
-        riskDialog.showModal();
-        return;
-      }
-
-      const removeButton = event.target.closest('[data-remove-risk]');
-      if (removeButton) {
-        machine.riskItems = machine.riskItems.filter(item => item.id !== removeButton.dataset.removeRisk);
-        machine.riskReviewComplete = false;
-        persist();
-        render();
-        showToast('Risiko / Aufgabe wurde entfernt.');
-        return;
-      }
-
-      const toggleButton = event.target.closest('[data-toggle-risk]');
-      if (!toggleButton) return;
-
-      const item = machine.riskItems.find(entry => entry.id === toggleButton.dataset.toggleRisk);
-      if (!item) return;
-
-      item.status = item.status === 'done' ? 'open' : 'done';
-      if (item.status === 'open') machine.riskReviewComplete = false;
-      persist();
-      render();
-      showToast(item.status === 'done' ? 'Punkt wurde erledigt.' : 'Punkt wurde wieder geöffnet.');
-    });
-
-    document.getElementById('update-list').addEventListener('click', (event) => {
-      const editButton = event.target.closest('[data-edit-update]');
-      if (editButton) {
-        const item = machine.updateItems.find(entry => entry.id === editButton.dataset.editUpdate);
-        if (!item) return;
-        editingUpdateId = item.id;
-        updateForm.elements.title.value = item.title || '';
-        updateForm.elements.date.value = item.date || '';
-        updateForm.elements.affected.value = item.affected || '';
-        updateForm.elements.action.value = item.action || '';
-        const statusChoice = updateForm.querySelector('[name="status"][value="' + (item.status || 'open') + '"]');
-        if (statusChoice) statusChoice.checked = true;
-        setDialogMode(updateDialog, updateForm, 'Problem bearbeiten', 'Änderungen speichern');
-        updateDialog.showModal();
-        return;
-      }
-
-      const removeButton = event.target.closest('[data-remove-update]');
-      if (removeButton) {
-        machine.updateItems = machine.updateItems.filter(item => item.id !== removeButton.dataset.removeUpdate);
-        persist();
-        render();
-        showToast('Sicherheitsproblem wurde entfernt.');
-        return;
-      }
-
-      const toggleButton = event.target.closest('[data-toggle-update]');
-      if (!toggleButton) return;
-
-      const item = machine.updateItems.find(entry => entry.id === toggleButton.dataset.toggleUpdate);
-      if (!item) return;
-
-      item.status = item.status === 'done' ? 'open' : 'done';
-      persist();
-      render();
-      showToast(item.status === 'done' ? 'Sicherheitsproblem wurde erledigt.' : 'Sicherheitsproblem wurde wieder geöffnet.');
-    });
-
-    document.getElementById('document-list').addEventListener('click', (event) => {
-      const editButton = event.target.closest('[data-edit-document]');
-      if (editButton) {
-        const item = machine.documentItems.find(entry => entry.id === editButton.dataset.editDocument);
-        if (!item) return;
-        editingDocumentId = item.id;
-        documentForm.elements.title.value = item.title || '';
-        documentForm.elements.type.value = item.type || 'Sonstiges';
-        documentForm.elements.date.value = item.date || '';
-        populateDocumentRelated(item.related || 'Gesamtmaschine');
-        documentForm.elements.note.value = item.note || '';
-        setDialogMode(documentDialog, documentForm, 'Unterlage bearbeiten', 'Änderungen speichern');
-        documentDialog.showModal();
-        return;
-      }
-
-      const button = event.target.closest('[data-remove-document]');
-      if (!button) return;
-
-      machine.documentItems = machine.documentItems.filter(item => item.id !== button.dataset.removeDocument);
-      machine.documentsComplete = false;
-      persist();
-      render();
-      showToast('Unterlage wurde entfernt.');
     });
 
     document.getElementById('guide-show-details').addEventListener('click', () => {
@@ -1215,46 +1086,28 @@
 
     document.getElementById('guide-action').addEventListener('click', () => {
       const task = document.getElementById('guide-action').dataset.guideTask;
-      const scrollTo = id => {
-        const target = document.getElementById(id);
+      const scrollTo = targetId => {
+        const target = document.getElementById(targetId);
         if (target) target.scrollIntoView({behavior:'smooth', block:'center'});
       };
 
-      if (task === 'complete') {
-        document.getElementById('short-report-machine').click();
-      } else if (task === 'basic') {
-        document.getElementById('edit-machine').click();
-      } else if (task === 'software') {
-        if (machine.softwareItems.length === 0) document.getElementById('add-software').click();
-        else scrollTo('module-software');
-      } else if (task === 'supplier') {
-        if (machine.components.length === 0) document.getElementById('add-component').click();
-        else scrollTo('module-supplier');
-      } else if (task === 'risks') {
-        scrollTo('module-risks');
-      } else if (task === 'updates') {
+      if (task === 'complete') document.getElementById('short-report-machine').click();
+      else if (task === 'basic') document.getElementById('edit-machine').click();
+      else if (task === 'software') machine.softwareItems.length ? scrollTo('module-software') : document.getElementById('add-software').click();
+      else if (task === 'supplier') machine.components.length ? scrollTo('module-supplier') : document.getElementById('add-component').click();
+      else if (task === 'risks') scrollTo('module-risks');
+      else if (task === 'updates') {
         const ready = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
-        if (!ready) document.getElementById('set-update-process').click();
-        else scrollTo('module-updates');
-      } else if (task === 'documents') {
-        if (machine.documentItems.length === 0) document.getElementById('add-document').click();
-        else scrollTo('module-documents');
-      } else if (task === 'support') {
-        document.getElementById('set-support').click();
+        ready ? scrollTo('module-updates') : document.getElementById('set-update-process').click();
       }
-    });
-
-    document.querySelectorAll('.module-action').forEach(button => {
-      button.addEventListener('click', () => {
-        showToast(button.dataset.placeholder + ' bauen wir als nächsten Schritt aus.');
-      });
+      else if (task === 'documents') machine.documentItems.length ? scrollTo('module-documents') : document.getElementById('add-document').click();
+      else if (task === 'support') document.getElementById('set-support').click();
     });
 
     render();
   }
 
   const page = document.body.dataset.page;
-  renderCompanyHeader();
   if (page === 'dashboard') initDashboard();
   if (page === 'machine') initMachine();
 })();
