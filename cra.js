@@ -241,31 +241,31 @@
     }
     if (assessment.classification === 'standard') {
       return {
-        title:'Standardprodukt',
-        text:'Für Standardprodukte ist die interne Kontrolle nach Modul A grundsätzlich möglich. Alternativ kommen B+C, Modul H oder ein anwendbares europäisches Cybersicherheitszertifizierungsschema in Betracht.'
+        title:'Für diese Einstufung ist ein einfacher Weg möglich',
+        text:'Bei einem Standardprodukt kann die interne Kontrolle (Modul A) genutzt werden. CRAwerk speichert Ihre Auswahl für die spätere Akte.'
       };
     }
     if (assessment.classification === 'important_i') {
       if (assessment.standardsCoverage === 'full') {
         return {
-          title:'Klasse I · vollständige Abdeckung dokumentiert',
-          text:'Bei vollständiger Anwendung der einschlägigen harmonisierten Normen, gemeinsamen Spezifikationen oder geeigneten Zertifizierung kann der allgemeine Weg einschließlich Modul A in Betracht kommen.'
+          title:'Klasse I · Normen vollständig abgedeckt',
+          text:'Wenn die einschlägigen Anforderungen vollständig über passende Normen oder Spezifikationen abgedeckt sind, kann Modul A in Betracht kommen.'
         };
       }
       return {
-        title:'Klasse I · Drittbewertung einplanen',
-        text:'Wenn die einschlägigen harmonisierten Normen, gemeinsamen Spezifikationen oder geeigneten Zertifizierungsschemata nicht vollständig angewandt werden, sind für die betreffenden Anforderungen B+C oder Modul H erforderlich.'
+        title:'Klasse I · externe Bewertung einplanen',
+        text:'Sind die einschlägigen Anforderungen nicht vollständig über passende Normen abgedeckt, wählen Sie B+C oder Modul H.'
       };
     }
     if (assessment.classification === 'important_ii') {
       return {
-        title:'Klasse II',
-        text:'Für Klasse II kommen B+C, Modul H oder – sofern verfügbar und anwendbar – ein europäisches Cybersicherheitszertifizierungsschema mindestens auf der erforderlichen Vertrauenswürdigkeitsstufe in Betracht.'
+        title:'Klasse II · externe Bewertung erforderlich',
+        text:'Für Klasse II wählen Sie B+C, Modul H oder – wenn passend – ein europäisches Cybersicherheitszertifizierungsschema.'
       };
     }
     return {
       title:'Kritisches Produkt',
-      text:'Für kritische Produkte ist ein einschlägiges europäisches Cybersicherheitszertifizierungsschema maßgeblich, soweit die Voraussetzungen nach Artikel 8 greifen; andernfalls gelten die für Klasse II vorgesehenen Verfahren.'
+      text:'Bei kritischen Produkten ist regelmäßig ein europäisches Cybersicherheitszertifizierungsschema maßgeblich. CRAwerk hält den gewählten Weg fest.'
     };
   };
 
@@ -342,12 +342,12 @@
 
     return [
       {
-        title:'1. Allgemeine Produktbeschreibung & Nutzerinformationen',
+        title:'Produktbeschreibung & Informationen für Kunden',
         done:Boolean(assessment.intendedPurpose && assessment.securityEnvironment && assessment.securityProperties &&
           assessment.foreseeableMisuse && assessment.hardwareVisualsReference && userInfo)
       },
       {
-        title:'2. Konzeption, Entwicklung, Produktion & Schwachstellenverfahren',
+        title:'Entwicklung, Änderungen & Schwachstellenprozess',
         done:Boolean(assessment.architectureDescription && assessment.productionMonitoringProcess &&
           assessment.vulnerabilityContact && assessment.cvdPolicy && assessment.cvdPolicyLocation &&
           assessment.secureUpdateDistribution && assessment.thirdPartyComponentProcess &&
@@ -355,29 +355,29 @@
           (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length)))
       },
       {
-        title:'3. Cybersicherheitsrisikobewertung & Anwendbarkeit Anhang I',
+        title:'Risikobewertung & Schutzprüfung',
         done:Boolean(machine.riskReviewComplete && annexIComplete)
       },
       {
-        title:'4. Begründung des Unterstützungszeitraums',
+        title:'Unterstützungszeitraum',
         done:Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate &&
           machine.supportPeriod.owner && machine.supportPeriod.reason)
       },
       {
-        title:'5. Normen, Spezifikationen, Zertifizierungen oder technische Lösungen',
+        title:'Normen & technische Lösungen',
         done:Boolean(assessment.appliedStandards)
       },
       {
-        title:'6. Berichte über durchgeführte Prüfungen',
+        title:'Sicherheitsprüfungen & Testberichte',
         done:Boolean(assessment.testReportsSummary)
       },
       {
-        title:'7. EU-Konformitätserklärung',
+        title:'EU-Konformitätserklärung & CE',
         done:declarationComplete(assessment) && conformityDetailsComplete(assessment) &&
           assessment.ceStatus === 'marked' && Boolean(assessment.ceMarkingLocation)
       },
       {
-        title:'8. Software-Stückliste (soweit anwendbar)',
+        title:'Softwareliste & SBOM',
         done:machine.software === 'no' || Boolean(machine.softwareComplete && machine.softwareItems.length)
       }
     ];
@@ -418,6 +418,92 @@
     document.getElementById('summary-reporting').textContent = openReporting + ' offen';
   };
 
+
+
+  const buildFieldGroup = (section, title, help, names, open = false, extraClass = '') => {
+    const details = document.createElement('details');
+    details.className = 'cra-field-group' + (extraClass ? ' ' + extraClass : '');
+    details.open = open;
+
+    const summary = document.createElement('summary');
+    summary.innerHTML = '<div><strong>' + escapeHtml(title) + '</strong><span>' + escapeHtml(help) + '</span></div><b>Öffnen</b>';
+
+    const body = document.createElement('div');
+    body.className = 'cra-field-group-body';
+
+    names.forEach(name => {
+      const field = form.elements[name];
+      const label = field?.closest('label');
+      if (label) body.appendChild(label);
+    });
+
+    details.append(summary, body);
+    section.appendChild(details);
+    return details;
+  };
+
+  const organizeLongForms = () => {
+    const documentation = document.getElementById('cra-documentation');
+    if (documentation && !documentation.dataset.organized) {
+      documentation.dataset.organized = '1';
+      documentation.querySelectorAll('.cra-form-grid').forEach(grid => grid.classList.add('cra-original-grid'));
+      const subhead = documentation.querySelector('.cra-subhead');
+      if (subhead) subhead.hidden = true;
+
+      buildFieldGroup(
+        documentation,
+        'Produkt & Einsatz',
+        'Wofür ist die Maschine da und in welcher Umgebung wird sie genutzt?',
+        ['intendedPurpose','securityEnvironment','securityProperties','foreseeableMisuse'],
+        true
+      );
+      buildFieldGroup(
+        documentation,
+        'Aufbau & Nachweise',
+        'Architektur, Zeichnungen, Änderungen, Normen und Prüfberichte.',
+        ['architectureDescription','hardwareVisualsReference','productionMonitoringProcess','appliedStandards','testReportsSummary','retentionProcess']
+      );
+      buildFieldGroup(
+        documentation,
+        'Informationen für Kunden',
+        'Was muss der Kunde für sichere Nutzung, Updates und Außerbetriebnahme wissen?',
+        ['secureCommissioning','securityChangeEffects','updateInstallation','secureDecommissioning','automaticUpdatesOptOut','integratorInformation','supportType','declarationUrl']
+      );
+    }
+
+    const conformity = document.getElementById('cra-conformity');
+    if (conformity && !conformity.dataset.organized) {
+      conformity.dataset.organized = '1';
+      conformity.querySelectorAll('.cra-form-grid').forEach(grid => grid.classList.add('cra-original-grid'));
+
+      buildFieldGroup(
+        conformity,
+        'CE & EU-Erklärung',
+        'Die normalen Abschlussangaben für diese Maschine.',
+        ['ceStatus','ceMarkingLocation','euDeclarationStatus','declarationPlace','declarationDate','declarationSigner','declarationFunction','declarationSignedCopyReference','otherUnionLegislation'],
+        true
+      );
+      buildFieldGroup(
+        conformity,
+        'Externe Stelle / Zertifikat',
+        'Nur ausfüllen, wenn der gewählte Konformitätsweg eine externe Stelle oder Zertifizierung einbezieht.',
+        ['notifiedBodyName','notifiedBodyNumber','certificateReference'],
+        false,
+        'cra-external-assessment'
+      );
+    }
+  };
+
+  const updateConformityFieldVisibility = () => {
+    const group = document.querySelector('.cra-external-assessment');
+    if (!group) return;
+    const route = form.elements.conformityRoute?.value || 'unset';
+    const needed = route !== 'unset' && route !== 'module_a';
+    group.hidden = !needed;
+    if (needed && ['module_bc','module_h','eu_certification'].includes(route)) {
+      group.querySelector('summary b').textContent = 'Nur bei diesem Weg';
+    }
+  };
 
   const guideStepStates = () => {
     const a = getAssessmentFromForm();
@@ -497,6 +583,13 @@
     });
 
     document.getElementById('guide-prev').disabled = safeIndex === 0;
+
+    const hub = document.getElementById('cra-special-hub');
+    const specialOpen =
+      (bundle.reportingEvents || []).some(item => item.status !== 'closed') ||
+      (bundle.nonconformityEvents || []).some(item => item.status !== 'closed') ||
+      (bundle.authorityRequests || []).some(item => item.status !== 'closed');
+    if (hub) hub.hidden = safeIndex < 3 && !specialOpen;
     const next = document.getElementById('guide-next');
     next.textContent = safeIndex === GUIDE_STEPS.length - 1 ? 'Speichern' : 'Speichern & weiter →';
 
@@ -882,6 +975,7 @@
   ['classification','standardsCoverage','conformityRoute'].forEach(name => {
     form.elements[name].addEventListener('change', () => {
       renderGuidance();
+      updateConformityFieldVisibility();
       updateCounters();
       updateGuideProgress();
     });
@@ -1266,7 +1360,9 @@
         '</option>'
       ).join('');
 
+    organizeLongForms();
     fillAssessment(bundle.assessment);
+    updateConformityFieldVisibility();
     renderRequirements();
     renderGuidance();
     renderReporting();
