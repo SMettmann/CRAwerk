@@ -17,6 +17,70 @@
     return parts.length === 3 ? parts[2] + '.' + parts[1] + '.' + parts[0] : value;
   };
 
+  const craCompleteForMachine = machine => {
+    const a = machine.craAssessment;
+    const requirements = machine.craRequirements || [];
+    const reporting = machine.craReportingEvents || [];
+    if (!a) return false;
+
+    const requirementsComplete =
+      requirements.length >= 22 &&
+      requirements.every(item =>
+        item.status !== 'open' &&
+        (item.status !== 'not_applicable' || Boolean(item.justification)) &&
+        (item.status !== 'fulfilled' || Boolean(item.justification || item.evidence))
+      );
+
+    const routeValid =
+      a.classification !== 'unset' &&
+      a.conformityRoute !== 'unset' &&
+      !(a.classification === 'important_i' &&
+        a.conformityRoute === 'module_a' &&
+        a.standardsCoverage !== 'full') &&
+      !(['important_ii','critical'].includes(a.classification) && a.conformityRoute === 'module_a');
+
+    const userInfoReady = Boolean(
+      a.secureCommissioning &&
+      a.securityChangeEffects &&
+      a.updateInstallation &&
+      a.secureDecommissioning &&
+      a.automaticUpdatesOptOut &&
+      a.supportType
+    );
+
+    const annexViiReady = Boolean(
+      a.intendedPurpose &&
+      a.securityEnvironment &&
+      a.securityProperties &&
+      a.foreseeableMisuse &&
+      a.hardwareVisualsReference &&
+      userInfoReady &&
+      a.architectureDescription &&
+      a.productionMonitoringProcess &&
+      a.vulnerabilityContact &&
+      a.cvdPolicy &&
+      a.secureUpdateDistribution &&
+      machine.riskReviewComplete &&
+      machine.supportPeriod.startDate &&
+      machine.supportPeriod.endDate &&
+      machine.supportPeriod.owner &&
+      machine.supportPeriod.reason &&
+      a.appliedStandards &&
+      a.testReportsSummary &&
+      (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length > 0))
+    );
+
+    return Boolean(
+      routeValid &&
+      a.classificationReason &&
+      requirementsComplete &&
+      annexViiReady &&
+      a.ceStatus === 'marked' &&
+      a.euDeclarationStatus === 'signed' &&
+      reporting.every(item => item.status === 'closed')
+    );
+  };
+
   const tasksForMachine = machine => {
     const processReady = Boolean(machine.updateProcess && machine.updateProcess.owner && machine.updateProcess.procedure);
     const noOpenUpdates = (machine.updateItems || []).every(item => item.status === 'done');
@@ -70,6 +134,12 @@
         title:'Unterstützungszeitraum festlegen',
         text:'Festhalten, wie lange die Maschine sicherheitsbezogen unterstützt wird.',
         done:supportReady
+      },
+      {
+        id:'cra',
+        title:'CRA-Prüfung & Konformitätsabschluss',
+        text:'Produktklasse, Anhang-I-Nachweis, technische Dokumentation, Meldeprozess sowie EU-Erklärung und CE abschließen.',
+        done:craCompleteForMachine(machine)
       }
     ];
   };
@@ -130,6 +200,13 @@
       what:'Beginn, geplantes Ende und die verantwortliche Person.',
       example:'Beginn 01.01.2027 · Ende 31.12.2032 · Verantwortlich: Produktmanagement',
       action:'Zeitraum festlegen'
+    },
+    cra:{
+      title:'CRA-Prüfung und Konformitätsabschluss',
+      why:'Damit die bereits erfassten Maschinendaten mit den verbleibenden CRA-Pflichtnachweisen zusammengeführt werden.',
+      what:'Einstufung, Anhang-I-Anforderungen, technische Dokumentation, Meldeworkflow sowie EU-Konformitätserklärung und CE.',
+      example:'Standardprodukt · Modul A · Anhang I vollständig bewertet · EU-Erklärung unterzeichnet',
+      action:'CRA-Prüfung öffnen'
     }
   };
 
@@ -461,7 +538,8 @@
         '<div><dt>Software</dt><dd>' + yesNo(machine.software) + '</dd></div>' +
         '<div><dt>Verbindung</dt><dd>' + yesNo(machine.connected) + '</dd></div>' +
         '<div><dt>Unterstützung bis</dt><dd>' + escapeHtml(formatDate(machine.supportPeriod.endDate)) + '</dd></div>' +
-        '<div><dt>Produktakte</dt><dd>Revision ' + escapeHtml(machine.documentRevision) + '</dd></div>';
+        '<div><dt>Produktakte</dt><dd>Revision ' + escapeHtml(machine.documentRevision) + '</dd></div>' +
+        '<div><dt>CRA-Abschluss</dt><dd>' + (craCompleteForMachine(machine) ? 'Abgeschlossen' : 'Offen') + '</dd></div>';
 
       document.getElementById('software-status').textContent =
         machine.software === 'no' ? 'Nicht erforderlich' :
@@ -496,6 +574,10 @@
       const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner);
       document.getElementById('support-status').textContent = supportReady ? 'Festgelegt' : 'Noch offen';
 
+      const craReady = craCompleteForMachine(machine);
+      const craStatus = document.getElementById('cra-status');
+      if (craStatus) craStatus.textContent = craReady ? 'Abgeschlossen' : 'Noch offen';
+
       document.getElementById('support-summary').innerHTML = supportReady
         ? '<div class="support-card">' +
             '<div><span>Beginn</span><strong>' + escapeHtml(formatDate(machine.supportPeriod.startDate)) + '</strong></div>' +
@@ -509,7 +591,8 @@
         ? machine.softwareItems.map(item =>
             '<div class="module-item"><div><strong>' + escapeHtml(item.name) + '</strong>' +
             '<span>' + escapeHtml(item.type) + ' · Version ' + escapeHtml(item.version) +
-            (item.vendor ? ' · ' + escapeHtml(item.vendor) : '') + '</span></div>' +
+            (item.vendor ? ' · ' + escapeHtml(item.vendor) : '') +
+            (item.purl ? ' · ' + escapeHtml(item.purl) : '') + '</span></div>' +
             '<div class="item-actions"><button type="button" class="item-edit" data-edit-software="' + item.id + '">Bearbeiten</button>' +
             '<button type="button" class="item-remove" data-remove-software="' + item.id + '" aria-label="Software löschen">×</button></div></div>'
           ).join('')
@@ -552,7 +635,10 @@
               (item.date ? escapeHtml(formatDate(item.date)) : 'Datum offen') +
               (item.affected ? ' · ' + escapeHtml(item.affected) : '') + '</span></div>' +
               '<span class="risk-pill ' + (item.status === 'done' ? 'done' : 'open') + '">' + (item.status === 'done' ? 'Erledigt' : 'Offen') + '</span></div>' +
-              '<p>' + escapeHtml(item.action) + '</p>' +
+              '<p>' + (item.assessment ? '<strong>Bewertung:</strong> ' + escapeHtml(item.assessment) + '<br>' : '') +
+              '<strong>Maßnahme:</strong> ' + escapeHtml(item.action) +
+              (item.patchVersion ? '<br><strong>Patch:</strong> ' + escapeHtml(item.patchVersion) : '') +
+              (item.remediatedAt ? ' · behoben ' + escapeHtml(formatDate(item.remediatedAt)) : '') + '</p>' +
               '<div class="risk-actions"><div class="risk-action-links">' +
                 '<button type="button" class="text-button" data-edit-update="' + item.id + '">Bearbeiten</button>' +
                 '<button type="button" class="text-button" data-toggle-update="' + item.id + '">' + (item.status === 'done' ? 'Wieder öffnen' : 'Als erledigt markieren') + '</button>' +
@@ -584,6 +670,14 @@
         const dialog = document.getElementById(button.dataset.closeDialog);
         if (dialog) dialog.close();
       });
+    });
+
+    document.getElementById('cra-machine').addEventListener('click', () => {
+      location.href = 'cra.html?id=' + encodeURIComponent(machine.id);
+    });
+
+    document.getElementById('open-cra').addEventListener('click', () => {
+      location.href = 'cra.html?id=' + encodeURIComponent(machine.id);
     });
 
     document.getElementById('short-report-machine').addEventListener('click', () => {
@@ -655,6 +749,63 @@
       }
     });
 
+
+    const downloadSbom = () => {
+      if (!machine.softwareItems.length) {
+        showToast('Keine Softwarekomponente für die SBOM erfasst.');
+        return;
+      }
+
+      const typeMap = {
+        Firmware:'firmware',
+        Betriebssystem:'operating-system',
+        Software:'application',
+        Sonstiges:'library'
+      };
+
+      const components = machine.softwareItems.map((item,index) => {
+        const component = {
+          type:typeMap[item.type] || 'application',
+          'bom-ref':'component-' + (index + 1),
+          name:item.name,
+          version:item.version || undefined,
+          supplier:item.vendor ? {name:item.vendor} : undefined
+        };
+        if (item.purl) component.purl = item.purl;
+        return component;
+      });
+
+      const topLevelRefs = machine.softwareItems
+        .map((item,index) => item.sbomScope !== 'transitive' ? 'component-' + (index + 1) : null)
+        .filter(Boolean);
+
+      const bom = {
+        bomFormat:'CycloneDX',
+        specVersion:'1.6',
+        serialNumber:'urn:uuid:' + machine.id,
+        version:1,
+        metadata:{
+          timestamp:new Date().toISOString(),
+          component:{type:'device','bom-ref':'product-' + machine.id,name:machine.name,version:machine.model || undefined}
+        },
+        components,
+        dependencies:[
+          {'ref':'product-' + machine.id,dependsOn:topLevelRefs},
+          ...components.map(component => ({ref:component['bom-ref'],dependsOn:[]}))
+        ]
+      };
+
+      const blob = new Blob([JSON.stringify(bom,null,2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = ('SBOM-' + machine.name).replace(/[^a-z0-9äöüß_-]+/gi,'-') + '.cdx.json';
+      link.click();
+      URL.revokeObjectURL(url);
+    };
+
+    document.getElementById('download-sbom-machine').addEventListener('click', downloadSbom);
+
     document.getElementById('add-software').addEventListener('click', () => {
       editingSoftwareId = null;
       softwareForm.reset();
@@ -697,6 +848,9 @@
         softwareForm.elements.version.value = item.version;
         softwareForm.elements.type.value = item.type;
         softwareForm.elements.vendor.value = item.vendor || '';
+        softwareForm.elements.purl.value = item.purl || '';
+        const sbomChoice = softwareForm.querySelector('[name="sbomScope"][value="' + (item.sbomScope || 'top_level') + '"]');
+        if (sbomChoice) sbomChoice.checked = true;
         setDialogMode(softwareDialog, softwareForm, 'Software bearbeiten', 'Änderungen speichern');
         softwareDialog.showModal();
         return;
@@ -928,7 +1082,10 @@
         title:data.get('title').trim(),
         date:data.get('date'),
         affected:data.get('affected').trim(),
+        assessment:data.get('assessment').trim(),
         action:data.get('action').trim(),
+        patchVersion:data.get('patchVersion').trim(),
+        remediatedAt:data.get('remediatedAt'),
         status:data.get('status')
       };
       try {
@@ -954,7 +1111,10 @@
         updateForm.elements.title.value = item.title;
         updateForm.elements.date.value = item.date || '';
         updateForm.elements.affected.value = item.affected || '';
+        updateForm.elements.assessment.value = item.assessment || '';
         updateForm.elements.action.value = item.action;
+        updateForm.elements.patchVersion.value = item.patchVersion || '';
+        updateForm.elements.remediatedAt.value = item.remediatedAt || '';
         const choice = updateForm.querySelector('[name="status"][value="' + item.status + '"]');
         if (choice) choice.checked = true;
         setDialogMode(updateDialog, updateForm, 'Problem bearbeiten', 'Änderungen speichern');
@@ -1110,6 +1270,7 @@
       }
       else if (task === 'documents') machine.documentItems.length ? scrollTo('module-documents') : document.getElementById('add-document').click();
       else if (task === 'support') document.getElementById('set-support').click();
+      else if (task === 'cra') location.href = 'cra.html?id=' + encodeURIComponent(machine.id);
     });
 
     render();
