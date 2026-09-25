@@ -384,22 +384,73 @@
   };
 
   const adminOverview = async () => {
-    const { data, error } = await db.rpc('admin_overview');
-    if (error) throw error;
-    return Array.isArray(data) ? (data[0] || null) : data;
+    const [companiesResult, membersResult, machinesResult] = await Promise.all([
+      db.from('companies').select('id, account_status, created_at'),
+      db.from('company_members').select('company_id, user_id'),
+      db.from('machines').select('id, company_id')
+    ]);
+
+    if (companiesResult.error) throw companiesResult.error;
+    if (membersResult.error) throw membersResult.error;
+    if (machinesResult.error) throw machinesResult.error;
+
+    const companies = (companiesResult.data || []).filter(company => company.account_status !== 'internal');
+    const companyIds = new Set(companies.map(company => company.id));
+    const users = new Set(
+      (membersResult.data || [])
+        .filter(member => companyIds.has(member.company_id))
+        .map(member => member.user_id)
+    );
+    const machines = (machinesResult.data || []).filter(machine => companyIds.has(machine.company_id));
+    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+    return {
+      companies_total:companies.length,
+      companies_trial:companies.filter(company => company.account_status === 'trial').length,
+      companies_active:companies.filter(company => company.account_status === 'active').length,
+      users_total:users.size,
+      machines_total:machines.length,
+      companies_last_7_days:companies.filter(company => new Date(company.created_at).getTime() >= weekAgo).length
+    };
   };
 
   const adminCompanies = async () => {
-    const { data, error } = await db.rpc('admin_company_list');
-    if (error) throw error;
-    return data || [];
+    const [companiesResult, membersResult, machinesResult] = await Promise.all([
+      db.from('companies')
+        .select('id, name, email, account_status, trial_started_at, trial_ends_at, created_at')
+        .neq('account_status', 'internal')
+        .order('created_at', {ascending:false}),
+      db.from('company_members').select('company_id, user_id, role'),
+      db.from('machines').select('id, company_id')
+    ]);
+
+    if (companiesResult.error) throw companiesResult.error;
+    if (membersResult.error) throw membersResult.error;
+    if (machinesResult.error) throw machinesResult.error;
+
+    const members = membersResult.data || [];
+    const machines = machinesResult.data || [];
+
+    return (companiesResult.data || []).map(company => ({
+      company_id:company.id,
+      company_name:company.name,
+      owner_email:company.email || '',
+      account_status:company.account_status,
+      trial_started_at:company.trial_started_at,
+      trial_ends_at:company.trial_ends_at,
+      created_at:company.created_at,
+      member_count:members.filter(member => member.company_id === company.id).length,
+      machine_count:machines.filter(machine => machine.company_id === company.id).length
+    }));
   };
 
   const adminSetCompanyStatus = async (companyId, status) => {
-    const { error } = await db.rpc('admin_set_company_status', {
-      target_company_id:companyId,
-      new_status:status
-    });
+    const allowed = ['trial','active','paused','cancelled'];
+    if (!allowed.includes(status)) throw new Error('Ungültiger Firmenstatus.');
+    const { error } = await db
+      .from('companies')
+      .update({account_status:status})
+      .eq('id', companyId);
     if (error) throw error;
   };
 
