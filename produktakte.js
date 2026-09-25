@@ -49,7 +49,7 @@
       a.intendedPurpose && a.securityEnvironment && a.securityProperties &&
       a.foreseeableMisuse && a.hardwareVisualsReference && userInfo &&
       a.architectureDescription && a.productionMonitoringProcess &&
-      a.vulnerabilityContact && a.cvdPolicy && a.secureUpdateDistribution &&
+      a.vulnerabilityContact && a.cvdPolicy && a.cvdPolicyLocation && a.secureUpdateDistribution &&
       machine.riskReviewComplete &&
       machine.supportPeriod.startDate && machine.supportPeriod.endDate &&
       machine.supportPeriod.owner && machine.supportPeriod.reason &&
@@ -296,6 +296,7 @@
       ? '<div class="report-process"><span>Schwachstellenprozess</span>' +
         '<strong>' + escapeHtml(a.vulnerabilityContact || 'Kontakt noch offen') + '</strong>' +
         '<p><strong>CVD:</strong> ' + escapeHtml(a.cvdPolicy || 'Noch nicht dokumentiert') +
+        '<br><strong>Öffentlich auffindbar:</strong> ' + escapeHtml(a.cvdPolicyLocation || 'Noch nicht dokumentiert') +
         '<br><strong>Sichere Update-Verteilung:</strong> ' + escapeHtml(a.secureUpdateDistribution || 'Noch nicht dokumentiert') +
         '</p></div>'
       : '<div class="report-empty">Schwachstellenprozess noch nicht dokumentiert.</div>';
