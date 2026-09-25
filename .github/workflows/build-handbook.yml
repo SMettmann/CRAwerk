@@ -1,0 +1,71 @@
+name: Build CRAwerk handbook
+
+on:
+  push:
+    paths:
+      - "handbook-src/**"
+      - ".github/workflows/build-handbook.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-handbook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build handbook HTML
+        shell: bash
+        run: |
+          cat handbook-src/part-* > handbuch.html
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright
+          npx playwright install --with-deps chromium
+
+      - name: Render PDF
+        run: |
+          node <<'NODE'
+          const { chromium } = require('playwright');
+          const path = require('path');
+
+          (async () => {
+            const browser = await chromium.launch({ headless: true });
+            const page = await browser.newPage();
+            await page.goto('file://' + path.join(process.cwd(), 'handbuch.html'), {
+              waitUntil: 'load'
+            });
+            await page.emulateMedia({ media: 'print' });
+            await page.pdf({
+              path: 'CRAwerk_Handbuch.pdf',
+              format: 'A4',
+              printBackground: true,
+              preferCSSPageSize: true,
+              margin: { top: '0', right: '0', bottom: '0', left: '0' }
+            });
+            await browser.close();
+          })();
+          NODE
+
+      - name: Commit generated handbook
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add handbuch.html CRAwerk_Handbuch.pdf
+          if git diff --cached --quiet; then
+            echo "No handbook changes to commit."
+          else
+            git commit -m "Build redesigned CRAwerk handbook"
+            git push
+          fi
