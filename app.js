@@ -820,7 +820,9 @@
         name:data.get('name').trim(),
         version:data.get('version').trim(),
         type:data.get('type'),
-        vendor:data.get('vendor').trim()
+        vendor:data.get('vendor').trim(),
+        purl:data.get('purl').trim(),
+        sbomScope:data.get('sbomScope') || 'top_level'
       };
       try {
         if (editingSoftwareId) await backend.updateSoftware(editingSoftwareId, values);
