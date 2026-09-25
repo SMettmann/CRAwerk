@@ -1,1 +1,1460 @@
-N´z´û≤◊ù~)^≠Áﬁ≠È‹z+'¢◊.Æ∑ß∂\Øä»õïÂ,y¯•zÀj∑!¢∑‚ïÎ%äÀm¢∑ùä«(ΩÍÌÖÁ‚ïÎazzﬁ∂º∞äÿZ≠ÎnÆwù≠Á‚väﬂäW¢
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 32 /Kids [6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R 20 0 R 22 0 R 24 0 R 26 0 R 28 0 R 30 0 R 32 0 R 34 0 R 36 0 R 38 0 R 40 0 R 42 0 R 44 0 R 46 0 R 48 0 R 50 0 R 52 0 R 54 0 R 56 0 R 58 0 R 60 0 R 62 0 R 64 0 R 66 0 R 68 0 R] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Length 763 >>
+stream
+BT /F2 11 Tf 52 790 Td (CRAwerk) Tj ET
+BT /F2 28 Tf 52 725 Td (Handbuch fuer Einsteiger) Tj ET
+BT /F1 13 Tf 52 690 Td (Cyber Resilience Act verstaendlich erklaert) Tj ET
+BT /F1 11 Tf 52 668 Td (Fuer Maschinenbauer ohne Cybersecurity-Vorwissen) Tj ET
+BT /F2 11 Tf 52 590 Td (Was dieses Handbuch leistet) Tj ET
+BT /F1 10 Tf 52 568 Td (Begriffe, Beispiele und konkrete Hinweise fuer jeden Bereich in CRAwerk.) Tj ET
+BT /F1 10 Tf 52 548 Td (Vom ersten Produkt bis zur CRA-Akte, SBOM, Risiken und Konformitaetsabschluss.) Tj ET
+BT /F2 10 Tf 52 465 Td (Version 1.0 | Stand: 25. September 2026) Tj ET
+BT /F1 9 Tf 52 445 Td (Rechtsgrundlage: Verordnung \(EU\) 2024/2847 \(Cyber Resilience Act\)) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 3121 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 1) Tj ET
+BT /F2 10.5 Tf 52 786 Td (So benutzen Sie dieses Handbuch) Tj ET
+BT /F1 9.1 Tf 52 766 Td (Sie muessen kein IT-Sicherheitsprofi sein, um mit CRAwerk zu arbeiten. Lesen Sie dieses) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (Handbuch beim) Tj ET
+BT /F1 9.1 Tf 52 740.6 Td (ersten Durchlauf einmal von vorne bis hinten. Danach reicht es in der Regel, bei einem) Tj ET
+BT /F2 10.5 Tf 52 729.2 Td (offenen CRAwerk-) Tj ET
+BT /F1 9.1 Tf 52 715.2 Td (Schritt das passende Kapitel nachzuschlagen.) Tj ET
+BT /F1 9.1 Tf 52 697.8000000000001 Td (- Teil A erklaert den CRA und die wichtigsten Fachbegriffe in normaler Sprache.) Tj ET
+BT /F1 9.1 Tf 52 686.4000000000001 Td (- Teil B erklaert die acht Bereiche der Maschinenakte und zeigt, was dort hineingehoert.) Tj ET
+BT /F1 9.1 Tf 52 675.0000000000001 Td (- Teil C fuehrt durch den gefuehrten CRA-Abschluss und die gesetzlichen Sonderfaelle.) Tj ET
+BT /F1 9.1 Tf 52 663.6000000000001 Td (- Teil D enthaelt ein vollstaendiges Beispiel fuer eine fiktive Maschine sowie eine) Tj ET
+BT /F1 9.1 Tf 52 652.2000000000002 Td (Start-Checkliste.) Tj ET
+BT /F2 10.5 Tf 52 634.8000000000002 Td (Wichtiger Hinweis) Tj ET
+BT /F1 9.1 Tf 52 614.8000000000002 Td (CRAwerk organisiert, fuehrt und dokumentiert den Prozess. Die Software kann nicht pruefen,) Tj ET
+BT /F2 10.5 Tf 52 603.4000000000002 Td (ob eine) Tj ET
+BT /F1 9.1 Tf 52 589.4000000000002 Td (technische Massnahme fachlich ausreichend ist, ob eine Risikobewertung inhaltlich richtig) Tj ET
+BT /F2 10.5 Tf 52 578.0000000000002 Td (ist oder ob eine) Tj ET
+BT /F1 9.1 Tf 52 564.0000000000002 Td (konkrete Maschine rechtlich korrekt eingestuft wurde. Diese Verantwortung bleibt beim) Tj ET
+BT /F2 10.5 Tf 52 552.6000000000003 Td (Hersteller. Bei) Tj ET
+BT /F1 9.1 Tf 52 538.6000000000003 Td (Zweifelsfaellen sollte fachkundige technische oder rechtliche Beratung einbezogen werden.) Tj ET
+BT /F2 10.5 Tf 52 521.2000000000003 Td (Inhalt) Tj ET
+BT /F2 10.5 Tf 52 501.2000000000003 Td (1. 1. Der Cyber Resilience Act in 10 Minuten) Tj ET
+BT /F2 10.5 Tf 52 481.2000000000003 Td (2. 2. Faellt unsere Maschine unter den CRA?) Tj ET
+BT /F2 10.5 Tf 52 461.2000000000003 Td (3. 3. Die wichtigsten Fristen) Tj ET
+BT /F2 10.5 Tf 52 441.2000000000003 Td (4. 4. Begriffe, die jeder Nutzer von CRAwerk kennen sollte) Tj ET
+BT /F2 10.5 Tf 52 421.2000000000003 Td (5. 5. So ist CRAwerk aufgebaut) Tj ET
+BT /F2 10.5 Tf 52 401.2000000000003 Td (6. 6. Grunddaten der Maschine) Tj ET
+BT /F2 10.5 Tf 52 381.2000000000003 Td (7. 7. Software, Firmware und Versionen) Tj ET
+BT /F2 10.5 Tf 52 361.2000000000003 Td (8. 8. Digitale Bauteile und Zulieferer) Tj ET
+BT /F2 10.5 Tf 52 341.2000000000003 Td (9. 9. Risiken und Aufgaben richtig erfassen) Tj ET
+BT /F2 10.5 Tf 52 321.2000000000003 Td (10. 10. Sicherheitsluecken und Updates) Tj ET
+BT /F2 10.5 Tf 52 301.2000000000003 Td (11. 11. Unterlagen und Nachweise) Tj ET
+BT /F2 10.5 Tf 52 281.2000000000003 Td (12. 12. Unterstuetzungszeitraum) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 2953 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 2) Tj ET
+BT /F2 10.5 Tf 52 786 Td (13. 13. Gefuehrter CRA-Abschluss in sechs Schritten) Tj ET
+BT /F2 10.5 Tf 52 766 Td (14. 14. Die 22 Schutzanforderungen in normaler Sprache) Tj ET
+BT /F2 10.5 Tf 52 746 Td (15. 15. Technische Dokumentation und Nutzerinformationen) Tj ET
+BT /F2 10.5 Tf 52 726 Td (16. 16. Sicherheitsprozess und CVD) Tj ET
+BT /F2 10.5 Tf 52 706 Td (17. 17. Konformitaet, EU-Erklaerung und CE) Tj ET
+BT /F2 10.5 Tf 52 686 Td (18. 18. Sonderfaelle: Meldung, Nichtkonformitaet und Behˆrde) Tj ET
+BT /F2 10.5 Tf 52 666 Td (19. 19. Beispiel: Verpackungsanlage VP-240) Tj ET
+BT /F2 10.5 Tf 52 646 Td (20. 20. Checkliste fuer den ersten Durchlauf) Tj ET
+BT /F2 10.5 Tf 52 626 Td (21. 21. Glossar) Tj ET
+BT /F2 10.5 Tf 52 606 Td (22. 22. Offizielle Quellen) Tj ET
+BT /F2 10.5 Tf 52 586 Td (CRAwerk Handbuch fuer) Tj ET
+BT /F2 10.5 Tf 52 572 Td (Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 552 Td (1. Der Cyber Resilience Act in 10 Minuten) Tj ET
+BT /F2 10.5 Tf 52 532 Td (Was sich fuer Hersteller von vernetzten Maschinen aendert) Tj ET
+BT /F1 9.1 Tf 52 512 Td (Der Cyber Resilience Act \(CRA\) ist die Verordnung \(EU\) 2024/2847. Er schafft EU-weite) Tj ET
+BT /F1 9.1 Tf 52 500.6 Td (Cybersicherheitsanforderungen fuer Hardware- und Softwareprodukte mit digitalen Elementen,) Tj ET
+BT /F2 10.5 Tf 52 489.20000000000005 Td (die auf dem) Tj ET
+BT /F1 9.1 Tf 52 475.20000000000005 Td (EU-Markt bereitgestellt werden. Dazu gehoeren Endprodukte ebenso wie separat in Verkehr) Tj ET
+BT /F2 10.5 Tf 52 463.80000000000007 Td (gebrachte) Tj ET
+BT /F2 10.5 Tf 52 449.80000000000007 Td (Software- und Hardwarekomponenten. [1][2]) Tj ET
+BT /F1 9.1 Tf 52 435.80000000000007 Td (Fuer Maschinenbauer ist vor allem wichtig: Eine Maschine ist nicht nur wegen ihres) Tj ET
+BT /F2 10.5 Tf 52 424.4000000000001 Td (mechanischen Aufbaus) Tj ET
+BT /F1 9.1 Tf 52 410.4000000000001 Td (zu betrachten. Sobald Steuerungen, Software, Firmware, Netzwerkschnittstellen, Fernwartung) Tj ET
+BT /F2 10.5 Tf 52 399.0000000000001 Td (oder andere) Tj ET
+BT /F1 9.1 Tf 52 385.0000000000001 Td (digitale Funktionen zur Maschine gehoeren, kann der CRA relevant sein. Entscheidend ist) Tj ET
+BT /F2 10.5 Tf 52 373.60000000000014 Td (immer das) Tj ET
+BT /F1 9.1 Tf 52 359.60000000000014 Td (konkrete Produkt, seine Zweckbestimmung, seine vorhersehbare Verwendung und der rechtliche) Tj ET
+BT /F1 9.1 Tf 52 348.20000000000016 Td (Anwendungsbereich.) Tj ET
+BT /F2 10.5 Tf 52 330.8000000000002 Td (Was der CRA vom Hersteller verlangt) Tj ET
+BT /F2 10.5 Tf 52 316.8000000000002 Td (Pflichtbereich In normaler Sprache) Tj ET
+BT /F1 9.1 Tf 52 296.8000000000002 Td (Sicher entwickeln Cyberrisiken muessen schon bei Planung, Entwicklung) Tj ET
+BT /F1 9.1 Tf 52 285.4000000000002 Td (und Herstellung beruecksichtigt werden.) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 3300 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 3) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Risiken bewerten Der Hersteller muss die Cyberrisiken des Produkts) Tj ET
+BT /F2 10.5 Tf 52 772 Td (bewerten und die Bewertung dokumentieren und bei) Tj ET
+BT /F1 9.1 Tf 52 758 Td (Bedarf aktualisieren.) Tj ET
+BT /F1 9.1 Tf 52 740.6 Td (Schwachstellen behandeln Bekannte Sicherheitsluecken und Schwachstellen in) Tj ET
+BT /F2 10.5 Tf 52 729.2 Td (eigenen und zugelieferten Komponenten muessen) Tj ET
+BT /F1 9.1 Tf 52 715.2 Td (waehrend des Supportzeitraums bearbeitet werden.) Tj ET
+BT /F1 9.1 Tf 52 697.8000000000001 Td (Updates bereitstellen Wenn Sicherheitsupdates noetig sind, muessen sie) Tj ET
+BT /F2 10.5 Tf 52 686.4000000000001 Td (sicher) Tj ET
+BT /F1 9.1 Tf 52 672.4000000000001 Td (und nachvollziehbar bereitgestellt werden.) Tj ET
+BT /F2 10.5 Tf 52 655.0000000000001 Td (Dokumentieren Technische Dokumentation, Nutzerinformationen,) Tj ET
+BT /F2 10.5 Tf 52 641.0000000000001 Td (Konformitaetsnachweise und weitere Unterlagen muessen) Tj ET
+BT /F1 9.1 Tf 52 627.0000000000001 Td (vorhanden sein.) Tj ET
+BT /F2 10.5 Tf 52 609.6000000000001 Td (Konformitaet nachweisen Vor dem Inverkehrbringen muss das passende) Tj ET
+BT /F2 10.5 Tf 52 595.6000000000001 Td (Konformitaetsverfahren durchlaufen und die EU-) Tj ET
+BT /F2 10.5 Tf 52 581.6000000000001 Td (Konformitaet erklaert werden.) Tj ET
+BT /F2 10.5 Tf 52 561.6000000000001 Td (Melden Aktiv ausgenutzte Schwachstellen und bestimmte) Tj ET
+BT /F2 10.5 Tf 52 547.6000000000001 Td (schwere) Tj ET
+BT /F2 10.5 Tf 52 533.6000000000001 Td (Sicherheitsvorfaelle unterliegen seit 11.09.2026) Tj ET
+BT /F1 9.1 Tf 52 519.6000000000001 Td (gesetzlichen Meldefristen.) Tj ET
+BT /F2 10.5 Tf 52 502.20000000000016 Td (Die Grundidee fuer CRAwerk) Tj ET
+BT /F1 9.1 Tf 52 488.20000000000016 Td (Sie bauen und kennen Ihre Maschine. CRAwerk soll Ihnen nicht beibringen, Jurist zu werden.) Tj ET
+BT /F2 10.5 Tf 52 476.8000000000002 Td (Die Anwendung) Tj ET
+BT /F1 9.1 Tf 52 462.8000000000002 Td (fuehrt Sie durch die Informationen, Entscheidungen und Nachweise, die fuer den CRA-Prozess) Tj ET
+BT /F2 10.5 Tf 52 451.4000000000002 Td (benoetigt) Tj ET
+BT /F1 9.1 Tf 52 437.4000000000002 Td (werden, und fuehrt daraus eine nachvollziehbare Maschinen- und CRA-Akte.) Tj ET
+BT /F2 10.5 Tf 52 420.0000000000002 Td (2. Faellt unsere Maschine unter den CRA?) Tj ET
+BT /F2 10.5 Tf 52 400.0000000000002 Td (Ein einfacher Vorcheck fuer Maschinenbauer) Tj ET
+BT /F1 9.1 Tf 52 380.0000000000002 Td (Der CRA gilt grundsaetzlich fuer Hardware- und Softwareprodukte mit digitalen Elementen, die) Tj ET
+BT /F2 10.5 Tf 52 368.60000000000025 Td (auf dem) Tj ET
+BT /F1 9.1 Tf 52 354.60000000000025 Td (Unionsmarkt bereitgestellt werden. Nach der Zusammenfassung der EU-Kommission fallen) Tj ET
+BT /F2 10.5 Tf 52 343.2000000000003 Td (Produkte in den) Tj ET
+BT /F2 10.5 Tf 52 323.2000000000003 Td (CRAwerk Handbuch) Tj ET
+BT /F2 10.5 Tf 52 309.2000000000003 Td (fuer Einsteiger) Tj ET
+BT /F1 9.1 Tf 52 289.2000000000003 Td (Anwendungsbereich, wenn ihre Zweckbestimmung oder vern¸nftigerweise vorhersehbare Verwendung) Tj ET
+BT /F2 10.5 Tf 52 277.8000000000003 Td (eine) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 3611 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 4) Tj ET
+BT /F1 9.1 Tf 52 786 Td (direkte oder indirekte logische oder physische Datenverbindung zu einem Geraet oder Netzwerk) Tj ET
+BT /F2 10.5 Tf 52 774.6 Td (umfasst. [2]) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (Typische Hinweise bei einer Maschine) Tj ET
+BT /F2 10.5 Tf 52 740.6 Td (Frage Wenn Ja, ist der CRA oft relevant) Tj ET
+BT /F1 9.1 Tf 52 720.6 Td (Hat die Maschine eine SPS, CNC, Robotik- oder andere Die Steuerung enthaelt Software bzw.) Tj ET
+BT /F2 10.5 Tf 52 709.2 Td (Firmware) Tj ET
+BT /F2 10.5 Tf 52 695.2 Td (und ist) Tj ET
+BT /F1 9.1 Tf 52 681.2 Td (programmierbare Steuerung? ein wichtiger digitaler Bestandteil.) Tj ET
+BT /F1 9.1 Tf 52 663.8000000000001 Td (Gibt es ein HMI oder einen Industrie-PC? Betriebssystem, Runtime, Applikation und) Tj ET
+BT /F1 9.1 Tf 52 652.4000000000001 Td (Kommunikationsschnittstellen sind digitale Elemente.) Tj ET
+BT /F1 9.1 Tf 52 635.0000000000001 Td (Ist Ethernet, WLAN, Feldbus, OPC UA, MQTT oder eine Netzwerk- und Busschnittstellen koennen) Tj ET
+BT /F2 10.5 Tf 52 623.6000000000001 Td (Angriffswege) Tj ET
+BT /F1 9.1 Tf 52 609.6000000000001 Td (andere Datenverbindung vorhanden? und Sicherheitsanforderungen erzeugen.) Tj ET
+BT /F1 9.1 Tf 52 592.2000000000002 Td (Gibt es Fernwartung oder Cloud-/Portalzugriff? Fernzugriff, VPN, Gateways und Remote-Dienste) Tj ET
+BT /F1 9.1 Tf 52 580.8000000000002 Td (gehoeren in die Sicherheitsbetrachtung.) Tj ET
+BT /F1 9.1 Tf 52 563.4000000000002 Td (Werden Updates ueber USB, Netzwerk oder Service-Tool Der Updateweg muss gegen Manipulation) Tj ET
+BT /F2 10.5 Tf 52 552.0000000000002 Td (und) Tj ET
+BT /F1 9.1 Tf 52 538.0000000000002 Td (eingespielt? Fehlbedienung betrachtet werden.) Tj ET
+BT /F1 9.1 Tf 52 520.6000000000003 Td (Wird die Maschine unter Ihrem Namen oder Ihrer Marke Dann sind Sie im CRA-Kontext) Tj ET
+BT /F2 10.5 Tf 52 509.2000000000003 Td (regelmaessig der) Tj ET
+BT /F1 9.1 Tf 52 495.2000000000003 Td (verkauft? Hersteller des Gesamtprodukts.) Tj ET
+BT /F2 10.5 Tf 52 477.8000000000003 Td (Nicht jede Maschine ist automatisch gleich zu behandeln) Tj ET
+BT /F1 9.1 Tf 52 463.8000000000003 Td (Es gibt Ausnahmen und Abgrenzungen zu anderen EU-Rechtsakten. Auch die Frage, ob ein Produkt) Tj ET
+BT /F2 10.5 Tf 52 452.4000000000003 Td (als) Tj ET
+BT /F1 9.1 Tf 52 438.4000000000003 Td (Standardprodukt, wichtiges Produkt der Klasse I oder II oder als kritisches Produkt gilt,) Tj ET
+BT /F2 10.5 Tf 52 427.00000000000034 Td (haengt von der) Tj ET
+BT /F1 9.1 Tf 52 413.00000000000034 Td (konkreten Kernfunktion ab. CRAwerk hilft bei der Dokumentation, ersetzt diese rechtliche) Tj ET
+BT /F2 10.5 Tf 52 401.60000000000036 Td (Einordnung aber) Tj ET
+BT /F1 9.1 Tf 52 387.60000000000036 Td (nicht.) Tj ET
+BT /F2 10.5 Tf 52 370.2000000000004 Td (Faustregel fuer die Praxis) Tj ET
+BT /F1 9.1 Tf 52 356.2000000000004 Td (Eine rein mechanische Sonderkonstruktion ohne digitales Element ist etwas anderes als eine) Tj ET
+BT /F2 10.5 Tf 52 344.8000000000004 Td (automatisierte) Tj ET
+BT /F1 9.1 Tf 52 330.8000000000004 Td (Anlage mit SPS, HMI, Netzwerk und Fernwartung. Bei modernen Maschinen mit programmierbarer) Tj ET
+BT /F2 10.5 Tf 52 319.40000000000043 Td (Steuerung) Tj ET
+BT /F1 9.1 Tf 52 305.40000000000043 Td (sollte der CRA deshalb frueh im Projekt geprueft werden, statt erst kurz vor der) Tj ET
+BT /F1 9.1 Tf 52 294.00000000000045 Td (Auslieferung.) Tj ET
+BT /F2 10.5 Tf 52 276.6000000000005 Td (3. Die wichtigsten Fristen) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 2836 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 5) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Welche CRA-Regeln wann gelten) Tj ET
+BT /F2 10.5 Tf 52 766 Td (Datum Bedeutung) Tj ET
+BT /F2 10.5 Tf 52 746 Td (10.12.2024 Der CRA ist in Kraft getreten.) Tj ET
+BT /F2 10.5 Tf 52 726 Td (11.06.2026 Regeln zur Notifizierung von) Tj ET
+BT /F2 10.5 Tf 52 712 Td (Konformitaetsbewertungsstellen in Kapitel IV gelten.) Tj ET
+BT /F2 10.5 Tf 52 692 Td (11.09.2026 Die gesetzlichen Meldepflichten aus Artikel 14) Tj ET
+BT /F2 10.5 Tf 52 678 Td (fuer aktiv) Tj ET
+BT /F2 10.5 Tf 52 664 Td (ausgenutzte Schwachstellen und schwere) Tj ET
+BT /F2 10.5 Tf 52 650 Td (Sicherheitsvorfaelle gelten.) Tj ET
+BT /F2 10.5 Tf 52 630 Td (11.12.2027 Die Verordnung gilt im Wesentlichen) Tj ET
+BT /F2 10.5 Tf 52 616 Td (vollstaendig. Ab) Tj ET
+BT /F2 10.5 Tf 52 602 Td (dann muessen neue Produkte im Anwendungsbereich die) Tj ET
+BT /F1 9.1 Tf 52 588 Td (CRA-Anforderungen erfuellen.) Tj ET
+BT /F2 10.5 Tf 52 570.6 Td (CRAwerk Handbuch) Tj ET
+BT /F2 10.5 Tf 52 556.6 Td (fuer Einsteiger) Tj ET
+BT /F1 9.1 Tf 52 536.6 Td (Produkte, die bereits vor dem 11.12.2027 in Verkehr gebracht wurden, werden nicht pauschal) Tj ET
+BT /F2 10.5 Tf 52 525.2 Td (nachtraeglich) Tj ET
+BT /F1 9.1 Tf 52 511.20000000000005 Td (wie neue Produkte behandelt. Die EU-Kommission weist jedoch darauf hin, dass die) Tj ET
+BT /F2 10.5 Tf 52 499.80000000000007 Td (Meldepflichten auch fuer) Tj ET
+BT /F1 9.1 Tf 52 485.80000000000007 Td (bereits auf dem Markt befindliche Produkte gelten und dass bestehende Produkte ab dem) Tj ET
+BT /F2 10.5 Tf 52 474.4000000000001 Td (11.12.2027 bei) Tj ET
+BT /F2 10.5 Tf 52 460.4000000000001 Td (wesentlichen Aenderungen relevant werden koennen. [2][3]) Tj ET
+BT /F2 10.5 Tf 52 440.4000000000001 Td (Stand dieses Handbuchs: 25.09.2026) Tj ET
+BT /F1 9.1 Tf 52 426.4000000000001 Td (Die Meldepflichten laufen bereits. Die vollstaendige Anwendung des CRA folgt am 11.12.2027.) Tj ET
+BT /F2 10.5 Tf 52 415.0000000000001 Td (Deshalb ist) Tj ET
+BT /F2 10.5 Tf 52 401.0000000000001 Td (jetzt) Tj ET
+BT /F1 9.1 Tf 52 387.0000000000001 Td (der richtige Zeitpunkt, Prozesse, Produktakten und Verantwortlichkeiten aufzubauen.) Tj ET
+BT /F2 10.5 Tf 52 369.60000000000014 Td (4. Begriffe, die jeder Nutzer von CRAwerk) Tj ET
+BT /F2 10.5 Tf 52 349.60000000000014 Td (kennen sollte) Tj ET
+BT /F2 10.5 Tf 52 335.60000000000014 Td (Begriff Einfach erklaert Beispiel im Maschinenbau) Tj ET
+BT /F2 10.5 Tf 52 315.60000000000014 Td (Software Programme und digitale Logik, die auf HMI-Applikation,) Tj ET
+BT /F2 10.5 Tf 52 301.60000000000014 Td (PC-Software, SPS-) Tj ET
+BT /F2 10.5 Tf 52 287.60000000000014 Td (einem Rechner oder Controller Programm, Service-Tool) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 15 0 R >>
+endobj
+17 0 obj
+<< /Length 3172 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 6) Tj ET
+BT /F1 9.1 Tf 52 786 Td (ausgefuehrt werden.) Tj ET
+BT /F2 10.5 Tf 52 768.6 Td (Firmware Software, die sehr nah an der Hardware SPS-Firmware,) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (Gateway-Firmware,) Tj ET
+BT /F1 9.1 Tf 52 740.6 Td (arbeitet und meist dauerhaft im Geraet Antriebs-Firmware, Bootloader) Tj ET
+BT /F1 9.1 Tf 52 729.2 Td (gespeichert ist.) Tj ET
+BT /F1 9.1 Tf 52 711.8000000000001 Td (Betriebssystem Grundsoftware, auf der weitere Windows IoT, Linux auf) Tj ET
+BT /F2 10.5 Tf 52 700.4000000000001 Td (einem Industrie-) Tj ET
+BT /F2 10.5 Tf 52 686.4000000000001 Td (Programme laufen. PC) Tj ET
+BT /F1 9.1 Tf 52 666.4000000000001 Td (Komponente Ein digital relevantes Bauteil oder SPS, HMI, Router, Gateway,) Tj ET
+BT /F2 10.5 Tf 52 655.0000000000001 Td (Bibliothek) Tj ET
+BT /F2 10.5 Tf 52 641.0000000000001 Td (Softwareelement innerhalb des) Tj ET
+BT /F1 9.1 Tf 52 627.0000000000001 Td (Gesamtprodukts.) Tj ET
+BT /F2 10.5 Tf 52 609.6000000000001 Td (Schwachstelle Eine konkrete technische oder Standardpasswort,) Tj ET
+BT /F2 10.5 Tf 52 595.6000000000001 Td (verwundbare) Tj ET
+BT /F1 9.1 Tf 52 581.6000000000001 Td (organisatorische Schwaeche, die Bibliothek, unsigniertes Update) Tj ET
+BT /F1 9.1 Tf 52 570.2000000000002 Td (ausgenutzt werden kann.) Tj ET
+BT /F2 10.5 Tf 52 552.8000000000002 Td (CVE Eine oeffentliche Kennung fuer eine CVE-20xx-12345 eines) Tj ET
+BT /F2 10.5 Tf 52 538.8000000000002 Td (Routers) Tj ET
+BT /F2 10.5 Tf 52 524.8000000000002 Td (bekannte Schwachstelle. Nicht jede) Tj ET
+BT /F2 10.5 Tf 52 510.8000000000002 Td (reale Schwachstelle hat sofort eine) Tj ET
+BT /F1 9.1 Tf 52 496.8000000000002 Td (CVE.) Tj ET
+BT /F1 9.1 Tf 52 479.4000000000002 Td (Exploit Eine Methode oder ein Programm, das Code, der ueber eine Luecke) Tj ET
+BT /F2 10.5 Tf 52 468.0000000000002 Td (eine Schwachstelle ausnutzt. unbefugten Zugriff ermoeglicht) Tj ET
+BT /F1 9.1 Tf 52 448.0000000000002 Td (Patch / Sicherheitsupdate Aenderung, die eine Schwachstelle oder Firmware 3.2.4 behebt eine) Tj ET
+BT /F2 10.5 Tf 52 436.60000000000025 Td (bekannte) Tj ET
+BT /F2 10.5 Tf 52 422.60000000000025 Td (ein Sicherheitsproblem behebt. Luecke) Tj ET
+BT /F2 10.5 Tf 52 402.60000000000025 Td (SBOM Software Bill of Materials, also eine Liste aus HMI-App,) Tj ET
+BT /F2 10.5 Tf 52 388.60000000000025 Td (Bibliotheken,) Tj ET
+BT /F2 10.5 Tf 52 374.60000000000025 Td (maschinenlesbare Software-Stueckliste. Runtime und Versionen) Tj ET
+BT /F2 10.5 Tf 52 354.60000000000025 Td (CVD Coordinated Vulnerability Disclosure, security@firma.de,) Tj ET
+BT /F2 10.5 Tf 52 340.60000000000025 Td (Bestaetigung,) Tj ET
+BT /F1 9.1 Tf 52 326.60000000000025 Td (also der geregelte Umgang mit extern Bewertung, Patch, Veroeffentlichung) Tj ET
+BT /F1 9.1 Tf 52 315.2000000000003 Td (gemeldeten Schwachstellen.) Tj ET
+BT /F1 9.1 Tf 52 297.8000000000003 Td (Supportzeitraum Zeitraum, in dem der Hersteller Unterstuetzung bis 12/2034) Tj ET
+BT /F2 10.5 Tf 52 286.4000000000003 Td (Schwachstellen behandelt und) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+18 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 17 0 R >>
+endobj
+19 0 obj
+<< /Length 2912 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 7) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Sicherheitsupdates bereitstellt.) Tj ET
+BT /F1 9.1 Tf 52 766 Td (Nachweis Dokument oder Referenz, mit der eine Testbericht, Zeichnung,) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (Ticket, Release) Tj ET
+BT /F2 10.5 Tf 52 734.6 Td (5) Tj ET
+BT /F2 10.5 Tf 52 714.6 Td (Aussage belegt werden kann. Note, DMS-ID) Tj ET
+BT /F2 10.5 Tf 52 694.6 Td (CRAwerk Handbuch fuer) Tj ET
+BT /F2 10.5 Tf 52 680.6 Td (Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 660.6 Td (Software oder Firmware - was ist der Unterschied?) Tj ET
+BT /F2 10.5 Tf 52 646.6 Td (Software Firmware) Tj ET
+BT /F1 9.1 Tf 52 632.6 Td (Oft leichter austauschbare Programme oder Geraetenahe Software:) Tj ET
+BT /F2 10.5 Tf 52 621.2 Td (SPS-Betriebssystem/Firmware,) Tj ET
+BT /F1 9.1 Tf 52 607.2 Td (Applikationen: HMI-Projekt, Windows-Anwendung, SPS- Router-Firmware,) Tj ET
+BT /F2 10.5 Tf 52 595.8000000000001 Td (Antriebsregler-Firmware,) Tj ET
+BT /F2 10.5 Tf 52 581.8000000000001 Td (Bootloader) Tj ET
+BT /F1 9.1 Tf 52 567.8000000000001 Td (Projekt, Datenbankdienst, Bibliotheken. oder Embedded-Software im Geraet.) Tj ET
+BT /F2 10.5 Tf 52 550.4000000000001 Td (Fuer CRAwerk gilt) Tj ET
+BT /F1 9.1 Tf 52 536.4000000000001 Td (Wenn eine Software oder Firmware die Funktion oder Sicherheit der Maschine beeinflussen) Tj ET
+BT /F2 10.5 Tf 52 525.0000000000001 Td (kann, sollte sie) Tj ET
+BT /F1 9.1 Tf 52 511.0000000000001 Td (nachvollziehbar erfasst werden. Sie muessen nicht jede interne Zeile Code einzeln eintragen.) Tj ET
+BT /F2 10.5 Tf 52 499.60000000000014 Td (Wichtig sind) Tj ET
+BT /F1 9.1 Tf 52 485.60000000000014 Td (identifizierbare Komponenten und Versionen.) Tj ET
+BT /F2 10.5 Tf 52 468.20000000000016 Td (5. So ist CRAwerk aufgebaut) Tj ET
+BT /F2 10.5 Tf 52 448.20000000000016 Td (Maschinenakte zuerst, CRA-Abschluss danach) Tj ET
+BT /F1 9.1 Tf 52 428.20000000000016 Td (CRAwerk arbeitet mit einer zentralen Maschinenakte. Alles, was Sie dort bereits erfassen,) Tj ET
+BT /F2 10.5 Tf 52 416.8000000000002 Td (wird spaeter fuer) Tj ET
+BT /F1 9.1 Tf 52 402.8000000000002 Td (den CRA-Abschluss weiterverwendet. Dadurch sollen dieselben Informationen nicht mehrfach) Tj ET
+BT /F2 10.5 Tf 52 391.4000000000002 Td (gepflegt) Tj ET
+BT /F1 9.1 Tf 52 377.4000000000002 Td (werden.) Tj ET
+BT /F2 10.5 Tf 52 360.0000000000002 Td (Maschinenakte Wozu der Bereich dient) Tj ET
+BT /F2 10.5 Tf 52 340.0000000000002 Td (1. Grunddaten Produkt eindeutig identifizieren und) Tj ET
+BT /F2 10.5 Tf 52 326.0000000000002 Td (Verantwortlichkeit) Tj ET
+BT /F1 9.1 Tf 52 312.0000000000002 Td (festhalten.) Tj ET
+BT /F2 10.5 Tf 52 294.60000000000025 Td (2. Software & Versionen Software, Firmware und Versionen erfassen und) Tj ET
+BT /F2 10.5 Tf 52 280.60000000000025 Td (daraus) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+20 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 19 0 R >>
+endobj
+21 0 obj
+<< /Length 2932 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 8) Tj ET
+BT /F1 9.1 Tf 52 786 Td (die SBOM vorbereiten.) Tj ET
+BT /F2 10.5 Tf 52 768.6 Td (3. Zulieferer & Bauteile Digitale Komponenten und Hersteller) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (nachvollziehbar) Tj ET
+BT /F1 9.1 Tf 52 740.6 Td (machen.) Tj ET
+BT /F2 10.5 Tf 52 723.2 Td (4. Risiken & Aufgaben Cyberrisiken mit Massnahme, Verantwortlichem und) Tj ET
+BT /F1 9.1 Tf 52 709.2 Td (Status bearbeiten.) Tj ET
+BT /F2 10.5 Tf 52 691.8000000000001 Td (5. Sicherheitsluecken & Updates Konkrete Schwachstellen und Behebungen) Tj ET
+BT /F1 9.1 Tf 52 677.8000000000001 Td (verfolgen.) Tj ET
+BT /F2 10.5 Tf 52 660.4000000000001 Td (6. Unterlagen & Nachweise Vorhandene Belege der Maschine zuordnen.) Tj ET
+BT /F2 10.5 Tf 52 640.4000000000001 Td (7. Unterstuetzungszeitraum Festlegen, wie lange Sicherheitsbetreuung) Tj ET
+BT /F2 10.5 Tf 52 626.4000000000001 Td (erfolgt und wie) Tj ET
+BT /F1 9.1 Tf 52 612.4000000000001 Td (das Ende kommuniziert wird.) Tj ET
+BT /F2 10.5 Tf 52 595.0000000000001 Td (8. CRA-Abschluss Einstufung, Schutzpruefung, technische) Tj ET
+BT /F2 10.5 Tf 52 581.0000000000001 Td (Dokumentation,) Tj ET
+BT /F1 9.1 Tf 52 567.0000000000001 Td (EU-Erklaerung und CE zusammenfuehren.) Tj ET
+BT /F2 10.5 Tf 52 549.6000000000001 Td (CRAwerk Handbuch fuer) Tj ET
+BT /F2 10.5 Tf 52 535.6000000000001 Td (Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 515.6000000000001 Td (Der normale Arbeitsablauf) Tj ET
+BT /F2 10.5 Tf 52 501.60000000000014 Td (1. Maschine anlegen und Grunddaten erfassen.) Tj ET
+BT /F2 10.5 Tf 52 481.60000000000014 Td (2. Software, Firmware und digitale Bauteile vervollstaendigen.) Tj ET
+BT /F2 10.5 Tf 52 461.60000000000014 Td (3. Cyberrisiken pruefen und offene Aufgaben bearbeiten.) Tj ET
+BT /F2 10.5 Tf 52 441.60000000000014 Td (4. Internen Prozess fuer Sicherheitsprobleme festlegen.) Tj ET
+BT /F2 10.5 Tf 52 421.60000000000014 Td (5. Unterlagen und Supportzeitraum dokumentieren.) Tj ET
+BT /F2 10.5 Tf 52 401.60000000000014 Td (6. Den gefuehrten CRA-Abschluss oeffnen und nur die noch fehlenden Angaben bearbeiten.) Tj ET
+BT /F2 10.5 Tf 52 387.60000000000014 Td (7. Kurzakten, Vollakte, SBOM, Nutzerinformationen und EU-Erklaerung erzeugen.) Tj ET
+BT /F2 10.5 Tf 52 367.60000000000014 Td (6. Grunddaten der Maschine) Tj ET
+BT /F1 9.1 Tf 52 347.60000000000014 Td (Die Grunddaten sind keine Formalitaet. Spaeter muessen Dokumente, Risiken,) Tj ET
+BT /F2 10.5 Tf 52 336.20000000000016 Td (Softwareversionen, Support) Tj ET
+BT /F1 9.1 Tf 52 322.20000000000016 Td (und die EU-Konformitaetserklaerung eindeutig zum richtigen Produkt passen.) Tj ET
+BT /F2 10.5 Tf 52 304.8000000000002 Td (Feld Was hinein gehoert Beispiel) Tj ET
+BT /F1 9.1 Tf 52 284.8000000000002 Td (Name der Maschine Verstaendliche Produkt- oder Verpackungsanlage VP-240) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+22 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 21 0 R >>
+endobj
+23 0 obj
+<< /Length 3319 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 9) Tj ET
+BT /F1 9.1 Tf 52 786 Td (Maschinenbezeichnung.) Tj ET
+BT /F2 10.5 Tf 52 768.6 Td (Modell / Baureihe Baureihe, Typ oder Modell, falls VP-240) Tj ET
+BT /F1 9.1 Tf 52 754.6 Td (vorhanden.) Tj ET
+BT /F2 10.5 Tf 52 737.2 Td (Produktnummer Interne Artikel-, Maschinen- oder VP240-2026-017) Tj ET
+BT /F1 9.1 Tf 52 723.2 Td (Produktnummer.) Tj ET
+BT /F1 9.1 Tf 52 705.8000000000001 Td (Verantwortlich Interne Rolle oder Person, die die Produktmanagement / Max) Tj ET
+BT /F2 10.5 Tf 52 694.4000000000001 Td (Akte fachlich betreut. Mustermann) Tj ET
+BT /F2 10.5 Tf 52 674.4000000000001 Td (Software/Firmware vorhanden Ja, sobald programmierbare oder Ja) Tj ET
+BT /F2 10.5 Tf 52 660.4000000000001 Td (eingebettete Software zur Maschine) Tj ET
+BT /F1 9.1 Tf 52 646.4000000000001 Td (gehoert.) Tj ET
+BT /F1 9.1 Tf 52 629.0000000000001 Td (Datenverbindung Ja, wenn direkte oder indirekte Ethernet + Fernwartung) Tj ET
+BT /F2 10.5 Tf 52 617.6000000000001 Td (Verbindungen zu Geraeten oder) Tj ET
+BT /F1 9.1 Tf 52 603.6000000000001 Td (Netzen vorgesehen sind.) Tj ET
+BT /F2 10.5 Tf 52 586.2000000000002 Td (Guter Eintrag) Tj ET
+BT /F1 9.1 Tf 52 572.2000000000002 Td (Name und Produktnummer sollten so eindeutig sein, dass auch in zwei Jahren noch klar ist,) Tj ET
+BT /F2 10.5 Tf 52 560.8000000000002 Td (fuer welche) Tj ET
+BT /F1 9.1 Tf 52 546.8000000000002 Td (konkrete Produktvariante die Akte gilt.) Tj ET
+BT /F2 10.5 Tf 52 529.4000000000002 Td (7. Software, Firmware und Versionen) Tj ET
+BT /F2 10.5 Tf 52 509.4000000000002 Td (Was in die Softwareliste gehoert) Tj ET
+BT /F1 9.1 Tf 52 489.4000000000002 Td (Dieser Bereich beantwortet eine einfache Frage: Welche Software- und Firmwarestaende) Tj ET
+BT /F2 10.5 Tf 52 478.0000000000002 Td (gehoeren zu genau) Tj ET
+BT /F1 9.1 Tf 52 464.0000000000002 Td (dieser Maschine? Nur wenn diese Zuordnung sauber ist, kann spaeter bewertet werden, ob eine) Tj ET
+BT /F2 10.5 Tf 52 452.60000000000025 Td (bekannte) Tj ET
+BT /F1 9.1 Tf 52 438.60000000000025 Td (Schwachstelle das Produkt betrifft.) Tj ET
+BT /F2 10.5 Tf 52 421.2000000000003 Td (Typische Eintraege) Tj ET
+BT /F1 9.1 Tf 52 407.2000000000003 Td (- SPS-Programm bzw. Steuerungssoftware und der zugehoerige freigegebene Stand.) Tj ET
+BT /F1 9.1 Tf 52 395.8000000000003 Td (- SPS- oder Controller-Firmware, wenn Version und Herstellerstand fuer Sicherheit oder) Tj ET
+BT /F2 10.5 Tf 52 384.4000000000003 Td (Kompatibilitaet relevant) Tj ET
+BT /F1 9.1 Tf 52 364.4000000000003 Td (sind.) Tj ET
+BT /F1 9.1 Tf 52 353.00000000000034 Td (- HMI-Runtime und HMI-Applikation.) Tj ET
+BT /F2 10.5 Tf 52 335.60000000000036 Td (CRAwerk Handbuch fuer) Tj ET
+BT /F2 10.5 Tf 52 321.60000000000036 Td (Einsteiger) Tj ET
+BT /F1 9.1 Tf 52 301.60000000000036 Td (- Betriebssystem eines Industrie-PCs oder Embedded-Rechners.) Tj ET
+BT /F1 9.1 Tf 52 290.2000000000004 Td (- Maschinenapplikation, Service-Software oder lokaler Webserver.) Tj ET
+BT /F1 9.1 Tf 52 278.8000000000004 Td (- Gateway-, Router- oder Fernwartungs-Firmware.) Tj ET
+BT /F1 9.1 Tf 52 267.40000000000043 Td (- Wichtige Bibliotheken, Frameworks und Open-Source-Abhaengigkeiten, soweit bekannt und fuer) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+24 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 23 0 R >>
+endobj
+25 0 obj
+<< /Length 3023 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 10) Tj ET
+BT /F2 10.5 Tf 52 786 Td (die) Tj ET
+BT /F2 10.5 Tf 52 772 Td (SBOM) Tj ET
+BT /F1 9.1 Tf 52 752 Td (relevant.) Tj ET
+BT /F2 10.5 Tf 52 734.6 Td (Was Sie nicht tun muessen) Tj ET
+BT /F1 9.1 Tf 52 720.6 Td (Sie muessen nicht jede SPS-Variable, jede Quellcodedatei oder jedes Unterprogramm als) Tj ET
+BT /F2 10.5 Tf 52 709.2 Td (eigenen) Tj ET
+BT /F2 10.5 Tf 52 695.2 Td (Softwareeintrag anlegen. Ziel ist eine belastbare Versions- und Komponentenuebersicht, keine) Tj ET
+BT /F2 10.5 Tf 52 681.2 Td (Kopie des) Tj ET
+BT /F1 9.1 Tf 52 667.2 Td (gesamten Quellcodes.) Tj ET
+BT /F2 10.5 Tf 52 649.8000000000001 Td (Zu wenig Besser) Tj ET
+BT /F2 10.5 Tf 52 629.8000000000001 Td ("SPS" "Steuerungsprogramm VP-240 | Release 2.7.4 |) Tj ET
+BT /F2 10.5 Tf 52 615.8000000000001 Td (freigegeben 18.09.2026") Tj ET
+BT /F2 10.5 Tf 52 595.8000000000001 Td ("HMI" "HMI Runtime | Version 5.4.2 | Hersteller XY") Tj ET
+BT /F2 10.5 Tf 52 575.8000000000001 Td ("Router" "Remote Gateway RG-100 | Firmware 4.8.1 |) Tj ET
+BT /F2 10.5 Tf 52 561.8000000000001 Td (Hersteller) Tj ET
+BT /F2 10.5 Tf 52 547.8000000000001 Td (ABC") Tj ET
+BT /F2 10.5 Tf 52 527.8000000000001 Td ("Linux" "Embedded Linux Distribution | Release 2026.2 |) Tj ET
+BT /F2 10.5 Tf 52 513.8000000000001 Td (Image-ID) Tj ET
+BT /F2 10.5 Tf 52 499.80000000000007 Td (img-240-17") Tj ET
+BT /F1 9.1 Tf 52 479.80000000000007 Td (Was bedeutet purl?) Tj ET
+BT /F1 9.1 Tf 52 468.4000000000001 Td (Eine Package URL \(purl\) ist eine standardisierte Kennung fuer Softwarepakete. Sie ist) Tj ET
+BT /F2 10.5 Tf 52 457.0000000000001 Td (besonders bei) Tj ET
+BT /F1 9.1 Tf 52 443.0000000000001 Td (Bibliotheken und Open-Source-Komponenten hilfreich. Wenn Sie keine verlaessliche purl) Tj ET
+BT /F2 10.5 Tf 52 431.60000000000014 Td (kennen, erfinden) Tj ET
+BT /F1 9.1 Tf 52 417.60000000000014 Td (Sie keine. Lassen Sie das Feld leer und pflegen Sie stattdessen Name, Version und Hersteller) Tj ET
+BT /F1 9.1 Tf 52 406.20000000000016 Td (sauber.) Tj ET
+BT /F2 10.5 Tf 52 388.8000000000002 Td (Top-Level und transitive Abhaengigkeiten) Tj ET
+BT /F1 9.1 Tf 52 374.8000000000002 Td (Eine Top-Level-Komponente wird direkt von Ihrem Produkt verwendet. Eine transitive) Tj ET
+BT /F2 10.5 Tf 52 363.4000000000002 Td (Abhaengigkeit wird von) Tj ET
+BT /F1 9.1 Tf 52 349.4000000000002 Td (einer anderen Softwarekomponente mitgebracht. CRAwerk kann diese Unterscheidung fuer die) Tj ET
+BT /F2 10.5 Tf 52 338.0000000000002 Td (SBOM) Tj ET
+BT /F1 9.1 Tf 52 324.0000000000002 Td (nutzen. Fuer den Einstieg ist wichtiger, dass die Liste nachvollziehbar und nicht erfunden) Tj ET
+BT /F1 9.1 Tf 52 312.60000000000025 Td (ist.) Tj ET
+BT /F2 10.5 Tf 52 295.2000000000003 Td (SBOM in CRAwerk) Tj ET
+BT /F1 9.1 Tf 52 281.2000000000003 Td (Aus der gepflegten Softwareliste kann CRAwerk eine maschinenlesbare CycloneDX-SBOM erzeugen.) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+26 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 25 0 R >>
+endobj
+27 0 obj
+<< /Length 3355 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 11) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Die) Tj ET
+BT /F1 9.1 Tf 52 772 Td (Qualitaet dieser SBOM ist nur so gut wie die erfassten Komponenten und Versionen.) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (8. Digitale Bauteile und Zulieferer) Tj ET
+BT /F1 9.1 Tf 52 734.6 Td (Hier geht es nicht um jede Schraube und jedes mechanische Kaufteil. Erfasst werden vor allem) Tj ET
+BT /F1 9.1 Tf 52 723.2 Td (Komponenten, deren digitale Funktion, Firmware oder Kommunikation die Cybersicherheit der) Tj ET
+BT /F2 10.5 Tf 52 711.8000000000001 Td (Maschine) Tj ET
+BT /F1 9.1 Tf 52 697.8000000000001 Td (beeinflussen kann.) Tj ET
+BT /F2 10.5 Tf 52 680.4000000000001 Td (Typisch erfassen Nur bei Relevanz / eher nicht) Tj ET
+BT /F1 9.1 Tf 52 660.4000000000001 Td (SPS, HMI, Industrie-PC, Router, Gateway, Switch, Mechanische Lager, Gehaeuse, Standardkabel,) Tj ET
+BT /F2 10.5 Tf 52 649.0000000000001 Td (rein) Tj ET
+BT /F1 9.1 Tf 52 635.0000000000001 Td (vernetzter Antrieb, Smart Sensor, Kamera, Funkmodul passive Bauteile ohne digitale Funktion) Tj ET
+BT /F1 9.1 Tf 52 617.6000000000001 Td (Hersteller, Typ/Modell, Hardware- oder Firmwarestand, Unklare Sammelbegriffe wie) Tj ET
+BT /F2 10.5 Tf 52 606.2000000000002 Td ("Elektronik" ohne Typ) Tj ET
+BT /F2 10.5 Tf 52 592.2000000000002 Td (oder) Tj ET
+BT /F2 10.5 Tf 52 578.2000000000002 Td (vorhandene Sicherheitsunterlagen Hersteller) Tj ET
+BT /F2 10.5 Tf 52 558.2000000000002 Td (CRAwerk Handbuch fuer) Tj ET
+BT /F2 10.5 Tf 52 544.2000000000002 Td (Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 524.2000000000002 Td (Warum dieser Bereich wichtig ist) Tj ET
+BT /F1 9.1 Tf 52 510.20000000000016 Td (Wenn ein Zulieferer eine Sicherheitsluecke meldet, muessen Sie schnell beantworten koennen:) Tj ET
+BT /F2 10.5 Tf 52 498.8000000000002 Td (Welche) Tj ET
+BT /F1 9.1 Tf 52 484.8000000000002 Td (Produkte enthalten dieses Bauteil und welche Version ist verbaut? Eine gepflegte) Tj ET
+BT /F2 10.5 Tf 52 473.4000000000002 Td (Komponentenliste spart im) Tj ET
+BT /F1 9.1 Tf 52 459.4000000000002 Td (Ernstfall viel Sucharbeit.) Tj ET
+BT /F2 10.5 Tf 52 442.0000000000002 Td (Praxisbeispiel) Tj ET
+BT /F1 9.1 Tf 52 428.0000000000002 Td (Ein Routerhersteller meldet eine kritische Schwachstelle fuer Firmware 4.7.x. In CRAwerk) Tj ET
+BT /F2 10.5 Tf 52 416.60000000000025 Td (sehen Sie sofort,) Tj ET
+BT /F2 10.5 Tf 52 402.60000000000025 Td (ob) Tj ET
+BT /F1 9.1 Tf 52 388.60000000000025 Td (die VP-240 noch Firmware 4.7.9 verwendet oder bereits auf 4.8.1 aktualisiert wurde.) Tj ET
+BT /F2 10.5 Tf 52 371.2000000000003 Td (9. Risiken und Aufgaben richtig erfassen) Tj ET
+BT /F2 10.5 Tf 52 351.2000000000003 Td (Was bei "Risiko" wirklich hineingehoert) Tj ET
+BT /F1 9.1 Tf 52 331.2000000000003 Td (Der Risikobereich ist nicht die klassische Maschinenrisikobeurteilung fuer mechanische) Tj ET
+BT /F2 10.5 Tf 52 319.8000000000003 Td (Gefahren. Er dient) Tj ET
+BT /F1 9.1 Tf 52 305.8000000000003 Td (hier dazu, Cyberrisiken und daraus entstehende Aufgaben nachvollziehbar zu machen. Der CRA) Tj ET
+BT /F2 10.5 Tf 52 294.4000000000003 Td (verlangt) Tj ET
+BT /F1 9.1 Tf 52 280.4000000000003 Td (eine Cybersicherheitsrisikobewertung, die in Planung, Entwicklung, Herstellung, Lieferung) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+28 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 27 0 R >>
+endobj
+29 0 obj
+<< /Length 2692 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 12) Tj ET
+BT /F2 10.5 Tf 52 786 Td (und Wartung) Tj ET
+BT /F2 10.5 Tf 52 772 Td (beruecksichtigt wird. [1][2]) Tj ET
+BT /F2 10.5 Tf 52 752 Td (Ein guter Risikoeintrag beantwortet vier Fragen) Tj ET
+BT /F2 10.5 Tf 52 738 Td (1. Was kann passieren oder ausgenutzt werden?) Tj ET
+BT /F2 10.5 Tf 52 718 Td (2. Welche Auswirkung haette das auf Maschine, Daten oder Nutzer?) Tj ET
+BT /F2 10.5 Tf 52 698 Td (3. Welche Massnahme reduziert oder beseitigt das Risiko?) Tj ET
+BT /F2 10.5 Tf 52 678 Td (4. Wer ist verantwortlich und ist die Massnahme erledigt?) Tj ET
+BT /F2 10.5 Tf 52 658 Td (Schlechtes Beispiel Gutes Beispiel) Tj ET
+BT /F1 9.1 Tf 52 638 Td ("Hackerangriff moeglich" "Fernwartung nutzt einen gemeinsam verwendeten) Tj ET
+BT /F2 10.5 Tf 52 626.6 Td (Service-) Tj ET
+BT /F2 10.5 Tf 52 612.6 Td (Account. Bei Weitergabe des Passworts ist unbefugter Zugriff) Tj ET
+BT /F2 10.5 Tf 52 598.6 Td (auf die Steuerung moeglich. Massnahme: personenbezogene) Tj ET
+BT /F2 10.5 Tf 52 584.6 Td (Konten, Rollen und MFA einfuehren. Verantwortlich:) Tj ET
+BT /F2 10.5 Tf 52 570.6 Td (Softwareentwicklung.") Tj ET
+BT /F2 10.5 Tf 52 550.6 Td ("USB unsicher" "Firmware kann ueber Service-USB ohne) Tj ET
+BT /F2 10.5 Tf 52 536.6 Td (Signaturpruefung) Tj ET
+BT /F1 9.1 Tf 52 522.6 Td (eingespielt werden. Manipulierte Firmware waere moeglich.) Tj ET
+BT /F2 10.5 Tf 52 511.20000000000005 Td (Massnahme: Signaturpruefung im Bootloader und) Tj ET
+BT /F2 10.5 Tf 52 497.20000000000005 Td (freigegebene Updatepakete.") Tj ET
+BT /F2 10.5 Tf 52 477.20000000000005 Td (Typische Cyberrisiken bei Maschinen) Tj ET
+BT /F2 10.5 Tf 52 463.20000000000005 Td (Thema Beispiel) Tj ET
+BT /F2 10.5 Tf 52 443.20000000000005 Td (Zugriff Standardpasswoerter, gemeinsame Servicekonten,) Tj ET
+BT /F2 10.5 Tf 52 429.20000000000005 Td (fehlende Rollen, ungeschuetzte Fernwartung) Tj ET
+BT /F2 10.5 Tf 52 409.20000000000005 Td (Netzwerk Unnoetige offene Ports, unverschluesselte) Tj ET
+BT /F2 10.5 Tf 52 395.20000000000005 Td (Protokolle,) Tj ET
+BT /F2 10.5 Tf 52 381.20000000000005 Td (direkte Internetfreigabe, fehlende Segmentierung) Tj ET
+BT /F2 10.5 Tf 52 361.20000000000005 Td (Updates Unsignierte Firmware, Updatepakete ohne) Tj ET
+BT /F2 10.5 Tf 52 347.20000000000005 Td (Integritaetspruefung, kein Rollback oder kein) Tj ET
+BT /F2 10.5 Tf 52 333.20000000000005 Td (nachvollziehbarer Releaseprozess) Tj ET
+BT /F2 10.5 Tf 52 313.20000000000005 Td (Daten Unverschluesselte Zugangsdaten, sensible Daten) Tj ET
+BT /F2 10.5 Tf 52 299.20000000000005 Td (in) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+30 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 29 0 R >>
+endobj
+31 0 obj
+<< /Length 2831 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 13) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Logfiles, fehlende sichere Loeschung) Tj ET
+BT /F2 10.5 Tf 52 766 Td (CRAwerk Handbuch) Tj ET
+BT /F2 10.5 Tf 52 752 Td (fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 732 Td (Thema Beispiel) Tj ET
+BT /F2 10.5 Tf 52 712 Td (Verfuegbarkeit Kommunikationsschnittstellen koennen die) Tj ET
+BT /F2 10.5 Tf 52 698 Td (Steuerung) Tj ET
+BT /F2 10.5 Tf 52 684 Td (ueberlasten oder wesentliche Funktionen blockieren) Tj ET
+BT /F2 10.5 Tf 52 664 Td (Zulieferer Abhaengigkeit von Komponenten ohne) Tj ET
+BT /F2 10.5 Tf 52 650 Td (Sicherheitsupdates oder mit abgekundigtem Support) Tj ET
+BT /F2 10.5 Tf 52 630 Td (Protokollierung Sicherheitsrelevante Anmeldungen oder) Tj ET
+BT /F2 10.5 Tf 52 616 Td (Aenderungen) Tj ET
+BT /F2 10.5 Tf 52 602 Td (sind spaeter nicht nachvollziehbar) Tj ET
+BT /F1 9.1 Tf 52 582 Td (Wie w‰hle ich Niedrig, Mittel oder Hoch?) Tj ET
+BT /F1 9.1 Tf 52 570.6 Td (CRAwerk verwendet die Stufe als praktische interne Priorisierung, nicht als gesetzlich) Tj ET
+BT /F2 10.5 Tf 52 559.2 Td (vorgeschriebenes) Tj ET
+BT /F1 9.1 Tf 52 545.2 Td (Rechenmodell. Bewerten Sie gemeinsam die moegliche Auswirkung und wie realistisch eine) Tj ET
+BT /F1 9.1 Tf 52 533.8000000000001 Td (Ausnutzung ist.) Tj ET
+BT /F1 9.1 Tf 52 522.4000000000001 Td (Ein fern erreichbarer Zugang mit schwachem Passwort ist meist hoeher zu priorisieren als) Tj ET
+BT /F2 10.5 Tf 52 511.0000000000001 Td (eine nur lokal) Tj ET
+BT /F1 9.1 Tf 52 497.0000000000001 Td (erreichbare Servicefunktion in einem geschuetzten Schaltschrank.) Tj ET
+BT /F2 10.5 Tf 52 479.60000000000014 Td (Stufe Praktische Orientierung) Tj ET
+BT /F2 10.5 Tf 52 459.60000000000014 Td (Niedrig Begrenzte Auswirkung und schwer auszunutzen;) Tj ET
+BT /F1 9.1 Tf 52 445.60000000000014 Td (Massnahme kann geplant bearbeitet werden.) Tj ET
+BT /F2 10.5 Tf 52 428.20000000000016 Td (Mittel Relevante Auswirkung oder realistische) Tj ET
+BT /F2 10.5 Tf 52 414.20000000000016 Td (Ausnutzung; klare) Tj ET
+BT /F1 9.1 Tf 52 400.20000000000016 Td (Massnahme und Termin erforderlich.) Tj ET
+BT /F2 10.5 Tf 52 382.8000000000002 Td (Hoch Schwere Auswirkung, einfache/ferne Ausnutzung) Tj ET
+BT /F2 10.5 Tf 52 368.8000000000002 Td (oder) Tj ET
+BT /F2 10.5 Tf 52 354.8000000000002 Td (kritische Sicherheitsfunktion betroffen; vorrangig) Tj ET
+BT /F1 9.1 Tf 52 340.8000000000002 Td (bearbeiten.) Tj ET
+BT /F2 10.5 Tf 52 323.4000000000002 Td (Wichtig) Tj ET
+BT /F1 9.1 Tf 52 309.4000000000002 Td (Ein Eintrag "kein Risiko" ist kein Ersatz fuer eine Pruefung. Wenn keine offenen Risiken) Tj ET
+BT /F2 10.5 Tf 52 298.0000000000002 Td (verbleiben, kann) Tj ET
+BT /F2 10.5 Tf 52 284.0000000000002 Td (die) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+32 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 31 0 R >>
+endobj
+33 0 obj
+<< /Length 3005 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 14) Tj ET
+BT /F1 9.1 Tf 52 786 Td (Risikopruefung abgeschlossen werden. Dahinter sollte aber eine nachvollziehbare Bewertung) Tj ET
+BT /F1 9.1 Tf 52 774.6 Td (stehen.) Tj ET
+BT /F2 10.5 Tf 52 757.2 Td (10. Sicherheitsluecken und Updates) Tj ET
+BT /F2 10.5 Tf 52 737.2 Td (Der Unterschied zwischen Risiko und konkreter Schwachstelle) Tj ET
+BT /F2 10.5 Tf 52 717.2 Td (Risiko Sicherheitsproblem / Schwachstelle) Tj ET
+BT /F1 9.1 Tf 52 703.2 Td (Ein moegliches Szenario. Beispiel: Fernwartung koennte Ein konkreter Sachverhalt. Beispiel:) Tj ET
+BT /F2 10.5 Tf 52 691.8000000000001 Td (Der) Tj ET
+BT /F2 10.5 Tf 52 677.8000000000001 Td (verbaute Router) Tj ET
+BT /F1 9.1 Tf 52 663.8000000000001 Td (bei schwachen Zugangsdaten missbraucht werden. hat eine bekannte Schwachstelle in Firmware) Tj ET
+BT /F2 10.5 Tf 52 652.4000000000001 Td (4.7.9.) Tj ET
+BT /F1 9.1 Tf 52 632.4000000000001 Td (Sobald eine konkrete Schwachstelle oder ein Sicherheitsproblem bekannt ist, sollte es im) Tj ET
+BT /F2 10.5 Tf 52 621.0000000000001 Td (Bereich) Tj ET
+BT /F1 9.1 Tf 52 607.0000000000001 Td ("Sicherheitsluecken & Updates" verfolgt werden. Der Eintrag bleibt offen, bis Bewertung,) Tj ET
+BT /F2 10.5 Tf 52 595.6000000000001 Td (Behebung und) Tj ET
+BT /F1 9.1 Tf 52 581.6000000000001 Td (Nachweis sauber dokumentiert sind.) Tj ET
+BT /F2 10.5 Tf 52 564.2000000000002 Td (Feld Was hinein gehoert) Tj ET
+BT /F1 9.1 Tf 52 544.2000000000002 Td (Bezeichnung Kurzer, eindeutiger Titel des Problems.) Tj ET
+BT /F1 9.1 Tf 52 526.8000000000002 Td (Betroffen Produkt, Bauteil, Software und Version.) Tj ET
+BT /F2 10.5 Tf 52 509.4000000000002 Td (Schweregrad Interne Bewertung Niedrig/Mittel/Hoch/Kritisch) Tj ET
+BT /F1 9.1 Tf 52 495.4000000000002 Td (bzw.) Tj ET
+BT /F1 9.1 Tf 52 484.0000000000002 Td (spaetere fachliche Bewertung.) Tj ET
+BT /F2 10.5 Tf 52 466.60000000000025 Td (CRAwerk Handbuch) Tj ET
+BT /F2 10.5 Tf 52 452.60000000000025 Td (fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 432.60000000000025 Td (Feld Was hinein gehoert) Tj ET
+BT /F2 10.5 Tf 52 412.60000000000025 Td (Bewertung Warum ist die Maschine betroffen und welche) Tj ET
+BT /F2 10.5 Tf 52 398.60000000000025 Td (Auswirkung) Tj ET
+BT /F1 9.1 Tf 52 384.60000000000025 Td (ist zu erwarten?) Tj ET
+BT /F2 10.5 Tf 52 367.2000000000003 Td (Massnahme Patch, Konfigurationsaenderung, Workaround,) Tj ET
+BT /F2 10.5 Tf 52 353.2000000000003 Td (Austausch) Tj ET
+BT /F1 9.1 Tf 52 339.2000000000003 Td (oder andere Behebung.) Tj ET
+BT /F1 9.1 Tf 52 321.8000000000003 Td (Patch-/Zielversion Version, in der das Problem behoben ist.) Tj ET
+BT /F1 9.1 Tf 52 304.4000000000003 Td (Behoben am Datum der umgesetzten Behebung.) Tj ET
+BT /F2 10.5 Tf 52 287.00000000000034 Td (Sicherheitshinweis / Nachweis Veroeffentlichter Hinweis, DMS-ID, Release) Tj ET
+BT /F2 10.5 Tf 52 273.00000000000034 Td (Note oder) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+34 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 33 0 R >>
+endobj
+35 0 obj
+<< /Length 2834 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 15) Tj ET
+BT /F2 10.5 Tf 52 786 Td (begruendete Dokumentation einer spaeteren) Tj ET
+BT /F1 9.1 Tf 52 772 Td (Veroeffentlichung.) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (Nicht vorschnell schliessen) Tj ET
+BT /F1 9.1 Tf 52 740.6 Td (CRAwerk verlangt vor dem Abschluss eines Sicherheitsproblems einen bewerteten Schweregrad,) Tj ET
+BT /F2 10.5 Tf 52 729.2 Td (ein) Tj ET
+BT /F1 9.1 Tf 52 715.2 Td (Behebungsdatum und einen Veroeffentlichungs-/Nachweisverweis. Damit bleibt nachvollziehbar,) Tj ET
+BT /F2 10.5 Tf 52 703.8000000000001 Td (was wirklich) Tj ET
+BT /F1 9.1 Tf 52 689.8000000000001 Td (passiert ist.) Tj ET
+BT /F2 10.5 Tf 52 672.4000000000001 Td (11. Unterlagen und Nachweise) Tj ET
+BT /F2 10.5 Tf 52 652.4000000000001 Td (Was als Beleg zaehlt) Tj ET
+BT /F1 9.1 Tf 52 632.4000000000001 Td (CRAwerk soll keine zweite Dateiablage erzwingen. Im Bereich "Unterlagen & Nachweise" ordnen) Tj ET
+BT /F2 10.5 Tf 52 621.0000000000001 Td (Sie) Tj ET
+BT /F1 9.1 Tf 52 607.0000000000001 Td (vorhandene Dokumente der Maschine zu. Die eigentliche Datei kann weiterhin in Ihrem DMS,) Tj ET
+BT /F2 10.5 Tf 52 595.6000000000001 Td (Netzlaufwerk,) Tj ET
+BT /F1 9.1 Tf 52 581.6000000000001 Td (PLM oder Projektordner liegen. Entscheidend ist ein eindeutiger Verweis.) Tj ET
+BT /F2 10.5 Tf 52 564.2000000000002 Td (Guter Nachweis Beispiel) Tj ET
+BT /F2 10.5 Tf 52 544.2000000000002 Td (Testbericht Security-Test VP-240, Bericht SEC-2026-014) Tj ET
+BT /F2 10.5 Tf 52 524.2000000000002 Td (Architektur-/Netzplan Netzwerkplan NW-VP240-03, Revision C) Tj ET
+BT /F2 10.5 Tf 52 504.20000000000016 Td (Lieferantenhinweis Security Advisory des Gateway-Herstellers,) Tj ET
+BT /F2 10.5 Tf 52 490.20000000000016 Td (Referenz) Tj ET
+BT /F2 10.5 Tf 52 476.20000000000016 Td (SA-2026-88) Tj ET
+BT /F2 10.5 Tf 52 456.20000000000016 Td (Release Note Firmware Release 2.7.4, Aenderung "signed) Tj ET
+BT /F2 10.5 Tf 52 442.20000000000016 Td (update) Tj ET
+BT /F2 10.5 Tf 52 428.20000000000016 Td (verification") Tj ET
+BT /F2 10.5 Tf 52 408.20000000000016 Td (Ticket / Aufgabe Jira SEC-412 oder internes Q-Ticket 8821) Tj ET
+BT /F2 10.5 Tf 52 388.20000000000016 Td (Pruefprotokoll Reviewprotokoll Fernwartung 18.09.2026) Tj ET
+BT /F2 10.5 Tf 52 368.20000000000016 Td (Benutzerinformation Betriebsanleitung Kapitel "Sichere) Tj ET
+BT /F2 10.5 Tf 52 354.20000000000016 Td (Inbetriebnahme") Tj ET
+BT /F2 10.5 Tf 52 334.20000000000016 Td (Konformitaetsunterlage Unterzeichnete EU-Konformitaetserklaerung,) Tj ET
+BT /F2 10.5 Tf 52 320.20000000000016 Td (DMS-ID) Tj ET
+BT /F2 10.5 Tf 52 306.20000000000016 Td (DOC-4711) Tj ET
+BT /F2 10.5 Tf 52 286.20000000000016 Td (So benennen Sie Nachweise sinnvoll) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+36 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 35 0 R >>
+endobj
+37 0 obj
+<< /Length 3300 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 16) Tj ET
+BT /F1 9.1 Tf 52 786 Td (Ein guter Verweis ist fuer eine andere Person auffindbar. "Siehe Ordner" ist schwach. "DMS:) Tj ET
+BT /F2 10.5 Tf 52 774.6 Td (SEC-2026-014,) Tj ET
+BT /F1 9.1 Tf 52 760.6 Td (Security-Test VP-240, Rev. B" ist belastbar.) Tj ET
+BT /F2 10.5 Tf 52 743.2 Td (12. Unterstuetzungszeitraum) Tj ET
+BT /F2 10.5 Tf 52 723.2 Td (Wie lange Sicherheitsluecken betreut werden) Tj ET
+BT /F1 9.1 Tf 52 703.2 Td (Der CRA verlangt, dass Hersteller einen Supportzeitraum festlegen, der die erwartete) Tj ET
+BT /F2 10.5 Tf 52 691.8000000000001 Td (Nutzungsdauer des) Tj ET
+BT /F1 9.1 Tf 52 677.8000000000001 Td (Produkts widerspiegelt. Grundsaetzlich betraegt dieser Zeitraum mindestens fuenf Jahre. Wird) Tj ET
+BT /F2 10.5 Tf 52 666.4000000000001 Td (das Produkt) Tj ET
+BT /F1 9.1 Tf 52 652.4000000000001 Td (voraussichtlich kuerzer als fuenf Jahre genutzt, darf der Zeitraum der erwarteten) Tj ET
+BT /F1 9.1 Tf 52 641.0000000000001 Td (Nutzungsdauer entsprechen.) Tj ET
+BT /F1 9.1 Tf 52 629.6000000000001 Td (Die Kriterien fuer die Festlegung muessen dokumentiert werden. [1]) Tj ET
+BT /F2 10.5 Tf 52 612.2000000000002 Td (Maschinenbauer aufgepasst) Tj ET
+BT /F1 9.1 Tf 52 598.2000000000002 Td (Bei einer Maschine mit erwarteter Nutzungsdauer von zehn oder fuenfzehn Jahren ist "fuenf) Tj ET
+BT /F2 10.5 Tf 52 586.8000000000002 Td (Jahre, weil das) Tj ET
+BT /F1 9.1 Tf 52 572.8000000000002 Td (Minimum fuenf Jahre ist" keine gute Begruendung. Der CRA verlangt, dass die erwartete) Tj ET
+BT /F2 10.5 Tf 52 561.4000000000002 Td (Nutzungsdauer und) Tj ET
+BT /F1 9.1 Tf 52 547.4000000000002 Td (weitere relevante Faktoren betrachtet werden.) Tj ET
+BT /F2 10.5 Tf 52 530.0000000000002 Td (CRAwerk-Feld Beispiel) Tj ET
+BT /F2 10.5 Tf 52 510.0000000000002 Td (Beginn 01.01.2027) Tj ET
+BT /F2 10.5 Tf 52 490.0000000000002 Td (Geplantes Ende 31.12.2034) Tj ET
+BT /F2 10.5 Tf 52 470.0000000000002 Td (Verantwortlich Produktmanagement) Tj ET
+BT /F2 10.5 Tf 52 450.0000000000002 Td (Begruendung Erwartete Nutzungsdauer ca. 8 Jahre;) Tj ET
+BT /F2 10.5 Tf 52 436.0000000000002 Td (Kernkomponenten) Tj ET
+BT /F1 9.1 Tf 52 422.0000000000002 Td (werden vom Zulieferer mindestens bis 2034 unterstuetzt.) Tj ET
+BT /F1 9.1 Tf 52 404.60000000000025 Td (Wo beim Kauf sichtbar? Angebot, Auftragsbestaetigung und Produktseite) Tj ET
+BT /F1 9.1 Tf 52 387.2000000000003 Td (Kann das Produkt das Supportende technisch melden? Ja - Hinweis im HMI und Kundenportal) Tj ET
+BT /F1 9.1 Tf 52 369.8000000000003 Td (Nachweis nach Supportende Mailing-ID, HMI-Release oder Portalnachweis) Tj ET
+BT /F1 9.1 Tf 52 352.4000000000003 Td (Das Enddatum des Supportzeitraums muss beim Kauf klar und leicht zugaenglich angegeben) Tj ET
+BT /F2 10.5 Tf 52 341.00000000000034 Td (werden,) Tj ET
+BT /F1 9.1 Tf 52 327.00000000000034 Td (mindestens mit Monat und Jahr. Wenn es technisch machbar ist, sollen Nutzer beim Erreichen) Tj ET
+BT /F2 10.5 Tf 52 315.60000000000036 Td (des) Tj ET
+BT /F2 10.5 Tf 52 301.60000000000036 Td (Supportendes eine Mitteilung erhalten. [1]) Tj ET
+BT /F2 10.5 Tf 52 281.60000000000036 Td (13. Gefuehrter CRA-Abschluss in sechs) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+38 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 37 0 R >>
+endobj
+39 0 obj
+<< /Length 2972 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 17) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Schritten) Tj ET
+BT /F1 9.1 Tf 52 772 Td (Nach der Maschinenakte oeffnen Sie den CRA-Abschluss. Dort zeigt CRAwerk nur sechs) Tj ET
+BT /F2 10.5 Tf 52 760.6 Td (Arbeitsschritte und) Tj ET
+BT /F1 9.1 Tf 52 746.6 Td (immer den naechsten offenen Schritt. Die juristische Zuordnung bleibt im Hintergrund) Tj ET
+BT /F2 10.5 Tf 52 735.2 Td (sichtbar, wenn sie) Tj ET
+BT /F1 9.1 Tf 52 721.2 Td (gebraucht wird.) Tj ET
+BT /F2 10.5 Tf 52 703.8000000000001 Td (Schritt Was Sie tun) Tj ET
+BT /F2 10.5 Tf 52 683.8000000000001 Td (1. Produkt einordnen Produktklasse festlegen, Kernfunktion) Tj ET
+BT /F2 10.5 Tf 52 669.8000000000001 Td (beschreiben,) Tj ET
+BT /F1 9.1 Tf 52 655.8000000000001 Td (Normenabdeckung und Konformitaetsweg dokumentieren.) Tj ET
+BT /F2 10.5 Tf 52 638.4000000000001 Td (2. Schutz pruefen Die 22 grundlegenden Anforderungen in fuenf) Tj ET
+BT /F1 9.1 Tf 52 624.4000000000001 Td (verstaendlichen Themenbloecken bewerten.) Tj ET
+BT /F2 10.5 Tf 52 607.0000000000001 Td (3. Maschine beschreiben Zweck, Einsatzumgebung, Architektur, Nachweise) Tj ET
+BT /F2 10.5 Tf 52 593.0000000000001 Td (und) Tj ET
+BT /F1 9.1 Tf 52 579.0000000000001 Td (Nutzerinformationen vervollstaendigen.) Tj ET
+BT /F2 10.5 Tf 52 561.6000000000001 Td (4. Sicherheitsprozess Meldekontakt, CVD, Updateverteilung und Umgang) Tj ET
+BT /F2 10.5 Tf 52 547.6000000000001 Td (mit) Tj ET
+BT /F1 9.1 Tf 52 533.6000000000001 Td (Drittkomponenten beschreiben.) Tj ET
+BT /F2 10.5 Tf 52 516.2000000000002 Td (CRAwerk Handbuch) Tj ET
+BT /F2 10.5 Tf 52 502.20000000000016 Td (fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 482.20000000000016 Td (Schritt Was Sie tun) Tj ET
+BT /F2 10.5 Tf 52 462.20000000000016 Td (5. Konformitaet CE-Status und EU-Konformitaetserklaerung) Tj ET
+BT /F1 9.1 Tf 52 448.20000000000016 Td (abschliessen.) Tj ET
+BT /F2 10.5 Tf 52 430.8000000000002 Td (6. Akte pruefen CRAwerk zeigt, welche Pflichtbereiche noch) Tj ET
+BT /F1 9.1 Tf 52 416.8000000000002 Td (offen sind.) Tj ET
+BT /F2 10.5 Tf 52 399.4000000000002 Td (Schritt 1: Produkt einordnen) Tj ET
+BT /F1 9.1 Tf 52 385.4000000000002 Td (Die meisten Produkte im Anwendungsbereich sind Standardprodukte. Bestimmte Kernfunktionen) Tj ET
+BT /F2 10.5 Tf 52 374.0000000000002 Td (koennen) Tj ET
+BT /F1 9.1 Tf 52 360.0000000000002 Td (jedoch unter die Listen wichtiger Produkte der Klasse I oder II oder kritischer Produkte) Tj ET
+BT /F2 10.5 Tf 52 348.60000000000025 Td (fallen. Die) Tj ET
+BT /F2 10.5 Tf 52 334.60000000000025 Td (technischen) Tj ET
+BT /F1 9.1 Tf 52 320.60000000000025 Td (Beschreibungen dieser Kategorien wurden durch die Durchfuehrungsverordnung \(EU\) 2025/2392) Tj ET
+BT /F2 10.5 Tf 52 309.2000000000003 Td (konkretisiert. [5]) Tj ET
+BT /F2 10.5 Tf 52 289.2000000000003 Td (Einstufung Bedeutung fuer CRAwerk) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+40 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 39 0 R >>
+endobj
+41 0 obj
+<< /Length 3069 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 18) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Standardprodukt Nicht als wichtiges oder kritisches Produkt) Tj ET
+BT /F1 9.1 Tf 52 772 Td (eingestuft.) Tj ET
+BT /F2 10.5 Tf 52 760.6 Td (Modul A kann grundsaetzlich ein moeglicher) Tj ET
+BT /F2 10.5 Tf 52 746.6 Td (Konformitaetsweg sein.) Tj ET
+BT /F2 10.5 Tf 52 726.6 Td (Wichtig - Klasse I Bei vollstaendiger Abdeckung ueber passende) Tj ET
+BT /F2 10.5 Tf 52 712.6 Td (Normen) Tj ET
+BT /F2 10.5 Tf 52 698.6 Td (kann Modul A in Betracht kommen; sonst wird eine) Tj ET
+BT /F1 9.1 Tf 52 684.6 Td (externe Bewertung relevant.) Tj ET
+BT /F2 10.5 Tf 52 667.2 Td (Wichtig - Klasse II Externe Konformitaetsbewertung bzw.) Tj ET
+BT /F2 10.5 Tf 52 653.2 Td (geeignete) Tj ET
+BT /F1 9.1 Tf 52 639.2 Td (Zertifizierung wird relevant.) Tj ET
+BT /F2 10.5 Tf 52 621.8000000000001 Td (Kritisch Besonders sensible Produktkategorien mit) Tj ET
+BT /F2 10.5 Tf 52 607.8000000000001 Td (strengeren) Tj ET
+BT /F2 10.5 Tf 52 593.8000000000001 Td (Konformitaetswegen.) Tj ET
+BT /F2 10.5 Tf 52 573.8000000000001 Td (Nicht raten) Tj ET
+BT /F1 9.1 Tf 52 559.8000000000001 Td (Die Einstufung darf nicht aus dem Bauch heraus erfolgen. Pruefen Sie die aktuelle Fassung) Tj ET
+BT /F2 10.5 Tf 52 548.4000000000001 Td (von Anhang III und) Tj ET
+BT /F1 9.1 Tf 52 534.4000000000001 Td (IV sowie die technischen Beschreibungen. CRAwerk speichert Ihre Entscheidung und die) Tj ET
+BT /F2 10.5 Tf 52 523.0000000000001 Td (Begruendung, trifft) Tj ET
+BT /F1 9.1 Tf 52 509.0000000000001 Td (sie aber nicht rechtsverbindlich fuer Sie.) Tj ET
+BT /F2 10.5 Tf 52 491.60000000000014 Td (14. Die 22 Schutzanforderungen in) Tj ET
+BT /F2 10.5 Tf 52 471.60000000000014 Td (normaler Sprache) Tj ET
+BT /F2 10.5 Tf 52 457.60000000000014 Td (Was die fuenf Themenbloecke in CRAwerk meinen) Tj ET
+BT /F2 10.5 Tf 52 437.60000000000014 Td (Anhang I des CRA enthaelt die grundlegenden Cybersicherheitsanforderungen. CRAwerk zeigt sie) Tj ET
+BT /F2 10.5 Tf 52 423.60000000000014 Td (als) Tj ET
+BT /F1 9.1 Tf 52 409.60000000000014 Td (alltagstaugliche Fragen. Fuer jeden Punkt gibt es "Noch offen", "Ja - erfuellt" oder "Trifft) Tj ET
+BT /F2 10.5 Tf 52 398.20000000000016 Td (nicht zu" sowie) Tj ET
+BT /F2 10.5 Tf 52 384.20000000000016 Td (Platz) Tj ET
+BT /F1 9.1 Tf 52 370.20000000000016 Td (fuer kurze Begruendung und Nachweis.) Tj ET
+BT /F2 10.5 Tf 52 352.8000000000002 Td (A. Zugriff & Grundeinstellungen) Tj ET
+BT /F2 10.5 Tf 52 338.8000000000002 Td (Frage in CRAwerk Woran Sie denken sollten) Tj ET
+BT /F1 9.1 Tf 52 318.8000000000002 Td (Startet die Maschine mit sicheren Grundeinstellungen? Keine unsicheren Standardpasswoerter;) Tj ET
+BT /F2 10.5 Tf 52 307.4000000000002 Td (sichere) Tj ET
+BT /F1 9.1 Tf 52 293.4000000000002 Td (Werkseinstellungen; sinnvolle Ruecksetzung.) Tj ET
+BT /F1 9.1 Tf 52 276.0000000000002 Td (Ist unbefugter Zugriff ausreichend verhindert? Authentifizierung, Rollen, Rechte, Schutz) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+42 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 41 0 R >>
+endobj
+43 0 obj
+<< /Length 3009 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 19) Tj ET
+BT /F2 10.5 Tf 52 786 Td (von) Tj ET
+BT /F1 9.1 Tf 52 772 Td (Servicezugaengen und Fernwartung.) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (CRAwerk) Tj ET
+BT /F2 10.5 Tf 52 740.6 Td (Handbuch fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 720.6 Td (Frage in CRAwerk Woran Sie denken sollten) Tj ET
+BT /F1 9.1 Tf 52 700.6 Td (Sind Schnittstellen und Angriffsfl‰chen auf das Noetige Unnoetige Ports, Dienste und) Tj ET
+BT /F2 10.5 Tf 52 689.2 Td (Schnittstellen) Tj ET
+BT /F2 10.5 Tf 52 675.2 Td (deaktivieren oder) Tj ET
+BT /F1 9.1 Tf 52 661.2 Td (begrenzt? schuetzen.) Tj ET
+BT /F1 9.1 Tf 52 643.8000000000001 Td (Werden Folgen eines erfolgreichen Angriffs begrenzt? Segmentierung, Rechtebegrenzung,) Tj ET
+BT /F2 10.5 Tf 52 632.4000000000001 Td (sichere) Tj ET
+BT /F2 10.5 Tf 52 618.4000000000001 Td (Wiederanlauf-) Tj ET
+BT /F1 9.1 Tf 52 604.4000000000001 Td (oder Schutzmechanismen.) Tj ET
+BT /F1 9.1 Tf 52 587.0000000000001 Td (Koennen wichtige Sicherheitsereignisse nachvollzogen Protokollierung sicherheitsrelevanter) Tj ET
+BT /F2 10.5 Tf 52 575.6000000000001 Td (Anmeldungen,) Tj ET
+BT /F1 9.1 Tf 52 561.6000000000001 Td (werden? Aenderungen und Ereignisse.) Tj ET
+BT /F2 10.5 Tf 52 544.2000000000002 Td (B. Daten & Kommunikation) Tj ET
+BT /F2 10.5 Tf 52 530.2000000000002 Td (Frage in CRAwerk Woran Sie denken sollten) Tj ET
+BT /F1 9.1 Tf 52 510.20000000000016 Td (Sind vertrauliche Daten geschuetzt? Schutz gespeicherter und uebertragener) Tj ET
+BT /F1 9.1 Tf 52 498.8000000000002 Td (sensibler Daten.) Tj ET
+BT /F1 9.1 Tf 52 481.4000000000002 Td (Sind Daten, Befehle und Einstellungen gegen Manipulation Integritaetspruefung, Signaturen,) Tj ET
+BT /F2 10.5 Tf 52 470.0000000000002 Td (geschuetzte Konfiguration,) Tj ET
+BT /F1 9.1 Tf 52 456.0000000000002 Td (geschuetzt? sichere Kommunikation.) Tj ET
+BT /F1 9.1 Tf 52 438.60000000000025 Td (Verarbeitet die Maschine nur Daten, die sie wirklich braucht? Datenminimierung und) Tj ET
+BT /F2 10.5 Tf 52 427.2000000000003 Td (Vermeidung unnoetiger) Tj ET
+BT /F1 9.1 Tf 52 413.2000000000003 Td (personenbezogener oder technischer Daten.) Tj ET
+BT /F1 9.1 Tf 52 395.8000000000003 Td (Koennen Daten sicher geloescht und uebertragen werden? Sichere Loeschung bei) Tj ET
+BT /F2 10.5 Tf 52 384.4000000000003 Td (Ausserbetriebnahme und) Tj ET
+BT /F2 10.5 Tf 52 370.4000000000003 Td (geschuetzte) Tj ET
+BT /F1 9.1 Tf 52 356.4000000000003 Td (Datenuebertragung.) Tj ET
+BT /F2 10.5 Tf 52 339.00000000000034 Td (C. Betrieb & Widerstandsfaehigkeit) Tj ET
+BT /F2 10.5 Tf 52 325.00000000000034 Td (Frage in CRAwerk Woran Sie denken sollten) Tj ET
+BT /F1 9.1 Tf 52 305.00000000000034 Td (Passt das Sicherheitsniveau zum Risiko? Schutzmassnahmen muessen zum Produkt,) Tj ET
+BT /F2 10.5 Tf 52 293.60000000000036 Td (Einsatz und) Tj ET
+BT /F1 9.1 Tf 52 279.60000000000036 Td (moeglichen Schaden passen.) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+44 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 43 0 R >>
+endobj
+45 0 obj
+<< /Length 3074 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 20) Tj ET
+BT /F1 9.1 Tf 52 786 Td (Bleiben wichtige Funktionen bei Angriffen moeglichst Robustheit gegen Stoerungen,) Tj ET
+BT /F2 10.5 Tf 52 774.6 Td (Ueberlastung) Tj ET
+BT /F2 10.5 Tf 52 760.6 Td (und) Tj ET
+BT /F1 9.1 Tf 52 746.6 Td (verfuegbar? Sicherheitsvorfaelle.) Tj ET
+BT /F1 9.1 Tf 52 729.2 Td (Kann die Maschine andere Geraete oder Netze unnoetig Verhindern, dass das Produkt selbst zur) Tj ET
+BT /F2 10.5 Tf 52 717.8000000000001 Td (Stoerquelle oder) Tj ET
+BT /F1 9.1 Tf 52 703.8000000000001 Td (beeintraechtigen? Angriffsplattform wird.) Tj ET
+BT /F2 10.5 Tf 52 686.4000000000001 Td (D. Software, Updates & Komponenten) Tj ET
+BT /F2 10.5 Tf 52 672.4000000000001 Td (Frage in CRAwerk Woran Sie denken sollten) Tj ET
+BT /F1 9.1 Tf 52 652.4000000000001 Td (Sind keine bekannten ausnutzbaren Schwachstellen mehr Bekannte relevante Luecken vor) Tj ET
+BT /F2 10.5 Tf 52 641.0000000000001 Td (Inverkehrbringen bewerten) Tj ET
+BT /F1 9.1 Tf 52 627.0000000000001 Td (offen? und beheben.) Tj ET
+BT /F1 9.1 Tf 52 609.6000000000001 Td (Koennen Sicherheitsupdates sicher eingespielt werden? Updateweg, Authentizitaet, Integritaet) Tj ET
+BT /F2 10.5 Tf 52 598.2000000000002 Td (und) Tj ET
+BT /F1 9.1 Tf 52 584.2000000000002 Td (sichere Installation.) Tj ET
+BT /F1 9.1 Tf 52 566.8000000000002 Td (Sind Softwarekomponenten und Abhaengigkeiten Softwareliste und SBOM mindestens fuer) Tj ET
+BT /F2 10.5 Tf 52 555.4000000000002 Td (relevante) Tj ET
+BT /F1 9.1 Tf 52 541.4000000000002 Td (nachvollziehbar? Abhaengigkeiten.) Tj ET
+BT /F1 9.1 Tf 52 524.0000000000002 Td (Werden gefundene Schwachstellen zuegig behoben? Risikoabhaengige Priorisierung, Patch oder) Tj ET
+BT /F2 10.5 Tf 52 512.6000000000003 Td (andere) Tj ET
+BT /F1 9.1 Tf 52 498.60000000000025 Td (Korrekturmassnahme.) Tj ET
+BT /F1 9.1 Tf 52 481.2000000000003 Td (Werden Sicherheitsupdates sicher verteilt? Manipulationsgeschuetzte Bereitstellung und) Tj ET
+BT /F2 10.5 Tf 52 469.8000000000003 Td (eindeutige) Tj ET
+BT /F2 10.5 Tf 52 449.8000000000003 Td (14) Tj ET
+BT /F1 9.1 Tf 52 429.8000000000003 Td (Versionen.) Tj ET
+BT /F1 9.1 Tf 52 412.4000000000003 Td (Werden Sicherheitsupdates rechtzeitig und verstaendlich Kunden erhalten Update und klare) Tj ET
+BT /F2 10.5 Tf 52 401.00000000000034 Td (Hinweise zu) Tj ET
+BT /F2 10.5 Tf 52 387.00000000000034 Td (notwendigen) Tj ET
+BT /F1 9.1 Tf 52 373.00000000000034 Td (bereitgestellt? Massnahmen.) Tj ET
+BT /F2 10.5 Tf 52 355.60000000000036 Td (CRAwerk) Tj ET
+BT /F2 10.5 Tf 52 341.60000000000036 Td (Handbuch fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 321.60000000000036 Td (E. Pruefen & Schwachstellen bearbeiten) Tj ET
+BT /F2 10.5 Tf 52 307.60000000000036 Td (Frage in CRAwerk Woran Sie denken sollten) Tj ET
+BT /F1 9.1 Tf 52 287.60000000000036 Td (Wird die Produktsicherheit regelmaessig geprueft? Security-Tests, Reviews oder andere) Tj ET
+BT /F2 10.5 Tf 52 276.2000000000004 Td (geeignete) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+46 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 45 0 R >>
+endobj
+47 0 obj
+<< /Length 3416 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 21) Tj ET
+BT /F1 9.1 Tf 52 786 Td (Pruefungen.) Tj ET
+BT /F1 9.1 Tf 52 768.6 Td (Werden Kunden ueber behobene Schwachstellen informiert? Sicherheitshinweis mit betroffenen) Tj ET
+BT /F2 10.5 Tf 52 757.2 Td (Versionen,) Tj ET
+BT /F2 10.5 Tf 52 743.2 Td (Schweregrad) Tj ET
+BT /F1 9.1 Tf 52 729.2 Td (und Behebung.) Tj ET
+BT /F1 9.1 Tf 52 711.8000000000001 Td (Gibt es einen festen Ablauf fuer gemeldete Schwachstellen? CVD-Prozess fuer Eingang,) Tj ET
+BT /F2 10.5 Tf 52 700.4000000000001 Td (Bestaetigung,) Tj ET
+BT /F2 10.5 Tf 52 686.4000000000001 Td (Bewertung,) Tj ET
+BT /F1 9.1 Tf 52 672.4000000000001 Td (Behebung und Veroeffentlichung.) Tj ET
+BT /F1 9.1 Tf 52 655.0000000000001 Td (Gibt es eine erreichbare Stelle fuer Sicherheitsmeldungen? Leicht auffindbarer Kontakt,) Tj ET
+BT /F2 10.5 Tf 52 643.6000000000001 Td (nicht) Tj ET
+BT /F2 10.5 Tf 52 629.6000000000001 Td (ausschliesslich) Tj ET
+BT /F1 9.1 Tf 52 615.6000000000001 Td (automatisierte Kommunikation.) Tj ET
+BT /F1 9.1 Tf 52 598.2000000000002 Td (Wann darf ich "Trifft nicht zu" waehlen?) Tj ET
+BT /F1 9.1 Tf 52 586.8000000000002 Td (Nur wenn die Anforderung fuer das konkrete Produkt wirklich nicht anwendbar ist. Dann) Tj ET
+BT /F2 10.5 Tf 52 575.4000000000002 Td (braucht CRAwerk) Tj ET
+BT /F1 9.1 Tf 52 561.4000000000002 Td (eine kurze Begruendung. Beispiel: Wenn ein Produkt keine Benutzerdaten speichert und keine) Tj ET
+BT /F2 10.5 Tf 52 550.0000000000002 Td (entsprechende) Tj ET
+BT /F1 9.1 Tf 52 536.0000000000002 Td (Funktion hat, kann ein spezieller Teil einer Datenloeschungsanforderung nicht anwendbar) Tj ET
+BT /F2 10.5 Tf 52 524.6000000000003 Td (sein. "Trifft nicht) Tj ET
+BT /F1 9.1 Tf 52 510.60000000000025 Td (zu" darf nicht verwendet werden, nur weil ein Punkt unbequem oder noch ungekl‰rt ist.) Tj ET
+BT /F2 10.5 Tf 52 493.2000000000003 Td (15. Technische Dokumentation und) Tj ET
+BT /F2 10.5 Tf 52 473.2000000000003 Td (Nutzerinformationen) Tj ET
+BT /F1 9.1 Tf 52 459.2000000000003 Td (Die technische Dokumentation muss erklaeren, wie der Hersteller die CRA-Anforderungen) Tj ET
+BT /F2 10.5 Tf 52 447.8000000000003 Td (einhaelt, und) Tj ET
+BT /F1 9.1 Tf 52 433.8000000000003 Td (mindestens die Inhalte aus Anhang VII enthalten. Sie muss vor dem Inverkehrbringen erstellt) Tj ET
+BT /F2 10.5 Tf 52 422.4000000000003 Td (und waehrend) Tj ET
+BT /F2 10.5 Tf 52 408.4000000000003 Td (des Supportzeitraums bei Bedarf aktualisiert werden. [1]) Tj ET
+BT /F2 10.5 Tf 52 388.4000000000003 Td (Was CRAwerk in Schritt 3 abfragt) Tj ET
+BT /F2 10.5 Tf 52 374.4000000000003 Td (Themenblock Was gemeint ist) Tj ET
+BT /F2 10.5 Tf 52 354.4000000000003 Td (Produkt & Einsatz Zweckbestimmung, Einsatzumgebung, digitale) Tj ET
+BT /F1 9.1 Tf 52 340.4000000000003 Td (Kernfunktionen und vorhersehbare Fehlanwendung.) Tj ET
+BT /F1 9.1 Tf 52 323.00000000000034 Td (Aufbau & Nachweise Architektur, Zeichnungen, Aenderungsprozess,) Tj ET
+BT /F2 10.5 Tf 52 311.60000000000036 Td (Normen,) Tj ET
+BT /F1 9.1 Tf 52 297.60000000000036 Td (Testberichte und Aufbewahrung.) Tj ET
+BT /F1 9.1 Tf 52 280.2000000000004 Td (Informationen fuer Kunden Sichere Inbetriebnahme, Updates, Aenderungen,) Tj ET
+BT /F1 9.1 Tf 52 268.8000000000004 Td (Ausserbetriebnahme, Integratorhinweise und Support.) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+48 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 47 0 R >>
+endobj
+49 0 obj
+<< /Length 3226 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 22) Tj ET
+BT /F2 10.5 Tf 52 780 Td (Informationen nach Anhang II) Tj ET
+BT /F1 9.1 Tf 52 766 Td (Produkte muessen von klaren Nutzerinformationen begleitet werden. Dazu gehoeren unter) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (anderem) Tj ET
+BT /F1 9.1 Tf 52 740.6 Td (Herstellerkontakt, Schwachstellen-Kontaktstelle, eindeutige Produktidentifikation, Zweck und) Tj ET
+BT /F2 10.5 Tf 52 729.2 Td (Sicherheitsumgebung, bekannte oder vorhersehbare Cyberrisiken, Supportart und Supportende) Tj ET
+BT /F2 10.5 Tf 52 715.2 Td (sowie) Tj ET
+BT /F1 9.1 Tf 52 701.2 Td (Anweisungen fuer sichere Inbetriebnahme, Updates und Ausserbetriebnahme. [1]) Tj ET
+BT /F2 10.5 Tf 52 683.8000000000001 Td (CRAwerk-Ausgabe) Tj ET
+BT /F1 9.1 Tf 52 669.8000000000001 Td (CRAwerk kann aus den hinterlegten Angaben ein druckbares Dokument "Nutzerinformationen nach) Tj ET
+BT /F2 10.5 Tf 52 658.4000000000001 Td (Anhang II") Tj ET
+BT /F1 9.1 Tf 52 644.4000000000001 Td (erzeugen. Pruefen Sie es vor der Freigabe wie jede andere technische Kundenunterlage.) Tj ET
+BT /F2 10.5 Tf 52 627.0000000000001 Td (CRAwerk Handbuch) Tj ET
+BT /F2 10.5 Tf 52 613.0000000000001 Td (fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 593.0000000000001 Td (16. Sicherheitsprozess und CVD) Tj ET
+BT /F2 10.5 Tf 52 573.0000000000001 Td (Was Ihr Unternehmen festlegen sollte) Tj ET
+BT /F1 9.1 Tf 52 553.0000000000001 Td (Der CRA verlangt nicht nur ein sicheres Produkt, sondern auch einen belastbaren Prozess fuer) Tj ET
+BT /F1 9.1 Tf 52 541.6000000000001 Td (Schwachstellen. Eine Sicherheitsmeldung darf nicht davon abhaengen, ob zufaellig gerade die) Tj ET
+BT /F2 10.5 Tf 52 530.2000000000002 Td (richtige) Tj ET
+BT /F1 9.1 Tf 52 516.2000000000002 Td (Person im Haus ist.) Tj ET
+BT /F2 10.5 Tf 52 498.8000000000002 Td (CRAwerk-Feld Inhalt) Tj ET
+BT /F2 10.5 Tf 52 478.8000000000002 Td (Kontaktstelle E-Mail oder Meldeformular plus direkte) Tj ET
+BT /F1 9.1 Tf 52 464.8000000000002 Td (Kommunikationsmoeglichkeit, z. B. security@firma.de.) Tj ET
+BT /F2 10.5 Tf 52 447.4000000000002 Td (CVD-Prozess Wie Eingang bestaetigt, Betroffenheit geprueft,) Tj ET
+BT /F2 10.5 Tf 52 433.4000000000002 Td (Schwere) Tj ET
+BT /F2 10.5 Tf 52 419.4000000000002 Td (bewertet, Massnahme geplant und Veroeffentlichung) Tj ET
+BT /F1 9.1 Tf 52 405.4000000000002 Td (koordiniert wird.) Tj ET
+BT /F1 9.1 Tf 52 388.0000000000002 Td (Oeffentliche Fundstelle Webseite oder Dokument, auf dem der Meldeweg) Tj ET
+BT /F2 10.5 Tf 52 376.60000000000025 Td (fuer) Tj ET
+BT /F1 9.1 Tf 52 362.60000000000025 Td (Externe leicht auffindbar ist.) Tj ET
+BT /F2 10.5 Tf 52 345.2000000000003 Td (Sichere Updateverteilung Wie Updates signiert, bereitgestellt,) Tj ET
+BT /F2 10.5 Tf 52 331.2000000000003 Td (versioniert und) Tj ET
+BT /F1 9.1 Tf 52 317.2000000000003 Td (Kunden informiert werden.) Tj ET
+BT /F1 9.1 Tf 52 299.8000000000003 Td (Drittkomponenten Wie Zuliefererinformationen verfolgt werden und) Tj ET
+BT /F2 10.5 Tf 52 288.4000000000003 Td (wie Sie) Tj ET
+BT /F2 10.5 Tf 52 274.4000000000003 Td (den Hersteller/Maintainer bei gefundenen Luecken) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+50 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 49 0 R >>
+endobj
+51 0 obj
+<< /Length 2992 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 23) Tj ET
+BT /F1 9.1 Tf 52 786 Td (einbeziehen.) Tj ET
+BT /F2 10.5 Tf 52 768.6 Td (Ein einfacher CVD-Ablauf fuer ein kleines Unternehmen) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (1. Meldung ueber zentrale Kontaktstelle annehmen und Eingang bestaetigen.) Tj ET
+BT /F2 10.5 Tf 52 740.6 Td (2. Betroffenes Produkt, Version und Komponente identifizieren.) Tj ET
+BT /F2 10.5 Tf 52 720.6 Td (3. Schweregrad, Auswirkung und moegliche Ausnutzung bewerten.) Tj ET
+BT /F2 10.5 Tf 52 700.6 Td (4. Korrekturmassnahme, Patch oder Workaround festlegen.) Tj ET
+BT /F2 10.5 Tf 52 680.6 Td (5. Betroffene Kunden und gegebenenfalls Zulieferer koordinieren.) Tj ET
+BT /F2 10.5 Tf 52 660.6 Td (6. Sicherheitshinweis und Update bereitstellen, wenn dies erforderlich ist.) Tj ET
+BT /F2 10.5 Tf 52 646.6 Td (7. Vorgang mit Datum, Patchversion und Nachweis abschliessen.) Tj ET
+BT /F2 10.5 Tf 52 626.6 Td (17. Konformitaet, EU-Erklaerung und CE) Tj ET
+BT /F1 9.1 Tf 52 606.6 Td (Der CRA ist EU-Harmonisierungsrecht. Wenn die Konformitaet nach dem anwendbaren Verfahren) Tj ET
+BT /F1 9.1 Tf 52 595.2 Td (nachgewiesen wurde, stellt der Hersteller die EU-Konformitaetserklaerung aus und bringt die) Tj ET
+BT /F2 10.5 Tf 52 583.8000000000001 Td (CE-) Tj ET
+BT /F2 10.5 Tf 52 569.8000000000001 Td (Kennzeichnung entsprechend den geltenden Regeln an. [1][2]) Tj ET
+BT /F2 10.5 Tf 52 549.8000000000001 Td (Begriff Was CRAwerk dokumentiert) Tj ET
+BT /F2 10.5 Tf 52 529.8000000000001 Td (Konformitaetsweg Modul A, B+C, Modul H oder anwendbare) Tj ET
+BT /F2 10.5 Tf 52 515.8000000000001 Td (europaeische) Tj ET
+BT /F1 9.1 Tf 52 501.80000000000007 Td (Cybersicherheitszertifizierung.) Tj ET
+BT /F1 9.1 Tf 52 484.4000000000001 Td (Notifizierte Stelle Nur wenn der gewaehlte Weg eine externe Stelle) Tj ET
+BT /F1 9.1 Tf 52 473.0000000000001 Td (einbezieht.) Tj ET
+BT /F2 10.5 Tf 52 455.60000000000014 Td (CE-Status Ob die CE-Kennzeichnung angebracht ist und wo) Tj ET
+BT /F2 10.5 Tf 52 441.60000000000014 Td (sie sich) Tj ET
+BT /F1 9.1 Tf 52 427.60000000000014 Td (befindet.) Tj ET
+BT /F1 9.1 Tf 52 410.20000000000016 Td (EU-Konformitaetserklaerung Status, Ort, Datum, Unterzeichner, Funktion und) Tj ET
+BT /F2 10.5 Tf 52 398.8000000000002 Td (Ablage) Tj ET
+BT /F1 9.1 Tf 52 384.8000000000002 Td (der unterzeichneten Fassung.) Tj ET
+BT /F2 10.5 Tf 52 367.4000000000002 Td (CRAwerk Handbuch fuer) Tj ET
+BT /F2 10.5 Tf 52 353.4000000000002 Td (Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 333.4000000000002 Td (Wichtig) Tj ET
+BT /F1 9.1 Tf 52 319.4000000000002 Td (Eine in CRAwerk erzeugte Erklaerung ist eine Dokumentvorlage aus Ihren Angaben. Erst die vom) Tj ET
+BT /F1 9.1 Tf 52 308.0000000000002 Td (verantwortlichen Hersteller gepruefte und unterzeichnete Fassung ist der relevante Nachweis.) Tj ET
+BT /F2 10.5 Tf 52 290.60000000000025 Td (18. Sonderfaelle: Meldung,) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+52 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 51 0 R >>
+endobj
+53 0 obj
+<< /Length 3478 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 24) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Nichtkonformitaet und Behˆrde) Tj ET
+BT /F2 10.5 Tf 52 772 Td (Diese Bereiche werden nur geoeffnet, wenn etwas passiert) Tj ET
+BT /F1 9.1 Tf 52 752 Td (CRAwerk blendet diese Bereiche im normalen Ablauf aus. Sie werden erst benoetigt, wenn ein) Tj ET
+BT /F2 10.5 Tf 52 740.6 Td (Sicherheitsvorfall, eine Nichtkonformitaet oder eine Anfrage der Marktueberwachung eintritt.) Tj ET
+BT /F2 10.5 Tf 52 720.6 Td (A. Aktiv ausgenutzte Schwachstelle oder schwerer) Tj ET
+BT /F2 10.5 Tf 52 706.6 Td (Sicherheitsvorfall) Tj ET
+BT /F1 9.1 Tf 52 692.6 Td (Seit 11.09.2026 gelten die CRA-Meldepflichten aus Artikel 14. Bei einer aktiv ausgenutzten) Tj ET
+BT /F2 10.5 Tf 52 681.2 Td (Schwachstelle) Tj ET
+BT /F1 9.1 Tf 52 667.2 Td (und bei einem schweren Sicherheitsvorfall gelten gestufte Meldungen. [1][3]) Tj ET
+BT /F2 10.5 Tf 52 649.8000000000001 Td (Vorgang Frist / Inhalt) Tj ET
+BT /F2 10.5 Tf 52 629.8000000000001 Td (Fruehwarnung Unverzueglich, spaetestens innerhalb von 24) Tj ET
+BT /F2 10.5 Tf 52 615.8000000000001 Td (Stunden) Tj ET
+BT /F1 9.1 Tf 52 601.8000000000001 Td (nach Kenntnis.) Tj ET
+BT /F2 10.5 Tf 52 584.4000000000001 Td (Weitere Meldung Unverzueglich, spaetestens innerhalb von 72) Tj ET
+BT /F2 10.5 Tf 52 570.4000000000001 Td (Stunden) Tj ET
+BT /F2 10.5 Tf 52 556.4000000000001 Td (nach Kenntnis; mit Produkt, Art, Bewertung und) Tj ET
+BT /F1 9.1 Tf 52 542.4000000000001 Td (Massnahmen soweit verfuegbar.) Tj ET
+BT /F1 9.1 Tf 52 525.0000000000001 Td (Abschluss bei aktiv ausgenutzter Schwachstelle Spaetestens 14 Tage nachdem eine Korrektur-) Tj ET
+BT /F2 10.5 Tf 52 513.6000000000001 Td (oder) Tj ET
+BT /F1 9.1 Tf 52 499.60000000000014 Td (Risikominderungsmassnahme verfuegbar ist.) Tj ET
+BT /F1 9.1 Tf 52 482.20000000000016 Td (Abschluss bei schwerem Sicherheitsvorfall Innerhalb eines Monats nach der) Tj ET
+BT /F1 9.1 Tf 52 470.8000000000002 Td (72-Stunden-Meldung.) Tj ET
+BT /F1 9.1 Tf 52 453.4000000000002 Td (CRAwerk dokumentiert diese Schritte und Fristen. Die Anwendung sendet die Meldung nicht) Tj ET
+BT /F2 10.5 Tf 52 442.0000000000002 Td (selbst an die) Tj ET
+BT /F1 9.1 Tf 52 428.0000000000002 Td (Behoerden oder ENISA.) Tj ET
+BT /F2 10.5 Tf 52 410.60000000000025 Td (B. Produkt oder Herstellerprozess ist nicht mehr konform) Tj ET
+BT /F1 9.1 Tf 52 396.60000000000025 Td (Wird eine Nichtkonformitaet erkannt, wird ein Vorgang angelegt. Dokumentiert werden) Tj ET
+BT /F2 10.5 Tf 52 385.2000000000003 Td (Beschreibung,) Tj ET
+BT /F1 9.1 Tf 52 371.2000000000003 Td (betroffene Version, Korrekturmassnahme und die Entscheidung, ob die Konformitaet) Tj ET
+BT /F2 10.5 Tf 52 359.8000000000003 Td (wiederhergestellt, das) Tj ET
+BT /F1 9.1 Tf 52 345.8000000000003 Td (Produkt vom Markt genommen oder zurueckgerufen wurde. Ein abgeschlossener Vorgang bleibt als) Tj ET
+BT /F1 9.1 Tf 52 334.4000000000003 Td (Nachweis unveraenderbar.) Tj ET
+BT /F2 10.5 Tf 52 317.00000000000034 Td (C. Marktueberwachungsbehoerde fragt Unterlagen an) Tj ET
+BT /F1 9.1 Tf 52 303.00000000000034 Td (Bei einer begruendeten Anfrage werden Behˆrde, Aktenzeichen, verlangte Unterlagen,) Tj ET
+BT /F2 10.5 Tf 52 291.60000000000036 Td (gegebenenfalls die) Tj ET
+BT /F1 9.1 Tf 52 277.60000000000036 Td (angeforderte SBOM, uebermittelte Informationen, Mitwirkungsmassnahmen und der) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+54 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 53 0 R >>
+endobj
+55 0 obj
+<< /Length 2299 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 25) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Uebermittlungsnachweis) Tj ET
+BT /F1 9.1 Tf 52 772 Td (dokumentiert. CRAwerk erfindet keine gesetzliche Antwortfrist, wenn die Behoerde keine) Tj ET
+BT /F1 9.1 Tf 52 760.6 Td (nennt.) Tj ET
+BT /F2 10.5 Tf 52 743.2 Td (19. Beispiel: Verpackungsanlage VP-240) Tj ET
+BT /F2 10.5 Tf 52 723.2 Td (So koennte ein kompletter CRAwerk-Datensatz aussehen) Tj ET
+BT /F2 10.5 Tf 52 703.2 Td (CRAwerk Handbuch fuer) Tj ET
+BT /F2 10.5 Tf 52 689.2 Td (Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 669.2 Td (Fiktives Beispiel) Tj ET
+BT /F1 9.1 Tf 52 655.2 Td (Die folgenden Angaben dienen nur als Lernbeispiel. Hersteller, Versionen und Dokumentnummern) Tj ET
+BT /F2 10.5 Tf 52 643.8000000000001 Td (sind frei) Tj ET
+BT /F1 9.1 Tf 52 629.8000000000001 Td (erfunden und keine Produktempfehlung.) Tj ET
+BT /F2 10.5 Tf 52 612.4000000000001 Td (Grunddaten) Tj ET
+BT /F2 10.5 Tf 52 598.4000000000001 Td (Feld Beispiel) Tj ET
+BT /F2 10.5 Tf 52 578.4000000000001 Td (Name Verpackungsanlage VP-240) Tj ET
+BT /F2 10.5 Tf 52 558.4000000000001 Td (Modell VP-240) Tj ET
+BT /F2 10.5 Tf 52 538.4000000000001 Td (Produktnummer VP240-2026-017) Tj ET
+BT /F2 10.5 Tf 52 518.4000000000001 Td (Verantwortlich Produktmanagement) Tj ET
+BT /F2 10.5 Tf 52 498.4000000000001 Td (Software/Firmware Ja) Tj ET
+BT /F2 10.5 Tf 52 478.4000000000001 Td (Verbindung Ja - internes Ethernet, OPC UA zum Leitsystem,) Tj ET
+BT /F2 10.5 Tf 52 464.4000000000001 Td (Fernwartung ueber VPN-Gateway) Tj ET
+BT /F2 10.5 Tf 52 444.4000000000001 Td (Software & Firmware) Tj ET
+BT /F2 10.5 Tf 52 430.4000000000001 Td (Eintrag Version / Hinweis) Tj ET
+BT /F2 10.5 Tf 52 410.4000000000001 Td (Steuerungsprogramm VP-240 Release 2.7.4) Tj ET
+BT /F2 10.5 Tf 52 390.4000000000001 Td (SPS Firmware 3.2.1) Tj ET
+BT /F2 10.5 Tf 52 370.4000000000001 Td (HMI Runtime 5.4.2) Tj ET
+BT /F2 10.5 Tf 52 350.4000000000001 Td (HMI Projekt VP-240 Release 2.7.4) Tj ET
+BT /F2 10.5 Tf 52 330.4000000000001 Td (Remote Gateway Firmware 4.8.1) Tj ET
+BT /F2 10.5 Tf 52 310.4000000000001 Td (Embedded Service Agent 1.6.0) Tj ET
+BT /F2 10.5 Tf 52 290.4000000000001 Td (Digitale Bauteile) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+56 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 55 0 R >>
+endobj
+57 0 obj
+<< /Length 2366 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 26) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Bauteil Hersteller/Typ Sicherheitsrelevanz) Tj ET
+BT /F2 10.5 Tf 52 766 Td (SPS Vendor A / PLC-500 Steuerung, Netzwerk,) Tj ET
+BT /F2 10.5 Tf 52 752 Td (Firmware) Tj ET
+BT /F2 10.5 Tf 52 732 Td (HMI Vendor B / Panel-12 Bedienung, Nutzerkonten,) Tj ET
+BT /F2 10.5 Tf 52 718 Td (Netzwerk) Tj ET
+BT /F2 10.5 Tf 52 698 Td (Remote Gateway Vendor C / RG-100 Fernwartungszugang und VPN) Tj ET
+BT /F2 10.5 Tf 52 678 Td (Vernetzter Antrieb Vendor D / Drive-X Feldbus, Firmware) Tj ET
+BT /F2 10.5 Tf 52 658 Td (Risiken) Tj ET
+BT /F2 10.5 Tf 52 644 Td (Risiko Bewertung Massnahme) Tj ET
+BT /F2 10.5 Tf 52 624 Td (Gemeinsamer Service-Account fuer Hoch Personenbezogene Konten,) Tj ET
+BT /F2 10.5 Tf 52 610 Td (MFA und) Tj ET
+BT /F1 9.1 Tf 52 596 Td (Fernwartung Rollen einfuehren.) Tj ET
+BT /F2 10.5 Tf 52 578.6 Td (CRAwerk Handbuch) Tj ET
+BT /F2 10.5 Tf 52 564.6 Td (fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 544.6 Td (Risiko Bewertung Massnahme) Tj ET
+BT /F1 9.1 Tf 52 524.6 Td (Unsigniertes USB-Update der Service- Hoch Signaturpruefung fuer) Tj ET
+BT /F2 10.5 Tf 52 513.2 Td (Updatepakete) Tj ET
+BT /F2 10.5 Tf 52 499.20000000000005 Td (Software aktivieren.) Tj ET
+BT /F2 10.5 Tf 52 479.20000000000005 Td (Unnoetiger Webdienst am HMI aktiv Mittel Dienst im) Tj ET
+BT /F2 10.5 Tf 52 465.20000000000005 Td (Produktionsimage) Tj ET
+BT /F1 9.1 Tf 52 451.20000000000005 Td (deaktivieren.) Tj ET
+BT /F1 9.1 Tf 52 433.80000000000007 Td (Gateway-Support endet vor geplantem Mittel Austauschstrategie bzw.) Tj ET
+BT /F2 10.5 Tf 52 422.4000000000001 Td (kompatible) Tj ET
+BT /F2 10.5 Tf 52 408.4000000000001 Td (Maschinen-Support Ersatzkomponente) Tj ET
+BT /F1 9.1 Tf 52 394.4000000000001 Td (festlegen.) Tj ET
+BT /F2 10.5 Tf 52 377.0000000000001 Td (Konkretes Sicherheitsproblem) Tj ET
+BT /F2 10.5 Tf 52 363.0000000000001 Td (Feld Beispiel) Tj ET
+BT /F2 10.5 Tf 52 343.0000000000001 Td (Bezeichnung Schwachstelle im Remote Gateway) Tj ET
+BT /F2 10.5 Tf 52 323.0000000000001 Td (Betroffen RG-100 Firmware 4.7.9) Tj ET
+BT /F2 10.5 Tf 52 303.0000000000001 Td (Schweregrad Hoch) Tj ET
+BT /F2 10.5 Tf 52 283.0000000000001 Td (Bewertung Fern erreichbare Verwaltungsfunktion kann) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+58 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 57 0 R >>
+endobj
+59 0 obj
+<< /Length 2698 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 27) Tj ET
+BT /F2 10.5 Tf 52 786 Td (unter) Tj ET
+BT /F1 9.1 Tf 52 772 Td (bestimmten Bedingungen umgangen werden.) Tj ET
+BT /F2 10.5 Tf 52 754.6 Td (Massnahme Firmware auf 4.8.1 aktualisieren; Fernwartung) Tj ET
+BT /F2 10.5 Tf 52 740.6 Td (bis dahin) Tj ET
+BT /F1 9.1 Tf 52 726.6 Td (nur ueber zusaetzliche Firewall-Regel.) Tj ET
+BT /F2 10.5 Tf 52 709.2 Td (Behoben am 20.09.2026) Tj ET
+BT /F2 10.5 Tf 52 689.2 Td (Nachweis Security Advisory SA-2026-88,) Tj ET
+BT /F2 10.5 Tf 52 675.2 Td (Wartungsprotokoll) Tj ET
+BT /F2 10.5 Tf 52 661.2 Td (MP-240-77) Tj ET
+BT /F2 10.5 Tf 52 641.2 Td (Supportzeitraum) Tj ET
+BT /F2 10.5 Tf 52 627.2 Td (Feld Beispiel) Tj ET
+BT /F2 10.5 Tf 52 607.2 Td (Beginn 01.01.2027) Tj ET
+BT /F2 10.5 Tf 52 587.2 Td (Ende 31.12.2034) Tj ET
+BT /F2 10.5 Tf 52 567.2 Td (Begruendung Erwartete Nutzungsdauer 8 Jahre; kritische) Tj ET
+BT /F2 10.5 Tf 52 553.2 Td (Kernkomponenten werden mindestens bis 2034) Tj ET
+BT /F1 9.1 Tf 52 539.2 Td (unterstuetzt.) Tj ET
+BT /F2 10.5 Tf 52 521.8000000000001 Td (Beim Kauf sichtbar Angebot, Auftragsbestaetigung, Produktseite) Tj ET
+BT /F2 10.5 Tf 52 501.80000000000007 Td (Endmitteilung HMI-Hinweis + Kundenportal + E-Mail an) Tj ET
+BT /F2 10.5 Tf 52 487.80000000000007 Td (registrierte) Tj ET
+BT /F2 10.5 Tf 52 473.80000000000007 Td (Betreiber) Tj ET
+BT /F2 10.5 Tf 52 453.80000000000007 Td (CRA-Abschluss) Tj ET
+BT /F1 9.1 Tf 52 439.80000000000007 Td (- Produktklasse: Standardprodukt; Begruendung dokumentiert.) Tj ET
+BT /F1 9.1 Tf 52 428.4000000000001 Td (- Konformitaetsweg: Modul A; Normenabdeckung und technische Loesungen dokumentiert.) Tj ET
+BT /F1 9.1 Tf 52 417.0000000000001 Td (- Alle 22 Schutzfragen bewertet und mit Begruendung oder Nachweis versehen.) Tj ET
+BT /F1 9.1 Tf 52 405.60000000000014 Td (- Technische Dokumentation, Nutzerinformationen und Schwachstellenprozess vollstaendig.) Tj ET
+BT /F1 9.1 Tf 52 394.20000000000016 Td (- CE-Kennzeichnung angebracht; Ort auf Typenschild dokumentiert.) Tj ET
+BT /F1 9.1 Tf 52 382.8000000000002 Td (- EU-Konformitaetserklaerung unterzeichnet; DMS-Verweis hinterlegt.) Tj ET
+BT /F2 10.5 Tf 52 365.4000000000002 Td (CRAwerk Handbuch) Tj ET
+BT /F2 10.5 Tf 52 351.4000000000002 Td (fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 331.4000000000002 Td (20. Checkliste fuer den ersten Durchlauf) Tj ET
+BT /F2 10.5 Tf 52 311.4000000000002 Td (In dieser Reihenfolge ist CRAwerk am einfachsten) Tj ET
+BT /F2 10.5 Tf 52 291.4000000000002 Td (1. Unternehmensdaten vervollstaendigen: Firmenname, Anschrift, Land und Kontakt.) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+60 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 59 0 R >>
+endobj
+61 0 obj
+<< /Length 2984 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 28) Tj ET
+BT /F2 10.5 Tf 52 786 Td (2. Maschine mit Name, Modell/Produktnummer und Verantwortlichem anlegen.) Tj ET
+BT /F2 10.5 Tf 52 766 Td (3. Software und Firmware mit realen Versionen erfassen. Unbekannte Versionen nicht erfinden.) Tj ET
+BT /F2 10.5 Tf 52 752 Td (4. Digitale Bauteile und Zulieferer erfassen, die Cybersecurity beeinflussen koennen.) Tj ET
+BT /F2 10.5 Tf 52 738 Td (5. Cyberrisiken durchgehen und konkrete Massnahmen mit Verantwortlichen anlegen.) Tj ET
+BT /F2 10.5 Tf 52 724 Td (6. Internen Ablauf fuer Sicherheitsprobleme und Updates festlegen.) Tj ET
+BT /F2 10.5 Tf 52 704 Td (7. Vorhandene Dokumente und Nachweise sauber referenzieren.) Tj ET
+BT /F2 10.5 Tf 52 684 Td (8. Supportzeitraum mit Begruendung und Kundenkommunikation festlegen.) Tj ET
+BT /F2 10.5 Tf 52 664 Td (9. CRA-Abschluss oeffnen und mit Schritt 1 beginnen.) Tj ET
+BT /F2 10.5 Tf 52 644 Td (10. Die fuenf Schutzbloecke nacheinander bearbeiten; nicht alle 22 Fragen auf einmal.) Tj ET
+BT /F2 10.5 Tf 52 630 Td (11. Technische Beschreibung und Kundeninformationen ergaenzen.) Tj ET
+BT /F2 10.5 Tf 52 610 Td (12. CVD-Kontakt und Updateprozess vervollstaendigen.) Tj ET
+BT /F2 10.5 Tf 52 590 Td (13. CE und EU-Konformitaetserklaerung erst zum Abschluss als erledigt markieren.) Tj ET
+BT /F2 10.5 Tf 52 576 Td (14. Akte pruefen und offene Punkte abarbeiten.) Tj ET
+BT /F2 10.5 Tf 52 556 Td (15. SBOM, Nutzerinformationen, Kurzakten und Vollakte erzeugen und vor Freigabe fachlich) Tj ET
+BT /F1 9.1 Tf 52 542 Td (pruefen.) Tj ET
+BT /F2 10.5 Tf 52 524.6 Td (Wenn Sie nicht weiterwissen) Tj ET
+BT /F1 9.1 Tf 52 510.6 Td (Tragen Sie keine erfundene Antwort ein. Lassen Sie den Punkt offen, holen Sie die technische) Tj ET
+BT /F2 10.5 Tf 52 499.20000000000005 Td (Information) Tj ET
+BT /F1 9.1 Tf 52 485.20000000000005 Td (beim Entwickler oder Zulieferer und dokumentieren Sie die belastbare Antwort spaeter.) Tj ET
+BT /F2 10.5 Tf 52 467.80000000000007 Td (21. Glossar) Tj ET
+BT /F2 10.5 Tf 52 447.80000000000007 Td (Kurz nachschlagen) Tj ET
+BT /F2 10.5 Tf 52 427.80000000000007 Td (Begriff Bedeutung) Tj ET
+BT /F1 9.1 Tf 52 407.80000000000007 Td (Angriffsfl‰che Alle erreichbaren Funktionen, Schnittstellen und) Tj ET
+BT /F2 10.5 Tf 52 396.4000000000001 Td (Wege, ueber) Tj ET
+BT /F1 9.1 Tf 52 382.4000000000001 Td (die ein Angreifer auf das Produkt einwirken koennte.) Tj ET
+BT /F1 9.1 Tf 52 365.0000000000001 Td (Authentifizierung Pruefung, wer ein Nutzer oder System ist, z. B.) Tj ET
+BT /F2 10.5 Tf 52 353.60000000000014 Td (Passwort,) Tj ET
+BT /F1 9.1 Tf 52 339.60000000000014 Td (Zertifikat oder MFA.) Tj ET
+BT /F2 10.5 Tf 52 322.20000000000016 Td (Autorisierung Festlegung, was ein angemeldeter Nutzer oder) Tj ET
+BT /F2 10.5 Tf 52 308.20000000000016 Td (Dienst tun) Tj ET
+BT /F1 9.1 Tf 52 294.20000000000016 Td (darf.) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+62 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 61 0 R >>
+endobj
+63 0 obj
+<< /Length 2570 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 29) Tj ET
+BT /F2 10.5 Tf 52 786 Td (Bootloader Geraetenahe Software, die beim Start Firmware) Tj ET
+BT /F2 10.5 Tf 52 772 Td (oder) Tj ET
+BT /F1 9.1 Tf 52 758 Td (Betriebssystem laedt und oft Updatepruefungen durchfuehrt.) Tj ET
+BT /F2 10.5 Tf 52 740.6 Td (CVE Oeffentliche Kennung fuer eine bekannte) Tj ET
+BT /F1 9.1 Tf 52 726.6 Td (Schwachstelle.) Tj ET
+BT /F2 10.5 Tf 52 709.2 Td (CVD Geregelter Prozess fuer koordinierte Offenlegung) Tj ET
+BT /F2 10.5 Tf 52 695.2 Td (von) Tj ET
+BT /F1 9.1 Tf 52 681.2 Td (Schwachstellen.) Tj ET
+BT /F2 10.5 Tf 52 663.8000000000001 Td (Firmware Geraetenahe Software in einem Controller oder) Tj ET
+BT /F2 10.5 Tf 52 649.8000000000001 Td (Embedded-) Tj ET
+BT /F1 9.1 Tf 52 635.8000000000001 Td (Geraet.) Tj ET
+BT /F2 10.5 Tf 52 618.4000000000001 Td (HMI Human Machine Interface, also Bedienoberflaeche) Tj ET
+BT /F2 10.5 Tf 52 604.4000000000001 Td (einer) Tj ET
+BT /F1 9.1 Tf 52 590.4000000000001 Td (Maschine.) Tj ET
+BT /F2 10.5 Tf 52 573.0000000000001 Td (CRAwerk) Tj ET
+BT /F2 10.5 Tf 52 559.0000000000001 Td (Handbuch fuer Einsteiger) Tj ET
+BT /F2 10.5 Tf 52 539.0000000000001 Td (Begriff Bedeutung) Tj ET
+BT /F2 10.5 Tf 52 519.0000000000001 Td (Integritaet Sicherstellen, dass Daten oder Software) Tj ET
+BT /F2 10.5 Tf 52 505.0000000000001 Td (nicht unbemerkt) Tj ET
+BT /F1 9.1 Tf 52 491.0000000000001 Td (veraendert wurden.) Tj ET
+BT /F1 9.1 Tf 52 473.60000000000014 Td (MFA Multi-Faktor-Authentifizierung, z. B.) Tj ET
+BT /F2 10.5 Tf 52 462.20000000000016 Td (Passwort plus zweiter) Tj ET
+BT /F1 9.1 Tf 52 448.20000000000016 Td (Faktor.) Tj ET
+BT /F2 10.5 Tf 52 430.8000000000002 Td (Patch Aenderung, die einen Fehler oder eine) Tj ET
+BT /F1 9.1 Tf 52 416.8000000000002 Td (Schwachstelle behebt.) Tj ET
+BT /F2 10.5 Tf 52 399.4000000000002 Td (purl Standardisierte Package URL zur) Tj ET
+BT /F2 10.5 Tf 52 385.4000000000002 Td (Identifikation eines) Tj ET
+BT /F2 10.5 Tf 52 371.4000000000002 Td (Softwarepakets.) Tj ET
+BT /F2 10.5 Tf 52 351.4000000000002 Td (SBOM Maschinenlesbare Liste der) Tj ET
+BT /F2 10.5 Tf 52 337.4000000000002 Td (Softwarekomponenten und) Tj ET
+BT /F1 9.1 Tf 52 323.4000000000002 Td (Abhaengigkeiten.) Tj ET
+BT /F2 10.5 Tf 52 306.0000000000002 Td (Sicherheitsupdate Update, das eine Schwachstelle oder ein) Tj ET
+BT /F2 10.5 Tf 52 292.0000000000002 Td (Sicherheitsrisiko) Tj ET
+BT /F1 9.1 Tf 52 278.0000000000002 Td (reduziert.) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+64 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 63 0 R >>
+endobj
+65 0 obj
+<< /Length 2848 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 30) Tj ET
+BT /F1 9.1 Tf 52 780 Td (SPS / PLC Programmierbare Steuerung einer Maschine.) Tj ET
+BT /F2 10.5 Tf 52 762.6 Td (Supportzeitraum Zeitraum, in dem der Hersteller) Tj ET
+BT /F2 10.5 Tf 52 748.6 Td (Schwachstellen behandelt) Tj ET
+BT /F1 9.1 Tf 52 734.6 Td (und Sicherheitsupdates bereitstellt.) Tj ET
+BT /F2 10.5 Tf 52 717.2 Td (Schwachstelle Konkrete Schwaeche, die ausgenutzt werden) Tj ET
+BT /F1 9.1 Tf 52 703.2 Td (kann.) Tj ET
+BT /F1 9.1 Tf 52 685.8000000000001 Td (Vulnerability Disclosure Meldung und koordinierte Veroeffentlichung) Tj ET
+BT /F2 10.5 Tf 52 674.4000000000001 Td (von) Tj ET
+BT /F2 10.5 Tf 52 660.4000000000001 Td (Sicherheitsluecken.) Tj ET
+BT /F2 10.5 Tf 52 640.4000000000001 Td (22. Offizielle Quellen) Tj ET
+BT /F2 10.5 Tf 52 620.4000000000001 Td (Rechtsstand und weiterfuehrende Informationen) Tj ET
+BT /F1 9.1 Tf 52 600.4000000000001 Td (Dieses Handbuch basiert auf den folgenden offiziellen Quellen. Bei rechtlichen) Tj ET
+BT /F2 10.5 Tf 52 589.0000000000001 Td (Zweifelsfragen gilt der im) Tj ET
+BT /F1 9.1 Tf 52 575.0000000000001 Td (Amtsblatt veroeffentlichte Verordnungstext.) Tj ET
+BT /F2 10.5 Tf 52 557.6000000000001 Td (Quelle Adresse) Tj ET
+BT /F2 10.5 Tf 52 537.6000000000001 Td ([1] Verordnung \(EU\) 2024/2847 - Cyber Resilience Act) Tj ET
+BT /F2 10.5 Tf 52 523.6000000000001 Td (https://eur-lex.europa.eu/eli/reg/2024/2847/oj/deu) Tj ET
+BT /F2 10.5 Tf 52 503.60000000000014 Td ([2] EU-Kommission - Zusammenfassung des CRA) Tj ET
+BT /F2 10.5 Tf 52 489.60000000000014 Td (https://digital-strategy.ec.europa.eu/de/policies/cra-summary) Tj ET
+BT /F2 10.5 Tf 52 469.60000000000014 Td ([3] EU-Kommission - CRA-Umsetzung und Zeitplan) Tj ET
+BT /F2 10.5 Tf 52 455.60000000000014 Td (https://digital-strategy.ec.europa.eu/de/factpages/cyber-) Tj ET
+BT /F2 10.5 Tf 52 441.60000000000014 Td (resilience-act-implementation) Tj ET
+BT /F2 10.5 Tf 52 421.60000000000014 Td ([4] EU-Kommission - FAQ zur CRA-Umsetzung, aktualisiert) Tj ET
+BT /F1 9.1 Tf 52 407.60000000000014 Td (https://digital-strategy.ec.europa.eu/de/library/cyber-resilience-) Tj ET
+BT /F2 10.5 Tf 52 396.20000000000016 Td (04.09.2026) Tj ET
+BT /F2 10.5 Tf 52 382.20000000000016 Td (act-implementation-frequently-asked-questions) Tj ET
+BT /F2 10.5 Tf 52 362.20000000000016 Td ([5] Durchfuehrungsverordnung \(EU\) 2025/2392 - technische) Tj ET
+BT /F2 10.5 Tf 52 348.20000000000016 Td (https://eur-lex.europa.eu/eli/reg_impl/2025/2392/oj/deu) Tj ET
+BT /F2 10.5 Tf 52 334.20000000000016 Td (Beschreibungen wichtiger und kritischer Produktkategorien) Tj ET
+BT /F2 10.5 Tf 52 314.20000000000016 Td (Pflegehinweis fuer CRAwerk) Tj ET
+BT /F2 10.5 Tf 52 294.20000000000016 Td (21) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+66 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 65 0 R >>
+endobj
+67 0 obj
+<< /Length 580 >>
+stream
+BT /F2 8.5 Tf 52 812 Td (CRAwerk - Handbuch fuer Einsteiger) Tj ET
+BT /F1 7.5 Tf 500 812 Td (Seite 31) Tj ET
+BT /F1 9.1 Tf 52 786 Td (Recht, Leitlinien, Normen und technische Beschreibungen entwickeln sich weiter. Dieses) Tj ET
+BT /F2 10.5 Tf 52 774.6 Td (Handbuch sollte bei) Tj ET
+BT /F1 9.1 Tf 52 760.6 Td (relevanten Aenderungen versioniert und neu freigegeben werden. Auf jeder Ausgabe sollten) Tj ET
+BT /F2 10.5 Tf 52 749.2 Td (Version und Stand) Tj ET
+BT /F1 9.1 Tf 52 735.2 Td (sichtbar bleiben.) Tj ET
+BT /F1 7 Tf 52 26 Td (CRAwerk | Version 1.0 | Stand 25.09.2026) Tj ET
+endstream
+endobj
+68 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 67 0 R >>
+endobj
+xref
+0 69
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000332 00000 n 
+0000000429 00000 n 
+0000000531 00000 n 
+0000001345 00000 n 
+0000001481 00000 n 
+0000004654 00000 n 
+0000004790 00000 n 
+0000007795 00000 n 
+0000007932 00000 n 
+0000011285 00000 n 
+0000011423 00000 n 
+0000015087 00000 n 
+0000015225 00000 n 
+0000018114 00000 n 
+0000018252 00000 n 
+0000021477 00000 n 
+0000021615 00000 n 
+0000024580 00000 n 
+0000024718 00000 n 
+0000027703 00000 n 
+0000027841 00000 n 
+0000031213 00000 n 
+0000031351 00000 n 
+0000034427 00000 n 
+0000034565 00000 n 
+0000037973 00000 n 
+0000038111 00000 n 
+0000040856 00000 n 
+0000040994 00000 n 
+0000043878 00000 n 
+0000044016 00000 n 
+0000047074 00000 n 
+0000047212 00000 n 
+0000050099 00000 n 
+0000050237 00000 n 
+0000053590 00000 n 
+0000053728 00000 n 
+0000056753 00000 n 
+0000056891 00000 n 
+0000060013 00000 n 
+0000060151 00000 n 
+0000063213 00000 n 
+0000063351 00000 n 
+0000066478 00000 n 
+0000066616 00000 n 
+0000070085 00000 n 
+0000070223 00000 n 
+0000073502 00000 n 
+0000073640 00000 n 
+0000076685 00000 n 
+0000076823 00000 n 
+0000080354 00000 n 
+0000080492 00000 n 
+0000082844 00000 n 
+0000082982 00000 n 
+0000085401 00000 n 
+0000085539 00000 n 
+0000088290 00000 n 
+0000088428 00000 n 
+0000091465 00000 n 
+0000091603 00000 n 
+0000094226 00000 n 
+0000094364 00000 n 
+0000097265 00000 n 
+0000097403 00000 n 
+0000098035 00000 n 
+trailer
+<< /Size 69 /Root 1 0 R >>
+startxref
+98173
+%%EOF
