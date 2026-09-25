@@ -28,10 +28,15 @@
         <p>CRAwerk führt Sie Schritt für Schritt durch die noch fehlenden Angaben. Sie müssen den CRA nicht auswendig kennen.</p>
       </div>
       <div class="cra-hero-actions">
-        <button class="app-btn app-btn-ghost" id="download-sbom" type="button">SBOM herunterladen</button>
-        <a class="app-btn app-btn-ghost" id="open-user-info" href="#">Nutzerinformationen</a>
-        <a class="app-btn app-btn-ghost" id="open-declaration" href="#">EU-Erklärung</a>
-        <button class="app-btn app-btn-dark" id="save-cra-top" type="button">CRA-Stand speichern</button>
+        <details class="cra-output-menu">
+          <summary>Dokumente & Exporte</summary>
+          <div>
+            <button id="download-sbom" type="button">SBOM herunterladen</button>
+            <a id="open-user-info" href="#">Nutzerinformationen</a>
+            <a id="open-declaration" href="#">EU-Erklärung</a>
+          </div>
+        </details>
+        <button class="app-btn app-btn-dark" id="save-cra-top" type="button">Speichern</button>
       </div>
     </section>
 
@@ -162,43 +167,43 @@
 
         <div class="cra-form-grid">
           <label class="cra-span-2">
-            <span>Zweckbestimmung *</span>
+            <span>Wofür wird die Maschine eingesetzt? *</span>
             <textarea name="intendedPurpose" rows="3" placeholder="Wofür ist das Produkt bestimmt?"></textarea>
           </label>
           <label>
-            <span>Sicherheitsumgebung *</span>
+            <span>Wo und unter welchen Bedingungen wird sie betrieben? *</span>
             <textarea name="securityEnvironment" rows="3" placeholder="Vorausgesetzte Umgebung, Netzwerk, Zugriffe ..."></textarea>
           </label>
           <label>
-            <span>Wesentliche Funktionen & Sicherheitseigenschaften *</span>
+            <span>Welche digitalen Funktionen müssen geschützt werden? *</span>
             <textarea name="securityProperties" rows="3" placeholder="Wesentliche digitale Funktionen und Sicherheitsmerkmale"></textarea>
           </label>
           <label class="cra-span-2">
-            <span>Vorhersehbare Fehlanwendung / erhebliche Cyberrisiken *</span>
+            <span>Was könnte bei der Nutzung vorhersehbar schiefgehen? *</span>
             <textarea name="foreseeableMisuse" rows="3" placeholder="Welche vorhersehbare Nutzung kann zu erheblichen Risiken führen?"></textarea>
           </label>
           <label class="cra-span-2">
-            <span>Systemarchitektur / Zusammenspiel der Softwarekomponenten *</span>
+            <span>Wie hängen Steuerung, Software und Schnittstellen zusammen? *</span>
             <textarea name="architectureDescription" rows="4" placeholder="Architektur, Schnittstellen und Zusammenspiel der Softwarekomponenten"></textarea>
           </label>
           <label class="cra-span-2">
-            <span>Verweis auf Fotos / Zeichnungen / internes Layout *</span>
+            <span>Wo liegen Schaltpläne, Zeichnungen oder Fotos? *</span>
             <input name="hardwareVisualsReference" placeholder="z. B. Zeichnung 4711, Schaltplan E-12, Dokument im DMS">
           </label>
           <label class="cra-span-2">
-            <span>Produktions-, Änderungs- und Überwachungsprozess *</span>
+            <span>Wie werden Änderungen an der Maschine geprüft? *</span>
             <textarea name="productionMonitoringProcess" rows="3" placeholder="Wie bleiben Serienprodukte bei Änderungen an Entwicklung, Herstellung, Produktmerkmalen, Normen oder Zertifizierungen konform?"></textarea>
           </label>
           <label class="cra-span-2">
-            <span>Angewandte Normen / gemeinsame Spezifikationen / Zertifizierungen *</span>
+            <span>Welche Normen oder technischen Regeln nutzen Sie? *</span>
             <textarea name="appliedStandards" rows="3" placeholder="Normen und angewandte Teile; wenn keine: technische Lösungen beschreiben"></textarea>
           </label>
           <label class="cra-span-2">
-            <span>Berichte über Sicherheitsprüfungen / Tests *</span>
+            <span>Wo sind Sicherheitsprüfungen dokumentiert? *</span>
             <textarea name="testReportsSummary" rows="3" placeholder="Prüfberichte oder Verweis auf vorhandene Nachweise"></textarea>
           </label>
           <label class="cra-span-2">
-            <span>Aufbewahrung & Verfügbarkeit *</span>
+            <span>Wie und wie lange werden die Unterlagen aufbewahrt? *</span>
             <textarea name="retentionProcess" rows="3" placeholder="Technische Dokumentation, EU-Erklärung und Nutzerinformationen: mindestens 10 Jahre nach Inverkehrbringen oder für den Unterstützungszeitraum – je nachdem, was länger ist"></textarea>
           </label>
         </div>
@@ -210,31 +215,31 @@
 
         <div class="cra-form-grid">
           <label>
-            <span>Sichere Erstinbetriebnahme *</span>
+            <span>Wie nimmt der Kunde die Maschine sicher in Betrieb? *</span>
             <textarea name="secureCommissioning" rows="3"></textarea>
           </label>
           <label>
-            <span>Auswirkung von Änderungen auf die Sicherheit *</span>
+            <span>Was muss bei Änderungen beachtet werden? *</span>
             <textarea name="securityChangeEffects" rows="3"></textarea>
           </label>
           <label>
-            <span>Installation sicherheitsrelevanter Updates *</span>
+            <span>Wie installiert der Kunde Sicherheitsupdates? *</span>
             <textarea name="updateInstallation" rows="3"></textarea>
           </label>
           <label>
-            <span>Sichere Außerbetriebnahme / Datenlöschung *</span>
+            <span>Wie wird die Maschine sicher außer Betrieb genommen? *</span>
             <textarea name="secureDecommissioning" rows="3"></textarea>
           </label>
           <label>
-            <span>Automatische Updates / Opt-out *</span>
+            <span>Wie funktionieren automatische Updates? *</span>
             <textarea name="automaticUpdatesOptOut" rows="3" placeholder="Oder begründet: nicht anwendbar"></textarea>
           </label>
           <label>
-            <span>Informationen für Integratoren *</span>
+            <span>Was müssen Integratoren wissen? *</span>
             <textarea name="integratorInformation" rows="3" placeholder="Falls das Produkt zur Integration bestimmt ist: nötige Informationen; sonst „Nicht anwendbar“"></textarea>
           </label>
           <label>
-            <span>Art des technischen Sicherheitssupports *</span>
+            <span>Wie bekommt der Kunde Sicherheitssupport? *</span>
             <textarea name="supportType" rows="3"></textarea>
           </label>
           <label>
@@ -255,23 +260,23 @@
 
         <div class="cra-form-grid">
           <label class="cra-span-2">
-            <span>Zentrale Kontaktstelle für Schwachstellenmeldungen *</span>
+            <span>Wo kann jemand eine Sicherheitslücke melden? *</span>
             <input name="vulnerabilityContact" placeholder="z. B. security@unternehmen.de und weitere direkte Kontaktmöglichkeit; nicht nur automatisierte Kommunikation">
           </label>
           <label class="cra-span-2">
-            <span>Konzept zur koordinierten Offenlegung von Schwachstellen (CVD) *</span>
+            <span>Wie bearbeiten Sie eingehende Sicherheitsmeldungen? *</span>
             <textarea name="cvdPolicy" rows="4" placeholder="Wie externe Meldungen angenommen, bestätigt, bewertet und koordiniert veröffentlicht werden"></textarea>
           </label>
           <label class="cra-span-2">
-            <span>Wo ist die CVD-Richtlinie öffentlich auffindbar? *</span>
+            <span>Wo findet man diesen Meldeweg öffentlich? *</span>
             <input name="cvdPolicyLocation" placeholder="z. B. https://unternehmen.de/security oder Dokument-/Portalverweis">
           </label>
           <label class="cra-span-2">
-            <span>Sichere Verteilung & Verfügbarkeit von Sicherheitsupdates *</span>
+            <span>Wie verteilen Sie Sicherheitsupdates? *</span>
             <textarea name="secureUpdateDistribution" rows="4" placeholder="Sichere Verteilung; bereitgestellte Sicherheitsupdates bleiben mindestens 10 Jahre nach Bereitstellung oder für den verbleibenden Unterstützungszeitraum verfügbar – je nachdem, was länger ist"></textarea>
           </label>
           <label class="cra-span-2">
-            <span>Drittkomponenten / Zulieferer *</span>
+            <span>Was tun Sie bei Sicherheitslücken eines Zulieferers? *</span>
             <textarea name="thirdPartyComponentProcess" rows="4" placeholder="Wie Drittkomponenten vor Integration geprüft werden und wie erkannte Schwachstellen an Hersteller/Maintainer gemeldet sowie gemeinsam behoben werden"></textarea>
           </label>
         </div>
@@ -346,7 +351,7 @@
 
         <div class="cra-form-grid">
           <label>
-            <span>CE-Status *</span>
+            <span>Ist die CE-Kennzeichnung angebracht? *</span>
             <select name="ceStatus">
               <option value="open">Noch offen</option>
               <option value="marked">CE-Kennzeichnung angebracht</option>
@@ -357,7 +362,7 @@
             <input name="ceMarkingLocation" placeholder="z. B. Typenschild der Maschine">
           </label>
           <label>
-            <span>EU-Konformitätserklärung *</span>
+            <span>Wie ist der Stand der EU-Konformitätserklärung? *</span>
             <select name="euDeclarationStatus">
               <option value="open">Noch offen</option>
               <option value="prepared">Vorbereitet</option>
@@ -381,7 +386,7 @@
             <input name="declarationFunction">
           </label>
           <label class="cra-span-2">
-            <span>Verweis auf die unterzeichnete Fassung *</span>
+            <span>Wo liegt die unterschriebene Erklärung? *</span>
             <input name="declarationSignedCopyReference" placeholder="z. B. Dokument-ID, DMS-Pfad oder abgelegte PDF-Datei">
           </label>
           <label class="cra-span-2">
