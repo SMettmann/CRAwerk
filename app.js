@@ -83,6 +83,8 @@
       a.cvdPolicy &&
       a.cvdPolicyLocation &&
       a.secureUpdateDistribution &&
+      a.thirdPartyComponentProcess &&
+      a.retentionProcess &&
       machine.riskReviewComplete &&
       machine.supportPeriod.startDate &&
       machine.supportPeriod.endDate &&
