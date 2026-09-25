@@ -99,9 +99,22 @@
             startDate:support.start_date || '',
             endDate:support.end_date || '',
             owner:support.owner_name || '',
-            reason:support.reason || ''
+            reason:support.reason || '',
+            purchaseDisclosureMethod:support.purchase_disclosure_method || '',
+            purchaseDisclosureLocation:support.purchase_disclosure_location || '',
+            endNotificationFeasible:support.end_notification_feasible || 'unknown',
+            endNotificationMethod:support.end_notification_method || '',
+            endNotificationNotFeasibleReason:support.end_notification_not_feasible_reason || '',
+            endNotificationAt:support.end_notification_at || '',
+            endNotificationReference:support.end_notification_reference || ''
           }
-        : {startDate:'', endDate:'', owner:'', reason:''},
+        : {
+            startDate:'', endDate:'', owner:'', reason:'',
+            purchaseDisclosureMethod:'', purchaseDisclosureLocation:'',
+            endNotificationFeasible:'unknown', endNotificationMethod:'',
+            endNotificationNotFeasibleReason:'', endNotificationAt:'',
+            endNotificationReference:''
+          },
       craAssessment:mapCraAssessment(craAssessment),
       craRequirements:(row.cra_requirements || []).map(item => ({
         key:item.requirement_key,
@@ -368,7 +381,14 @@
       start_date:v.startDate,
       end_date:v.endDate,
       owner_name:v.owner,
-      reason:v.reason || null
+      reason:v.reason || null,
+      purchase_disclosure_method:v.purchaseDisclosureMethod || null,
+      purchase_disclosure_location:v.purchaseDisclosureLocation || null,
+      end_notification_feasible:v.endNotificationFeasible || 'unknown',
+      end_notification_method:v.endNotificationMethod || null,
+      end_notification_not_feasible_reason:v.endNotificationNotFeasibleReason || null,
+      end_notification_at:v.endNotificationAt || null,
+      end_notification_reference:v.endNotificationReference || null
     }, {onConflict:'machine_id'});
     if (error) throw error;
   };
