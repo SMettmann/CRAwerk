@@ -45,7 +45,7 @@
       a.intendedPurpose && a.securityEnvironment && a.securityProperties && a.foreseeableMisuse &&
       a.hardwareVisualsReference && a.architectureDescription && a.productionMonitoringProcess &&
       a.appliedStandards && a.testReportsSummary &&
-      a.vulnerabilityContact && a.cvdPolicy && a.secureUpdateDistribution &&
+      a.vulnerabilityContact && a.cvdPolicy && a.cvdPolicyLocation && a.secureUpdateDistribution &&
       a.secureCommissioning && a.securityChangeEffects && a.updateInstallation &&
       a.secureDecommissioning && a.automaticUpdatesOptOut && a.supportType &&
       machine.riskReviewComplete &&
