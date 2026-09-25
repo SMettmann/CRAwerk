@@ -634,6 +634,53 @@
         <textarea name="reason" rows="4" required placeholder="Warum wurde dieser Zeitraum gewählt?"></textarea>
       </label>
 
+      <div class="form-two">
+        <label>
+          <span>Wo ist das Supportende beim Kauf angegeben? *</span>
+          <select name="purchaseDisclosureMethod" required>
+            <option value="">Bitte wählen</option>
+            <option value="product">Auf dem Produkt</option>
+            <option value="packaging">Auf der Verpackung</option>
+            <option value="digital">Digital</option>
+            <option value="sales_document">Angebot / Vertrag / Verkaufsunterlage</option>
+            <option value="other">Sonstiger leicht zugänglicher Ort</option>
+          </select>
+        </label>
+        <label>
+          <span>Konkreter Ort / Verweis *</span>
+          <input name="purchaseDisclosureLocation" required placeholder="z. B. Produktseite, Angebot Pos. 4, Typenschild ...">
+        </label>
+      </div>
+
+      <fieldset>
+        <legend>Kann das Produkt Nutzer beim Erreichen des Supportendes technisch informieren? *</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="endNotificationFeasible" value="yes" required><span>Ja</span></label>
+          <label><input type="radio" name="endNotificationFeasible" value="no" required><span>Nein</span></label>
+        </div>
+      </fieldset>
+
+      <label>
+        <span>Geplanter Kommunikationsweg bei Supportende</span>
+        <textarea name="endNotificationMethod" rows="3" placeholder="Bei Ja: z. B. Anzeige im HMI, Softwarehinweis, Kundenportal, E-Mail"></textarea>
+      </label>
+
+      <label>
+        <span>Falls technisch nicht machbar: Begründung</span>
+        <textarea name="endNotificationNotFeasibleReason" rows="3" placeholder="Bei Nein: warum ist eine direkte Mitteilung technisch nicht machbar?"></textarea>
+      </label>
+
+      <div class="form-two">
+        <label>
+          <span>Nutzer über Supportende informiert am</span>
+          <input name="endNotificationAt" type="datetime-local">
+        </label>
+        <label>
+          <span>Nachweis der Endmitteilung</span>
+          <input name="endNotificationReference" placeholder="z. B. HMI-Version, Mailing, Portalnachweis">
+        </label>
+      </div>
+
       <div class="dialog-actions">
         <button class="app-btn app-btn-ghost" type="button" data-close-dialog="support-dialog">Abbrechen</button>
         <button class="app-btn app-btn-dark" type="submit">Zeitraum speichern</button>
