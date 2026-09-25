@@ -40,8 +40,10 @@
     affected:item.affected || '',
     action:item.action,
     assessment:item.assessment || '',
+    severity:item.severity || 'unknown',
     patchVersion:item.patch_version || '',
     remediatedAt:item.remediated_at || '',
+    advisoryReference:item.advisory_reference || '',
     status:item.status
   });
 
@@ -285,8 +287,10 @@
       affected:v.affected || null,
       action:v.action,
       assessment:v.assessment || null,
+      severity:v.severity || 'unknown',
       patch_version:v.patchVersion || null,
       remediated_at:v.remediatedAt || null,
+      advisory_reference:v.advisoryReference || null,
       status:v.status
     }).select().single();
     if (error) throw error;
@@ -300,8 +304,10 @@
       affected:v.affected || null,
       action:v.action,
       assessment:v.assessment || null,
+      severity:v.severity || 'unknown',
       patch_version:v.patchVersion || null,
       remediated_at:v.remediatedAt || null,
+      advisory_reference:v.advisoryReference || null,
       status:v.status
     }).eq('id', id);
     if (error) throw error;
@@ -493,6 +499,7 @@
     testReportsSummary:row.test_reports_summary || '',
     vulnerabilityContact:row.vulnerability_contact || '',
     cvdPolicy:row.cvd_policy || '',
+    cvdPolicyLocation:row.cvd_policy_location || '',
     secureUpdateDistribution:row.secure_update_distribution || '',
     secureCommissioning:row.secure_commissioning || '',
     securityChangeEffects:row.security_change_effects || '',
@@ -573,6 +580,7 @@
       test_reports_summary:v.testReportsSummary || null,
       vulnerability_contact:v.vulnerabilityContact || null,
       cvd_policy:v.cvdPolicy || null,
+      cvd_policy_location:v.cvdPolicyLocation || null,
       secure_update_distribution:v.secureUpdateDistribution || null,
       secure_commissioning:v.secureCommissioning || null,
       security_change_effects:v.securityChangeEffects || null,
