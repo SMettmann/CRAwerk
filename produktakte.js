@@ -50,6 +50,7 @@
       a.foreseeableMisuse && a.hardwareVisualsReference && userInfo &&
       a.architectureDescription && a.productionMonitoringProcess &&
       a.vulnerabilityContact && a.cvdPolicy && a.cvdPolicyLocation && a.secureUpdateDistribution &&
+      a.thirdPartyComponentProcess && a.retentionProcess &&
       machine.riskReviewComplete &&
       machine.supportPeriod.startDate && machine.supportPeriod.endDate &&
       machine.supportPeriod.owner && machine.supportPeriod.reason &&
