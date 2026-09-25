@@ -32,7 +32,8 @@
           : false;
     const declarationReady = Boolean(
       a.euDeclarationStatus === 'signed' &&
-      a.declarationPlace && a.declarationDate && a.declarationSigner && a.declarationFunction
+      a.declarationPlace && a.declarationDate && a.declarationSigner && a.declarationFunction &&
+      a.declarationSignedCopyReference
     );
     const ceReady = Boolean(a.ceStatus === 'marked' && a.ceMarkingLocation);
     const routeValid =
@@ -347,6 +348,7 @@
           ['EU-Konformitätserklärung', a.euDeclarationStatus === 'signed' ? 'Unterzeichnet' : a.euDeclarationStatus === 'prepared' ? 'Vorbereitet' : 'Offen'],
           ['Ausstellungsort / Datum', [a.declarationPlace, formatDate(a.declarationDate)].filter(Boolean).join(' · ') || '–'],
           ['Unterzeichnende Person', [a.declarationSigner, a.declarationFunction].filter(Boolean).join(' · ') || '–'],
+          ['Unterzeichnete Fassung / Ablage', a.declarationSignedCopyReference || '–'],
           ['Weitere Unionsrechtsakte', a.otherUnionLegislation || '–'],
           ['Notifizierte Stelle', [a.notifiedBodyName, a.notifiedBodyNumber].filter(Boolean).join(' · ') || '–'],
           ['Zertifikat / Referenz', a.certificateReference || '–']
