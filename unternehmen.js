@@ -40,8 +40,14 @@
     try {
       const session = await CRAwerkSupabase.requireSession();
       if (!session) return;
-      const company = await CRAwerkBackend.currentCompany();
+      const [company, systemAdmin] = await Promise.all([
+        CRAwerkBackend.currentCompany(),
+        CRAwerkBackend.isSystemAdmin()
+      ]);
       fill(company);
+      if (systemAdmin) {
+        document.querySelectorAll('[data-system-admin-link]').forEach(link => link.hidden = false);
+      }
     } catch (error) {
       console.error(error);
       showToast('Firmendaten konnten nicht geladen werden.');
