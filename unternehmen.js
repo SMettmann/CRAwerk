@@ -48,6 +48,16 @@
     }
   };
 
+  document.getElementById('logout-button').addEventListener('click', async () => {
+    try {
+      await CRAwerkSupabase.client.auth.signOut();
+      location.href = 'login.html';
+    } catch (error) {
+      console.error(error);
+      showToast('Abmelden war nicht möglich.');
+    }
+  });
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = new FormData(form);
