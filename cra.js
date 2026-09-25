@@ -6,13 +6,16 @@
   const reportingForm = document.getElementById('reporting-form');
   const nonconformityDialog = document.getElementById('nonconformity-dialog');
   const nonconformityForm = document.getElementById('nonconformity-form');
+  const authorityRequestDialog = document.getElementById('authority-request-dialog');
+  const authorityRequestForm = document.getElementById('authority-request-form');
   const machineId = new URLSearchParams(location.search).get('id');
 
   let machine = null;
   let company = null;
-  let bundle = {assessment:null, requirements:[], reportingEvents:[], nonconformityEvents:[]};
+  let bundle = {assessment:null, requirements:[], reportingEvents:[], nonconformityEvents:[], authorityRequests:[]};
   let editingReportingId = null;
   let editingNonconformityId = null;
+  let editingAuthorityRequestId = null;
 
   const REQUIREMENTS = [
     {key:'I-1', part:'Teil I', title:'Angemessenes Cybersicherheitsniveau', text:'Das Produkt wird auf Grundlage der Risiken mit einem angemessenen Cybersicherheitsniveau konzipiert, entwickelt und hergestellt.'},
@@ -439,6 +442,49 @@
   };
 
 
+
+  const renderAuthorityRequests = () => {
+    const root = document.getElementById('authority-request-list');
+    const items = bundle.authorityRequests || [];
+
+    if (!items.length) {
+      root.innerHTML =
+        '<div class="module-empty">Keine Anfrage einer Marktüberwachungsbehörde dokumentiert.</div>';
+      return;
+    }
+
+    root.innerHTML = items.map(item =>
+      '<article class="reporting-card">' +
+        '<div class="reporting-head"><div>' +
+          '<span>MARKTÜBERWACHUNGSBEHÖRDE</span>' +
+          '<strong>' + escapeHtml(item.authorityName) + '</strong>' +
+        '</div><span class="risk-pill ' + (item.status === 'closed' ? 'done' : 'open') + '">' +
+          (item.status === 'closed' ? 'Erledigt' : 'Offen') +
+        '</span></div>' +
+        '<p>' +
+          (item.referenceNumber ? '<strong>Referenz:</strong> ' + escapeHtml(item.referenceNumber) + '<br>' : '') +
+          '<strong>Eingang:</strong> ' + escapeHtml(formatDateTime(item.receivedAt)) +
+          '<br><strong>Anfrage:</strong> ' + escapeHtml(item.requestSummary) +
+          (item.requestedDocuments ? '<br><strong>Verlangte Unterlagen:</strong> ' + escapeHtml(item.requestedDocuments) : '') +
+          (item.sbomRequested ? '<br><strong>SBOM:</strong> ausdrücklich verlangt' : '') +
+          (item.cooperationRequested ? '<br><strong>Mitwirkung:</strong> verlangt' : '') +
+          (item.cooperationMeasures ? '<br><strong>Maßnahmen:</strong> ' + escapeHtml(item.cooperationMeasures) : '') +
+          (item.responseAt ? '<br><strong>Übermittelt:</strong> ' + escapeHtml(formatDateTime(item.responseAt)) : '') +
+          (item.transmittedInformation ? '<br><strong>Übermittelte Informationen:</strong> ' + escapeHtml(item.transmittedInformation) : '') +
+          (item.evidenceReference ? '<br><strong>Nachweis:</strong> ' + escapeHtml(item.evidenceReference) : '') +
+        '</p>' +
+        '<div class="risk-actions"><div class="risk-action-links">' +
+          (item.status === 'closed'
+            ? '<span class="status-note">Übermittlung dokumentiert · nicht mehr veränderbar</span>'
+            : '<button type="button" class="text-button" data-edit-authority-request="' + item.id + '">Bearbeiten</button>') +
+        '</div>' +
+        (item.status === 'closed' ? '' :
+          '<button type="button" class="item-remove" data-remove-authority-request="' + item.id + '" aria-label="Offene Behördenanfrage löschen">×</button>') +
+        '</div>' +
+      '</article>'
+    ).join('');
+  };
+
   const nonconformitySubjectLabels = {
     product:'Produkt',
     process:'Herstellerprozess',
@@ -626,6 +672,111 @@
     updateCounters();
   });
 
+
+
+  document.getElementById('add-authority-request').addEventListener('click', () => {
+    editingAuthorityRequestId = null;
+    authorityRequestForm.reset();
+    authorityRequestForm.elements.sbomRequested.value = 'no';
+    authorityRequestForm.elements.cooperationRequested.value = 'no';
+    authorityRequestForm.elements.status.value = 'open';
+    authorityRequestForm.elements.receivedAt.value = toLocalInput(new Date().toISOString());
+    document.getElementById('authority-request-dialog-title').textContent = 'Behördenanfrage anlegen';
+    authorityRequestDialog.showModal();
+  });
+
+  document.getElementById('authority-request-close').addEventListener('click', () => authorityRequestDialog.close());
+  document.getElementById('authority-request-cancel').addEventListener('click', () => authorityRequestDialog.close());
+
+  authorityRequestForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const data = new FormData(authorityRequestForm);
+    const value = {
+      authorityName:data.get('authorityName').trim(),
+      referenceNumber:data.get('referenceNumber').trim(),
+      receivedAt:toIsoOrNull(data.get('receivedAt')),
+      requestSummary:data.get('requestSummary').trim(),
+      requestedDocuments:data.get('requestedDocuments').trim(),
+      sbomRequested:data.get('sbomRequested') === 'yes',
+      authorityLanguage:data.get('authorityLanguage').trim(),
+      cooperationRequested:data.get('cooperationRequested') === 'yes',
+      cooperationMeasures:data.get('cooperationMeasures').trim(),
+      responseAt:toIsoOrNull(data.get('responseAt')),
+      transmittedInformation:data.get('transmittedInformation').trim(),
+      evidenceReference:data.get('evidenceReference').trim(),
+      notes:data.get('notes').trim(),
+      status:data.get('status')
+    };
+
+    if (value.status === 'closed') {
+      if (!value.responseAt || !value.transmittedInformation || !value.evidenceReference) {
+        showToast('Zum Erledigen bitte Übermittlungsdatum, übermittelte Informationen und Nachweis dokumentieren.');
+        return;
+      }
+      if (value.cooperationRequested && !value.cooperationMeasures) {
+        showToast('Bitte die mit der Behörde abgestimmten bzw. umgesetzten Maßnahmen dokumentieren.');
+        return;
+      }
+    }
+
+    try {
+      if (editingAuthorityRequestId) {
+        await backend.updateAuthorityRequest(editingAuthorityRequestId, value);
+      } else {
+        await backend.addAuthorityRequest(machine.id, value);
+      }
+      bundle = await backend.loadCraBundle(machine.id);
+      authorityRequestDialog.close();
+      renderAuthorityRequests();
+      showToast('Behördenanfrage wurde gespeichert.');
+    } catch (error) {
+      console.error(error);
+      showToast('Behördenanfrage konnte nicht gespeichert werden.');
+    }
+  });
+
+  document.getElementById('authority-request-list').addEventListener('click', async event => {
+    const edit = event.target.closest('[data-edit-authority-request]');
+    if (edit) {
+      const item = (bundle.authorityRequests || []).find(row => row.id === edit.dataset.editAuthorityRequest);
+      if (!item) return;
+
+      editingAuthorityRequestId = item.id;
+      authorityRequestForm.elements.authorityName.value = item.authorityName || '';
+      authorityRequestForm.elements.referenceNumber.value = item.referenceNumber || '';
+      authorityRequestForm.elements.receivedAt.value = toLocalInput(item.receivedAt);
+      authorityRequestForm.elements.authorityLanguage.value = item.authorityLanguage || '';
+      authorityRequestForm.elements.requestSummary.value = item.requestSummary || '';
+      authorityRequestForm.elements.requestedDocuments.value = item.requestedDocuments || '';
+      authorityRequestForm.elements.sbomRequested.value = item.sbomRequested ? 'yes' : 'no';
+      authorityRequestForm.elements.cooperationRequested.value = item.cooperationRequested ? 'yes' : 'no';
+      authorityRequestForm.elements.cooperationMeasures.value = item.cooperationMeasures || '';
+      authorityRequestForm.elements.responseAt.value = toLocalInput(item.responseAt);
+      authorityRequestForm.elements.transmittedInformation.value = item.transmittedInformation || '';
+      authorityRequestForm.elements.evidenceReference.value = item.evidenceReference || '';
+      authorityRequestForm.elements.notes.value = item.notes || '';
+      authorityRequestForm.elements.status.value = item.status || 'open';
+      document.getElementById('authority-request-dialog-title').textContent = 'Behördenanfrage bearbeiten';
+      authorityRequestDialog.showModal();
+      return;
+    }
+
+    const remove = event.target.closest('[data-remove-authority-request]');
+    if (!remove) return;
+
+    const item = (bundle.authorityRequests || []).find(row => row.id === remove.dataset.removeAuthorityRequest);
+    if (!item || item.status === 'closed') return;
+
+    try {
+      await backend.deleteAuthorityRequest(item.id);
+      bundle = await backend.loadCraBundle(machine.id);
+      renderAuthorityRequests();
+      showToast('Offene Behördenanfrage wurde entfernt.');
+    } catch (error) {
+      console.error(error);
+      showToast('Behördenanfrage konnte nicht entfernt werden.');
+    }
+  });
 
   document.getElementById('add-nonconformity').addEventListener('click', () => {
     editingNonconformityId = null;
@@ -883,6 +1034,7 @@
     renderGuidance();
     renderReporting();
     renderNonconformity();
+    renderAuthorityRequests();
     renderAnnexVii();
     updateCounters();
   };
