@@ -65,8 +65,8 @@
     const names = [
       'classification','classificationCategory','classificationReason','standardsCoverage','conformityRoute',
       'intendedPurpose','securityEnvironment','securityProperties','foreseeableMisuse','architectureDescription',
-      'hardwareVisualsReference','productionMonitoringProcess','appliedStandards','testReportsSummary',
-      'vulnerabilityContact','cvdPolicy','cvdPolicyLocation','secureUpdateDistribution','secureCommissioning','securityChangeEffects',
+      'hardwareVisualsReference','productionMonitoringProcess','appliedStandards','testReportsSummary','retentionProcess',
+      'vulnerabilityContact','cvdPolicy','cvdPolicyLocation','secureUpdateDistribution','thirdPartyComponentProcess','secureCommissioning','securityChangeEffects',
       'updateInstallation','secureDecommissioning','automaticUpdatesOptOut','integratorInformation','supportType',
       'declarationUrl','ceStatus','ceMarkingLocation','euDeclarationStatus','declarationPlace','declarationDate',
       'declarationSigner','declarationFunction','declarationSignedCopyReference','notifiedBodyName','notifiedBodyNumber','certificateReference',
@@ -92,10 +92,12 @@
       productionMonitoringProcess:a.productionMonitoringProcess || '',
       appliedStandards:a.appliedStandards || '',
       testReportsSummary:a.testReportsSummary || '',
+      retentionProcess:a.retentionProcess || '',
       vulnerabilityContact:a.vulnerabilityContact || '',
       cvdPolicy:a.cvdPolicy || '',
       cvdPolicyLocation:a.cvdPolicyLocation || '',
       secureUpdateDistribution:a.secureUpdateDistribution || '',
+      thirdPartyComponentProcess:a.thirdPartyComponentProcess || '',
       secureCommissioning:a.secureCommissioning || '',
       securityChangeEffects:a.securityChangeEffects || '',
       updateInstallation:a.updateInstallation || '',
@@ -275,7 +277,9 @@
       {
         title:'2. Konzeption, Entwicklung, Produktion & Schwachstellenverfahren',
         done:Boolean(assessment.architectureDescription && assessment.productionMonitoringProcess &&
-          assessment.vulnerabilityContact && assessment.cvdPolicy && assessment.cvdPolicyLocation && assessment.secureUpdateDistribution &&
+          assessment.vulnerabilityContact && assessment.cvdPolicy && assessment.cvdPolicyLocation &&
+          assessment.secureUpdateDistribution && assessment.thirdPartyComponentProcess &&
+          assessment.retentionProcess &&
           (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length)))
       },
       {
@@ -417,6 +421,11 @@
           '<div><span>72 h</span><strong class="' + full.className + '">' + escapeHtml(full.label) + '</strong></div>' +
           '<div><span>Abschluss</span><strong class="' + finalState.className + '">' + escapeHtml(finalState.label) + '</strong></div>' +
         '</div>' +
+        '<p><strong>Nutzerinformation:</strong> ' +
+          (item.usersInformedAt
+            ? escapeHtml(formatDateTime(item.usersInformedAt) + (item.userNotificationReference ? ' · ' + item.userNotificationReference : ''))
+            : 'noch nicht dokumentiert') +
+        '</p>' +
         '<div class="risk-actions"><div class="risk-action-links">' +
           '<button type="button" class="text-button" data-edit-reporting="' + item.id + '">Bearbeiten</button>' +
         '</div><button type="button" class="item-remove" data-remove-reporting="' + item.id + '">×</button></div>' +
@@ -578,12 +587,19 @@
       eventType:data.get('eventType'),
       title:data.get('title').trim(),
       affectedVersion:data.get('affectedVersion').trim(),
+      affectedMemberStates:data.get('affectedMemberStates').trim(),
       assessment:data.get('assessment').trim(),
+      correctiveMeasures:data.get('correctiveMeasures').trim(),
+      userMitigation:data.get('userMitigation').trim(),
+      threatOrRootCause:data.get('threatOrRootCause').trim(),
+      sensitivityNote:data.get('sensitivityNote').trim(),
       awarenessAt:toIsoOrNull(data.get('awarenessAt')),
       earlyWarningAt:toIsoOrNull(data.get('earlyWarningAt')),
       fullNotificationAt:toIsoOrNull(data.get('fullNotificationAt')),
       correctiveMeasureAvailableAt:toIsoOrNull(data.get('correctiveMeasureAvailableAt')),
       finalReportAt:toIsoOrNull(data.get('finalReportAt')),
+      usersInformedAt:toIsoOrNull(data.get('usersInformedAt')),
+      userNotificationReference:data.get('userNotificationReference').trim(),
       notes:data.get('notes').trim(),
       status:data.get('status')
     };
@@ -593,8 +609,20 @@
         showToast('Zum Abschließen müssen 24-h-Frühwarnung, 72-h-Meldung und Abschlussbericht dokumentiert sein.');
         return;
       }
+      if (!value.affectedVersion || !value.assessment || !value.correctiveMeasures || !value.userMitigation) {
+        showToast('Zum Abschließen bitte Produkt/Version, Bewertung, Korrekturmaßnahmen und Nutzermaßnahmen dokumentieren.');
+        return;
+      }
+      if (!value.usersInformedAt || !value.userNotificationReference) {
+        showToast('Zum Abschließen muss die Information der betroffenen Nutzer dokumentiert sein.');
+        return;
+      }
       if (value.eventType === 'actively_exploited_vulnerability' && !value.correctiveMeasureAvailableAt) {
         showToast('Bei einer aktiv ausgenutzten Schwachstelle bitte auch den Zeitpunkt der verfügbaren Korrekturmaßnahme dokumentieren.');
+        return;
+      }
+      if (value.eventType === 'severe_incident' && !value.threatOrRootCause) {
+        showToast('Bei einem schwerwiegenden Sicherheitsvorfall bitte die wahrscheinliche Ursache / Art der Bedrohung dokumentieren.');
         return;
       }
     }
@@ -622,12 +650,19 @@
       reportingForm.elements.updateItemId.value = item.updateItemId || '';
       reportingForm.elements.title.value = item.title;
       reportingForm.elements.affectedVersion.value = item.affectedVersion || '';
+      reportingForm.elements.affectedMemberStates.value = item.affectedMemberStates || '';
       reportingForm.elements.assessment.value = item.assessment || '';
+      reportingForm.elements.correctiveMeasures.value = item.correctiveMeasures || '';
+      reportingForm.elements.userMitigation.value = item.userMitigation || '';
+      reportingForm.elements.threatOrRootCause.value = item.threatOrRootCause || '';
+      reportingForm.elements.sensitivityNote.value = item.sensitivityNote || '';
       reportingForm.elements.awarenessAt.value = toLocalInput(item.awarenessAt);
       reportingForm.elements.earlyWarningAt.value = toLocalInput(item.earlyWarningAt);
       reportingForm.elements.fullNotificationAt.value = toLocalInput(item.fullNotificationAt);
       reportingForm.elements.correctiveMeasureAvailableAt.value = toLocalInput(item.correctiveMeasureAvailableAt);
       reportingForm.elements.finalReportAt.value = toLocalInput(item.finalReportAt);
+      reportingForm.elements.usersInformedAt.value = toLocalInput(item.usersInformedAt);
+      reportingForm.elements.userNotificationReference.value = item.userNotificationReference || '';
       reportingForm.elements.notes.value = item.notes || '';
       reportingForm.elements.status.value = item.status;
       document.getElementById('reporting-dialog-title').textContent = 'Meldevorgang bearbeiten';
