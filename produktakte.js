@@ -66,12 +66,13 @@
   };
 
   const tasksForMachine = machine => {
+    const basicReady = Boolean(machine.name && (machine.model || machine.productNumber) && machine.owner);
     const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
     const noOpenUpdates = machine.updateItems.every(item => item.status === 'done');
     const noOpenRisks = machine.riskItems.every(item => item.status === 'done');
     const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner && machine.supportPeriod.reason);
     return [
-      {title:'Grunddaten prüfen', text:'Name, Modell und Verantwortlichkeit kontrollieren.', done:true},
+      {title:'Grunddaten prüfen', text:'Name, Modell bzw. Produktnummer und Verantwortlichkeit kontrollieren.', done:basicReady},
       {title:'Software & Versionen vollständig erfassen', text:'Alle Software- und Firmwarestände erfassen und die Liste als vollständig bestätigen.', done:machine.software === 'no' || machine.softwareComplete},
       {title:'Digitale Bauteile & Zulieferer vollständig erfassen', text:'Digitale Bauteile erfassen und die Liste anschließend als vollständig bestätigen.', done:machine.componentsComplete},
       {title:'Risikoprüfung abschließen', text:'Risiken prüfen, offene Maßnahmen erledigen und die Prüfung anschließend abschließen.', done:machine.riskReviewComplete && noOpenRisks},
