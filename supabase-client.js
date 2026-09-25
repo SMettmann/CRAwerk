@@ -24,31 +24,27 @@
     const user = await getUser();
     if (!user) throw new Error('Nicht angemeldet.');
 
-    const { data: existing, error: existingError } = await client
-      .from('companies')
-      .select('*')
+    const { data: membership, error: membershipError } = await client
+      .from('company_members')
+      .select('company_id, role')
+      .eq('user_id', user.id)
+      .order('created_at', {ascending:true})
       .limit(1)
       .maybeSingle();
 
-    if (existingError) throw existingError;
-    if (existing) return existing;
+    if (membershipError) throw membershipError;
+    if (!membership) {
+      throw new Error('Für diesen Benutzer ist keine Firma zugeordnet.');
+    }
 
-    const meta = user.user_metadata || {};
-    const contactName = [meta.first_name, meta.last_name].filter(Boolean).join(' ').trim();
-
-    const { data: created, error: createError } = await client
+    const { data: company, error: companyError } = await client
       .from('companies')
-      .insert({
-        name: meta.company_name || 'Mein Unternehmen',
-        contact_name: contactName || null,
-        email: user.email || null,
-        created_by: user.id
-      })
-      .select()
+      .select('*')
+      .eq('id', membership.company_id)
       .single();
 
-    if (createError) throw createError;
-    return created;
+    if (companyError) throw companyError;
+    return company;
   }
 
   async function requireSession() {
