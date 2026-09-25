@@ -16,6 +16,32 @@
     (item.status !== 'not_applicable' || Boolean(item.justification)) &&
     (item.status !== 'fulfilled' || Boolean(item.justification || item.evidence));
 
+  const supportCommunicationReadyFor = machine => {
+    const support = machine.supportPeriod || {};
+    const basicReady = Boolean(
+      support.startDate &&
+      support.endDate &&
+      support.owner &&
+      support.reason &&
+      support.purchaseDisclosureMethod &&
+      support.purchaseDisclosureLocation &&
+      support.endNotificationFeasible &&
+      support.endNotificationFeasible !== 'unknown'
+    );
+    if (!basicReady) return false;
+    if (support.endNotificationFeasible === 'yes' && !support.endNotificationMethod) return false;
+    if (support.endNotificationFeasible === 'no' && !support.endNotificationNotFeasibleReason) return false;
+
+    const endReached = new Date(support.endDate + 'T23:59:59').getTime() <= Date.now();
+    if (
+      endReached &&
+      support.endNotificationFeasible === 'yes' &&
+      (!support.endNotificationAt || !support.endNotificationReference)
+    ) return false;
+
+    return true;
+  };
+
   const craCompleteForMachine = machine => {
     const a = machine.craAssessment;
     if (!a) return false;
@@ -50,8 +76,7 @@
       a.secureCommissioning && a.securityChangeEffects && a.updateInstallation &&
       a.secureDecommissioning && a.automaticUpdatesOptOut && a.integratorInformation && a.supportType &&
       machine.riskReviewComplete &&
-      machine.supportPeriod.startDate && machine.supportPeriod.endDate &&
-      machine.supportPeriod.owner && machine.supportPeriod.reason &&
+      supportCommunicationReadyFor(machine) &&
       (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length))
     );
     return Boolean(
@@ -68,7 +93,7 @@
     const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
     const noOpenUpdates = machine.updateItems.every(item => item.status === 'done');
     const noOpenRisks = machine.riskItems.every(item => item.status === 'done');
-    const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner && machine.supportPeriod.reason);
+    const supportReady = supportCommunicationReadyFor(machine);
     return [
       {title:'Grunddaten prüfen', text:'Name, Modell bzw. Produktnummer und Verantwortlichkeit kontrollieren.', done:basicReady},
       {title:'Software & Versionen vollständig erfassen', text:'Alle Software- und Firmwarestände erfassen und die Liste als vollständig bestätigen.', done:machine.software === 'no' || machine.softwareComplete},
@@ -189,7 +214,11 @@
       ? 'Vollständigkeit bestätigt'
       : (machine.documentItems.length ? machine.documentItems.length + ' Unterlagen erfasst' : 'Noch keine Unterlage erfasst');
     const supportState = machine.supportPeriod.endDate
-      ? 'Bis ' + formatDate(machine.supportPeriod.endDate)
+      ? (
+          supportReady
+            ? 'Bis ' + formatDate(machine.supportPeriod.endDate)
+            : 'Bis ' + formatDate(machine.supportPeriod.endDate) + ' · Kommunikation offen'
+        )
       : 'Noch nicht festgelegt';
 
     document.getElementById('short-bottom').innerHTML =
