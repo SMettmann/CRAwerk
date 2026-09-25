@@ -194,10 +194,17 @@
           (item.date ? 'Bekannt seit ' + formatDate(item.date) : 'Datum offen') +
           (item.affected ? ' · Betroffen: ' + escapeHtml(item.affected) : '') +
           '</span><p>' +
+          '<strong>Schweregrad:</strong> ' + escapeHtml(
+            item.severity === 'critical' ? 'Kritisch' :
+            item.severity === 'high' ? 'Hoch' :
+            item.severity === 'medium' ? 'Mittel' :
+            item.severity === 'low' ? 'Niedrig' : 'Nicht bewertet'
+          ) + '<br>' +
           (item.assessment ? '<strong>Bewertung:</strong> ' + escapeHtml(item.assessment) + '<br>' : '') +
           '<strong>Maßnahme:</strong> ' + escapeHtml(item.action || '') +
           (item.patchVersion ? '<br><strong>Patch / Zielversion:</strong> ' + escapeHtml(item.patchVersion) : '') +
           (item.remediatedAt ? '<br><strong>Behoben am:</strong> ' + escapeHtml(formatDate(item.remediatedAt)) : '') +
+          (item.advisoryReference ? '<br><strong>Sicherheitshinweis / Veröffentlichung:</strong> ' + escapeHtml(item.advisoryReference) : '') +
           '</p></div><span class="report-badge ' +
           (item.status === 'done' ? '' : 'open') + '">' + (item.status === 'done' ? 'Erledigt' : 'Offen') + '</span></div>'
         ).join('')
@@ -216,7 +223,7 @@
       : '<div class="report-empty">Keine Unterlagen erfasst.</div>';
 
     const support = machine.supportPeriod;
-    const supportReady = support.startDate && support.endDate && support.owner;
+    const supportReady = support.startDate && support.endDate && support.owner && support.reason;
     document.getElementById('report-support').innerHTML = supportReady
       ? '<div class="report-support"><div class="report-support-grid">' +
         '<div><span>Beginn</span><strong>' + formatDate(support.startDate) + '</strong></div>' +
