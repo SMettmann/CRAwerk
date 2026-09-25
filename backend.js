@@ -109,7 +109,8 @@
         justification:item.justification || '',
         evidence:item.evidence || ''
       })),
-      craReportingEvents:(row.cra_reporting_events || []).map(mapReportingEvent)
+      craReportingEvents:(row.cra_reporting_events || []).map(mapReportingEvent),
+      craNonconformityEvents:(row.cra_nonconformity_events || []).map(mapNonconformityEvent)
     };
   };
 
@@ -125,7 +126,8 @@
     'support_periods(*)',
     'cra_assessments(*)',
     'cra_requirements(*)',
-    'cra_reporting_events(*)'
+    'cra_reporting_events(*)',
+    'cra_nonconformity_events(*)'
   ].join(',');
 
   const currentCompany = async () => api.ensureCompany();
@@ -536,6 +538,22 @@
     otherUnionLegislation:row.other_union_legislation || ''
   }) : null;
 
+  const mapNonconformityEvent = row => ({
+    id:row.id,
+    machineId:row.machine_id,
+    subjectType:row.subject_type || 'product',
+    title:row.title || '',
+    detectedAt:row.detected_at || '',
+    affectedVersion:row.affected_version || '',
+    description:row.description || '',
+    correctiveAction:row.corrective_action || '',
+    disposition:row.disposition || 'open',
+    actionAt:row.action_at || '',
+    evidenceReference:row.evidence_reference || '',
+    notes:row.notes || '',
+    status:row.status || 'open'
+  });
+
   const mapReportingEvent = row => ({
     id:row.id,
     machineId:row.machine_id,
@@ -561,14 +579,16 @@
   });
 
   const loadCraBundle = async machineId => {
-    const [assessmentResult, requirementsResult, reportingResult] = await Promise.all([
+    const [assessmentResult, requirementsResult, reportingResult, nonconformityResult] = await Promise.all([
       db.from('cra_assessments').select('*').eq('machine_id', machineId).maybeSingle(),
       db.from('cra_requirements').select('*').eq('machine_id', machineId).order('requirement_key'),
-      db.from('cra_reporting_events').select('*').eq('machine_id', machineId).order('awareness_at', {ascending:false})
+      db.from('cra_reporting_events').select('*').eq('machine_id', machineId).order('awareness_at', {ascending:false}),
+      db.from('cra_nonconformity_events').select('*').eq('machine_id', machineId).order('detected_at', {ascending:false})
     ]);
     if (assessmentResult.error) throw assessmentResult.error;
     if (requirementsResult.error) throw requirementsResult.error;
     if (reportingResult.error) throw reportingResult.error;
+    if (nonconformityResult.error) throw nonconformityResult.error;
     return {
       assessment:mapCraAssessment(assessmentResult.data),
       requirements:(requirementsResult.data || []).map(row => ({
@@ -577,7 +597,8 @@
         justification:row.justification || '',
         evidence:row.evidence || ''
       })),
-      reportingEvents:(reportingResult.data || []).map(mapReportingEvent)
+      reportingEvents:(reportingResult.data || []).map(mapReportingEvent),
+      nonconformityEvents:(nonconformityResult.data || []).map(mapNonconformityEvent)
     };
   };
 
@@ -699,6 +720,48 @@
     if (error) throw error;
   };
 
+
+  const addNonconformityEvent = async (machineId, v) => {
+    const { data, error } = await db.from('cra_nonconformity_events').insert({
+      machine_id:machineId,
+      subject_type:v.subjectType || 'product',
+      title:v.title,
+      detected_at:v.detectedAt,
+      affected_version:v.affectedVersion || null,
+      description:v.description,
+      corrective_action:v.correctiveAction || null,
+      disposition:v.disposition || 'open',
+      action_at:v.actionAt || null,
+      evidence_reference:v.evidenceReference || null,
+      notes:v.notes || null,
+      status:v.status || 'open'
+    }).select().single();
+    if (error) throw error;
+    return mapNonconformityEvent(data);
+  };
+
+  const updateNonconformityEvent = async (id, v) => {
+    const { error } = await db.from('cra_nonconformity_events').update({
+      subject_type:v.subjectType || 'product',
+      title:v.title,
+      detected_at:v.detectedAt,
+      affected_version:v.affectedVersion || null,
+      description:v.description,
+      corrective_action:v.correctiveAction || null,
+      disposition:v.disposition || 'open',
+      action_at:v.actionAt || null,
+      evidence_reference:v.evidenceReference || null,
+      notes:v.notes || null,
+      status:v.status || 'open'
+    }).eq('id', id);
+    if (error) throw error;
+  };
+
+  const deleteNonconformityEvent = async id => {
+    const { error } = await db.from('cra_nonconformity_events').delete().eq('id', id);
+    if (error) throw error;
+  };
+
   const adminSetCompanyStatus = async (companyId, status) => {
     const allowed = ['trial','active','paused','cancelled'];
     if (!allowed.includes(status)) throw new Error('Ungültiger Firmenstatus.');
@@ -722,6 +785,9 @@
     addReportingEvent,
     updateReportingEvent,
     deleteReportingEvent,
+    addNonconformityEvent,
+    updateNonconformityEvent,
+    deleteNonconformityEvent,
     loadMachines,
     loadMachine,
     createMachine,
