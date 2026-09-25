@@ -21,6 +21,19 @@
     if (!a) return false;
     const requirements = machine.craRequirements || [];
     const requirementsComplete = requirements.length >= 22 && requirements.every(requirementDocumented);
+    const classCategoryReady = a.classification === 'standard' || Boolean(a.classificationCategory);
+    const routeDetailsReady =
+      a.conformityRoute === 'module_a' ? true :
+      ['module_bc','module_h'].includes(a.conformityRoute)
+        ? Boolean(a.notifiedBodyName && a.notifiedBodyNumber && a.certificateReference)
+        : a.conformityRoute === 'eu_certification'
+          ? Boolean(a.certificateReference)
+          : false;
+    const declarationReady = Boolean(
+      a.euDeclarationStatus === 'signed' &&
+      a.declarationPlace && a.declarationDate && a.declarationSigner && a.declarationFunction
+    );
+    const ceReady = Boolean(a.ceStatus === 'marked' && a.ceMarkingLocation);
     const routeValid =
       a.classification !== 'unset' &&
       a.conformityRoute !== 'unset' &&
@@ -40,8 +53,8 @@
       (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length))
     );
     return Boolean(
-      routeValid && requirementsComplete && annexReady &&
-      a.ceStatus === 'marked' && a.euDeclarationStatus === 'signed' &&
+      routeValid && classCategoryReady && routeDetailsReady &&
+      requirementsComplete && annexReady && ceReady && declarationReady &&
       (machine.craReportingEvents || []).every(item => item.status === 'closed')
     );
   };
@@ -50,7 +63,7 @@
     const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
     const noOpenUpdates = machine.updateItems.every(item => item.status === 'done');
     const noOpenRisks = machine.riskItems.every(item => item.status === 'done');
-    const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner);
+    const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner && machine.supportPeriod.reason);
     return [
       {title:'Grunddaten prüfen', text:'Name, Modell und Verantwortlichkeit kontrollieren.', done:true},
       {title:'Software & Versionen vollständig erfassen', text:'Alle Software- und Firmwarestände erfassen und die Liste als vollständig bestätigen.', done:machine.software === 'no' || machine.softwareComplete},
