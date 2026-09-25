@@ -23,6 +23,14 @@
     const reporting = machine.craReportingEvents || [];
     if (!a) return false;
 
+    const company = machine.company || {};
+    const manufacturerReady = Boolean(
+      company.name && company.street && company.zip && company.city && company.country && company.email
+    );
+    const productIdentityReady = Boolean(
+      machine.name && (machine.model || machine.productNumber)
+    );
+
     const requirementsComplete =
       requirements.length >= 22 &&
       requirements.every(item =>
@@ -96,6 +104,8 @@
     );
 
     return Boolean(
+      manufacturerReady &&
+      productIdentityReady &&
       routeValid &&
       classCategoryReady &&
       routeDetailsReady &&
@@ -109,6 +119,7 @@
   };
 
   const tasksForMachine = machine => {
+    const basicReady = Boolean(machine.name && (machine.model || machine.productNumber) && machine.owner);
     const processReady = Boolean(machine.updateProcess && machine.updateProcess.owner && machine.updateProcess.procedure);
     const noOpenUpdates = (machine.updateItems || []).every(item => item.status === 'done');
     const noOpenRisks = (machine.riskItems || []).every(item => item.status === 'done');
@@ -124,7 +135,7 @@
         id:'basic',
         title:'Grunddaten prüfen',
         text:'Name, Modell und Verantwortlichkeit kontrollieren.',
-        done:true
+        done:basicReady
       },
       {
         id:'software',
