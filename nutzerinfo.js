@@ -71,10 +71,33 @@
       '<div class="report-data"><dt>' + escapeHtml(label) + '</dt><dd>' + escapeHtml(value || '–') + '</dd></div>'
     ).join('');
 
+    const supportDisclosureLabels = {
+      product:'Auf dem Produkt',
+      packaging:'Auf der Verpackung',
+      digital:'Digital',
+      sales_document:'Angebot / Vertrag / Verkaufsunterlage',
+      other:'Sonstiger leicht zugänglicher Ort'
+    };
+    const support = machine.supportPeriod || {};
     const supportRows = [
       ['EU-Konformitätserklärung', a.declarationUrl || 'Kein Online-Zugriff hinterlegt'],
       ['Art des technischen Sicherheitssupports', a.supportType || '–'],
-      ['Unterstützungszeitraum bis', formatDate(machine.supportPeriod.endDate)]
+      ['Unterstützungszeitraum bis', formatDate(support.endDate)],
+      ['Supportende beim Kauf angegeben über', supportDisclosureLabels[support.purchaseDisclosureMethod] || '–'],
+      ['Konkreter Ort / Verweis', support.purchaseDisclosureLocation || '–'],
+      ['Mitteilung beim Erreichen des Supportendes',
+        support.endNotificationFeasible === 'yes'
+          ? (support.endNotificationMethod || 'Geplant, Kommunikationsweg noch offen')
+          : support.endNotificationFeasible === 'no'
+            ? 'Technisch nicht machbar: ' + (support.endNotificationNotFeasibleReason || 'Begründung offen')
+            : 'Noch ungeklärt'
+      ],
+      ['Supportende bereits kommuniziert',
+        support.endNotificationAt
+          ? formatDate(String(support.endNotificationAt).slice(0,10)) +
+            (support.endNotificationReference ? ' · Nachweis: ' + support.endNotificationReference : '')
+          : 'Noch nicht'
+      ]
     ];
     document.getElementById('user-info-support').innerHTML = supportRows.map(([label,value]) =>
       '<div class="report-data"><dt>' + escapeHtml(label) + '</dt><dd>' + escapeHtml(value) + '</dd></div>'
