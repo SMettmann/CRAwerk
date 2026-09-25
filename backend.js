@@ -59,6 +59,7 @@
   const mapMachine = row => {
     const updateProcess = one(row.update_processes);
     const support = one(row.support_periods);
+    const craAssessment = one(row.cra_assessments);
     return {
       id:row.id,
       name:row.name,
@@ -88,7 +89,15 @@
             owner:support.owner_name || '',
             reason:support.reason || ''
           }
-        : {startDate:'', endDate:'', owner:'', reason:''}
+        : {startDate:'', endDate:'', owner:'', reason:''},
+      craAssessment:mapCraAssessment(craAssessment),
+      craRequirements:(row.cra_requirements || []).map(item => ({
+        key:item.requirement_key,
+        status:item.status,
+        justification:item.justification || '',
+        evidence:item.evidence || ''
+      })),
+      craReportingEvents:(row.cra_reporting_events || []).map(mapReportingEvent)
     };
   };
 
@@ -100,7 +109,10 @@
     'update_processes(*)',
     'update_items(*)',
     'document_items(*)',
-    'support_periods(*)'
+    'support_periods(*)',
+    'cra_assessments(*)',
+    'cra_requirements(*)',
+    'cra_reporting_events(*)'
   ].join(',');
 
   const currentCompany = async () => api.ensureCompany();
