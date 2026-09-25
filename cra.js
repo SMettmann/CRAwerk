@@ -42,6 +42,51 @@
     {key:'II-8', part:'Teil II', title:'Sicherheitsupdates bereitstellen', text:'Verfügbare Sicherheitsupdates werden ohne unnötige Verzögerung, grundsätzlich kostenfrei und mit verständlichen Hinweisen zu erforderlichen Nutzermaßnahmen bereitgestellt; zulässige B2B-Sondervereinbarungen werden dokumentiert.'}
   ];
 
+  const REQUIREMENT_QUESTIONS = {
+    'I-1':'Passt das Sicherheitsniveau zum tatsächlichen Risiko?',
+    'I-2a':'Sind keine bekannten ausnutzbaren Schwachstellen mehr offen?',
+    'I-2b':'Startet die Maschine mit sicheren Grundeinstellungen?',
+    'I-2c':'Können Sicherheitsupdates sicher eingespielt werden?',
+    'I-2d':'Ist unbefugter Zugriff ausreichend verhindert?',
+    'I-2e':'Sind vertrauliche Daten geschützt?',
+    'I-2f':'Sind Daten, Befehle und Einstellungen gegen Manipulation geschützt?',
+    'I-2g':'Verarbeitet die Maschine nur Daten, die sie wirklich braucht?',
+    'I-2h':'Bleiben wichtige Funktionen bei Angriffen möglichst verfügbar?',
+    'I-2i':'Kann die Maschine andere Geräte oder Netze unnötig beeinträchtigen?',
+    'I-2j':'Sind Schnittstellen und Angriffsflächen auf das Nötige begrenzt?',
+    'I-2k':'Werden Folgen eines erfolgreichen Angriffs begrenzt?',
+    'I-2l':'Können wichtige Sicherheitsereignisse nachvollzogen werden?',
+    'I-2m':'Können Daten sicher gelöscht und übertragen werden?',
+    'II-1':'Sind Softwarekomponenten und Abhängigkeiten nachvollziehbar?',
+    'II-2':'Werden gefundene Schwachstellen zügig behoben?',
+    'II-3':'Wird die Produktsicherheit regelmäßig geprüft?',
+    'II-4':'Werden Kunden über behobene Schwachstellen informiert?',
+    'II-5':'Gibt es einen festen Ablauf für gemeldete Schwachstellen?',
+    'II-6':'Gibt es eine erreichbare Stelle für Sicherheitsmeldungen?',
+    'II-7':'Werden Sicherheitsupdates sicher verteilt?',
+    'II-8':'Werden Sicherheitsupdates rechtzeitig und verständlich bereitgestellt?'
+  };
+
+  const REQUIREMENT_GROUPS = [
+    {id:'access', title:'Zugriff & Grundeinstellungen', help:'Wer darf hinein und wie sicher startet die Maschine?', keys:['I-2b','I-2d','I-2j','I-2k','I-2l']},
+    {id:'data', title:'Daten & Kommunikation', help:'Sind Daten geschützt und auf das Nötige begrenzt?', keys:['I-2e','I-2f','I-2g','I-2m']},
+    {id:'resilience', title:'Betrieb & Widerstandsfähigkeit', help:'Bleibt die Maschine auch bei Problemen kontrollierbar?', keys:['I-1','I-2h','I-2i']},
+    {id:'updates', title:'Software, Updates & Komponenten', help:'Sind Versionen bekannt und können Lücken behoben werden?', keys:['I-2a','I-2c','II-1','II-2','II-7','II-8']},
+    {id:'process', title:'Prüfen & Schwachstellen bearbeiten', help:'Gibt es einen festen Herstellerprozess?', keys:['II-3','II-4','II-5','II-6']}
+  ];
+
+  const GUIDE_STEPS = [
+    {title:'Produkt einordnen', help:'Ordnen Sie die Maschine ein und wählen Sie den dazu passenden Konformitätsweg.'},
+    {title:'Schutz prüfen', help:'Beantworten Sie die Sicherheitsfragen blockweise. Sie müssen nicht alles auf einmal erledigen.'},
+    {title:'Maschine beschreiben', help:'Kurze, verständliche Angaben reichen. CRAwerk verwendet vorhandene Daten automatisch weiter.'},
+    {title:'Sicherheitsprozess festhalten', help:'Beschreiben Sie den festen Ablauf für Meldungen, Zulieferer und Sicherheitsupdates.'},
+    {title:'Konformität abschließen', help:'Dokumentieren Sie CE und die unterschriebene EU-Konformitätserklärung.'},
+    {title:'Akte prüfen', help:'Hier sehen Sie nur noch, welche Dokumentationsbereiche vollständig sind und was noch fehlt.'}
+  ];
+
+  let currentGuideStep = 0;
+  let activeSpecialCase = '';
+
   const labels = {
     unset:'Offen',
     standard:'Standardprodukt',
@@ -135,23 +180,43 @@
 
   const renderRequirements = () => {
     const root = document.getElementById('requirements-list');
-    root.innerHTML = REQUIREMENTS.map(req => {
-      const current = getRequirementValue(req.key);
-      return '<article class="requirement-card" data-requirement="' + escapeHtml(req.key) + '">' +
-        '<div class="requirement-head"><div><span>' + escapeHtml(req.part + ' · ' + req.key) + '</span><strong>' +
-        escapeHtml(req.title) + '</strong></div>' +
-        '<select data-req-status>' +
-          '<option value="open"' + (current.status === 'open' ? ' selected' : '') + '>Offen</option>' +
-          '<option value="fulfilled"' + (current.status === 'fulfilled' ? ' selected' : '') + '>Erfüllt</option>' +
-          '<option value="not_applicable"' + (current.status === 'not_applicable' ? ' selected' : '') + '>Nicht anwendbar</option>' +
-        '</select></div>' +
-        '<p>' + escapeHtml(req.text) + '</p>' +
-        '<div class="requirement-fields">' +
-          '<label><span>Begründung / Bewertung</span><textarea data-req-justification rows="2">' + escapeHtml(current.justification) + '</textarea></label>' +
-          '<label><span>Nachweis / Verweis</span><input data-req-evidence value="' + escapeHtml(current.evidence) + '" placeholder="Dokument, Test, Zeichnung, Ticket ..."></label>' +
-        '</div>' +
-      '</article>';
+
+    root.innerHTML = REQUIREMENT_GROUPS.map((group, groupIndex) => {
+      const groupRequirements = group.keys
+        .map(key => REQUIREMENTS.find(item => item.key === key))
+        .filter(Boolean);
+      const completeCount = groupRequirements.filter(req => requirementIsDocumented(getRequirementValue(req.key))).length;
+      const hasOpen = completeCount < groupRequirements.length;
+
+      const cards = groupRequirements.map(req => {
+        const current = getRequirementValue(req.key);
+        const question = REQUIREMENT_QUESTIONS[req.key] || req.title;
+        return '<article class="requirement-card" data-requirement="' + escapeHtml(req.key) + '">' +
+          '<div class="requirement-head"><div><span>Prüffrage</span><strong>' +
+          escapeHtml(question) + '</strong></div>' +
+          '<select data-req-status aria-label="Status ' + escapeHtml(question) + '">' +
+            '<option value="open"' + (current.status === 'open' ? ' selected' : '') + '>Noch offen</option>' +
+            '<option value="fulfilled"' + (current.status === 'fulfilled' ? ' selected' : '') + '>Ja – erfüllt</option>' +
+            '<option value="not_applicable"' + (current.status === 'not_applicable' ? ' selected' : '') + '>Trifft nicht zu</option>' +
+          '</select></div>' +
+          '<details class="requirement-explain"><summary>Was ist damit gemeint?</summary><p>' +
+            escapeHtml(req.text) + '</p><small>CRA ' + escapeHtml(req.part + ' · ' + req.key) + '</small></details>' +
+          '<div class="requirement-fields">' +
+            '<label><span>Kurz erklären</span><textarea data-req-justification rows="2" placeholder="Wie ist das bei dieser Maschine gelöst?">' +
+              escapeHtml(current.justification) + '</textarea></label>' +
+            '<label><span>Nachweis / Dokument</span><input data-req-evidence value="' + escapeHtml(current.evidence) +
+              '" placeholder="z. B. Testbericht, Zeichnung, Ticket"></label>' +
+          '</div>' +
+        '</article>';
+      }).join('');
+
+      return '<details class="requirement-group"' + ((hasOpen && groupIndex === REQUIREMENT_GROUPS.findIndex(g => g.keys.some(key => !requirementIsDocumented(getRequirementValue(key))))) ? ' open' : '') + '>' +
+        '<summary><div><strong>' + escapeHtml(group.title) + '</strong><span>' + escapeHtml(group.help) + '</span></div>' +
+        '<b>' + completeCount + ' / ' + groupRequirements.length + '</b></summary>' +
+        '<div class="requirement-group-body">' + cards + '</div>' +
+      '</details>';
     }).join('');
+
     updateCounters();
   };
 
@@ -351,6 +416,147 @@
 
     const openReporting = bundle.reportingEvents.filter(item => item.status !== 'closed').length;
     document.getElementById('summary-reporting').textContent = openReporting + ' offen';
+  };
+
+
+  const guideStepStates = () => {
+    const a = getAssessmentFromForm();
+    const requirements = readRequirements();
+    const annexChecks = machine ? annexViiChecks(a, requirements) : [];
+
+    const classificationReady = Boolean(
+      a.classification !== 'unset' &&
+      a.classificationReason &&
+      a.conformityRoute !== 'unset' &&
+      routeLooksValid(a) &&
+      (a.classification === 'standard' || a.classificationCategory)
+    );
+
+    const requirementsReady =
+      requirements.length === REQUIREMENTS.length &&
+      requirements.every(requirementIsDocumented);
+
+    const documentationReady = Boolean(
+      a.intendedPurpose &&
+      a.securityEnvironment &&
+      a.securityProperties &&
+      a.foreseeableMisuse &&
+      a.architectureDescription &&
+      a.hardwareVisualsReference &&
+      a.productionMonitoringProcess &&
+      a.appliedStandards &&
+      a.testReportsSummary &&
+      a.retentionProcess &&
+      a.secureCommissioning &&
+      a.securityChangeEffects &&
+      a.updateInstallation &&
+      a.secureDecommissioning &&
+      a.automaticUpdatesOptOut &&
+      a.integratorInformation &&
+      a.supportType
+    );
+
+    const vulnerabilityReady = Boolean(
+      a.vulnerabilityContact &&
+      a.cvdPolicy &&
+      a.cvdPolicyLocation &&
+      a.secureUpdateDistribution &&
+      a.thirdPartyComponentProcess
+    );
+
+    const conformityReady = Boolean(
+      a.ceStatus === 'marked' &&
+      a.ceMarkingLocation &&
+      declarationComplete(a) &&
+      conformityDetailsComplete(a)
+    );
+
+    const annexReady = annexChecks.length > 0 && annexChecks.every(item => item.done);
+
+    return [
+      classificationReady,
+      requirementsReady,
+      documentationReady,
+      vulnerabilityReady,
+      conformityReady,
+      annexReady
+    ];
+  };
+
+  const setGuideStep = (index, options = {}) => {
+    const safeIndex = Math.max(0, Math.min(GUIDE_STEPS.length - 1, Number(index) || 0));
+    currentGuideStep = safeIndex;
+
+    document.querySelectorAll('.cra-guide-step').forEach(section => {
+      section.classList.toggle('is-active', Number(section.dataset.guideStep) === safeIndex);
+    });
+
+    document.querySelectorAll('[data-guide-go]').forEach(button => {
+      const step = Number(button.dataset.guideGo);
+      button.classList.toggle('active', step === safeIndex);
+    });
+
+    document.getElementById('guide-prev').disabled = safeIndex === 0;
+    const next = document.getElementById('guide-next');
+    next.textContent = safeIndex === GUIDE_STEPS.length - 1 ? 'Speichern' : 'Speichern & weiter →';
+
+    const guide = GUIDE_STEPS[safeIndex];
+    document.getElementById('guide-current-title').textContent = guide.title;
+    document.getElementById('guide-current-help').textContent = guide.help;
+
+    if (options.scroll !== false) {
+      document.querySelector('.cra-guide-overview')?.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  };
+
+  const updateGuideProgress = () => {
+    if (!machine) return;
+    const states = guideStepStates();
+    const done = states.filter(Boolean).length;
+    const percent = Math.round(done / states.length * 100);
+    const open = states.length - done;
+
+    document.getElementById('guide-progress-percent').textContent = percent + ' %';
+    document.getElementById('guide-open-count').textContent =
+      open === 0 ? 'Alle 6 Schritte erledigt' : open + (open === 1 ? ' Schritt offen' : ' Schritte offen');
+    document.getElementById('guide-progress-bar').style.width = percent + '%';
+
+    document.querySelectorAll('[data-guide-go]').forEach(button => {
+      const step = Number(button.dataset.guideGo);
+      button.classList.toggle('done', states[step] === true);
+      const number = button.querySelector('span');
+      if (number) number.textContent = states[step] ? '✓' : String(step + 1);
+    });
+
+    const specialOpen =
+      (bundle.reportingEvents || []).filter(item => item.status !== 'closed').length +
+      (bundle.nonconformityEvents || []).filter(item => item.status !== 'closed').length +
+      (bundle.authorityRequests || []).filter(item => item.status !== 'closed').length;
+
+    const hub = document.getElementById('cra-special-hub');
+    if (hub) {
+      hub.classList.toggle('has-open-special', specialOpen > 0);
+      const kicker = hub.querySelector('.app-kicker');
+      if (kicker) kicker.textContent = specialOpen > 0
+        ? specialOpen + (specialOpen === 1 ? ' SONDERFALL OFFEN' : ' SONDERFÄLLE OFFEN')
+        : 'NUR WENN ETWAS PASSIERT';
+    }
+  };
+
+  const goToFirstOpenStep = () => {
+    const states = guideStepStates();
+    const firstOpen = states.findIndex(done => !done);
+    setGuideStep(firstOpen === -1 ? GUIDE_STEPS.length - 1 : firstOpen, {scroll:false});
+    updateGuideProgress();
+  };
+
+  const openSpecialCase = targetId => {
+    document.querySelectorAll('.cra-special-case').forEach(section => {
+      section.classList.toggle('is-special-active', section.id === targetId);
+    });
+    activeSpecialCase = targetId;
+    const target = document.getElementById(targetId);
+    if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
   };
 
   const toLocalInput = value => {
@@ -632,6 +838,7 @@
       renderGuidance();
       renderAnnexVii();
       updateCounters();
+      updateGuideProgress();
       return true;
     } catch (error) {
       console.error(error);
@@ -650,10 +857,33 @@
   document.getElementById('save-cra-top').addEventListener('click', saveAll);
   document.getElementById('download-sbom').addEventListener('click', downloadSbom);
 
+  document.getElementById('cra-guide-nav').addEventListener('click', event => {
+    const button = event.target.closest('[data-guide-go]');
+    if (!button) return;
+    setGuideStep(Number(button.dataset.guideGo));
+  });
+
+  document.getElementById('guide-prev').addEventListener('click', () => {
+    setGuideStep(currentGuideStep - 1);
+  });
+
+  document.getElementById('guide-next').addEventListener('click', async () => {
+    const saved = await saveAll();
+    if (!saved) return;
+    if (currentGuideStep < GUIDE_STEPS.length - 1) setGuideStep(currentGuideStep + 1);
+  });
+
+  document.getElementById('cra-special-hub').addEventListener('click', event => {
+    const button = event.target.closest('[data-special-target]');
+    if (!button) return;
+    openSpecialCase(button.dataset.specialTarget);
+  });
+
   ['classification','standardsCoverage','conformityRoute'].forEach(name => {
     form.elements[name].addEventListener('change', () => {
       renderGuidance();
       updateCounters();
+      updateGuideProgress();
     });
   });
 
@@ -670,6 +900,7 @@
     document.getElementById('cra-save-state').textContent = 'Änderungen noch nicht gespeichert';
     renderAnnexVii();
     updateCounters();
+    updateGuideProgress();
   });
 
 
@@ -728,6 +959,7 @@
       bundle = await backend.loadCraBundle(machine.id);
       authorityRequestDialog.close();
       renderAuthorityRequests();
+      updateGuideProgress();
       showToast('Behördenanfrage wurde gespeichert.');
     } catch (error) {
       console.error(error);
@@ -771,6 +1003,7 @@
       await backend.deleteAuthorityRequest(item.id);
       bundle = await backend.loadCraBundle(machine.id);
       renderAuthorityRequests();
+      updateGuideProgress();
       showToast('Offene Behördenanfrage wurde entfernt.');
     } catch (error) {
       console.error(error);
@@ -829,6 +1062,7 @@
       bundle = await backend.loadCraBundle(machine.id);
       nonconformityDialog.close();
       renderNonconformity();
+      updateGuideProgress();
       showToast('Nichtkonformitätsvorgang wurde gespeichert.');
     } catch (error) {
       console.error(error);
@@ -868,6 +1102,7 @@
       await backend.deleteNonconformityEvent(item.id);
       bundle = await backend.loadCraBundle(machine.id);
       renderNonconformity();
+      updateGuideProgress();
       showToast('Offener Nichtkonformitätsvorgang wurde entfernt.');
     } catch (error) {
       console.error(error);
@@ -939,6 +1174,7 @@
       bundle = await backend.loadCraBundle(machine.id);
       reportingDialog.close();
       renderReporting();
+      updateGuideProgress();
       showToast('Meldevorgang wurde gespeichert.');
     } catch (error) {
       console.error(error);
@@ -982,6 +1218,7 @@
       await backend.deleteReportingEvent(remove.dataset.removeReporting);
       bundle = await backend.loadCraBundle(machine.id);
       renderReporting();
+      updateGuideProgress();
       showToast('Meldevorgang wurde entfernt.');
     } catch (error) {
       console.error(error);
@@ -1037,6 +1274,7 @@
     renderAuthorityRequests();
     renderAnnexVii();
     updateCounters();
+    goToFirstOpenStep();
   };
 
   init().catch(error => {
