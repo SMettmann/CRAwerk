@@ -31,6 +31,27 @@
         (item.status !== 'fulfilled' || Boolean(item.justification || item.evidence))
       );
 
+    const classCategoryReady =
+      a.classification === 'standard' || Boolean(a.classificationCategory);
+
+    const routeDetailsReady =
+      a.conformityRoute === 'module_a' ? true :
+      ['module_bc','module_h'].includes(a.conformityRoute)
+        ? Boolean(a.notifiedBodyName && a.notifiedBodyNumber && a.certificateReference)
+        : a.conformityRoute === 'eu_certification'
+          ? Boolean(a.certificateReference)
+          : false;
+
+    const declarationReady = Boolean(
+      a.euDeclarationStatus === 'signed' &&
+      a.declarationPlace &&
+      a.declarationDate &&
+      a.declarationSigner &&
+      a.declarationFunction
+    );
+
+    const ceReady = Boolean(a.ceStatus === 'marked' && a.ceMarkingLocation);
+
     const routeValid =
       a.classification !== 'unset' &&
       a.conformityRoute !== 'unset' &&
@@ -72,11 +93,13 @@
 
     return Boolean(
       routeValid &&
+      classCategoryReady &&
+      routeDetailsReady &&
       a.classificationReason &&
       requirementsComplete &&
       annexViiReady &&
-      a.ceStatus === 'marked' &&
-      a.euDeclarationStatus === 'signed' &&
+      ceReady &&
+      declarationReady &&
       reporting.every(item => item.status === 'closed')
     );
   };
@@ -571,7 +594,7 @@
       document.getElementById('toggle-documents-complete').textContent =
         machine.documentsComplete ? 'Vollständigkeit aufheben' : 'Unterlagen vollständig';
 
-      const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner);
+      const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner && machine.supportPeriod.reason);
       document.getElementById('support-status').textContent = supportReady ? 'Festgelegt' : 'Noch offen';
 
       const craReady = craCompleteForMachine(machine);
