@@ -2402,3 +2402,67 @@ h1 span{
     font-size:13px !important;
   }
 }
+
+
+/* Authentication */
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.header-login{
+  color:#bec7c2;
+  font-size:14px;
+  font-weight:650;
+}
+
+.header-login:hover{
+  color:#fff;
+}
+
+.auth-switch{
+  margin:2px 0 0;
+  color:#65716a;
+  font-size:13px;
+  line-height:1.5;
+  text-align:center;
+}
+
+.auth-switch a{
+  color:#151b18;
+  font-weight:800;
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.auth-message{
+  gap:7px;
+}
+
+.auth-message.auth-error{
+  border-color:#ddbcbc;
+  background:#fff4f4;
+}
+
+.auth-message.auth-error strong{
+  color:#842f2f;
+}
+
+.auth-message .button{
+  margin-top:7px;
+}
+
+.login-main{
+  min-height:calc(100vh - 150px);
+}
+
+@media(max-width:760px){
+  .header-actions{
+    gap:10px;
+  }
+
+  .header-login{
+    font-size:13px;
+  }
+}
