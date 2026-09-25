@@ -31,7 +31,8 @@
           : false;
     const declarationReady = Boolean(
       a.euDeclarationStatus === 'signed' &&
-      a.declarationPlace && a.declarationDate && a.declarationSigner && a.declarationFunction
+      a.declarationPlace && a.declarationDate && a.declarationSigner && a.declarationFunction &&
+      a.declarationSignedCopyReference
     );
     const ceReady = Boolean(a.ceStatus === 'marked' && a.ceMarkingLocation);
     const routeValid =
