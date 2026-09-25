@@ -3075,3 +3075,124 @@ a{color:inherit;text-decoration:none}
     display:block!important;
   }
 }
+
+
+/* Simplified machine view */
+.machine-status-secondary{
+  display:none!important;
+}
+
+.machine-details-area{
+  display:none;
+}
+
+.machine-main.details-open .machine-details-area{
+  display:grid;
+}
+
+.machine-more-menu{
+  position:relative;
+}
+
+.machine-more-menu > summary{
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  padding:0 16px;
+  border:1px solid #c6cec8;
+  border-radius:6px;
+  color:#35413a;
+  background:#fff;
+  cursor:pointer;
+  list-style:none;
+  font-size:12px;
+  font-weight:750;
+}
+
+.machine-more-menu > summary::-webkit-details-marker{
+  display:none;
+}
+
+.machine-more-menu > div{
+  position:absolute;
+  right:0;
+  top:52px;
+  z-index:20;
+  width:220px;
+  display:grid;
+  padding:7px;
+  border:1px solid #d4dbd5;
+  border-radius:7px;
+  background:#fff;
+  box-shadow:0 14px 36px rgba(21,28,24,.16);
+}
+
+.machine-more-menu button{
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  padding:0 10px;
+  border:0;
+  border-radius:5px;
+  color:#35413a;
+  background:transparent;
+  cursor:pointer;
+  font:inherit;
+  font-size:10px;
+  font-weight:700;
+  text-align:left;
+}
+
+.machine-more-menu button:hover{
+  background:#f0f3f0;
+}
+
+.machine-more-menu button.danger{
+  color:#8a3535;
+}
+
+.machine-main:not(.details-open) .guided-next{
+  margin-bottom:0;
+}
+
+.machine-main:not(.details-open){
+  padding-bottom:120px;
+}
+
+.machine-main.details-open .guided-next{
+  margin-bottom:26px;
+}
+
+@media(max-width:720px){
+  .machine-more-menu{
+    flex:1 1 100%;
+  }
+
+  .machine-more-menu > summary{
+    justify-content:center;
+  }
+
+  .machine-more-menu > div{
+    left:0;
+    right:auto;
+    width:100%;
+  }
+
+  .machine-main.details-open .machine-details-area{
+    display:block;
+  }
+}
+
+@media print{
+  .machine-status-secondary{
+    display:none!important;
+  }
+
+  .machine-details-area{
+    display:block!important;
+  }
+
+  .machine-more-menu{
+    display:none!important;
+  }
+}
