@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>EU-Konformitätserklärung – CRAwerk</title>
+  <link rel="stylesheet" href="produktakte.css">
+</head>
+<body class="report-body">
+  <div class="report-toolbar no-print">
+    <a id="declaration-back" href="dashboard.html">← Zur CRA-Prüfung</a>
+    <button id="declaration-print" type="button">Als PDF speichern / drucken</button>
+  </div>
+
+  <main class="report-sheet" id="declaration-sheet">
+    <header class="report-head">
+      <div class="report-brand"><span>CRA</span>werk</div>
+      <div class="report-head-meta">
+        <strong>EU-KONFORMITÄTSERKLÄRUNG</strong>
+        <span>Verordnung (EU) 2024/2847</span>
+      </div>
+    </header>
+
+    <section class="report-title">
+      <div>
+        <span class="report-kicker">PRODUKT MIT DIGITALEN ELEMENTEN</span>
+        <h1 id="declaration-name">Produkt</h1>
+        <p id="declaration-identification"></p>
+      </div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>1</span><h2>Produktidentifikation</h2></div>
+      <div id="declaration-product"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>2</span><h2>Hersteller</h2></div>
+      <div id="declaration-manufacturer"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>3–5</span><h2>Verantwortung & Erklärung</h2></div>
+      <div class="report-process">
+        <p>Diese EU-Konformitätserklärung wird in alleiniger Verantwortung des Herstellers ausgestellt.</p>
+        <p>Der oben beschriebene Gegenstand der Erklärung erfüllt die einschlägigen Anforderungen der Verordnung (EU) 2024/2847 (Cyber Resilience Act) sowie die nachstehend aufgeführten weiteren einschlägigen Harmonisierungsrechtsvorschriften der Union.</p>
+      </div>
+      <div id="declaration-legislation"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>6</span><h2>Normen, Spezifikationen und Zertifizierungen</h2></div>
+      <div id="declaration-standards"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>7</span><h2>Konformitätsbewertung / notifizierte Stelle</h2></div>
+      <div id="declaration-route"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>8</span><h2>Unterzeichnung</h2></div>
+      <dl class="report-data-grid" id="declaration-signature"></dl>
+      <div style="margin-top:42px;border-top:1px solid #9ba49f;width:260px;padding-top:8px;font-size:11px;">Unterschrift</div>
+    </section>
+
+    <footer class="report-footer">
+      <div><strong>CRAwerk</strong><span id="declaration-status"></span></div>
+      <p>Die Inhalte beruhen auf den vom Hersteller in CRAwerk hinterlegten Angaben. Die Ausstellung der Erklärung und die Verantwortung für die Konformität liegen beim Hersteller.</p>
+    </footer>
+  </main>
+
+  <div class="report-error" id="declaration-error" hidden>
+    <strong>Erklärung kann nicht geladen werden.</strong>
+    <a href="dashboard.html">Zur Übersicht</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="backend.js"></script>
+  <script src="konformitaet.js"></script>
+</body>
+</html>
