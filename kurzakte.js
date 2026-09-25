@@ -11,6 +11,41 @@
 
   const yesNo = value => value === 'yes' ? 'Ja' : value === 'no' ? 'Nein' : 'Unklar';
 
+  const requirementDocumented = item =>
+    item.status !== 'open' &&
+    (item.status !== 'not_applicable' || Boolean(item.justification)) &&
+    (item.status !== 'fulfilled' || Boolean(item.justification || item.evidence));
+
+  const craCompleteForMachine = machine => {
+    const a = machine.craAssessment;
+    if (!a) return false;
+    const requirements = machine.craRequirements || [];
+    const requirementsComplete = requirements.length >= 22 && requirements.every(requirementDocumented);
+    const routeValid =
+      a.classification !== 'unset' &&
+      a.conformityRoute !== 'unset' &&
+      !(a.classification === 'important_i' && a.conformityRoute === 'module_a' && a.standardsCoverage !== 'full') &&
+      !(['important_ii','critical'].includes(a.classification) && a.conformityRoute === 'module_a');
+    const annexReady = Boolean(
+      a.classificationReason &&
+      a.intendedPurpose && a.securityEnvironment && a.securityProperties && a.foreseeableMisuse &&
+      a.hardwareVisualsReference && a.architectureDescription && a.productionMonitoringProcess &&
+      a.appliedStandards && a.testReportsSummary &&
+      a.vulnerabilityContact && a.cvdPolicy && a.secureUpdateDistribution &&
+      a.secureCommissioning && a.securityChangeEffects && a.updateInstallation &&
+      a.secureDecommissioning && a.automaticUpdatesOptOut && a.supportType &&
+      machine.riskReviewComplete &&
+      machine.supportPeriod.startDate && machine.supportPeriod.endDate &&
+      machine.supportPeriod.owner && machine.supportPeriod.reason &&
+      (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length))
+    );
+    return Boolean(
+      routeValid && requirementsComplete && annexReady &&
+      a.ceStatus === 'marked' && a.euDeclarationStatus === 'signed' &&
+      (machine.craReportingEvents || []).every(item => item.status === 'closed')
+    );
+  };
+
   const tasksForMachine = machine => {
     const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
     const noOpenUpdates = machine.updateItems.every(item => item.status === 'done');
@@ -23,7 +58,8 @@
       {title:'Risikoprüfung abschließen', text:'Risiken prüfen, offene Maßnahmen erledigen und die Prüfung anschließend abschließen.', done:machine.riskReviewComplete && noOpenRisks},
       {title:'Sicherheitslücken & Updates bearbeiten', text:'Internen Ablauf festlegen und bekannte Sicherheitsprobleme bis zur Erledigung nachverfolgen.', done:processReady && noOpenUpdates},
       {title:'Unterlagen & Nachweise zusammenstellen', text:'Vorhandene Unterlagen der Maschine zuordnen und den Stand als vollständig bestätigen.', done:machine.documentsComplete},
-      {title:'Unterstützungszeitraum festlegen', text:'Festhalten, wie lange die Maschine sicherheitsbezogen unterstützt wird.', done:supportReady}
+      {title:'Unterstützungszeitraum festlegen', text:'Festhalten, wie lange die Maschine sicherheitsbezogen unterstützt wird.', done:supportReady},
+      {title:'CRA-Prüfung & Konformitätsabschluss', text:'Einstufung, Anhang I, technische Dokumentation, Meldeprozess sowie EU-Erklärung und CE abschließen.', done:craCompleteForMachine(machine)}
     ];
   };
 
@@ -78,6 +114,14 @@
       [company.contact_name, company.email, company.phone].filter(Boolean)
         .map(value => '<span>' + escapeHtml(value) + '</span>').join('') + '</div>';
 
+    const classificationLabels = {
+      unset:'Offen',
+      standard:'Standardprodukt',
+      important_i:'Wichtig · Klasse I',
+      important_ii:'Wichtig · Klasse II',
+      critical:'Kritisch'
+    };
+
     const summary = [
       ['Modell / Baureihe', machine.model || '–'],
       ['Produktnummer', machine.productNumber || '–'],
@@ -86,7 +130,9 @@
       ['Netzwerk / Fernwartung', yesNo(machine.connected)],
       ['Softwarestände', String(machine.softwareItems.length)],
       ['Digitale Bauteile', String(machine.components.length)],
-      ['Unterstützung bis', formatDate(machine.supportPeriod.endDate)]
+      ['Unterstützung bis', formatDate(machine.supportPeriod.endDate)],
+      ['CRA-Einstufung', machine.craAssessment ? (classificationLabels[machine.craAssessment.classification] || 'Offen') : 'Offen'],
+      ['Konformitätsabschluss', craCompleteForMachine(machine) ? 'Abgeschlossen' : 'Offen']
     ];
     document.getElementById('short-summary').innerHTML = summary.map(([label,value]) =>
       '<div class="short-stat"><span>' + escapeHtml(label) + '</span><strong>' + escapeHtml(value) + '</strong></div>'
