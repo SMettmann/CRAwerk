@@ -66,7 +66,7 @@
       'classification','classificationCategory','classificationReason','standardsCoverage','conformityRoute',
       'intendedPurpose','securityEnvironment','securityProperties','foreseeableMisuse','architectureDescription',
       'hardwareVisualsReference','productionMonitoringProcess','appliedStandards','testReportsSummary',
-      'vulnerabilityContact','cvdPolicy','secureUpdateDistribution','secureCommissioning','securityChangeEffects',
+      'vulnerabilityContact','cvdPolicy','cvdPolicyLocation','secureUpdateDistribution','secureCommissioning','securityChangeEffects',
       'updateInstallation','secureDecommissioning','automaticUpdatesOptOut','integratorInformation','supportType',
       'declarationUrl','ceStatus','ceMarkingLocation','euDeclarationStatus','declarationPlace','declarationDate',
       'declarationSigner','declarationFunction','declarationSignedCopyReference','notifiedBodyName','notifiedBodyNumber','certificateReference',
@@ -94,6 +94,7 @@
       testReportsSummary:a.testReportsSummary || '',
       vulnerabilityContact:a.vulnerabilityContact || '',
       cvdPolicy:a.cvdPolicy || '',
+      cvdPolicyLocation:a.cvdPolicyLocation || '',
       secureUpdateDistribution:a.secureUpdateDistribution || '',
       secureCommissioning:a.secureCommissioning || '',
       securityChangeEffects:a.securityChangeEffects || '',
@@ -274,7 +275,7 @@
       {
         title:'2. Konzeption, Entwicklung, Produktion & Schwachstellenverfahren',
         done:Boolean(assessment.architectureDescription && assessment.productionMonitoringProcess &&
-          assessment.vulnerabilityContact && assessment.cvdPolicy && assessment.secureUpdateDistribution &&
+          assessment.vulnerabilityContact && assessment.cvdPolicy && assessment.cvdPolicyLocation && assessment.secureUpdateDistribution &&
           (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length)))
       },
       {
