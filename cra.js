@@ -4,12 +4,15 @@
   const form = document.getElementById('cra-form');
   const reportingDialog = document.getElementById('reporting-dialog');
   const reportingForm = document.getElementById('reporting-form');
+  const nonconformityDialog = document.getElementById('nonconformity-dialog');
+  const nonconformityForm = document.getElementById('nonconformity-form');
   const machineId = new URLSearchParams(location.search).get('id');
 
   let machine = null;
   let company = null;
-  let bundle = {assessment:null, requirements:[], reportingEvents:[]};
+  let bundle = {assessment:null, requirements:[], reportingEvents:[], nonconformityEvents:[]};
   let editingReportingId = null;
+  let editingNonconformityId = null;
 
   const REQUIREMENTS = [
     {key:'I-1', part:'Teil I', title:'Angemessenes Cybersicherheitsniveau', text:'Das Produkt wird auf Grundlage der Risiken mit einem angemessenen Cybersicherheitsniveau konzipiert, entwickelt und hergestellt.'},
@@ -435,6 +438,57 @@
     updateCounters();
   };
 
+
+  const nonconformitySubjectLabels = {
+    product:'Produkt',
+    process:'Herstellerprozess',
+    both:'Produkt und Herstellerprozess'
+  };
+
+  const nonconformityDispositionLabels = {
+    open:'Entscheidung offen',
+    brought_into_conformity:'Konformität wiederhergestellt',
+    withdrawn:'Vom Markt genommen',
+    recalled:'Zurückgerufen'
+  };
+
+  const renderNonconformity = () => {
+    const root = document.getElementById('nonconformity-list');
+    const items = bundle.nonconformityEvents || [];
+
+    if (!items.length) {
+      root.innerHTML =
+        '<div class="module-empty">Kein Nichtkonformitätsvorgang dokumentiert. Ein Vorgang ist nur nötig, wenn eine Nichtkonformität bekannt wird oder vermutet wird.</div>';
+      return;
+    }
+
+    root.innerHTML = items.map(item =>
+      '<article class="reporting-card">' +
+        '<div class="reporting-head"><div>' +
+          '<span>' + escapeHtml(nonconformitySubjectLabels[item.subjectType] || item.subjectType) + '</span>' +
+          '<strong>' + escapeHtml(item.title) + '</strong>' +
+        '</div><span class="risk-pill ' + (item.status === 'closed' ? 'done' : 'open') + '">' +
+          (item.status === 'closed' ? 'Abgeschlossen' : 'Offen') +
+        '</span></div>' +
+        '<p><strong>Festgestellt:</strong> ' + escapeHtml(formatDateTime(item.detectedAt)) +
+          (item.affectedVersion ? '<br><strong>Betroffen:</strong> ' + escapeHtml(item.affectedVersion) : '') +
+          '<br><strong>Nichtkonformität:</strong> ' + escapeHtml(item.description) +
+          (item.correctiveAction ? '<br><strong>Korrekturmaßnahme:</strong> ' + escapeHtml(item.correctiveAction) : '') +
+          '<br><strong>Entscheidung:</strong> ' + escapeHtml(nonconformityDispositionLabels[item.disposition] || item.disposition) +
+          (item.actionAt ? '<br><strong>Umgesetzt:</strong> ' + escapeHtml(formatDateTime(item.actionAt)) : '') +
+          (item.evidenceReference ? '<br><strong>Nachweis:</strong> ' + escapeHtml(item.evidenceReference) : '') +
+          (item.notes ? '<br><strong>Notiz:</strong> ' + escapeHtml(item.notes) : '') +
+        '</p>' +
+        '<div class="risk-actions"><div class="risk-action-links">' +
+          '<button type="button" class="text-button" data-edit-nonconformity="' + item.id + '">Bearbeiten</button>' +
+        '</div>' +
+        (item.status === 'closed' ? '' :
+          '<button type="button" class="item-remove" data-remove-nonconformity="' + item.id + '" aria-label="Offenen Vorgang löschen">×</button>') +
+        '</div>' +
+      '</article>'
+    ).join('');
+  };
+
   const downloadSbom = () => {
     if (!machine.softwareItems.length) {
       showToast('Keine Softwarekomponente für die SBOM erfasst.');
@@ -568,6 +622,104 @@
     document.getElementById('cra-save-state').textContent = 'Änderungen noch nicht gespeichert';
     renderAnnexVii();
     updateCounters();
+  });
+
+
+  document.getElementById('add-nonconformity').addEventListener('click', () => {
+    editingNonconformityId = null;
+    nonconformityForm.reset();
+    nonconformityForm.elements.subjectType.value = 'product';
+    nonconformityForm.elements.disposition.value = 'open';
+    nonconformityForm.elements.status.value = 'open';
+    nonconformityForm.elements.detectedAt.value = toLocalInput(new Date().toISOString());
+    document.getElementById('nonconformity-dialog-title').textContent = 'Vorgang anlegen';
+    nonconformityDialog.showModal();
+  });
+
+  document.getElementById('nonconformity-close').addEventListener('click', () => nonconformityDialog.close());
+  document.getElementById('nonconformity-cancel').addEventListener('click', () => nonconformityDialog.close());
+
+  nonconformityForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const data = new FormData(nonconformityForm);
+    const value = {
+      subjectType:data.get('subjectType'),
+      title:data.get('title').trim(),
+      detectedAt:toIsoOrNull(data.get('detectedAt')),
+      affectedVersion:data.get('affectedVersion').trim(),
+      description:data.get('description').trim(),
+      correctiveAction:data.get('correctiveAction').trim(),
+      disposition:data.get('disposition'),
+      actionAt:toIsoOrNull(data.get('actionAt')),
+      evidenceReference:data.get('evidenceReference').trim(),
+      notes:data.get('notes').trim(),
+      status:data.get('status')
+    };
+
+    if (value.status === 'closed') {
+      if (value.disposition === 'open') {
+        showToast('Zum Abschließen bitte festlegen, wie mit der Nichtkonformität umgegangen wurde.');
+        return;
+      }
+      if (!value.correctiveAction || !value.actionAt || !value.evidenceReference) {
+        showToast('Zum Abschließen werden Korrekturmaßnahme, Umsetzungsdatum und Nachweis benötigt.');
+        return;
+      }
+    }
+
+    try {
+      if (editingNonconformityId) {
+        await backend.updateNonconformityEvent(editingNonconformityId, value);
+      } else {
+        await backend.addNonconformityEvent(machine.id, value);
+      }
+      bundle = await backend.loadCraBundle(machine.id);
+      nonconformityDialog.close();
+      renderNonconformity();
+      showToast('Nichtkonformitätsvorgang wurde gespeichert.');
+    } catch (error) {
+      console.error(error);
+      showToast('Nichtkonformitätsvorgang konnte nicht gespeichert werden.');
+    }
+  });
+
+  document.getElementById('nonconformity-list').addEventListener('click', async event => {
+    const edit = event.target.closest('[data-edit-nonconformity]');
+    if (edit) {
+      const item = (bundle.nonconformityEvents || []).find(row => row.id === edit.dataset.editNonconformity);
+      if (!item) return;
+      editingNonconformityId = item.id;
+      nonconformityForm.elements.subjectType.value = item.subjectType;
+      nonconformityForm.elements.title.value = item.title;
+      nonconformityForm.elements.detectedAt.value = toLocalInput(item.detectedAt);
+      nonconformityForm.elements.affectedVersion.value = item.affectedVersion || '';
+      nonconformityForm.elements.description.value = item.description || '';
+      nonconformityForm.elements.correctiveAction.value = item.correctiveAction || '';
+      nonconformityForm.elements.disposition.value = item.disposition || 'open';
+      nonconformityForm.elements.actionAt.value = toLocalInput(item.actionAt);
+      nonconformityForm.elements.evidenceReference.value = item.evidenceReference || '';
+      nonconformityForm.elements.notes.value = item.notes || '';
+      nonconformityForm.elements.status.value = item.status || 'open';
+      document.getElementById('nonconformity-dialog-title').textContent = 'Vorgang bearbeiten';
+      nonconformityDialog.showModal();
+      return;
+    }
+
+    const remove = event.target.closest('[data-remove-nonconformity]');
+    if (!remove) return;
+
+    const item = (bundle.nonconformityEvents || []).find(row => row.id === remove.dataset.removeNonconformity);
+    if (!item || item.status === 'closed') return;
+
+    try {
+      await backend.deleteNonconformityEvent(item.id);
+      bundle = await backend.loadCraBundle(machine.id);
+      renderNonconformity();
+      showToast('Offener Nichtkonformitätsvorgang wurde entfernt.');
+    } catch (error) {
+      console.error(error);
+      showToast('Vorgang konnte nicht entfernt werden.');
+    }
   });
 
   document.getElementById('add-reporting-event').addEventListener('click', () => {
@@ -728,6 +880,7 @@
     renderRequirements();
     renderGuidance();
     renderReporting();
+    renderNonconformity();
     renderAnnexVii();
     updateCounters();
   };
