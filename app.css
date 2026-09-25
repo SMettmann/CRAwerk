@@ -2463,3 +2463,615 @@ a{color:inherit;text-decoration:none}
     display:none!important;
   }
 }
+
+
+/* CRA simple guided mode */
+.cra-legal-summary{
+  display:none!important;
+}
+
+.cra-guide-overview{
+  margin-bottom:18px;
+  padding:24px;
+  border:1px solid #d5dcd6;
+  border-radius:10px;
+  background:#fff;
+}
+
+.cra-guide-progress{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:28px;
+}
+
+.cra-guide-progress > div:first-child{
+  min-width:0;
+}
+
+.cra-guide-progress strong{
+  display:block;
+}
+
+#guide-current-title{
+  margin-bottom:7px;
+  font-size:25px;
+  letter-spacing:-.035em;
+}
+
+#guide-current-help{
+  max-width:720px;
+  margin:0;
+  color:#68746d;
+  font-size:12px;
+  line-height:1.6;
+}
+
+.cra-guide-progress-number{
+  flex:0 0 auto;
+  text-align:right;
+}
+
+.cra-guide-progress-number strong{
+  font-size:30px;
+  letter-spacing:-.04em;
+}
+
+.cra-guide-progress-number span{
+  display:block;
+  margin-top:4px;
+  color:#7b877f;
+  font-size:10px;
+}
+
+.cra-guide-bar{
+  height:7px;
+  margin:20px 0 18px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#e4e9e5;
+}
+
+.cra-guide-bar span{
+  display:block;
+  width:0;
+  height:100%;
+  border-radius:inherit;
+  background:#17201b;
+  transition:width .2s ease;
+}
+
+.cra-guide-nav{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:7px;
+}
+
+.cra-guide-nav button{
+  min-width:0;
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border:1px solid #d9dfda;
+  border-radius:7px;
+  color:#68746d;
+  background:#f8faf8;
+  cursor:pointer;
+  font-size:9px;
+  font-weight:750;
+  line-height:1.25;
+  text-align:left;
+}
+
+.cra-guide-nav button span{
+  width:23px;
+  height:23px;
+  flex:0 0 23px;
+  display:grid;
+  place-items:center;
+  border:1px solid #ccd4ce;
+  border-radius:50%;
+  color:#6e7972;
+  background:#fff;
+  font-size:9px;
+}
+
+.cra-guide-nav button.active{
+  color:#fff;
+  border-color:#17201b;
+  background:#17201b;
+}
+
+.cra-guide-nav button.active span{
+  color:#17201b;
+  border-color:#fff;
+  background:#fff;
+}
+
+.cra-guide-nav button.done:not(.active){
+  color:#3f5d49;
+  border-color:#ccdace;
+  background:#eef4ef;
+}
+
+.cra-guide-nav button.done:not(.active) span{
+  color:#fff;
+  border-color:#304b39;
+  background:#304b39;
+}
+
+.cra-guide-step{
+  display:none;
+}
+
+.cra-guide-step.is-active{
+  display:block;
+  animation:craStepIn .16s ease;
+}
+
+@keyframes craStepIn{
+  from{opacity:.45;transform:translateY(5px)}
+  to{opacity:1;transform:none}
+}
+
+.cra-special-case{
+  display:none;
+}
+
+.cra-special-case.is-special-active{
+  display:block;
+}
+
+.cra-special-hub{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  margin:14px 0;
+  padding:16px 18px;
+  border:1px dashed #bdc7c0;
+  border-radius:8px;
+  background:#f7f9f7;
+}
+
+.cra-special-hub[hidden]{
+  display:none!important;
+}
+
+.cra-special-hub h2{
+  margin:0 0 5px;
+  font-size:16px;
+  letter-spacing:-.02em;
+}
+
+.cra-special-hub p{
+  margin:0;
+  color:#748078;
+  font-size:10px;
+  line-height:1.5;
+}
+
+.cra-special-hub.has-open-special{
+  border-style:solid;
+  border-color:#d4b98e;
+  background:#fbf7ef;
+}
+
+.cra-special-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:6px;
+}
+
+.cra-special-actions button{
+  min-height:34px;
+  padding:0 10px;
+  border:1px solid #cdd5cf;
+  border-radius:999px;
+  color:#536059;
+  background:#fff;
+  cursor:pointer;
+  font-size:9px;
+  font-weight:750;
+}
+
+.cra-special-actions button:hover{
+  border-color:#818d85;
+}
+
+.cra-output-menu{
+  position:relative;
+}
+
+.cra-output-menu > summary{
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  padding:0 16px;
+  border:1px solid #c6cec8;
+  border-radius:6px;
+  color:#35413a;
+  background:#fff;
+  cursor:pointer;
+  list-style:none;
+  font-size:12px;
+  font-weight:750;
+}
+
+.cra-output-menu > summary::-webkit-details-marker{
+  display:none;
+}
+
+.cra-output-menu > div{
+  position:absolute;
+  right:0;
+  top:52px;
+  z-index:12;
+  width:210px;
+  display:grid;
+  padding:7px;
+  border:1px solid #d4dbd5;
+  border-radius:7px;
+  background:#fff;
+  box-shadow:0 14px 36px rgba(21,28,24,.15);
+}
+
+.cra-output-menu a,
+.cra-output-menu button{
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  padding:0 10px;
+  border:0;
+  border-radius:5px;
+  color:#35413a;
+  background:transparent;
+  cursor:pointer;
+  font:inherit;
+  font-size:10px;
+  font-weight:700;
+  text-align:left;
+}
+
+.cra-output-menu a:hover,
+.cra-output-menu button:hover{
+  background:#f0f3f0;
+}
+
+.requirement-group{
+  overflow:hidden;
+  border:1px solid #d8ded9;
+  border-radius:8px;
+  background:#fbfcfb;
+}
+
+.requirement-group > summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:16px 17px;
+  cursor:pointer;
+  list-style:none;
+}
+
+.requirement-group > summary::-webkit-details-marker{
+  display:none;
+}
+
+.requirement-group > summary > div{
+  min-width:0;
+}
+
+.requirement-group > summary strong,
+.requirement-group > summary span{
+  display:block;
+}
+
+.requirement-group > summary strong{
+  margin-bottom:4px;
+  font-size:13px;
+}
+
+.requirement-group > summary span{
+  color:#77837b;
+  font-size:10px;
+}
+
+.requirement-group > summary b{
+  flex:0 0 auto;
+  padding:5px 8px;
+  border-radius:999px;
+  color:#526058;
+  background:#e9eeea;
+  font-size:9px;
+}
+
+.requirement-group[open] > summary{
+  border-bottom:1px solid #e0e5e1;
+  background:#f4f7f4;
+}
+
+.requirement-group-body{
+  display:grid;
+  gap:8px;
+  padding:12px;
+}
+
+.requirement-card{
+  background:#fff;
+}
+
+.requirement-head strong{
+  font-size:13px;
+  line-height:1.35;
+}
+
+.requirement-explain{
+  margin:10px 0 12px;
+  color:#657169;
+  font-size:10px;
+}
+
+.requirement-explain summary{
+  width:max-content;
+  cursor:pointer;
+  color:#68766e;
+  font-weight:750;
+}
+
+.requirement-explain p{
+  margin:8px 0 3px;
+  line-height:1.55;
+}
+
+.requirement-explain small{
+  color:#929b95;
+  font-size:8px;
+}
+
+.cra-original-grid{
+  display:none!important;
+}
+
+.cra-field-group{
+  margin-top:10px;
+  overflow:hidden;
+  border:1px solid #d8ded9;
+  border-radius:8px;
+  background:#fbfcfb;
+}
+
+.cra-field-group > summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:17px 18px;
+  cursor:pointer;
+  list-style:none;
+}
+
+.cra-field-group > summary::-webkit-details-marker{
+  display:none;
+}
+
+.cra-field-group > summary strong,
+.cra-field-group > summary span{
+  display:block;
+}
+
+.cra-field-group > summary strong{
+  margin-bottom:4px;
+  font-size:13px;
+}
+
+.cra-field-group > summary span{
+  color:#77837b;
+  font-size:10px;
+}
+
+.cra-field-group > summary b{
+  color:#7e8982;
+  font-size:9px;
+}
+
+.cra-field-group[open] > summary{
+  border-bottom:1px solid #e0e5e1;
+  background:#f4f7f4;
+}
+
+.cra-field-group-body{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  padding:18px;
+}
+
+.cra-field-group-body label{
+  display:grid;
+  gap:7px;
+}
+
+.cra-field-group-body label.cra-span-2{
+  grid-column:1 / -1;
+}
+
+.cra-field-group-body label > span{
+  color:#445049;
+  font-size:10px;
+  font-weight:750;
+}
+
+.cra-field-group-body input,
+.cra-field-group-body select,
+.cra-field-group-body textarea{
+  width:100%;
+  padding:11px 12px;
+  border:1px solid #c9d1cb;
+  border-radius:6px;
+  outline:0;
+  color:#17201b;
+  background:#fff;
+  font:inherit;
+  font-size:11px;
+  line-height:1.5;
+}
+
+.cra-field-group-body input,
+.cra-field-group-body select{
+  min-height:44px;
+}
+
+.cra-field-group-body textarea{
+  resize:vertical;
+}
+
+.cra-field-group-body input:focus,
+.cra-field-group-body select:focus,
+.cra-field-group-body textarea:focus{
+  border-color:#68756d;
+  box-shadow:0 0 0 3px rgba(31,41,35,.08);
+}
+
+.cra-field-group[hidden]{
+  display:none!important;
+}
+
+.cra-guide-controls{
+  position:sticky;
+  bottom:10px;
+  z-index:8;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin:18px 0 10px;
+  padding:10px;
+  border:1px solid #26322c;
+  border-radius:9px;
+  color:#dfe6e1;
+  background:#17201b;
+  box-shadow:0 15px 36px rgba(17,24,20,.2);
+}
+
+.cra-guide-controls > div{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.cra-guide-controls > div > span{
+  margin-right:8px;
+  color:#aab5ae;
+  font-size:9px;
+}
+
+.cra-guide-controls .app-btn-ghost{
+  color:#dce4df;
+  border-color:#49564f;
+}
+
+.cra-guide-controls .app-btn-ghost:disabled{
+  opacity:.35;
+  cursor:default;
+}
+
+.status-note{
+  color:#7d8981;
+  font-size:9px;
+  font-weight:700;
+}
+
+@media(max-width:980px){
+  .cra-guide-nav{
+    display:flex;
+    overflow-x:auto;
+    padding-bottom:4px;
+  }
+
+  .cra-guide-nav button{
+    min-width:155px;
+  }
+}
+
+@media(max-width:720px){
+  .cra-guide-overview{
+    padding:18px 16px;
+  }
+
+  .cra-guide-progress{
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .cra-guide-progress-number{
+    text-align:left;
+  }
+
+  .cra-special-hub{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .cra-special-actions{
+    justify-content:flex-start;
+  }
+
+  .cra-field-group-body{
+    grid-template-columns:1fr;
+    padding:14px;
+  }
+
+  .cra-field-group-body label.cra-span-2{
+    grid-column:auto;
+  }
+
+  .cra-guide-controls{
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .cra-guide-controls > div{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .cra-guide-controls > div > span{
+    grid-column:1 / -1;
+  }
+
+  .cra-guide-controls .app-btn{
+    width:100%;
+  }
+
+  .cra-output-menu{
+    width:100%;
+  }
+
+  .cra-output-menu > summary{
+    justify-content:center;
+  }
+
+  .cra-output-menu > div{
+    left:0;
+    right:auto;
+    width:100%;
+  }
+}
+
+@media print{
+  .cra-guide-overview,
+  .cra-special-hub,
+  .cra-guide-controls,
+  .cra-output-menu{
+    display:none!important;
+  }
+
+  .cra-guide-step{
+    display:block!important;
+  }
+}
