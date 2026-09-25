@@ -12,7 +12,7 @@
     <a class="brand" href="index.html" aria-label="CRAwerk Startseite">
       <span class="brand-mark">CRA</span><span class="brand-word">werk</span>
     </a>
-    <a class="register-back" href="index.html">Zurück zur Startseite</a>
+    <a class="register-back" href="login.html">Schon registriert? Anmelden</a>
   </header>
 
   <main class="register-main">
@@ -97,15 +97,13 @@
         <button class="button button-dark register-submit" type="submit">CRAwerk-Konto anlegen</button>
 
         <div class="register-form-note">
-          <strong>Noch keine Zahlung an dieser Stelle.</strong>
-          <span>Der technische Registrierungs- und Zahlungsprozess wird mit der Anwendung verbunden.</span>
+          <strong>Die Kontoanlage ist jetzt echt.</strong>
+          <span>Nach der Registrierung bestätigen Sie Ihre E-Mail-Adresse. Eine Zahlung wird an dieser Stelle noch nicht ausgelöst.</span>
         </div>
 
-        <div class="register-message" id="register-message" hidden>
-          <strong>Frontend-Zugang bereit.</strong>
-          <span>Die echte Kontoanlage kommt später mit Supabase. Bis dahin können Sie den CRAwerk-Arbeitsbereich schon vollständig testen.</span>
-          <a class="button button-dark" href="dashboard.html">Arbeitsbereich öffnen</a>
-        </div>
+        <div class="register-message auth-message" id="register-message" hidden></div>
+
+        <p class="auth-switch">Schon ein Konto? <a href="login.html">Anmelden</a></p>
       </form>
     </section>
   </main>
@@ -116,6 +114,8 @@
     <a href="rechtliches.html">Rechtliche Hinweise</a>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
   <script src="register.js"></script>
 </body>
 </html>
