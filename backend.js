@@ -371,9 +371,45 @@
     return data;
   };
 
+  const isSystemAdmin = async () => {
+    const user = await api.getUser();
+    if (!user) return false;
+    const { data, error } = await db
+      .from('system_admins')
+      .select('user_id')
+      .eq('user_id', user.id)
+      .maybeSingle();
+    if (error) throw error;
+    return Boolean(data);
+  };
+
+  const adminOverview = async () => {
+    const { data, error } = await db.rpc('admin_overview');
+    if (error) throw error;
+    return Array.isArray(data) ? (data[0] || null) : data;
+  };
+
+  const adminCompanies = async () => {
+    const { data, error } = await db.rpc('admin_company_list');
+    if (error) throw error;
+    return data || [];
+  };
+
+  const adminSetCompanyStatus = async (companyId, status) => {
+    const { error } = await db.rpc('admin_set_company_status', {
+      target_company_id:companyId,
+      new_status:status
+    });
+    if (error) throw error;
+  };
+
   window.CRAwerkBackend = {
     currentCompany,
     updateCompany,
+    isSystemAdmin,
+    adminOverview,
+    adminCompanies,
+    adminSetCompanyStatus,
     loadMachines,
     loadMachine,
     createMachine,
