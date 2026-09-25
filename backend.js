@@ -62,6 +62,7 @@
     const updateProcess = one(row.update_processes);
     const support = one(row.support_periods);
     const craAssessment = one(row.cra_assessments);
+    const company = one(row.companies);
     return {
       id:row.id,
       name:row.name,
@@ -76,6 +77,15 @@
       riskReviewComplete:row.risk_review_complete === true,
       documentsComplete:row.documents_complete === true,
       createdAt:row.created_at,
+      company:company ? {
+        name:company.name || '',
+        street:company.street || '',
+        zip:company.zip || '',
+        city:company.city || '',
+        country:company.country || '',
+        email:company.email || '',
+        phone:company.phone || ''
+      } : null,
       softwareItems:(row.software_items || []).map(mapSoftware),
       components:(row.components || []).map(mapComponent),
       riskItems:(row.risk_items || []).map(mapRisk),
@@ -105,6 +115,7 @@
 
   const machineSelect = [
     '*',
+    'companies(name,street,zip,city,country,email,phone)',
     'software_items(*)',
     'components(*)',
     'risk_items(*)',
