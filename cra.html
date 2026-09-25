@@ -287,10 +287,22 @@
         <div class="reporting-list" id="nonconformity-list"></div>
       </section>
 
+      <section class="cra-section" id="cra-authority">
+        <div class="cra-section-head">
+          <div>
+            <span class="app-kicker">07 · MARKTÜBERWACHUNGSBEHÖRDE</span>
+            <h2>Behördenanfragen & Mitwirkung</h2>
+            <p>Begründete Anfragen, übermittelte Informationen und Unterlagen sowie angeforderte Maßnahmen nachvollziehbar dokumentieren.</p>
+          </div>
+          <button class="app-btn app-btn-ghost" id="add-authority-request" type="button">+ Anfrage</button>
+        </div>
+        <div class="reporting-list" id="authority-request-list"></div>
+      </section>
+
       <section class="cra-section" id="cra-conformity">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">07 · KONFORMITÄTSABSCHLUSS</span>
+            <span class="app-kicker">08 · KONFORMITÄTSABSCHLUSS</span>
             <h2>EU-Erklärung & CE</h2>
             <p>Die Erklärung wird aus den hinterlegten Daten erzeugt. Die Herstellerverantwortung bleibt beim Hersteller.</p>
           </div>
@@ -358,7 +370,7 @@
       <section class="cra-section" id="cra-annex-vii">
         <div class="cra-section-head">
           <div>
-            <span class="app-kicker">08 · ANHANG VII</span>
+            <span class="app-kicker">09 · ANHANG VII</span>
             <h2>Technische Dokumentation – Vollständigkeitscheck</h2>
             <p>CRAwerk prüft nur, ob die vorgeschriebenen Dokumentationsbereiche belegt sind. Es bewertet nicht die technische Qualität des Inhalts.</p>
           </div>
@@ -577,6 +589,103 @@
 
       <div class="dialog-actions">
         <button class="app-btn app-btn-ghost" id="nonconformity-cancel" type="button">Abbrechen</button>
+        <button class="app-btn app-btn-dark" type="submit">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="machine-dialog small-dialog" id="authority-request-dialog">
+    <form class="machine-form" id="authority-request-form" method="dialog">
+      <div class="dialog-head">
+        <div>
+          <span class="app-kicker">MARKTÜBERWACHUNGSBEHÖRDE</span>
+          <h2 id="authority-request-dialog-title">Behördenanfrage anlegen</h2>
+          <p>Nur den realen Vorgang dokumentieren. CRAwerk setzt keine eigene Antwortfrist.</p>
+        </div>
+        <button class="dialog-close" id="authority-request-close" type="button" aria-label="Schließen">×</button>
+      </div>
+
+      <label>
+        <span>Behörde *</span>
+        <input name="authorityName" required placeholder="Name der Marktüberwachungsbehörde">
+      </label>
+
+      <label>
+        <span>Aktenzeichen / Referenz</span>
+        <input name="referenceNumber">
+      </label>
+
+      <label>
+        <span>Anfrage eingegangen am *</span>
+        <input name="receivedAt" type="datetime-local" required>
+      </label>
+
+      <label>
+        <span>Sprache der Behörde</span>
+        <input name="authorityLanguage" placeholder="z. B. Deutsch">
+      </label>
+
+      <label>
+        <span>Begründete Anfrage / Gegenstand *</span>
+        <textarea name="requestSummary" rows="4" required placeholder="Was verlangt die Behörde und worauf bezieht sich die Anfrage?"></textarea>
+      </label>
+
+      <label>
+        <span>Verlangte Informationen / Unterlagen</span>
+        <textarea name="requestedDocuments" rows="4" placeholder="z. B. technische Dokumentation, EU-Konformitätserklärung, Prüfberichte ..."></textarea>
+      </label>
+
+      <fieldset>
+        <legend>SBOM ausdrücklich verlangt?</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="sbomRequested" value="no" checked><span>Nein</span></label>
+          <label><input type="radio" name="sbomRequested" value="yes"><span>Ja</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Mitwirkung an Maßnahmen verlangt?</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="cooperationRequested" value="no" checked><span>Nein</span></label>
+          <label><input type="radio" name="cooperationRequested" value="yes"><span>Ja</span></label>
+        </div>
+      </fieldset>
+
+      <label>
+        <span>Mitwirkungs- / Risikobeseitigungsmaßnahmen</span>
+        <textarea name="cooperationMeasures" rows="4" placeholder="Nur ausfüllen, wenn die Behörde Maßnahmen verlangt hat"></textarea>
+      </label>
+
+      <label>
+        <span>Antwort / Unterlagen übermittelt am</span>
+        <input name="responseAt" type="datetime-local">
+      </label>
+
+      <label>
+        <span>Was wurde übermittelt?</span>
+        <textarea name="transmittedInformation" rows="4" placeholder="Informationen, Unterlagen, SBOM, Stellungnahme ..."></textarea>
+      </label>
+
+      <label>
+        <span>Nachweis der Übermittlung</span>
+        <input name="evidenceReference" placeholder="E-Mail, Behördenportal, Ticket, Dokument-ID ...">
+      </label>
+
+      <label>
+        <span>Notizen</span>
+        <textarea name="notes" rows="3"></textarea>
+      </label>
+
+      <fieldset>
+        <legend>Status</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="status" value="open" checked><span>Offen</span></label>
+          <label><input type="radio" name="status" value="closed"><span>Erledigt</span></label>
+        </div>
+      </fieldset>
+
+      <div class="dialog-actions">
+        <button class="app-btn app-btn-ghost" id="authority-request-cancel" type="button">Abbrechen</button>
         <button class="app-btn app-btn-dark" type="submit">Speichern</button>
       </div>
     </form>
