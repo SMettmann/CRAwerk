@@ -110,7 +110,8 @@
         evidence:item.evidence || ''
       })),
       craReportingEvents:(row.cra_reporting_events || []).map(mapReportingEvent),
-      craNonconformityEvents:(row.cra_nonconformity_events || []).map(mapNonconformityEvent)
+      craNonconformityEvents:(row.cra_nonconformity_events || []).map(mapNonconformityEvent),
+      craAuthorityRequests:(row.cra_authority_requests || []).map(mapAuthorityRequest)
     };
   };
 
@@ -127,7 +128,8 @@
     'cra_assessments(*)',
     'cra_requirements(*)',
     'cra_reporting_events(*)',
-    'cra_nonconformity_events(*)'
+    'cra_nonconformity_events(*)',
+    'cra_authority_requests(*)'
   ].join(',');
 
   const currentCompany = async () => api.ensureCompany();
@@ -538,6 +540,25 @@
     otherUnionLegislation:row.other_union_legislation || ''
   }) : null;
 
+  const mapAuthorityRequest = row => ({
+    id:row.id,
+    machineId:row.machine_id,
+    authorityName:row.authority_name || '',
+    referenceNumber:row.reference_number || '',
+    receivedAt:row.received_at || '',
+    requestSummary:row.request_summary || '',
+    requestedDocuments:row.requested_documents || '',
+    sbomRequested:row.sbom_requested === true,
+    authorityLanguage:row.authority_language || '',
+    cooperationRequested:row.cooperation_requested === true,
+    cooperationMeasures:row.cooperation_measures || '',
+    responseAt:row.response_at || '',
+    transmittedInformation:row.transmitted_information || '',
+    evidenceReference:row.evidence_reference || '',
+    notes:row.notes || '',
+    status:row.status || 'open'
+  });
+
   const mapNonconformityEvent = row => ({
     id:row.id,
     machineId:row.machine_id,
@@ -579,16 +600,18 @@
   });
 
   const loadCraBundle = async machineId => {
-    const [assessmentResult, requirementsResult, reportingResult, nonconformityResult] = await Promise.all([
+    const [assessmentResult, requirementsResult, reportingResult, nonconformityResult, authorityResult] = await Promise.all([
       db.from('cra_assessments').select('*').eq('machine_id', machineId).maybeSingle(),
       db.from('cra_requirements').select('*').eq('machine_id', machineId).order('requirement_key'),
       db.from('cra_reporting_events').select('*').eq('machine_id', machineId).order('awareness_at', {ascending:false}),
-      db.from('cra_nonconformity_events').select('*').eq('machine_id', machineId).order('detected_at', {ascending:false})
+      db.from('cra_nonconformity_events').select('*').eq('machine_id', machineId).order('detected_at', {ascending:false}),
+      db.from('cra_authority_requests').select('*').eq('machine_id', machineId).order('received_at', {ascending:false})
     ]);
     if (assessmentResult.error) throw assessmentResult.error;
     if (requirementsResult.error) throw requirementsResult.error;
     if (reportingResult.error) throw reportingResult.error;
     if (nonconformityResult.error) throw nonconformityResult.error;
+    if (authorityResult.error) throw authorityResult.error;
     return {
       assessment:mapCraAssessment(assessmentResult.data),
       requirements:(requirementsResult.data || []).map(row => ({
@@ -598,7 +621,8 @@
         evidence:row.evidence || ''
       })),
       reportingEvents:(reportingResult.data || []).map(mapReportingEvent),
-      nonconformityEvents:(nonconformityResult.data || []).map(mapNonconformityEvent)
+      nonconformityEvents:(nonconformityResult.data || []).map(mapNonconformityEvent),
+      authorityRequests:(authorityResult.data || []).map(mapAuthorityRequest)
     };
   };
 
@@ -721,6 +745,54 @@
   };
 
 
+
+  const addAuthorityRequest = async (machineId, v) => {
+    const { data, error } = await db.from('cra_authority_requests').insert({
+      machine_id:machineId,
+      authority_name:v.authorityName,
+      reference_number:v.referenceNumber || null,
+      received_at:v.receivedAt,
+      request_summary:v.requestSummary,
+      requested_documents:v.requestedDocuments || null,
+      sbom_requested:v.sbomRequested === true,
+      authority_language:v.authorityLanguage || null,
+      cooperation_requested:v.cooperationRequested === true,
+      cooperation_measures:v.cooperationMeasures || null,
+      response_at:v.responseAt || null,
+      transmitted_information:v.transmittedInformation || null,
+      evidence_reference:v.evidenceReference || null,
+      notes:v.notes || null,
+      status:v.status || 'open'
+    }).select().single();
+    if (error) throw error;
+    return mapAuthorityRequest(data);
+  };
+
+  const updateAuthorityRequest = async (id, v) => {
+    const { error } = await db.from('cra_authority_requests').update({
+      authority_name:v.authorityName,
+      reference_number:v.referenceNumber || null,
+      received_at:v.receivedAt,
+      request_summary:v.requestSummary,
+      requested_documents:v.requestedDocuments || null,
+      sbom_requested:v.sbomRequested === true,
+      authority_language:v.authorityLanguage || null,
+      cooperation_requested:v.cooperationRequested === true,
+      cooperation_measures:v.cooperationMeasures || null,
+      response_at:v.responseAt || null,
+      transmitted_information:v.transmittedInformation || null,
+      evidence_reference:v.evidenceReference || null,
+      notes:v.notes || null,
+      status:v.status || 'open'
+    }).eq('id', id);
+    if (error) throw error;
+  };
+
+  const deleteAuthorityRequest = async id => {
+    const { error } = await db.from('cra_authority_requests').delete().eq('id', id);
+    if (error) throw error;
+  };
+
   const addNonconformityEvent = async (machineId, v) => {
     const { data, error } = await db.from('cra_nonconformity_events').insert({
       machine_id:machineId,
@@ -785,6 +857,9 @@
     addReportingEvent,
     updateReportingEvent,
     deleteReportingEvent,
+    addAuthorityRequest,
+    updateAuthorityRequest,
+    deleteAuthorityRequest,
     addNonconformityEvent,
     updateNonconformityEvent,
     deleteNonconformityEvent,
