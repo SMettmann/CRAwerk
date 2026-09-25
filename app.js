@@ -23,6 +23,8 @@
     const reporting = machine.craReportingEvents || [];
     const nonconformities = machine.craNonconformityEvents || [];
     const noOpenNonconformities = nonconformities.every(item => item.status === 'closed');
+    const authorityRequests = machine.craAuthorityRequests || [];
+    const noOpenAuthorityRequests = authorityRequests.every(item => item.status === 'closed');
     if (!a) return false;
 
     const company = machine.company || {};
@@ -118,7 +120,8 @@
       ceReady &&
       declarationReady &&
       reporting.every(item => item.status === 'closed') &&
-      noOpenNonconformities
+      noOpenNonconformities &&
+      noOpenAuthorityRequests
     );
   };
 
