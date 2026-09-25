@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>CRA Nutzerinformationen – CRAwerk</title>
+  <link rel="stylesheet" href="produktakte.css">
+</head>
+<body class="report-body">
+  <div class="report-toolbar no-print">
+    <a id="user-info-back" href="dashboard.html">← Zur CRA-Prüfung</a>
+    <button id="user-info-print" type="button">Als PDF speichern / drucken</button>
+  </div>
+
+  <main class="report-sheet" id="user-info-sheet">
+    <header class="report-head">
+      <div class="report-brand"><span>CRA</span>werk</div>
+      <div class="report-head-meta">
+        <strong>INFORMATIONEN & ANLEITUNGEN FÜR DEN NUTZER</strong>
+        <span>Cyber Resilience Act · Anhang II</span>
+        <span id="user-info-generated"></span>
+      </div>
+    </header>
+
+    <section class="report-title">
+      <div>
+        <span class="report-kicker">PRODUKT MIT DIGITALEN ELEMENTEN</span>
+        <h1 id="user-info-name">Produkt</h1>
+        <p id="user-info-identification"></p>
+      </div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>1</span><h2>Hersteller & Kontakt</h2></div>
+      <div id="user-info-manufacturer"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>2</span><h2>Schwachstellen melden</h2></div>
+      <div id="user-info-vulnerability"></div>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>3–5</span><h2>Produkt, Zweckbestimmung & Sicherheitsumgebung</h2></div>
+      <dl class="report-data-grid" id="user-info-product"></dl>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>6–7</span><h2>Konformität & Sicherheitssupport</h2></div>
+      <dl class="report-data-grid" id="user-info-support"></dl>
+    </section>
+
+    <section class="report-section">
+      <div class="report-section-head"><span>8</span><h2>Anleitungen für die sichere Verwendung</h2></div>
+      <div class="report-list" id="user-info-instructions"></div>
+    </section>
+
+    <footer class="report-footer">
+      <div>
+        <strong>CRAwerk · Nutzerinformationen</strong>
+        <span id="user-info-footer"></span>
+      </div>
+      <p>Diese Ausgabe stellt die vom Hersteller in CRAwerk hinterlegten Nutzerinformationen zusammen. Der Hersteller ist für Richtigkeit, Aktualität und Bereitstellung zusammen mit dem Produkt verantwortlich.</p>
+    </footer>
+  </main>
+
+  <div class="report-error" id="user-info-error" hidden>
+    <strong>Nutzerinformationen können nicht geladen werden.</strong>
+    <a href="dashboard.html">Zur Übersicht</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="backend.js"></script>
+  <script src="nutzerinfo.js"></script>
+</body>
+</html>
