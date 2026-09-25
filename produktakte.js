@@ -336,6 +336,34 @@
         ).join('')
       : '<div class="report-empty">Kein CRA-Meldevorgang dokumentiert.</div>';
 
+    const nonconformityLabels = {
+      open:'Entscheidung offen',
+      brought_into_conformity:'Konformität wiederhergestellt',
+      withdrawn:'Vom Markt genommen',
+      recalled:'Zurückgerufen'
+    };
+    const subjectLabels = {
+      product:'Produkt',
+      process:'Herstellerprozess',
+      both:'Produkt und Herstellerprozess'
+    };
+    const nonconformities = machine.craNonconformityEvents || [];
+    document.getElementById('report-nonconformity').innerHTML = nonconformities.length
+      ? nonconformities.map(item =>
+          '<div class="report-item"><div><strong>' + escapeHtml(item.title) + '</strong>' +
+          '<span>' + escapeHtml(subjectLabels[item.subjectType] || item.subjectType) +
+          ' · festgestellt ' + escapeHtml(item.detectedAt ? new Date(item.detectedAt).toLocaleString('de-DE') : '–') + '</span>' +
+          '<p><strong>Nichtkonformität:</strong> ' + escapeHtml(item.description || '–') +
+          (item.affectedVersion ? '<br><strong>Betroffen:</strong> ' + escapeHtml(item.affectedVersion) : '') +
+          (item.correctiveAction ? '<br><strong>Korrekturmaßnahme:</strong> ' + escapeHtml(item.correctiveAction) : '') +
+          '<br><strong>Entscheidung:</strong> ' + escapeHtml(nonconformityLabels[item.disposition] || item.disposition) +
+          (item.actionAt ? '<br><strong>Umgesetzt:</strong> ' + escapeHtml(new Date(item.actionAt).toLocaleString('de-DE')) : '') +
+          (item.evidenceReference ? '<br><strong>Nachweis:</strong> ' + escapeHtml(item.evidenceReference) : '') +
+          '</p></div><span class="report-badge ' + (item.status === 'closed' ? '' : 'open') + '">' +
+          (item.status === 'closed' ? 'Abgeschlossen' : 'Offen') + '</span></div>'
+        ).join('')
+      : '<div class="report-empty">Kein Nichtkonformitätsvorgang dokumentiert.</div>';
+
     const annexViiRows = a ? [
       ['Zweckbestimmung', a.intendedPurpose],
       ['Sicherheitsumgebung', a.securityEnvironment],
