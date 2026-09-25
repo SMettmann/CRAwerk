@@ -17,6 +17,33 @@
     return parts.length === 3 ? parts[2] + '.' + parts[1] + '.' + parts[0] : value;
   };
 
+  const supportCommunicationReadyFor = machine => {
+    const support = machine.supportPeriod || {};
+    const basicReady = Boolean(
+      support.startDate &&
+      support.endDate &&
+      support.owner &&
+      support.reason &&
+      support.purchaseDisclosureMethod &&
+      support.purchaseDisclosureLocation &&
+      support.endNotificationFeasible &&
+      support.endNotificationFeasible !== 'unknown'
+    );
+    if (!basicReady) return false;
+
+    if (support.endNotificationFeasible === 'yes' && !support.endNotificationMethod) return false;
+    if (support.endNotificationFeasible === 'no' && !support.endNotificationNotFeasibleReason) return false;
+
+    const endReached = new Date(support.endDate + 'T23:59:59').getTime() <= Date.now();
+    if (
+      endReached &&
+      support.endNotificationFeasible === 'yes' &&
+      (!support.endNotificationAt || !support.endNotificationReference)
+    ) return false;
+
+    return true;
+  };
+
   const craCompleteForMachine = machine => {
     const a = machine.craAssessment;
     const requirements = machine.craRequirements || [];
@@ -99,10 +126,7 @@
       a.thirdPartyComponentProcess &&
       a.retentionProcess &&
       machine.riskReviewComplete &&
-      machine.supportPeriod.startDate &&
-      machine.supportPeriod.endDate &&
-      machine.supportPeriod.owner &&
-      machine.supportPeriod.reason &&
+      supportCommunicationReadyFor(machine) &&
       a.appliedStandards &&
       a.testReportsSummary &&
       (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length > 0))
@@ -130,12 +154,7 @@
     const processReady = Boolean(machine.updateProcess && machine.updateProcess.owner && machine.updateProcess.procedure);
     const noOpenUpdates = (machine.updateItems || []).every(item => item.status === 'done');
     const noOpenRisks = (machine.riskItems || []).every(item => item.status === 'done');
-    const supportReady = Boolean(
-      machine.supportPeriod &&
-      machine.supportPeriod.startDate &&
-      machine.supportPeriod.endDate &&
-      machine.supportPeriod.owner
-    );
+    const supportReady = supportCommunicationReadyFor(machine);
 
     return [
       {
@@ -617,17 +636,38 @@
         machine.documentsComplete ? 'Vollständigkeit aufheben' : 'Unterlagen vollständig';
 
       const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner && machine.supportPeriod.reason);
-      document.getElementById('support-status').textContent = supportReady ? 'Festgelegt' : 'Noch offen';
+      const support = machine.supportPeriod || {};
+      const supportEndReached = support.endDate
+        ? new Date(support.endDate + 'T23:59:59').getTime() <= Date.now()
+        : false;
+      const supportEndNotificationOpen =
+        supportEndReached &&
+        support.endNotificationFeasible === 'yes' &&
+        (!support.endNotificationAt || !support.endNotificationReference);
+
+      document.getElementById('support-status').textContent =
+        supportReady ? 'Festgelegt' :
+        supportEndNotificationOpen ? 'Endmitteilung offen' : 'Noch offen';
 
       const craReady = craCompleteForMachine(machine);
       const craStatus = document.getElementById('cra-status');
       if (craStatus) craStatus.textContent = craReady ? 'Abgeschlossen' : 'Noch offen';
 
-      document.getElementById('support-summary').innerHTML = supportReady
+      document.getElementById('support-summary').innerHTML = machine.supportPeriod.endDate
         ? '<div class="support-card">' +
             '<div><span>Beginn</span><strong>' + escapeHtml(formatDate(machine.supportPeriod.startDate)) + '</strong></div>' +
             '<div><span>Ende</span><strong>' + escapeHtml(formatDate(machine.supportPeriod.endDate)) + '</strong></div>' +
-            '<div><span>Verantwortlich</span><strong>' + escapeHtml(machine.supportPeriod.owner) + '</strong></div>' +
+            '<div><span>Verantwortlich</span><strong>' + escapeHtml(machine.supportPeriod.owner || '–') + '</strong></div>' +
+            '<div><span>Beim Kauf sichtbar</span><strong>' +
+              escapeHtml(machine.supportPeriod.purchaseDisclosureLocation || 'Noch offen') + '</strong></div>' +
+            '<div><span>Endmitteilung</span><strong>' +
+              escapeHtml(
+                machine.supportPeriod.endNotificationFeasible === 'yes'
+                  ? (machine.supportPeriod.endNotificationAt ? 'Dokumentiert' : 'Geplant')
+                  : machine.supportPeriod.endNotificationFeasible === 'no'
+                    ? 'Technisch nicht machbar'
+                    : 'Noch ungeklärt'
+              ) + '</strong></div>' +
             (machine.supportPeriod.reason ? '<p>' + escapeHtml(machine.supportPeriod.reason) + '</p>' : '') +
           '</div>'
         : '<div class="module-empty">Noch kein Unterstützungszeitraum festgelegt.</div>';
@@ -1307,6 +1347,19 @@
       supportForm.elements.endDate.value = machine.supportPeriod.endDate || '';
       supportForm.elements.owner.value = machine.supportPeriod.owner || '';
       supportForm.elements.reason.value = machine.supportPeriod.reason || '';
+      supportForm.elements.purchaseDisclosureMethod.value = machine.supportPeriod.purchaseDisclosureMethod || '';
+      supportForm.elements.purchaseDisclosureLocation.value = machine.supportPeriod.purchaseDisclosureLocation || '';
+      supportForm.elements.endNotificationFeasible.value =
+        machine.supportPeriod.endNotificationFeasible === 'yes' ? 'yes' :
+        machine.supportPeriod.endNotificationFeasible === 'no' ? 'no' : '';
+      supportForm.elements.endNotificationMethod.value = machine.supportPeriod.endNotificationMethod || '';
+      supportForm.elements.endNotificationNotFeasibleReason.value =
+        machine.supportPeriod.endNotificationNotFeasibleReason || '';
+      supportForm.elements.endNotificationAt.value = machine.supportPeriod.endNotificationAt
+        ? new Date(machine.supportPeriod.endNotificationAt).toISOString().slice(0,16)
+        : '';
+      supportForm.elements.endNotificationReference.value =
+        machine.supportPeriod.endNotificationReference || '';
       supportDialog.showModal();
     });
 
@@ -1321,12 +1374,39 @@
         return;
       }
       supportForm.elements.endDate.setCustomValidity('');
+
+      const endNotificationFeasible = data.get('endNotificationFeasible');
+      const endNotificationMethod = data.get('endNotificationMethod').trim();
+      const endNotificationNotFeasibleReason = data.get('endNotificationNotFeasibleReason').trim();
+      const endNotificationAt = data.get('endNotificationAt');
+      const endNotificationReference = data.get('endNotificationReference').trim();
+
+      if (endNotificationFeasible === 'yes' && !endNotificationMethod) {
+        showToast('Bitte den geplanten Kommunikationsweg für das Supportende angeben.');
+        return;
+      }
+      if (endNotificationFeasible === 'no' && !endNotificationNotFeasibleReason) {
+        showToast('Bitte begründen, warum eine direkte Endmitteilung technisch nicht machbar ist.');
+        return;
+      }
+      if ((endNotificationAt && !endNotificationReference) || (!endNotificationAt && endNotificationReference)) {
+        showToast('Datum und Nachweis der Endmitteilung bitte gemeinsam dokumentieren.');
+        return;
+      }
+
       try {
         await backend.setSupportPeriod(machine.id, {
           startDate,
           endDate,
           owner:data.get('owner').trim(),
-          reason:data.get('reason').trim()
+          reason:data.get('reason').trim(),
+          purchaseDisclosureMethod:data.get('purchaseDisclosureMethod'),
+          purchaseDisclosureLocation:data.get('purchaseDisclosureLocation').trim(),
+          endNotificationFeasible,
+          endNotificationMethod,
+          endNotificationNotFeasibleReason,
+          endNotificationAt:endNotificationAt ? new Date(endNotificationAt).toISOString() : '',
+          endNotificationReference
         });
         supportDialog.close();
         await refresh('Unterstützungszeitraum wurde gespeichert.');
