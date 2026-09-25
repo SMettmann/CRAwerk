@@ -480,7 +480,9 @@
           (item.notes ? '<br><strong>Notiz:</strong> ' + escapeHtml(item.notes) : '') +
         '</p>' +
         '<div class="risk-actions"><div class="risk-action-links">' +
-          '<button type="button" class="text-button" data-edit-nonconformity="' + item.id + '">Bearbeiten</button>' +
+          (item.status === 'closed'
+            ? '<span class="status-note">Abschluss dokumentiert · nicht mehr veränderbar</span>'
+            : '<button type="button" class="text-button" data-edit-nonconformity="' + item.id + '">Bearbeiten</button>') +
         '</div>' +
         (item.status === 'closed' ? '' :
           '<button type="button" class="item-remove" data-remove-nonconformity="' + item.id + '" aria-label="Offenen Vorgang löschen">×</button>') +
