@@ -1,14 +1,4 @@
 (() => {
-  const COMPANY_KEY = 'crawerk_company_v1';
-
-  const readCompany = () => {
-    try {
-      return JSON.parse(localStorage.getItem(COMPANY_KEY) || '{}');
-    } catch {
-      return {};
-    }
-  };
-
   const form = document.getElementById('company-form');
   const saveState = document.getElementById('company-save-state');
   const headerName = document.getElementById('company-header-name');
@@ -21,47 +11,71 @@
     window.__companyToast = setTimeout(() => toast.hidden = true, 2600);
   };
 
-  const fill = () => {
-    const company = readCompany();
+  const mapCompany = company => ({
+    name:company.name || '',
+    street:company.street || '',
+    zip:company.zip || '',
+    city:company.city || '',
+    country:company.country || 'Deutschland',
+    contactName:company.contact_name || '',
+    email:company.email || '',
+    phone:company.phone || ''
+  });
 
-    form.elements.name.value = company.name || '';
-    form.elements.street.value = company.street || '';
-    form.elements.zip.value = company.zip || '';
-    form.elements.city.value = company.city || '';
-    form.elements.country.value = company.country || 'Deutschland';
-    form.elements.contactName.value = company.contactName || '';
-    form.elements.email.value = company.email || '';
-    form.elements.phone.value = company.phone || '';
+  const fill = company => {
+    const value = mapCompany(company);
+    form.elements.name.value = value.name;
+    form.elements.street.value = value.street;
+    form.elements.zip.value = value.zip;
+    form.elements.city.value = value.city;
+    form.elements.country.value = value.country;
+    form.elements.contactName.value = value.contactName;
+    form.elements.email.value = value.email;
+    form.elements.phone.value = value.phone;
+    headerName.textContent = value.name || 'Unternehmen';
+    saveState.textContent = 'Firmendaten gespeichert';
+  };
 
-    if (company.name) {
-      headerName.textContent = company.name;
-      saveState.textContent = 'Firmendaten gespeichert';
-    } else {
-      headerName.textContent = 'Unternehmen';
-      saveState.textContent = 'Noch nicht gespeichert';
+  const init = async () => {
+    try {
+      const session = await CRAwerkSupabase.requireSession();
+      if (!session) return;
+      const company = await CRAwerkBackend.currentCompany();
+      fill(company);
+    } catch (error) {
+      console.error(error);
+      showToast('Firmendaten konnten nicht geladen werden.');
     }
   };
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = new FormData(form);
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    button.textContent = 'Speichert…';
 
-    const company = {
-      name: data.get('name').trim(),
-      street: data.get('street').trim(),
-      zip: data.get('zip').trim(),
-      city: data.get('city').trim(),
-      country: data.get('country').trim() || 'Deutschland',
-      contactName: data.get('contactName').trim(),
-      email: data.get('email').trim(),
-      phone: data.get('phone').trim(),
-      updatedAt: new Date().toISOString()
-    };
-
-    localStorage.setItem(COMPANY_KEY, JSON.stringify(company));
-    fill();
-    showToast('Firmendaten wurden gespeichert.');
+    try {
+      const company = await CRAwerkBackend.updateCompany({
+        name:data.get('name').trim(),
+        street:data.get('street').trim(),
+        zip:data.get('zip').trim(),
+        city:data.get('city').trim(),
+        country:data.get('country').trim() || 'Deutschland',
+        contactName:data.get('contactName').trim(),
+        email:data.get('email').trim(),
+        phone:data.get('phone').trim()
+      });
+      fill(company);
+      showToast('Firmendaten wurden gespeichert.');
+    } catch (error) {
+      console.error(error);
+      showToast('Firmendaten konnten nicht gespeichert werden.');
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Firmendaten speichern';
+    }
   });
 
-  fill();
+  init();
 })();
