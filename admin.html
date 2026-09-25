@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Systemadmin – CRAwerk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body admin-body">
+  <header class="app-header">
+    <a class="app-brand" href="dashboard.html"><span>CRA</span>werk</a>
+    <nav class="app-nav">
+      <a href="dashboard.html">Übersicht</a>
+      <a href="dashboard.html#maschinen">Maschinen</a>
+      <a class="active" href="admin.html">Systemadmin</a>
+    </nav>
+    <a class="app-account" href="unternehmen.html" id="admin-company-name">Unternehmen</a>
+  </header>
+
+  <main class="app-main admin-main">
+    <section class="app-intro admin-intro">
+      <div>
+        <span class="app-kicker">SYSTEMADMIN</span>
+        <h1>CRAwerk im Überblick</h1>
+        <p>Registrierungen, Testphasen und aktive Firmen an einer Stelle. Ihre eigene interne Firma wird in den Kundenzahlen nicht mitgezählt.</p>
+      </div>
+      <button class="app-btn app-btn-ghost" id="admin-refresh" type="button">Aktualisieren</button>
+    </section>
+
+    <section class="admin-stats-grid" aria-label="CRAwerk Systemübersicht">
+      <article class="stat-card admin-stat-card">
+        <span>Firmen gesamt</span>
+        <strong id="admin-companies-total">–</strong>
+        <small>ohne interne Konten</small>
+      </article>
+      <article class="stat-card admin-stat-card admin-stat-highlight">
+        <span>In Testphase</span>
+        <strong id="admin-companies-trial">–</strong>
+        <small>testen CRAwerk gerade</small>
+      </article>
+      <article class="stat-card admin-stat-card">
+        <span>Aktive Kunden</span>
+        <strong id="admin-companies-active">–</strong>
+        <small>Status aktiv</small>
+      </article>
+      <article class="stat-card admin-stat-card">
+        <span>Benutzer</span>
+        <strong id="admin-users-total">–</strong>
+        <small>über alle Kundenfirmen</small>
+      </article>
+      <article class="stat-card admin-stat-card">
+        <span>Maschinen</span>
+        <strong id="admin-machines-total">–</strong>
+        <small>von Kunden angelegt</small>
+      </article>
+      <article class="stat-card admin-stat-card">
+        <span>Neue Firmen</span>
+        <strong id="admin-companies-week">–</strong>
+        <small>in den letzten 7 Tagen</small>
+      </article>
+    </section>
+
+    <section class="admin-panel">
+      <div class="admin-panel-head">
+        <div>
+          <span class="app-kicker">KUNDEN & TESTER</span>
+          <h2>Firmenaccounts</h2>
+          <p id="admin-list-summary">Wird geladen…</p>
+        </div>
+        <div class="admin-filters" role="group" aria-label="Firmen filtern">
+          <button class="admin-filter active" type="button" data-filter="all">Alle</button>
+          <button class="admin-filter" type="button" data-filter="trial">Testphase</button>
+          <button class="admin-filter" type="button" data-filter="active">Aktiv</button>
+          <button class="admin-filter" type="button" data-filter="paused">Pausiert</button>
+          <button class="admin-filter" type="button" data-filter="cancelled">Beendet</button>
+        </div>
+      </div>
+
+      <div class="admin-company-list" id="admin-company-list"></div>
+
+      <div class="admin-empty" id="admin-empty" hidden>
+        <strong>Noch keine passenden Firmen.</strong>
+        <span>Sobald sich Kunden registrieren, erscheinen sie hier automatisch.</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="app-toast" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="backend.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
