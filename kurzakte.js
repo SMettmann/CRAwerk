@@ -57,7 +57,8 @@
     return Boolean(
       routeValid && classCategoryReady && routeDetailsReady &&
       requirementsComplete && annexReady && ceReady && declarationReady &&
-      (machine.craReportingEvents || []).every(item => item.status === 'closed')
+      (machine.craReportingEvents || []).every(item => item.status === 'closed') &&
+      (machine.craNonconformityEvents || []).every(item => item.status === 'closed')
     );
   };
 
