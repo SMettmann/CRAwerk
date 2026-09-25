@@ -16,6 +16,32 @@
     (item.status !== 'not_applicable' || Boolean(item.justification)) &&
     (item.status !== 'fulfilled' || Boolean(item.justification || item.evidence));
 
+  const supportCommunicationReadyFor = machine => {
+    const support = machine.supportPeriod || {};
+    const basicReady = Boolean(
+      support.startDate &&
+      support.endDate &&
+      support.owner &&
+      support.reason &&
+      support.purchaseDisclosureMethod &&
+      support.purchaseDisclosureLocation &&
+      support.endNotificationFeasible &&
+      support.endNotificationFeasible !== 'unknown'
+    );
+    if (!basicReady) return false;
+    if (support.endNotificationFeasible === 'yes' && !support.endNotificationMethod) return false;
+    if (support.endNotificationFeasible === 'no' && !support.endNotificationNotFeasibleReason) return false;
+
+    const endReached = new Date(support.endDate + 'T23:59:59').getTime() <= Date.now();
+    if (
+      endReached &&
+      support.endNotificationFeasible === 'yes' &&
+      (!support.endNotificationAt || !support.endNotificationReference)
+    ) return false;
+
+    return true;
+  };
+
   const craCompleteForMachine = machine => {
     const a = machine.craAssessment;
     if (!a) return false;
@@ -56,8 +82,7 @@
       a.vulnerabilityContact && a.cvdPolicy && a.cvdPolicyLocation && a.secureUpdateDistribution &&
       a.thirdPartyComponentProcess && a.retentionProcess &&
       machine.riskReviewComplete &&
-      machine.supportPeriod.startDate && machine.supportPeriod.endDate &&
-      machine.supportPeriod.owner && machine.supportPeriod.reason &&
+      supportCommunicationReadyFor(machine) &&
       a.appliedStandards && a.testReportsSummary &&
       (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length))
     );
@@ -76,7 +101,7 @@
     const processReady = Boolean(machine.updateProcess.owner && machine.updateProcess.procedure);
     const noOpenUpdates = machine.updateItems.every(item => item.status === 'done');
     const noOpenRisks = machine.riskItems.every(item => item.status === 'done');
-    const supportReady = Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate && machine.supportPeriod.owner && machine.supportPeriod.reason);
+    const supportReady = supportCommunicationReadyFor(machine);
     return [
       {title:'Grunddaten prüfen', text:'Name, Modell bzw. Produktnummer und Verantwortlichkeit kontrollieren.', done:basicReady},
       {title:'Software & Versionen vollständig erfassen', text:'Alle Software- und Firmwarestände erfassen und die Liste als vollständig bestätigen.', done:machine.software === 'no' || machine.softwareComplete},
@@ -232,12 +257,35 @@
 
     const support = machine.supportPeriod;
     const supportReady = support.startDate && support.endDate && support.owner && support.reason;
-    document.getElementById('report-support').innerHTML = supportReady
+    const supportDisclosureLabels = {
+      product:'Auf dem Produkt',
+      packaging:'Auf der Verpackung',
+      digital:'Digital',
+      sales_document:'Angebot / Vertrag / Verkaufsunterlage',
+      other:'Sonstiger leicht zugänglicher Ort'
+    };
+    document.getElementById('report-support').innerHTML = support.endDate
       ? '<div class="report-support"><div class="report-support-grid">' +
         '<div><span>Beginn</span><strong>' + formatDate(support.startDate) + '</strong></div>' +
         '<div><span>Geplantes Ende</span><strong>' + formatDate(support.endDate) + '</strong></div>' +
-        '<div><span>Verantwortlich</span><strong>' + escapeHtml(support.owner) + '</strong></div></div>' +
-        (support.reason ? '<p>' + escapeHtml(support.reason) + '</p>' : '') + '</div>'
+        '<div><span>Verantwortlich</span><strong>' + escapeHtml(support.owner || '–') + '</strong></div>' +
+        '<div><span>Beim Kauf angegeben über</span><strong>' + escapeHtml(supportDisclosureLabels[support.purchaseDisclosureMethod] || 'Noch offen') + '</strong></div>' +
+        '<div><span>Ort / Verweis</span><strong>' + escapeHtml(support.purchaseDisclosureLocation || 'Noch offen') + '</strong></div>' +
+        '<div><span>Endmitteilung technisch machbar</span><strong>' +
+          escapeHtml(
+            support.endNotificationFeasible === 'yes' ? 'Ja' :
+            support.endNotificationFeasible === 'no' ? 'Nein' : 'Noch ungeklärt'
+          ) + '</strong></div>' +
+        '</div>' +
+        (support.reason ? '<p><strong>Begründung des Zeitraums:</strong> ' + escapeHtml(support.reason) + '</p>' : '') +
+        (support.endNotificationFeasible === 'yes'
+          ? '<p><strong>Geplanter Kommunikationsweg:</strong> ' + escapeHtml(support.endNotificationMethod || 'Noch offen') +
+            (support.endNotificationAt ? '<br><strong>Nutzer informiert am:</strong> ' + escapeHtml(new Date(support.endNotificationAt).toLocaleString('de-DE')) : '') +
+            (support.endNotificationReference ? '<br><strong>Nachweis:</strong> ' + escapeHtml(support.endNotificationReference) : '') + '</p>'
+          : support.endNotificationFeasible === 'no'
+            ? '<p><strong>Technisch nicht machbar:</strong> ' + escapeHtml(support.endNotificationNotFeasibleReason || 'Begründung offen') + '</p>'
+            : '') +
+        '</div>'
       : '<div class="report-empty">Kein Unterstützungszeitraum festgelegt.</div>';
 
 
