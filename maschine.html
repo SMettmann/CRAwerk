@@ -31,6 +31,7 @@
         <button class="app-btn app-btn-ghost" id="edit-machine" type="button">Bearbeiten</button>
         <button class="app-btn app-btn-ghost" id="duplicate-machine" type="button">Duplizieren</button>
         <button class="app-btn app-btn-danger" id="delete-machine" type="button">Löschen</button>
+        <button class="app-btn app-btn-ghost" id="cra-machine" type="button">CRA-Prüfung</button>
         <button class="app-btn app-btn-ghost" id="short-report-machine" type="button">Kurzübersicht</button>
         <button class="app-btn app-btn-dark" id="print-machine" type="button">Produktakte erstellen</button>
       </div>
@@ -83,7 +84,7 @@
           <div class="panel-head">
             <div>
               <span class="app-kicker">IHR WEG DURCH CRAWERK</span>
-              <h2>7 einfache Schritte</h2>
+              <h2>8 einfache Schritte</h2>
               <p class="panel-help">Grün bedeutet: für den aktuellen Arbeitsstand erledigt. Offene Punkte werden von CRAwerk automatisch erkannt.</p>
             </div>
           </div>
@@ -116,6 +117,7 @@
             <div class="module-items" id="software-list"></div>
             <div class="module-button-row">
               <button class="text-button" id="add-software" type="button">+ Software hinzufügen</button>
+              <button class="text-button" id="download-sbom-machine" type="button">SBOM (CycloneDX)</button>
               <button class="text-button" id="toggle-software-complete" type="button">Softwareliste vollständig</button>
             </div>
           </article>
@@ -181,6 +183,15 @@
             <p><strong class="module-why">Warum?</strong> Damit intern eindeutig feststeht, wie lange Sicherheitsprobleme und notwendige Updates für diese Maschine betreut werden.</p>
             <div id="support-summary"></div>
             <button class="text-button" id="set-support" type="button">Zeitraum festlegen</button>
+          </article>
+
+          <article class="module-panel module-panel-live" id="module-cra">
+            <div class="module-panel-head">
+              <div><span>08</span><h3>CRA-Prüfung & Konformitätsabschluss</h3></div>
+              <small id="cra-status">Noch offen</small>
+            </div>
+            <p><strong class="module-why">Warum?</strong> Hier werden Produktklasse, Anhang-I-Nachweis, Meldeworkflow, technische Dokumentation nach Anhang VII sowie EU-Konformitätserklärung und CE abgeschlossen.</p>
+            <button class="text-button" id="open-cra" type="button">CRA-Prüfung öffnen →</button>
           </article>
         </section>
       </div>
@@ -311,6 +322,19 @@
         <span>Anbieter / Hersteller</span>
         <input name="vendor" placeholder="optional">
       </label>
+
+      <label>
+        <span>Package URL (PURL)</span>
+        <input name="purl" placeholder="optional, z. B. pkg:npm/paket@1.2.3">
+      </label>
+
+      <fieldset>
+        <legend>SBOM-Ebene</legend>
+        <div class="choice-row choice-row-two">
+          <label><input type="radio" name="sbomScope" value="top_level" checked><span>Direkte Abhängigkeit</span></label>
+          <label><input type="radio" name="sbomScope" value="transitive"><span>Unterabhängigkeit</span></label>
+        </div>
+      </fieldset>
 
       <div class="dialog-actions">
         <button class="app-btn app-btn-ghost" type="button" data-close-dialog="software-dialog">Abbrechen</button>
@@ -474,9 +498,25 @@
       </div>
 
       <label>
-        <span>Maßnahme / Update *</span>
+        <span>Bewertung *</span>
+        <textarea name="assessment" rows="3" required placeholder="Auswirkung, Schwere und Bewertung für dieses Produkt / diese Version"></textarea>
+      </label>
+
+      <label>
+        <span>Maßnahme / Behebung *</span>
         <textarea name="action" rows="4" required placeholder="Was wurde oder wird getan?"></textarea>
       </label>
+
+      <div class="form-two">
+        <label>
+          <span>Patch- / Zielversion</span>
+          <input name="patchVersion" placeholder="optional">
+        </label>
+        <label>
+          <span>Behoben am</span>
+          <input name="remediatedAt" type="date">
+        </label>
+      </div>
 
       <fieldset>
         <legend>Status</legend>
