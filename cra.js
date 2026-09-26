@@ -328,70 +328,188 @@
     return false;
   };
 
+  const firstMissingAssessmentField = (assessment, names) =>
+    names.find(name => !assessment[name]) || names[0] || '';
+
   const annexViiChecks = (assessment, requirements) => {
     const annexIComplete = requirements.length === REQUIREMENTS.length && requirements.every(requirementIsDocumented);
-    const userInfo = [
-      assessment.secureCommissioning,
-      assessment.securityChangeEffects,
-      assessment.updateInstallation,
-      assessment.secureDecommissioning,
-      assessment.automaticUpdatesOptOut,
-      assessment.integratorInformation,
-      assessment.supportType
-    ].every(Boolean);
+    const userInfoFields = [
+      'secureCommissioning',
+      'securityChangeEffects',
+      'updateInstallation',
+      'secureDecommissioning',
+      'automaticUpdatesOptOut',
+      'integratorInformation',
+      'supportType'
+    ];
+    const userInfo = userInfoFields.map(name => assessment[name]).every(Boolean);
+
+    const productFields = [
+      'intendedPurpose',
+      'securityEnvironment',
+      'securityProperties',
+      'foreseeableMisuse',
+      'hardwareVisualsReference',
+      ...userInfoFields
+    ];
+    const developmentFields = [
+      'architectureDescription',
+      'productionMonitoringProcess',
+      'retentionProcess'
+    ];
+    const vulnerabilityFields = [
+      'vulnerabilityContact',
+      'cvdPolicy',
+      'cvdPolicyLocation',
+      'secureUpdateDistribution',
+      'thirdPartyComponentProcess'
+    ];
+    const softwareReady =
+      machine.software === 'no' ||
+      Boolean(machine.softwareComplete && machine.softwareItems.length);
+
+    const developmentCoreReady = developmentFields.every(name => Boolean(assessment[name]));
+    const vulnerabilityReady = vulnerabilityFields.every(name => Boolean(assessment[name]));
+
+    let developmentAction;
+    if (!developmentCoreReady) {
+      developmentAction = {
+        type:'guide',
+        step:2,
+        field:firstMissingAssessmentField(assessment, developmentFields)
+      };
+    } else if (!vulnerabilityReady) {
+      developmentAction = {
+        type:'guide',
+        step:3,
+        field:firstMissingAssessmentField(assessment, vulnerabilityFields)
+      };
+    } else {
+      developmentAction = {type:'machine', target:'module-software'};
+    }
+
+    let conformityField = '';
+    if (assessment.ceStatus !== 'marked') conformityField = 'ceStatus';
+    else if (!assessment.ceMarkingLocation) conformityField = 'ceMarkingLocation';
+    else if (assessment.euDeclarationStatus !== 'signed') conformityField = 'euDeclarationStatus';
+    else if (!assessment.declarationPlace) conformityField = 'declarationPlace';
+    else if (!assessment.declarationDate) conformityField = 'declarationDate';
+    else if (!assessment.declarationSigner) conformityField = 'declarationSigner';
+    else if (!assessment.declarationFunction) conformityField = 'declarationFunction';
+    else if (!assessment.declarationSignedCopyReference) conformityField = 'declarationSignedCopyReference';
+    else if (!conformityDetailsComplete(assessment)) {
+      conformityField = !assessment.notifiedBodyName
+        ? 'notifiedBodyName'
+        : !assessment.notifiedBodyNumber
+          ? 'notifiedBodyNumber'
+          : 'certificateReference';
+    }
 
     return [
       {
         title:'Produktbeschreibung & Informationen für Kunden',
         done:Boolean(assessment.intendedPurpose && assessment.securityEnvironment && assessment.securityProperties &&
-          assessment.foreseeableMisuse && assessment.hardwareVisualsReference && userInfo)
+          assessment.foreseeableMisuse && assessment.hardwareVisualsReference && userInfo),
+        action:{
+          type:'guide',
+          step:2,
+          field:firstMissingAssessmentField(assessment, productFields)
+        }
       },
       {
         title:'Entwicklung, Änderungen & Schwachstellenprozess',
-        done:Boolean(assessment.architectureDescription && assessment.productionMonitoringProcess &&
-          assessment.vulnerabilityContact && assessment.cvdPolicy && assessment.cvdPolicyLocation &&
-          assessment.secureUpdateDistribution && assessment.thirdPartyComponentProcess &&
-          assessment.retentionProcess &&
-          (machine.software === 'no' || (machine.softwareComplete && machine.softwareItems.length)))
+        done:Boolean(developmentCoreReady && vulnerabilityReady && softwareReady),
+        action:developmentAction
       },
       {
         title:'Risikobewertung & Schutzprüfung',
-        done:Boolean(machine.riskReviewComplete && annexIComplete)
+        done:Boolean(machine.riskReviewComplete && annexIComplete),
+        action:machine.riskReviewComplete
+          ? {type:'guide', step:1, target:'requirements-list'}
+          : {type:'machine', target:'module-risks'}
       },
       {
         title:'Unterstützungszeitraum',
         done:Boolean(machine.supportPeriod.startDate && machine.supportPeriod.endDate &&
-          machine.supportPeriod.owner && machine.supportPeriod.reason)
+          machine.supportPeriod.owner && machine.supportPeriod.reason),
+        action:{type:'machine', target:'module-support'}
       },
       {
         title:'Normen & technische Lösungen',
-        done:Boolean(assessment.appliedStandards)
+        done:Boolean(assessment.appliedStandards),
+        action:{type:'guide', step:2, field:'appliedStandards'}
       },
       {
         title:'Sicherheitsprüfungen & Testberichte',
-        done:Boolean(assessment.testReportsSummary)
+        done:Boolean(assessment.testReportsSummary),
+        action:{type:'guide', step:2, field:'testReportsSummary'}
       },
       {
         title:'EU-Konformitätserklärung & CE',
         done:declarationComplete(assessment) && conformityDetailsComplete(assessment) &&
-          assessment.ceStatus === 'marked' && Boolean(assessment.ceMarkingLocation)
+          assessment.ceStatus === 'marked' && Boolean(assessment.ceMarkingLocation),
+        action:{type:'guide', step:4, field:conformityField || 'ceStatus'}
       },
       {
         title:'Softwareliste & SBOM',
-        done:machine.software === 'no' || Boolean(machine.softwareComplete && machine.softwareItems.length)
+        done:softwareReady,
+        action:{type:'machine', target:'module-software'}
       }
     ];
+  };
+
+  const focusGuideTarget = action => {
+    if (!action || action.type !== 'guide') return;
+    setGuideStep(action.step, {scroll:false});
+
+    const target = action.field
+      ? form.elements[action.field]
+      : document.getElementById(action.target || '');
+
+    if (target?.closest) {
+      const details = target.closest('.cra-field-group, .requirement-group');
+      if (details) details.open = true;
+    }
+
+    requestAnimationFrame(() => {
+      const scrollTarget = target?.closest?.('label, .requirement-card, .requirement-group') || target ||
+        document.querySelector('[data-guide-step="' + action.step + '"]');
+      scrollTarget?.scrollIntoView({behavior:'smooth', block:'center'});
+      if (action.field && typeof target?.focus === 'function') {
+        setTimeout(() => target.focus({preventScroll:true}), 250);
+      }
+    });
+  };
+
+  const openAnnexViiAction = async item => {
+    if (!item || item.done || !item.action) return;
+
+    if (item.action.type === 'guide') {
+      focusGuideTarget(item.action);
+      return;
+    }
+
+    if (item.action.type === 'machine') {
+      const saved = await saveAll();
+      if (!saved) return;
+      location.href =
+        'maschine.html?id=' + encodeURIComponent(machine.id) +
+        '#' + encodeURIComponent(item.action.target);
+    }
   };
 
   const renderAnnexVii = () => {
     const assessment = getAssessmentFromForm();
     const requirements = readRequirements();
     const checks = annexViiChecks(assessment, requirements);
-    document.getElementById('annex-vii-list').innerHTML = checks.map(item =>
-      '<div class="annex-vii-row ' + (item.done ? 'done' : 'open') + '">' +
-        '<span>' + (item.done ? '✓' : '•') + '</span><strong>' + escapeHtml(item.title) + '</strong>' +
-        '<b>' + (item.done ? 'Belegt' : 'Offen') + '</b>' +
-      '</div>'
+    document.getElementById('annex-vii-list').innerHTML = checks.map((item,index) =>
+      item.done
+        ? '<div class="annex-vii-row done">' +
+            '<span>✓</span><strong>' + escapeHtml(item.title) + '</strong><b>Belegt</b>' +
+          '</div>'
+        : '<button type="button" class="annex-vii-row open annex-vii-open-action" data-annex-index="' + index + '">' +
+            '<span>•</span><strong>' + escapeHtml(item.title) + '</strong><b>Offen · öffnen →</b>' +
+          '</button>'
     ).join('');
     document.getElementById('annex-vii-counter').textContent =
       checks.filter(item => item.done).length + ' / ' + checks.length + ' belegt';
@@ -949,6 +1067,13 @@
 
   document.getElementById('save-cra-top').addEventListener('click', saveAll);
   document.getElementById('download-sbom').addEventListener('click', downloadSbom);
+
+  document.getElementById('annex-vii-list').addEventListener('click', async event => {
+    const row = event.target.closest('[data-annex-index]');
+    if (!row) return;
+    const checks = annexViiChecks(getAssessmentFromForm(), readRequirements());
+    await openAnnexViiAction(checks[Number(row.dataset.annexIndex)]);
+  });
 
   document.getElementById('cra-guide-nav').addEventListener('click', event => {
     const button = event.target.closest('[data-guide-go]');
