@@ -361,8 +361,7 @@
     const openers = [
       document.getElementById('new-machine-button'),
       document.getElementById('new-machine-button-secondary'),
-      document.getElementById('empty-new-machine'),
-      document.getElementById('onboarding-new-machine')
+      document.getElementById('empty-new-machine')
     ].filter(Boolean);
 
     openers.forEach(btn => btn.addEventListener('click', () => {
@@ -387,9 +386,6 @@
     };
 
     const render = () => {
-      const firstStart = machines.length === 0;
-      const onboarding = document.getElementById('onboarding-panel');
-      const machineNav = document.querySelector('.app-nav a[href="#maschinen"]');
       const companyReady = Boolean(
         company?.name &&
         company?.street &&
@@ -398,15 +394,8 @@
         company?.country &&
         company?.email
       );
-
-      document.body.classList.toggle('onboarding-empty', firstStart);
-      if (onboarding) onboarding.hidden = !firstStart;
-      if (machineNav) machineNav.hidden = firstStart;
-
-      const companyStep = document.getElementById('onboarding-company-step');
-      const companyAction = document.getElementById('onboarding-company-action');
-      if (companyStep) companyStep.classList.toggle('done', companyReady);
-      if (companyAction) companyAction.textContent = companyReady ? 'Daten geprüft' : 'Jetzt prüfen';
+      const companyNotice = document.getElementById('company-setup-notice');
+      if (companyNotice) companyNotice.hidden = companyReady;
 
       empty.hidden = machines.length > 0;
       list.hidden = machines.length === 0;
