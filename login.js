@@ -4,7 +4,7 @@
   const submit = document.getElementById('login-submit');
   const resend = document.getElementById('resend-confirmation');
   const emailInput = document.getElementById('login-email');
-  const PUBLIC_LOGIN_URL = 'https://smettmann.github.io/CRAwerk/login.html?confirmed=1';
+  const PUBLIC_LOGIN_URL = new URL('login.html?confirmed=1', window.location.href).href;
 
   if (!form || !window.CRAwerkSupabase) return;
 
