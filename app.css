@@ -3196,3 +3196,48 @@ a{color:inherit;text-decoration:none}
     display:none!important;
   }
 }
+
+
+/* Document file storage */
+.document-file-field small{
+  color:#7b877f;
+  font-size:9px;
+  line-height:1.45;
+}
+
+.document-current-file{
+  margin-top:4px;
+  padding:9px 10px;
+  border:1px solid #d7ded8;
+  border-radius:6px;
+  color:#47534c!important;
+  background:#f5f7f5;
+}
+
+.document-file-meta{
+  color:#536159;
+  font-weight:700;
+}
+
+.document-file-meta.no-file{
+  color:#89938d;
+  font-weight:600;
+}
+
+.document-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.document-actions .item-edit{
+  white-space:nowrap;
+}
+
+@media(max-width:720px){
+  .document-actions{
+    width:100%;
+    justify-content:flex-start;
+  }
+}
