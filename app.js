@@ -1586,8 +1586,20 @@
       else if (task === 'cra') location.href = 'cra.html?id=' + encodeURIComponent(machine.id);
     });
 
-    showMachineDetails(false);
     render();
+
+    const initialTargetId = decodeURIComponent(location.hash.replace(/^#/, ''));
+    const initialTarget = initialTargetId ? document.getElementById(initialTargetId) : null;
+    if (initialTarget) {
+      showMachineDetails(true);
+      requestAnimationFrame(() => {
+        initialTarget.scrollIntoView({behavior:'smooth', block:'center'});
+        initialTarget.classList.add('module-focus-highlight');
+        setTimeout(() => initialTarget.classList.remove('module-focus-highlight'), 1800);
+      });
+    } else {
+      showMachineDetails(false);
+    }
   }
 
   const page = document.body.dataset.page;
