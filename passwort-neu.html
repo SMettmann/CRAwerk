@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Neues CRAwerk Passwort setzen." />
+  <title>CRAwerk – Neues Passwort</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="register-page">
+  <header class="register-header">
+    <a class="brand" href="index.html" aria-label="CRAwerk Startseite">
+      <span class="brand-mark">CRA</span><span class="brand-word">werk</span>
+    </a>
+    <a class="register-back" href="login.html">Zur Anmeldung</a>
+  </header>
+
+  <main class="register-main login-main">
+    <section class="register-copy">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> CRAwerk Zugang</div>
+      <h1>Neues Passwort.<br><span>Danach geht es weiter.</span></h1>
+      <p class="register-lead">
+        Wählen Sie ein neues Passwort für Ihr CRAwerk-Konto.
+        Der Recovery-Link muss gültig sein, damit die Änderung möglich ist.
+      </p>
+    </section>
+
+    <section class="register-panel">
+      <div class="register-panel-head">
+        <span class="section-kicker">NEUES PASSWORT</span>
+        <h2>Passwort festlegen</h2>
+        <p>Mindestens 10 Zeichen. Verwenden Sie kein Passwort, das Sie bereits an anderer Stelle einsetzen.</p>
+      </div>
+
+      <form class="register-form" id="new-password-form" hidden>
+        <div class="form-field form-field-full">
+          <label for="new-password">Neues Passwort</label>
+          <input id="new-password" name="password" type="password" autocomplete="new-password" minlength="10" required>
+        </div>
+
+        <div class="form-field form-field-full">
+          <label for="new-password-confirm">Passwort wiederholen</label>
+          <input id="new-password-confirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="10" required>
+        </div>
+
+        <button class="button button-dark register-submit" id="new-password-submit" type="submit">Passwort speichern</button>
+      </form>
+
+      <div class="register-message auth-message" id="new-password-message">
+        <strong>Recovery-Link wird geprüft.</strong>
+        <span>Einen Moment bitte.</span>
+      </div>
+
+      <p class="auth-switch"><a href="passwort-vergessen.html">Neuen Reset-Link anfordern</a></p>
+    </section>
+  </main>
+
+  <footer class="legal-footer register-legal-footer">
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="rechtliches.html">Rechtliche Hinweise</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="passwort-neu.js"></script>
+</body>
+</html>
