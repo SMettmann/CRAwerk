@@ -623,6 +623,30 @@
     }
   };
 
+  const companyDataReady = () => Boolean(
+    company?.name &&
+    company?.street &&
+    company?.zip &&
+    company?.city &&
+    company?.country &&
+    company?.email
+  );
+
+  const renderCompanyDataCheck = () => {
+    const row = document.getElementById('company-data-check');
+    if (!row) return;
+    const ready = companyDataReady();
+    row.classList.toggle('done', ready);
+    row.classList.toggle('open', !ready);
+    const icon = document.getElementById('company-data-check-icon');
+    const action = document.getElementById('company-data-action');
+    if (icon) icon.textContent = ready ? '✓' : '•';
+    if (action) {
+      action.textContent = ready ? 'Vollständig' : 'Jetzt ergänzen →';
+      action.classList.toggle('is-complete', ready);
+    }
+  };
+
   const guideStepStates = () => {
     const a = getAssessmentFromForm();
     const requirements = readRequirements();
@@ -676,6 +700,7 @@
     );
 
     const annexReady = annexChecks.length > 0 && annexChecks.every(item => item.done);
+    const finalReviewReady = annexReady && companyDataReady();
 
     return [
       classificationReady,
@@ -683,7 +708,7 @@
       documentationReady,
       vulnerabilityReady,
       conformityReady,
-      annexReady
+      finalReviewReady
     ];
   };
 
@@ -727,10 +752,11 @@
     const percent = Math.round(done / states.length * 100);
     const open = states.length - done;
 
-    document.getElementById('guide-progress-percent').textContent = percent + ' %';
+    document.getElementById('guide-progress-percent').textContent = done + ' / ' + states.length;
     document.getElementById('guide-open-count').textContent =
-      open === 0 ? 'Alle 6 Schritte erledigt' : open + (open === 1 ? ' Schritt offen' : ' Schritte offen');
+      open === 0 ? 'Alle 6 CRA-Schritte erledigt' : open + (open === 1 ? ' CRA-Schritt offen' : ' CRA-Schritte offen');
     document.getElementById('guide-progress-bar').style.width = percent + '%';
+    renderCompanyDataCheck();
 
     document.querySelectorAll('[data-guide-go]').forEach(button => {
       const step = Number(button.dataset.guideGo);
