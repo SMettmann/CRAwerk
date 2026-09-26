@@ -49,10 +49,28 @@ a{
 
 .brand{
   display:inline-flex;
-  align-items:center;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:4px;
   font-size:24px;
   font-weight:800;
   letter-spacing:-1px;
+  line-height:1;
+}
+
+.brand-name{
+  display:inline-flex;
+  align-items:center;
+}
+
+.brand-subtitle{
+  padding-left:1px;
+  color:#8f9b94;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.16em;
+  line-height:1;
+  text-transform:uppercase;
 }
 
 .brand-mark{
@@ -185,6 +203,11 @@ h1 span{
   color:var(--muted);
   font-size:18px;
   line-height:1.7;
+}
+
+.hero-text strong{
+  color:#d8e1dc;
+  font-weight:700;
 }
 
 .hero-actions{
@@ -2694,3 +2717,9 @@ h1 span{
 
 /* Hide legacy single-price card until tariff selection is connected */
 .register-price-card{display:none}
+
+@media (max-width:560px){
+  .brand-subtitle{
+    display:none;
+  }
+}
