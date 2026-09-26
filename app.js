@@ -341,6 +341,22 @@
     const form = document.getElementById('machine-form');
     let machines = [];
     let company = null;
+    const formError = document.getElementById('machine-form-error');
+
+    const clearFormError = () => {
+      formError.hidden = true;
+      formError.innerHTML = '';
+    };
+
+    const showFormError = (message, tariffLink = false) => {
+      formError.innerHTML =
+        '<strong>' + escapeHtml(message) + '</strong>' +
+        (tariffLink
+          ? '<a href="zugang.html">Tarif & Abrechnung öffnen →</a>'
+          : '');
+      formError.hidden = false;
+      formError.scrollIntoView({behavior:'smooth', block:'nearest'});
+    };
 
     const openers = [
       document.getElementById('new-machine-button'),
@@ -349,9 +365,18 @@
       document.getElementById('onboarding-new-machine')
     ].filter(Boolean);
 
-    openers.forEach(btn => btn.addEventListener('click', () => dialog.showModal()));
-    document.getElementById('dialog-close').addEventListener('click', () => dialog.close());
-    document.getElementById('dialog-cancel').addEventListener('click', () => dialog.close());
+    openers.forEach(btn => btn.addEventListener('click', () => {
+      clearFormError();
+      dialog.showModal();
+    }));
+    document.getElementById('dialog-close').addEventListener('click', () => {
+      clearFormError();
+      dialog.close();
+    });
+    document.getElementById('dialog-cancel').addEventListener('click', () => {
+      clearFormError();
+      dialog.close();
+    });
 
     const daysUntil = value => {
       if (!value) return null;
@@ -502,6 +527,7 @@
       event.preventDefault();
       const submit = form.querySelector('button[type="submit"]');
       const data = new FormData(form);
+      clearFormError();
       submit.disabled = true;
       submit.textContent = 'Wird angelegt…';
       try {
@@ -516,9 +542,11 @@
         location.href = 'maschine.html?id=' + encodeURIComponent(id);
       } catch (error) {
         console.error(error);
-        showToast(error?.code === 'PLAN_LIMIT'
-          ? error.message
-          : 'Maschine konnte nicht angelegt werden.');
+        if (error?.code === 'PLAN_LIMIT') {
+          showFormError(error.message, true);
+        } else {
+          showFormError('Maschine konnte nicht angelegt werden. Bitte prüfen Sie die Angaben und versuchen Sie es erneut.');
+        }
         submit.disabled = false;
         submit.textContent = 'Maschine anlegen';
       }
