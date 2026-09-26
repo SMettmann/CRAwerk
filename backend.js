@@ -187,7 +187,7 @@
         const planName = company.plan_code === 'starter' ? 'Starter'
           : company.plan_code === 'business' ? 'Business'
           : 'Ihrem Tarif';
-        const error = new Error(planName + ' erlaubt maximal ' + limit + ' aktive Produkte. Einen höheren Tarif können Sie unter „Zugang & Tarif“ wählen.');
+        const error = new Error(planName + ' erlaubt maximal ' + limit + ' Produkte. Einen höheren Tarif können Sie unter „Zugang & Tarif“ wählen.');
         error.code = 'PLAN_LIMIT';
         throw error;
       }
