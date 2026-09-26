@@ -18,8 +18,8 @@
   <main class="register-main login-main">
     <section class="register-copy">
       <div class="eyebrow"><span class="eyebrow-dot"></span> CRAwerk Zugang</div>
-      <h1>Neues Passwort.<br><span>Danach geht es weiter.</span></h1>
-      <p class="register-lead">
+      <h1 id="password-page-title">Neues Passwort.<br><span>Danach geht es weiter.</span></h1>
+      <p class="register-lead" id="password-page-lead">
         Wählen Sie ein neues Passwort für Ihr CRAwerk-Konto.
         Der Recovery-Link muss gültig sein, damit die Änderung möglich ist.
       </p>
@@ -33,6 +33,17 @@
       </div>
 
       <form class="register-form" id="new-password-form" hidden>
+        <div class="form-row" id="invite-name-fields" hidden>
+          <div class="form-field">
+            <label for="invite-first-name">Vorname</label>
+            <input id="invite-first-name" name="firstName" type="text" autocomplete="given-name">
+          </div>
+          <div class="form-field">
+            <label for="invite-last-name">Nachname</label>
+            <input id="invite-last-name" name="lastName" type="text" autocomplete="family-name">
+          </div>
+        </div>
+
         <div class="form-field form-field-full">
           <label for="new-password">Neues Passwort</label>
           <input id="new-password" name="password" type="password" autocomplete="new-password" minlength="10" required>
@@ -51,7 +62,7 @@
         <span>Einen Moment bitte.</span>
       </div>
 
-      <p class="auth-switch"><a href="passwort-vergessen.html">Neuen Reset-Link anfordern</a></p>
+      <p class="auth-switch" id="password-reset-link"><a href="passwort-vergessen.html">Neuen Reset-Link anfordern</a></p>
     </section>
   </main>
 
