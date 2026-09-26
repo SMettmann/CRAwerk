@@ -4039,3 +4039,71 @@ a{color:inherit;text-decoration:none}
     flex-basis:auto;
   }
 }
+
+
+/* CRA completion prerequisite */
+.cra-prerequisite-check{
+  display:grid;
+  grid-template-columns:24px minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+  padding:12px 13px;
+  border:1px solid #dde2de;
+  border-radius:6px;
+  background:#fbfcfb;
+}
+.cra-prerequisite-check > span{
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  font-size:10px;
+  font-weight:900;
+}
+.cra-prerequisite-check strong,
+.cra-prerequisite-check small{
+  display:block;
+}
+.cra-prerequisite-check strong{
+  margin-bottom:3px;
+  font-size:10px;
+}
+.cra-prerequisite-check small{
+  color:#7c8780;
+  font-size:9px;
+}
+.cra-prerequisite-check a{
+  font-size:9px;
+  font-weight:800;
+}
+.cra-prerequisite-check.open{
+  border-color:#d7c19d;
+  background:#fbf7ef;
+}
+.cra-prerequisite-check.open > span{
+  color:#7b8680;
+  border:1px solid #cbd3cd;
+  background:#fff;
+}
+.cra-prerequisite-check.open a{
+  color:#755525;
+}
+.cra-prerequisite-check.done > span{
+  color:#fff;
+  background:#213129;
+}
+.cra-prerequisite-check.done a{
+  color:#3b6349;
+  pointer-events:none;
+}
+@media(max-width:620px){
+  .cra-prerequisite-check{
+    grid-template-columns:24px 1fr;
+  }
+  .cra-prerequisite-check a{
+    grid-column:2;
+    justify-self:start;
+  }
+}
