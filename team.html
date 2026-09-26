@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Benutzer & Team – CRAwerk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body team-body">
+  <header class="app-header">
+    <a class="app-brand" href="dashboard.html"><span>CRA</span>werk</a>
+    <nav class="app-nav">
+      <a href="dashboard.html">Übersicht</a>
+      <a href="dashboard.html#maschinen">Maschinen</a>
+      <a href="CRAwerk_Handbuch.pdf" download="CRAwerk-Handbuch.pdf">Handbuch</a>
+      <a href="support.html" data-support-link>Support</a>
+      <a href="admin.html" data-system-admin-link hidden>Systemadmin</a>
+    </nav>
+    <a class="app-account" href="unternehmen.html" id="team-company-name">Unternehmen</a>
+  </header>
+
+  <main class="app-main team-main">
+    <a class="back-link" href="unternehmen.html">← Zum Unternehmen</a>
+
+    <section class="app-intro team-intro">
+      <div>
+        <span class="app-kicker">BENUTZER & TEAM</span>
+        <h1>Gemeinsam in CRAwerk arbeiten</h1>
+        <p>Jede Person erhält einen eigenen Zugang. Alle Teammitglieder arbeiten an denselben Produkten und Daten Ihres Unternehmens.</p>
+      </div>
+    </section>
+
+    <section class="team-layout">
+      <section class="team-card team-members-card">
+        <div class="company-section-head team-card-head">
+          <div>
+            <span class="app-kicker">TEAM</span>
+            <h2>Benutzer Ihres Unternehmens</h2>
+            <p id="team-summary">Wird geladen…</p>
+          </div>
+        </div>
+
+        <div class="team-role-note">
+          <div><strong>Inhaber</strong><span>Alles inkl. Team, Firmendaten und Abrechnung</span></div>
+          <div><strong>Admin</strong><span>Produkte, Firmendaten, Team und Abrechnung</span></div>
+          <div><strong>Mitarbeiter</strong><span>Produkte bearbeiten, keine Team- oder Tarifverwaltung</span></div>
+        </div>
+
+        <div class="team-list" id="team-list"></div>
+      </section>
+
+      <aside class="team-side">
+        <form class="team-card team-invite-card" id="team-invite-form">
+          <span class="app-kicker">MITARBEITER EINLADEN</span>
+          <h2>Neuen Zugang anlegen</h2>
+          <p>Die Person erhält eine E-Mail und legt anschließend ihr eigenes Passwort fest.</p>
+
+          <label>
+            <span>E-Mail-Adresse *</span>
+            <input type="email" name="email" autocomplete="email" required placeholder="name@unternehmen.de">
+          </label>
+
+          <label>
+            <span>Rolle</span>
+            <select name="role">
+              <option value="member">Mitarbeiter</option>
+              <option value="admin">Admin</option>
+            </select>
+          </label>
+
+          <button class="app-btn app-btn-dark" type="submit">Einladung senden</button>
+          <small id="team-invite-hint">Teamzugänge sind in allen CRAwerk-Tarifen enthalten.</small>
+        </form>
+
+        <section class="team-card" id="team-pending-card" hidden>
+          <span class="app-kicker">OFFENE EINLADUNGEN</span>
+          <h2>Noch nicht angenommen</h2>
+          <div class="team-pending-list" id="team-pending-list"></div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast" id="team-toast" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+  <script src="supabase-client.js"></script>
+  <script src="backend.js"></script>
+  <script src="team.js"></script>
+</body>
+</html>
