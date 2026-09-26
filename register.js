@@ -67,7 +67,12 @@
             company_name: data.get('company').trim(),
             first_name: data.get('firstName').trim(),
             last_name: data.get('lastName').trim(),
-            plan_code: planCode
+            plan_code: planCode,
+            business_confirmed: data.get('businessCustomer') === 'on',
+            terms_accepted: data.get('legalAccepted') === 'on',
+            terms_version: '2026-09-26-v1',
+            dpa_accepted: data.get('legalAccepted') === 'on',
+            dpa_version: '2026-09-26-v1'
           }
         }
       });
