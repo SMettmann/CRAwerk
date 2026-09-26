@@ -3567,3 +3567,111 @@ a{color:inherit;text-decoration:none}
     font-size:9px;
   }
 }
+
+
+/* First-login onboarding */
+.onboarding-panel{
+  margin:0 0 36px;
+  padding:30px;
+  border:1px solid #d3dad5;
+  border-radius:10px;
+  background:#f8faf8;
+}
+.onboarding-head{
+  max-width:760px;
+  margin-bottom:24px;
+}
+.onboarding-head h2{
+  margin:0 0 8px;
+  font-size:28px;
+  letter-spacing:-.035em;
+}
+.onboarding-head p{
+  margin:0;
+  color:#69756e;
+  font-size:13px;
+  line-height:1.65;
+}
+.onboarding-steps{
+  display:grid;
+  gap:10px;
+}
+.onboarding-step{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  align-items:center;
+  gap:16px;
+  min-height:92px;
+  padding:17px 18px;
+  border:1px solid #d9dfda;
+  border-radius:8px;
+  background:#fff;
+}
+.onboarding-number{
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#fff;
+  background:#17201b;
+  font-size:12px;
+  font-weight:850;
+}
+.onboarding-step strong{
+  display:block;
+  margin-bottom:4px;
+  font-size:14px;
+}
+.onboarding-step p{
+  margin:0;
+  color:#758079;
+  font-size:11px;
+  line-height:1.55;
+}
+.onboarding-current{
+  border-color:#59665f;
+  box-shadow:inset 3px 0 0 #17201b;
+}
+.onboarding-locked{
+  opacity:.66;
+}
+.onboarding-step.done .onboarding-number{
+  color:#17201b;
+  background:#dfe7e1;
+}
+.onboarding-step.done .onboarding-number::before{
+  content:"✓";
+}
+.onboarding-step.done .onboarding-number{
+  font-size:0;
+}
+.onboarding-step.done .onboarding-number::before{
+  font-size:13px;
+}
+.onboarding-auto{
+  color:#7a857f;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.app-body.onboarding-empty .stats-grid,
+.app-body.onboarding-empty #next-work,
+.app-body.onboarding-empty .dashboard-focus-grid,
+.app-body.onboarding-empty .machines-section{
+  display:none;
+}
+@media(max-width:720px){
+  .onboarding-panel{
+    padding:22px 18px;
+  }
+  .onboarding-step{
+    grid-template-columns:36px 1fr;
+    align-items:start;
+  }
+  .onboarding-step .app-btn,
+  .onboarding-auto{
+    grid-column:2;
+    justify-self:start;
+  }
+}
