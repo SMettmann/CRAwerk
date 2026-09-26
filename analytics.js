@@ -1,21 +1,11 @@
 (() => {
   const SUPABASE_URL = 'https://uqshjagnaaabyptdlzgr.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_8VVsMRMXIpA0n7Gp1V8tzw_J4rf6xJF';
-  const SESSION_KEY = 'crawerk_analytics_session';
+  const sessionId = crypto.randomUUID();
+  const sentOnce = new Set();
 
-  const getSessionId = () => {
-    let id = sessionStorage.getItem(SESSION_KEY);
-    if (!id) {
-      id = crypto.randomUUID();
-      sessionStorage.setItem(SESSION_KEY, id);
-    }
-    return id;
-  };
-
-  const track = async (eventType, oncePerSession = false) => {
-    const sessionId = getSessionId();
-    const onceKey = 'crawerk_analytics_' + eventType;
-    if (oncePerSession && sessionStorage.getItem(onceKey) === '1') return;
+  const track = async (eventType, oncePerPage = false) => {
+    if (oncePerPage && sentOnce.has(eventType)) return;
 
     try {
       const response = await fetch(SUPABASE_URL + '/rest/v1/analytics_events', {
@@ -34,16 +24,17 @@
       });
 
       if (response.ok || response.status === 409) {
-        if (oncePerSession) sessionStorage.setItem(onceKey, '1');
+        if (oncePerPage) sentOnce.add(eventType);
       }
     } catch (error) {
-      console.debug('CRAwerk analytics event skipped.', error);
+      console.debug('CRAwerk usage event skipped.', error);
     }
   };
 
   window.CRAwerkAnalytics = {track};
 
-  track('visitor', true);
+  const navigation = performance.getEntriesByType?.('navigation')?.[0];
+  if (navigation?.type !== 'reload') track('visitor', true);
 
   document.addEventListener('click', event => {
     const link = event.target.closest('a[href*="CRAwerk_Handbuch.pdf"]');
