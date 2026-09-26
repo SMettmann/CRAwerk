@@ -1110,6 +1110,102 @@
     if (error) throw error;
   };
 
+  const mapSupportTicket = row => ({
+    id:row.id,
+    companyId:row.company_id,
+    companyName:row.companies?.name || '',
+    companyEmail:row.companies?.email || '',
+    category:row.category || 'general',
+    subject:row.subject || '',
+    message:row.message || '',
+    status:row.status || 'open',
+    createdAt:row.created_at,
+    updatedAt:row.updated_at,
+    lastMessageAt:row.last_message_at,
+    messages:(row.support_messages || [])
+      .map(item => ({
+        id:item.id,
+        senderRole:item.sender_role,
+        message:item.message || '',
+        createdAt:item.created_at
+      }))
+      .sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt))
+  });
+
+  const loadSupportTickets = async () => {
+    const company = await currentCompany();
+    const { data, error } = await db
+      .from('support_tickets')
+      .select('*, support_messages(*)')
+      .eq('company_id', company.id)
+      .order('last_message_at', {ascending:false});
+    if (error) throw error;
+    return (data || []).map(mapSupportTicket);
+  };
+
+  const createSupportTicket = async values => {
+    const company = await currentCompany();
+    const user = await api.getUser();
+    if (!user) throw new Error('Nicht angemeldet.');
+
+    const { data, error } = await db
+      .from('support_tickets')
+      .insert({
+        company_id:company.id,
+        created_by:user.id,
+        category:values.category || 'general',
+        subject:String(values.subject || '').trim(),
+        message:String(values.message || '').trim()
+      })
+      .select('*')
+      .single();
+    if (error) throw error;
+    return mapSupportTicket(data);
+  };
+
+  const addSupportMessage = async (ticketId, message) => {
+    const user = await api.getUser();
+    if (!user) throw new Error('Nicht angemeldet.');
+    const { error } = await db.from('support_messages').insert({
+      ticket_id:ticketId,
+      sender_user_id:user.id,
+      sender_role:'customer',
+      message:String(message || '').trim()
+    });
+    if (error) throw error;
+  };
+
+  const adminSupportTickets = async () => {
+    const { data, error } = await db
+      .from('support_tickets')
+      .select('*, companies(name,email), support_messages(*)')
+      .order('last_message_at', {ascending:false});
+    if (error) throw error;
+    return (data || []).map(mapSupportTicket);
+  };
+
+  const adminReplySupport = async (ticketId, message) => {
+    const user = await api.getUser();
+    if (!user) throw new Error('Nicht angemeldet.');
+    const { error } = await db.from('support_messages').insert({
+      ticket_id:ticketId,
+      sender_user_id:user.id,
+      sender_role:'admin',
+      message:String(message || '').trim()
+    });
+    if (error) throw error;
+  };
+
+  const adminSetSupportStatus = async (ticketId, status) => {
+    const allowed = ['open','in_progress','answered','closed'];
+    if (!allowed.includes(status)) throw new Error('Ungültiger Supportstatus.');
+    const { error } = await db
+      .from('support_tickets')
+      .update({status, updated_at:new Date().toISOString()})
+      .eq('id', ticketId);
+    if (error) throw error;
+  };
+
   const adminSetCompanyStatus = async (companyId, status) => {
     const allowed = ['trial','active','paused','cancelled'];
     if (!allowed.includes(status)) throw new Error('Ungültiger Firmenstatus.');
@@ -1133,6 +1229,12 @@
     adminOverview,
     adminCompanies,
     adminSetCompanyStatus,
+    loadSupportTickets,
+    createSupportTicket,
+    addSupportMessage,
+    adminSupportTickets,
+    adminReplySupport,
+    adminSetSupportStatus,
     loadCraBundle,
     saveCraAssessment,
     saveCraRequirements,
