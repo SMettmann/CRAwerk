@@ -993,6 +993,10 @@
         softwareForm.reset();
         softwareDialog.close();
         await refresh(wasEditing ? 'Software wurde aktualisiert.' : 'Software wurde hinzugefügt.');
+        showMachineDetails(true);
+        requestAnimationFrame(() => {
+          document.getElementById('module-software')?.scrollIntoView({behavior:'smooth', block:'start'});
+        });
       } catch (error) {
         console.error(error);
         showToast('Software konnte nicht gespeichert werden.');
