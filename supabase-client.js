@@ -111,9 +111,22 @@
 
   function installGlobalLogout() {
     const header = document.querySelector('.app-header');
-    if (!header || document.getElementById('access-logout')) return;
+    if (!header) return;
 
     const currentPage = location.pathname.split('/').pop();
+
+    if (!document.querySelector('[data-support-link]')) {
+      const supportLink = document.createElement('a');
+      supportLink.href = 'support.html';
+      supportLink.dataset.supportLink = 'true';
+      supportLink.textContent = 'Support';
+
+      const nav = header.querySelector('.app-nav');
+      const adminLink = nav?.querySelector('[data-system-admin-link]');
+      if (nav && adminLink) nav.insertBefore(supportLink, adminLink);
+      else if (nav) nav.appendChild(supportLink);
+    }
+
     if (currentPage !== 'zugang.html' && !document.querySelector('[data-billing-link]')) {
       const billingLink = document.createElement('a');
       billingLink.href = 'zugang.html';
@@ -126,7 +139,7 @@
       else header.appendChild(billingLink);
     }
 
-    if (document.querySelector('[data-global-logout]')) return;
+    if (document.getElementById('access-logout') || document.querySelector('[data-global-logout]')) return;
 
     const button = document.createElement('button');
     button.type = 'button';
