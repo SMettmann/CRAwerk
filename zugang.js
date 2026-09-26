@@ -13,9 +13,9 @@
   const planCards = [...document.querySelectorAll('[data-plan-card]')];
 
   const plans = {
-    starter:{label:'Starter', price:'79 €', limit:'3 aktive Produkte'},
-    business:{label:'Business', price:'149 €', limit:'20 aktive Produkte'},
-    pro:{label:'Pro', price:'299 €', limit:'Unbegrenzt aktive Produkte'}
+    starter:{label:'Starter', price:'79 €', limit:'3 Produkte'},
+    business:{label:'Business', price:'149 €', limit:'20 Produkte'},
+    pro:{label:'Pro', price:'299 €', limit:'Unbegrenzt Produkte'}
   };
 
   const statusLabels = {
