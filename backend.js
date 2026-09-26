@@ -375,17 +375,32 @@
   const uploadDocumentFile = async (machineId, documentId, file) => {
     if (!file) return null;
     const path = documentStoragePath(machineId, documentId, file);
+    const ext = String(file.name || '').split('.').pop().toLowerCase();
+    const mimeByExtension = {
+      pdf:'application/pdf',
+      txt:'text/plain',
+      csv:'text/csv',
+      jpg:'image/jpeg',
+      jpeg:'image/jpeg',
+      png:'image/png',
+      webp:'image/webp',
+      zip:'application/zip',
+      docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      pptx:'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    };
+    const contentType = file.type || mimeByExtension[ext] || 'application/octet-stream';
     const { error } = await db.storage.from('cra-documents').upload(path, file, {
       cacheControl:'3600',
       upsert:false,
-      contentType:file.type || undefined
+      contentType
     });
     if (error) throw error;
     return {
       storagePath:path,
       originalFilename:file.name,
       fileSize:file.size || 0,
-      mimeType:file.type || ''
+      mimeType:contentType
     };
   };
 
