@@ -2723,3 +2723,148 @@ h1 span{
     display:none;
   }
 }
+
+
+/* CRAwerk contracts */
+.form-check a{
+  color:#1c4e35;
+  font-weight:800;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+.legal-header-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.legal-print-button{
+  appearance:none;
+  cursor:pointer;
+  font:inherit;
+  background:transparent;
+}
+.legal-version{
+  margin:-26px 0 34px;
+  color:#7f8a84;
+  font-size:11px;
+  letter-spacing:.04em;
+}
+.legal-contract{
+  max-width:1040px;
+}
+.legal-contract .legal-block{
+  break-inside:avoid;
+}
+.legal-contract .legal-block p,
+.legal-contract .legal-block li,
+.legal-contract .legal-block td{
+  color:#aeb8b3;
+  font-size:14px;
+  line-height:1.72;
+}
+.legal-contract .legal-block ul{
+  max-width:840px;
+  margin:14px 0 0;
+  padding-left:22px;
+}
+.legal-contract .legal-block li{
+  margin:7px 0;
+}
+.legal-contract .legal-block h3{
+  margin:22px 0 7px;
+  font-size:15px;
+}
+.legal-contract-note{
+  margin:36px 0 0;
+  padding:18px 20px;
+  border:1px solid #5e674f;
+  border-radius:7px;
+  background:#141912;
+}
+.legal-contract-note strong{
+  display:block;
+  margin-bottom:7px;
+  font-size:13px;
+}
+.legal-contract-note p{
+  margin:0;
+  color:#aeb8b3;
+  font-size:12px;
+  line-height:1.6;
+}
+.legal-table{
+  width:100%;
+  margin-top:16px;
+  border-collapse:collapse;
+}
+.legal-table th,
+.legal-table td{
+  padding:12px 13px;
+  border:1px solid #303a35;
+  text-align:left;
+  vertical-align:top;
+}
+.legal-table th{
+  color:#f4f7f5;
+  background:#151b18;
+  font-size:12px;
+}
+.legal-table td{
+  background:#101513;
+}
+.company-legal-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+@media(max-width:650px){
+  .legal-header-actions{
+    gap:8px;
+  }
+  .legal-print-button{
+    display:none;
+  }
+}
+@media print{
+  .legal-page{
+    color:#111;
+    background:#fff;
+  }
+  .legal-page .register-header,
+  .legal-page .legal-footer,
+  .legal-contract-note{
+    display:none !important;
+  }
+  .legal-main{
+    max-width:none;
+    padding:0;
+  }
+  .legal-main > h1{
+    color:#111;
+    font-size:28pt;
+  }
+  .legal-version{
+    color:#555;
+  }
+  .legal-block{
+    border-color:#bbb;
+    break-inside:avoid;
+  }
+  .legal-block h2,
+  .legal-block h3{
+    color:#111;
+  }
+  .legal-contract .legal-block p,
+  .legal-contract .legal-block li,
+  .legal-contract .legal-block td,
+  .legal-small{
+    color:#222;
+  }
+  .legal-table th{
+    color:#111;
+    background:#eee;
+  }
+  .legal-table td{
+    background:#fff;
+  }
+}
