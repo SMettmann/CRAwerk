@@ -3747,3 +3747,40 @@ a{color:inherit;text-decoration:none}
   outline-offset:3px;
   transition:outline-color .3s ease;
 }
+
+
+/* Errors shown where the user is currently working */
+.dialog-inline-error{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:4px 0 2px;
+  padding:13px 14px;
+  border:1px solid #d8b8b3;
+  border-radius:7px;
+  color:#6f2f2b;
+  background:#fff3f1;
+  font-size:11px;
+  line-height:1.45;
+}
+.dialog-inline-error[hidden]{
+  display:none;
+}
+.dialog-inline-error strong{
+  font-weight:750;
+}
+.dialog-inline-error a{
+  flex:0 0 auto;
+  color:#17201b;
+  font-weight:850;
+  text-decoration:underline;
+  text-underline-offset:2px;
+  white-space:nowrap;
+}
+@media(max-width:620px){
+  .dialog-inline-error{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
