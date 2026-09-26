@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Zugang & Tarif – CRAwerk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body">
+  <header class="app-header">
+    <a class="app-brand" href="index.html"><span>CRA</span>werk</a>
+    <nav class="app-nav">
+      <a href="CRAwerk_Handbuch.pdf" download="CRAwerk-Handbuch.pdf">Handbuch</a>
+    </nav>
+    <button class="text-button" id="access-logout" type="button">Abmelden</button>
+  </header>
+
+  <main class="account-access-main">
+    <section class="account-access-card">
+      <span class="app-kicker" id="access-kicker">ZUGANG</span>
+      <h1 id="access-title">Zugang wird geprüft…</h1>
+      <p id="access-text">CRAwerk lädt Ihren aktuellen Kontostatus.</p>
+
+      <div class="account-access-meta">
+        <div>
+          <span>Unternehmen</span>
+          <strong id="access-company">–</strong>
+        </div>
+        <div>
+          <span>Status</span>
+          <strong id="access-status">–</strong>
+        </div>
+        <div>
+          <span>Testphase</span>
+          <strong id="access-trial">–</strong>
+        </div>
+        <div>
+          <span>Zugang</span>
+          <strong id="access-state">–</strong>
+        </div>
+      </div>
+
+      <div class="account-access-price">
+        <strong>CRAwerk Vollzugang · 29,99 € / Monat</strong>
+        <span>Monatlich. Die Freischaltung wird direkt mit Ihrem Firmenkonto verknüpft.</span>
+      </div>
+
+      <div class="account-access-actions">
+        <a class="app-btn app-btn-dark" id="access-dashboard" href="dashboard.html" hidden>Zum Dashboard</a>
+        <a class="app-btn app-btn-light" href="CRAwerk_Handbuch.pdf" download="CRAwerk-Handbuch.pdf">Handbuch herunterladen</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="zugang.js"></script>
+</body>
+</html>
