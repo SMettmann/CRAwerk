@@ -58,7 +58,7 @@
     empty.hidden = filtered.length > 0;
     list.hidden = filtered.length === 0;
 
-    const testCount = companies.filter(company => company.account_status === 'trial').length;
+    const testCount = companies.filter(company => company.account_status === 'trial' && company.trial_ends_at && new Date(company.trial_ends_at).getTime() > Date.now()).length;
     summary.textContent = companies.length + ' Firmen · ' + testCount + ' davon in Testphase';
 
     list.innerHTML = filtered.map(company => {
@@ -71,7 +71,7 @@
           '<div class="admin-company-title">' +
             '<strong>' + escapeHtml(company.company_name || 'Ohne Firmenname') + '</strong>' +
             '<span class="admin-status status-' + escapeHtml(company.account_status) + '">' +
-              escapeHtml(statusLabels[company.account_status] || company.account_status) +
+              escapeHtml(company.account_status === 'trial' && company.trial_ends_at && new Date(company.trial_ends_at).getTime() <= Date.now() ? 'Test abgelaufen' : (statusLabels[company.account_status] || company.account_status)) +
             '</span>' +
           '</div>' +
           '<span>' + escapeHtml(company.owner_email || 'Keine Owner-E-Mail') + '</span>' +
