@@ -107,6 +107,8 @@
       focus.push('Vorhandene Unterlagen an einem Ort zusammenführen');
     }
 
+    window.CRAwerkAnalytics?.track('quickcheck_completed', true);
+
     resultTitle.textContent = title;
     resultText.textContent = text;
 
