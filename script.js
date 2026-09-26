@@ -124,7 +124,7 @@
         '<span class="result-label">Bei Ihrer Maschine besonders wichtig</span>' +
         '<ul>' + focus.map(p => '<li>' + p + '</li>').join('') + '</ul>' +
       '</div>' +
-      '<a class="button button-dark result-cta" href="#preis">CRAwerk für 29,99 € ansehen</a>';
+      '<a class="button button-dark result-cta" href="#preis">CRAwerk ab 79 € ansehen</a>';
 
     questions.forEach(q => q.classList.remove('active'));
     controls.hidden = true;
