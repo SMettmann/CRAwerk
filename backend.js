@@ -55,7 +55,9 @@
     related:item.related || 'Gesamtmaschine',
     note:item.note || '',
     storagePath:item.storage_path || '',
-    originalFilename:item.original_filename || ''
+    originalFilename:item.original_filename || '',
+    fileSize:Number(item.file_size || 0),
+    mimeType:item.mime_type || ''
   });
 
   const mapMachine = row => {
@@ -205,6 +207,18 @@
   };
 
   const deleteMachine = async id => {
+    const { data:documents, error:documentsError } = await db
+      .from('document_items')
+      .select('storage_path')
+      .eq('machine_id', id);
+    if (documentsError) throw documentsError;
+
+    const paths = (documents || []).map(item => item.storage_path).filter(Boolean);
+    if (paths.length) {
+      const { error:storageError } = await db.storage.from('cra-documents').remove(paths);
+      if (storageError) throw storageError;
+    }
+
     const { error } = await db.from('machines').delete().eq('id', id);
     if (error) throw error;
   };
@@ -346,7 +360,42 @@
     if (error) throw error;
   };
 
-  const addDocument = async (machineId, v) => {
+  const sanitizeFilename = value =>
+    String(value || 'datei')
+      .normalize('NFKD')
+      .replace(/[\\/]+/g, '-')
+      .replace(/[^a-zA-Z0-9._ -]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .slice(0, 120) || 'datei';
+
+  const documentStoragePath = (machineId, documentId, file) =>
+    machineId + '/' + documentId + '/' + Date.now() + '-' + sanitizeFilename(file.name);
+
+  const uploadDocumentFile = async (machineId, documentId, file) => {
+    if (!file) return null;
+    const path = documentStoragePath(machineId, documentId, file);
+    const { error } = await db.storage.from('cra-documents').upload(path, file, {
+      cacheControl:'3600',
+      upsert:false,
+      contentType:file.type || undefined
+    });
+    if (error) throw error;
+    return {
+      storagePath:path,
+      originalFilename:file.name,
+      fileSize:file.size || 0,
+      mimeType:file.type || ''
+    };
+  };
+
+  const removeStoredDocument = async path => {
+    if (!path) return;
+    const { error } = await db.storage.from('cra-documents').remove([path]);
+    if (error) throw error;
+  };
+
+  const addDocument = async (machineId, v, file = null) => {
     const { data, error } = await db.from('document_items').insert({
       machine_id:machineId,
       title:v.title,
@@ -356,23 +405,93 @@
       note:v.note || null
     }).select().single();
     if (error) throw error;
-    return mapDocument(data);
+
+    if (!file) return mapDocument(data);
+
+    try {
+      const stored = await uploadDocumentFile(machineId, data.id, file);
+      const { data:updated, error:updateError } = await db.from('document_items').update({
+        storage_path:stored.storagePath,
+        original_filename:stored.originalFilename,
+        file_size:stored.fileSize,
+        mime_type:stored.mimeType || null
+      }).eq('id', data.id).select().single();
+      if (updateError) {
+        await removeStoredDocument(stored.storagePath).catch(() => {});
+        throw updateError;
+      }
+      return mapDocument(updated);
+    } catch (storageError) {
+      await db.from('document_items').delete().eq('id', data.id);
+      throw storageError;
+    }
   };
 
-  const updateDocument = async (id, v) => {
-    const { error } = await db.from('document_items').update({
+  const updateDocument = async (id, v, file = null) => {
+    const { data:current, error:currentError } = await db
+      .from('document_items')
+      .select('id,machine_id,storage_path,original_filename,file_size,mime_type')
+      .eq('id', id)
+      .single();
+    if (currentError) throw currentError;
+
+    let stored = null;
+    if (file) stored = await uploadDocumentFile(current.machine_id, id, file);
+
+    const payload = {
       title:v.title,
       type:v.type,
       document_date:v.date || null,
       related:v.related || 'Gesamtmaschine',
       note:v.note || null
-    }).eq('id', id);
-    if (error) throw error;
+    };
+
+    if (stored) {
+      payload.storage_path = stored.storagePath;
+      payload.original_filename = stored.originalFilename;
+      payload.file_size = stored.fileSize;
+      payload.mime_type = stored.mimeType || null;
+    }
+
+    const { error } = await db.from('document_items').update(payload).eq('id', id);
+    if (error) {
+      if (stored) await removeStoredDocument(stored.storagePath).catch(() => {});
+      throw error;
+    }
+
+    if (stored && current.storage_path && current.storage_path !== stored.storagePath) {
+      await removeStoredDocument(current.storage_path);
+    }
   };
 
   const deleteDocument = async id => {
+    const { data:current, error:currentError } = await db
+      .from('document_items')
+      .select('storage_path')
+      .eq('id', id)
+      .single();
+    if (currentError) throw currentError;
+
+    if (current.storage_path) await removeStoredDocument(current.storage_path);
+
     const { error } = await db.from('document_items').delete().eq('id', id);
     if (error) throw error;
+  };
+
+  const documentSignedUrl = async storagePath => {
+    if (!storagePath) throw new Error('Für diese Unterlage ist keine Datei gespeichert.');
+    const { data, error } = await db.storage
+      .from('cra-documents')
+      .createSignedUrl(storagePath, 120);
+    if (error) throw error;
+    return data.signedUrl;
+  };
+
+  const downloadDocument = async storagePath => {
+    if (!storagePath) throw new Error('Für diese Unterlage ist keine Datei gespeichert.');
+    const { data, error } = await db.storage.from('cra-documents').download(storagePath);
+    if (error) throw error;
+    return data;
   };
 
   const setSupportPeriod = async (machineId, v) => {
@@ -418,7 +537,24 @@
       await setUpdateProcess(newId, source.updateProcess);
     }
     for (const item of source.updateItems || []) await addUpdate(newId, item);
-    for (const item of source.documentItems || []) await addDocument(newId, item);
+    for (const item of source.documentItems || []) {
+      if (item.storagePath) {
+        try {
+          const blob = await downloadDocument(item.storagePath);
+          const file = new File(
+            [blob],
+            item.originalFilename || 'dokument',
+            {type:item.mimeType || blob.type || 'application/octet-stream'}
+          );
+          await addDocument(newId, item, file);
+        } catch (error) {
+          console.warn('Dokumentdatei konnte beim Duplizieren nicht kopiert werden.', error);
+          await addDocument(newId, item);
+        }
+      } else {
+        await addDocument(newId, item);
+      }
+    }
     if (source.supportPeriod && source.supportPeriod.startDate && source.supportPeriod.endDate && source.supportPeriod.owner) {
       await setSupportPeriod(newId, source.supportPeriod);
     }
@@ -905,6 +1041,8 @@
     addDocument,
     updateDocument,
     deleteDocument,
+    documentSignedUrl,
+    downloadDocument,
     setSupportPeriod
   };
 })();
