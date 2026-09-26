@@ -3,7 +3,7 @@
   const message = document.getElementById('reset-message');
   const submit = document.getElementById('reset-submit');
   const emailInput = document.getElementById('reset-email');
-  const RESET_URL = 'https://smettmann.github.io/CRAwerk/passwort-neu.html';
+  const RESET_URL = 'https://smettmann.github.io/CRAwerk/passwort-neu.html?recovery=1';
 
   if (!form || !window.CRAwerkSupabase) return;
 
