@@ -738,6 +738,43 @@
     };
   };
 
+  const adminAnalytics = async () => {
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+    const count = async (eventType, since = '') => {
+      let query = db
+        .from('analytics_events')
+        .select('id', {count:'exact', head:true})
+        .eq('event_type', eventType);
+      if (since) query = query.gte('created_at', since);
+      const { count:result, error } = await query;
+      if (error) throw error;
+      return result || 0;
+    };
+
+    const [
+      visitorsTotal, visitorsWeek,
+      checksTotal, checksWeek,
+      downloadsTotal, downloadsWeek
+    ] = await Promise.all([
+      count('visitor'),
+      count('visitor', weekAgo),
+      count('quickcheck_completed'),
+      count('quickcheck_completed', weekAgo),
+      count('handbook_download'),
+      count('handbook_download', weekAgo)
+    ]);
+
+    return {
+      visitors_total:visitorsTotal,
+      visitors_last_7_days:visitorsWeek,
+      quickchecks_total:checksTotal,
+      quickchecks_last_7_days:checksWeek,
+      handbook_downloads_total:downloadsTotal,
+      handbook_downloads_last_7_days:downloadsWeek
+    };
+  };
+
   const adminCompanies = async () => {
     const [companiesResult, membersResult, machinesResult] = await Promise.all([
       db.from('companies')
@@ -1227,6 +1264,7 @@
     deleteCompanyLogo,
     isSystemAdmin,
     adminOverview,
+    adminAnalytics,
     adminCompanies,
     adminSetCompanyStatus,
     loadSupportTickets,
