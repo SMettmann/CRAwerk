@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Support – CRAwerk</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body support-body">
+  <header class="app-header">
+    <a class="app-brand" href="dashboard.html"><span>CRA</span>werk</a>
+    <nav class="app-nav">
+      <a href="dashboard.html">Übersicht</a>
+      <a href="dashboard.html#maschinen">Maschinen</a>
+      <a href="CRAwerk_Handbuch.pdf" download="CRAwerk-Handbuch.pdf">Handbuch</a>
+      <a class="active" href="support.html" data-support-link>Support</a>
+      <a href="admin.html" data-system-admin-link hidden>Systemadmin</a>
+    </nav>
+    <a class="app-account" href="unternehmen.html" id="support-company-name">Unternehmen</a>
+  </header>
+
+  <main class="app-main support-main">
+    <section class="app-intro support-intro">
+      <div>
+        <span class="app-kicker">SUPPORT</span>
+        <h1>Wie können wir helfen?</h1>
+        <p>Schicken Sie Ihre Frage direkt aus CRAwerk. Antworten und der aktuelle Bearbeitungsstand bleiben hier nachvollziehbar.</p>
+      </div>
+    </section>
+
+    <section class="support-layout">
+      <form class="support-new-card" id="support-form">
+        <div class="company-section-head">
+          <span class="app-kicker">NEUE ANFRAGE</span>
+          <h2>Frage stellen</h2>
+          <p>Beschreiben Sie kurz, wobei Sie Unterstützung benötigen.</p>
+        </div>
+
+        <label>
+          <span>Bereich</span>
+          <select name="category" required>
+            <option value="general">Allgemeine Frage</option>
+            <option value="technical">Technisches Problem</option>
+            <option value="cra">Frage zur Nutzung von CRAwerk</option>
+            <option value="billing">Tarif & Abrechnung</option>
+            <option value="account">Konto & Zugang</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Betreff *</span>
+          <input name="subject" maxlength="160" required placeholder="z. B. Wo trage ich die Firmware-Version ein?">
+        </label>
+
+        <label>
+          <span>Ihre Frage *</span>
+          <textarea name="message" rows="7" maxlength="5000" required placeholder="Beschreiben Sie kurz, was Sie machen möchten oder wo etwas nicht funktioniert."></textarea>
+        </label>
+
+        <div class="support-form-actions">
+          <span id="support-form-state">Antworten erscheinen anschließend direkt hier.</span>
+          <button class="app-btn app-btn-dark" type="submit">Anfrage senden</button>
+        </div>
+      </form>
+
+      <section class="support-history-card">
+        <div class="company-section-head support-history-head">
+          <div>
+            <span class="app-kicker">IHRE ANFRAGEN</span>
+            <h2>Supportverlauf</h2>
+          </div>
+          <button class="text-button" id="support-refresh" type="button">Aktualisieren</button>
+        </div>
+
+        <div class="support-ticket-list" id="support-ticket-list"></div>
+
+        <div class="admin-empty" id="support-empty" hidden>
+          <strong>Noch keine Supportanfrage.</strong>
+          <span>Wenn Sie eine Frage senden, erscheint sie hier mit dem aktuellen Bearbeitungsstand.</span>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="support-toast" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
+  <script src="supabase-client.js"></script>
+  <script src="backend.js"></script>
+  <script src="support.js"></script>
+</body>
+</html>
