@@ -4,8 +4,13 @@
   const list = document.getElementById('admin-company-list');
   const empty = document.getElementById('admin-empty');
   const summary = document.getElementById('admin-list-summary');
+  const supportList = document.getElementById('admin-support-list');
+  const supportEmpty = document.getElementById('admin-support-empty');
+  const supportSummary = document.getElementById('admin-support-summary');
   let companies = [];
+  let supportTickets = [];
   let currentFilter = 'all';
+  let currentSupportFilter = 'all';
 
   const escapeHtml = (value = '') => String(value)
     .replaceAll('&','&amp;')
@@ -31,6 +36,21 @@
     paused:'Pausiert',
     cancelled:'Beendet',
     internal:'Intern'
+  };
+
+  const supportStatusLabels = {
+    open:'Offen',
+    in_progress:'In Bearbeitung',
+    answered:'Beantwortet',
+    closed:'Erledigt'
+  };
+
+  const supportCategoryLabels = {
+    general:'Allgemeine Frage',
+    technical:'Technisches Problem',
+    cra:'CRAwerk-Nutzung',
+    billing:'Tarif & Abrechnung',
+    account:'Konto & Zugang'
   };
 
   const showToast = message => {
@@ -96,17 +116,76 @@
     }).join('');
   };
 
+  const renderSupport = () => {
+    const filtered = currentSupportFilter === 'all'
+      ? supportTickets
+      : supportTickets.filter(ticket => ticket.status === currentSupportFilter);
+
+    supportEmpty.hidden = filtered.length > 0;
+    supportList.hidden = filtered.length === 0;
+
+    const openCount = supportTickets.filter(ticket =>
+      ['open','in_progress'].includes(ticket.status)
+    ).length;
+    document.getElementById('admin-support-open').textContent = openCount;
+    supportSummary.textContent =
+      supportTickets.length + ' Anfragen · ' + openCount + ' offen oder in Bearbeitung';
+
+    supportList.innerHTML = filtered.map(ticket => {
+      const messages = ticket.messages.map(item =>
+        '<div class="support-message ' + (item.senderRole === 'admin' ? 'support-message-admin' : 'support-message-customer') + '">' +
+          '<div class="support-message-head"><strong>' +
+            (item.senderRole === 'admin' ? 'CRAwerk Support' : 'Kunde') +
+          '</strong><span>' + escapeHtml(formatDateTime(item.createdAt)) + '</span></div>' +
+          '<p>' + escapeHtml(item.message).replaceAll('\n','<br>') + '</p>' +
+        '</div>'
+      ).join('');
+
+      return '<article class="admin-support-ticket" data-admin-ticket="' + escapeHtml(ticket.id) + '">' +
+        '<div class="support-ticket-head">' +
+          '<div><span>' +
+            escapeHtml(ticket.companyName || 'Unternehmen') + ' · ' +
+            escapeHtml(supportCategoryLabels[ticket.category] || 'Support') + ' · ' +
+            escapeHtml(formatDateTime(ticket.createdAt)) +
+          '</span><h3>' + escapeHtml(ticket.subject) + '</h3>' +
+          (ticket.companyEmail ? '<small>' + escapeHtml(ticket.companyEmail) + '</small>' : '') +
+          '</div>' +
+          '<label class="admin-support-status"><span>Status</span><select data-support-status="' + escapeHtml(ticket.id) + '">' +
+            ['open','in_progress','answered','closed'].map(status =>
+              '<option value="' + status + '"' + (status === ticket.status ? ' selected' : '') + '>' +
+                escapeHtml(supportStatusLabels[status]) +
+              '</option>'
+            ).join('') +
+          '</select></label>' +
+        '</div>' +
+        '<div class="support-message support-message-customer support-initial-message">' +
+          '<div class="support-message-head"><strong>Kunde</strong><span>' + escapeHtml(formatDateTime(ticket.createdAt)) + '</span></div>' +
+          '<p>' + escapeHtml(ticket.message).replaceAll('\n','<br>') + '</p>' +
+        '</div>' +
+        messages +
+        '<form class="admin-support-reply" data-support-reply="' + escapeHtml(ticket.id) + '">' +
+          '<label><span>Antwort</span><textarea name="message" rows="4" maxlength="5000" required placeholder="Antwort an den Kunden"></textarea></label>' +
+          '<div><small>Die Antwort erscheint direkt im Supportbereich des Kunden.</small>' +
+          '<button class="app-btn app-btn-dark" type="submit">Antwort senden</button></div>' +
+        '</form>' +
+      '</article>';
+    }).join('');
+  };
+
   const load = async () => {
-    const [overview, companyList, ownCompany] = await Promise.all([
+    const [overview, companyList, ownCompany, tickets] = await Promise.all([
       backend.adminOverview(),
       backend.adminCompanies(),
-      backend.currentCompany()
+      backend.currentCompany(),
+      backend.adminSupportTickets()
     ]);
 
     companies = companyList;
+    supportTickets = tickets;
     document.getElementById('admin-company-name').textContent = ownCompany.name || 'Unternehmen';
     renderStats(overview);
     renderCompanies();
+    renderSupport();
   };
 
   document.querySelectorAll('.admin-filter').forEach(button => {
@@ -116,6 +195,55 @@
       currentFilter = button.dataset.filter;
       renderCompanies();
     });
+  });
+
+  document.querySelectorAll('[data-support-filter]').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('[data-support-filter]').forEach(item => item.classList.remove('active'));
+      button.classList.add('active');
+      currentSupportFilter = button.dataset.supportFilter;
+      renderSupport();
+    });
+  });
+
+  supportList.addEventListener('change', async event => {
+    const select = event.target.closest('[data-support-status]');
+    if (!select) return;
+
+    select.disabled = true;
+    try {
+      await backend.adminSetSupportStatus(select.dataset.supportStatus, select.value);
+      await load();
+      showToast('Supportstatus wurde geändert.');
+    } catch (error) {
+      console.error(error);
+      showToast('Supportstatus konnte nicht geändert werden.');
+      await load();
+    }
+  });
+
+  supportList.addEventListener('submit', async event => {
+    const form = event.target.closest('[data-support-reply]');
+    if (!form) return;
+    event.preventDefault();
+
+    const submit = form.querySelector('button[type="submit"]');
+    const textarea = form.elements.message;
+    submit.disabled = true;
+    submit.textContent = 'Wird gesendet…';
+
+    try {
+      await backend.adminReplySupport(form.dataset.supportReply, textarea.value);
+      textarea.value = '';
+      await load();
+      showToast('Antwort wurde gesendet.');
+    } catch (error) {
+      console.error(error);
+      showToast('Antwort konnte nicht gesendet werden.');
+    } finally {
+      submit.disabled = false;
+      submit.textContent = 'Antwort senden';
+    }
   });
 
   list.addEventListener('change', async event => {
