@@ -486,7 +486,7 @@
         return '<a class="machine-row dashboard-machine-row" href="maschine.html?id=' + encodeURIComponent(machine.id) + '">' +
           '<div class="machine-name"><strong>' + escapeHtml(machine.name) + '</strong><span>' + escapeHtml(machine.model || 'Keine Baureihe angegeben') + '</span></div>' +
           '<div class="machine-status-cell">' + status + '</div>' +
-          '<div class="machine-cell"><small>Arbeitsstand</small><strong>' + p + '%</strong><div class="row-progress"><span style="width:' + p + '%"></span></div></div>' +
+          '<div class="machine-cell"><small>Gesamtakte</small><strong>' + p + '%</strong><div class="row-progress"><span style="width:' + p + '%"></span></div></div>' +
           '<div class="machine-cell hide-tablet"><small>Unterstützung bis</small><strong>' + escapeHtml(supportEnd) + '</strong></div>' +
           '<div class="machine-cell hide-tablet"><small>Verantwortlich</small><strong>' + escapeHtml(machine.owner || 'Noch offen') + '</strong></div>' +
           '<div class="machine-row-arrow">→</div>' +
