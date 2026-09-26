@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="CRAwerk Passwort zurücksetzen." />
+  <title>CRAwerk – Passwort vergessen</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="register-page">
+  <header class="register-header">
+    <a class="brand" href="index.html" aria-label="CRAwerk Startseite">
+      <span class="brand-mark">CRA</span><span class="brand-word">werk</span>
+    </a>
+    <a class="register-back" href="login.html">Zurück zur Anmeldung</a>
+  </header>
+
+  <main class="register-main login-main">
+    <section class="register-copy">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> CRAwerk Zugang</div>
+      <h1>Passwort vergessen?<br><span>Kein Problem.</span></h1>
+      <p class="register-lead">
+        Geben Sie die E-Mail-Adresse Ihres CRAwerk-Kontos ein.
+        Wenn ein Konto dazu existiert, erhalten Sie einen Link zum Setzen eines neuen Passworts.
+      </p>
+    </section>
+
+    <section class="register-panel">
+      <div class="register-panel-head">
+        <span class="section-kicker">PASSWORT ZURÜCKSETZEN</span>
+        <h2>Reset-Link anfordern</h2>
+        <p>Der Link ist nur für die Passwortänderung bestimmt.</p>
+      </div>
+
+      <form class="register-form" id="password-reset-request-form">
+        <div class="form-field form-field-full">
+          <label for="reset-email">E-Mail-Adresse</label>
+          <input id="reset-email" name="email" type="email" autocomplete="email" required>
+        </div>
+
+        <button class="button button-dark register-submit" id="reset-submit" type="submit">Reset-Link senden</button>
+        <div class="register-message auth-message" id="reset-message" hidden></div>
+        <p class="auth-switch">Passwort wieder eingefallen? <a href="login.html">Zur Anmeldung</a></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="legal-footer register-legal-footer">
+    <a href="impressum.html">Impressum</a>
+    <a href="datenschutz.html">Datenschutz</a>
+    <a href="rechtliches.html">Rechtliche Hinweise</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-client.js"></script>
+  <script src="passwort-vergessen.js"></script>
+</body>
+</html>
