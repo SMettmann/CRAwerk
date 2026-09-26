@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="CRAwerk macht den Cyber Resilience Act für kleine und mittlere Maschinenbauer verständlich und übersichtlich." />
   <title>CRAwerk – CRA einfach für Maschinenbauer</title>
+  <script>
+    (() => {
+      const recovery =
+        location.hash.includes('type=recovery') ||
+        new URLSearchParams(location.search).get('type') === 'recovery';
+      if (recovery) {
+        location.replace('passwort-neu.html' + location.search + location.hash);
+      }
+    })();
+  </script>
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
