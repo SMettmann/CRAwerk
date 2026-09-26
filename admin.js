@@ -70,6 +70,15 @@
     document.getElementById('admin-companies-week').textContent = overview?.companies_last_7_days ?? 0;
   };
 
+  const renderAnalytics = analytics => {
+    document.getElementById('admin-visitors-total').textContent = analytics?.visitors_total ?? 0;
+    document.getElementById('admin-visitors-week').textContent = analytics?.visitors_last_7_days ?? 0;
+    document.getElementById('admin-quickchecks-total').textContent = analytics?.quickchecks_total ?? 0;
+    document.getElementById('admin-quickchecks-week').textContent = analytics?.quickchecks_last_7_days ?? 0;
+    document.getElementById('admin-handbook-total').textContent = analytics?.handbook_downloads_total ?? 0;
+    document.getElementById('admin-handbook-week').textContent = analytics?.handbook_downloads_last_7_days ?? 0;
+  };
+
   const renderCompanies = () => {
     const filtered = currentFilter === 'all'
       ? companies
@@ -173,8 +182,9 @@
   };
 
   const load = async () => {
-    const [overview, companyList, ownCompany, tickets] = await Promise.all([
+    const [overview, analytics, companyList, ownCompany, tickets] = await Promise.all([
       backend.adminOverview(),
+      backend.adminAnalytics(),
       backend.adminCompanies(),
       backend.currentCompany(),
       backend.adminSupportTickets()
@@ -184,13 +194,14 @@
     supportTickets = tickets;
     document.getElementById('admin-company-name').textContent = ownCompany.name || 'Unternehmen';
     renderStats(overview);
+    renderAnalytics(analytics);
     renderCompanies();
     renderSupport();
   };
 
-  document.querySelectorAll('.admin-filter').forEach(button => {
+  document.querySelectorAll('[data-filter]').forEach(button => {
     button.addEventListener('click', () => {
-      document.querySelectorAll('.admin-filter').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('[data-filter]').forEach(item => item.classList.remove('active'));
       button.classList.add('active');
       currentFilter = button.dataset.filter;
       renderCompanies();
