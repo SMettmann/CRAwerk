@@ -11,6 +11,7 @@
   <header class="app-header">
     <a class="app-brand" href="index.html"><span>CRA</span>werk</a>
     <nav class="app-nav">
+      <a href="dashboard.html">Übersicht</a>
       <a href="CRAwerk_Handbuch.pdf" download="CRAwerk-Handbuch.pdf">Handbuch</a>
     </nav>
     <button class="text-button" id="access-logout" type="button">Abmelden</button>
@@ -18,9 +19,11 @@
 
   <main class="account-access-main">
     <section class="account-access-card">
-      <span class="app-kicker" id="access-kicker">ZUGANG</span>
+      <span class="app-kicker">ZUGANG & TARIF</span>
       <h1 id="access-title">Zugang wird geprüft…</h1>
       <p id="access-text">CRAwerk lädt Ihren aktuellen Kontostatus.</p>
+
+      <div class="account-billing-message" id="access-billing-message" hidden></div>
 
       <div class="account-access-meta">
         <div>
@@ -32,22 +35,58 @@
           <strong id="access-status">–</strong>
         </div>
         <div>
-          <span>Testphase</span>
-          <strong id="access-trial">–</strong>
+          <span>Tarif</span>
+          <strong id="access-plan">–</strong>
         </div>
         <div>
-          <span>Zugang</span>
-          <strong id="access-state">–</strong>
+          <span>Test / Abrechnung</span>
+          <strong id="access-trial">–</strong>
         </div>
       </div>
 
-      <div class="account-access-price">
-        <strong>CRAwerk Vollzugang · 29,99 € / Monat</strong>
-        <span>Monatlich. Die Freischaltung wird direkt mit Ihrem Firmenkonto verknüpft.</span>
+      <div class="access-plan-head">
+        <div>
+          <span class="app-kicker">CRAwerk TARIFE</span>
+          <h2>Passenden Umfang wählen</h2>
+        </div>
+        <span>Monatlich · zzgl. gesetzlicher MwSt.</span>
       </div>
+
+      <div class="access-plan-grid">
+        <article class="access-plan-card" data-plan-card="starter">
+          <span>STARTER</span>
+          <strong>79 € <small>/ Monat</small></strong>
+          <p>Für kleinere Hersteller und den Einstieg.</p>
+          <b>Bis zu 3 aktive Produkte</b>
+          <button class="app-btn app-btn-dark" type="button" data-plan="starter">Starter wählen</button>
+        </article>
+
+        <article class="access-plan-card access-plan-featured" data-plan-card="business">
+          <em>EMPFOHLEN</em>
+          <span>BUSINESS</span>
+          <strong>149 € <small>/ Monat</small></strong>
+          <p>Für mehrere Maschinen oder Produktreihen.</p>
+          <b>Bis zu 20 aktive Produkte</b>
+          <button class="app-btn app-btn-dark" type="button" data-plan="business">Business wählen</button>
+        </article>
+
+        <article class="access-plan-card" data-plan-card="pro">
+          <span>PRO</span>
+          <strong>299 € <small>/ Monat</small></strong>
+          <p>Für größere und dauerhaft umfangreiche Produktportfolios.</p>
+          <b>Unbegrenzt aktive Produkte</b>
+          <button class="app-btn app-btn-dark" type="button" data-plan="pro">Pro wählen</button>
+        </article>
+      </div>
+
+      <p class="access-plan-note">
+        Die 14-tägige Testphase benötigt keine Zahlungsdaten. Bei einer Freischaltung erfolgt die sichere Zahlung über Stripe.
+        Tarifwechsel, Zahlungsart, Rechnungen und Kündigung können danach direkt im Stripe-Kundenportal verwaltet werden.
+      </p>
 
       <div class="account-access-actions">
         <a class="app-btn app-btn-dark" id="access-dashboard" href="dashboard.html" hidden>Zum Dashboard</a>
+        <button class="app-btn app-btn-ghost" id="access-portal" type="button" hidden>Abo verwalten</button>
         <a class="app-btn app-btn-light" href="CRAwerk_Handbuch.pdf" download="CRAwerk-Handbuch.pdf">Handbuch herunterladen</a>
       </div>
     </section>
