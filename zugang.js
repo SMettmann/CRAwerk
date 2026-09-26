@@ -11,6 +11,7 @@
   const portal = document.getElementById('access-portal');
   const planButtons = [...document.querySelectorAll('[data-plan]')];
   const planCards = [...document.querySelectorAll('[data-plan-card]')];
+  let canManageBilling = true;
 
   const plans = {
     starter:{label:'Starter', price:'79 €', limit:'3 Produkte'},
@@ -56,8 +57,10 @@
 
     planButtons.forEach(button => {
       const code = button.dataset.plan;
-      button.disabled = Boolean(hasRunningSubscription);
-      if (hasRunningSubscription && code === planCode) {
+      button.disabled = !canManageBilling || Boolean(hasRunningSubscription);
+      if (!canManageBilling) {
+        button.textContent = 'Nur Inhaber / Admin';
+      } else if (hasRunningSubscription && code === planCode) {
         button.textContent = 'Aktueller Tarif';
       } else if (hasRunningSubscription) {
         button.textContent = 'Im Abo-Portal wechseln';
@@ -74,7 +77,7 @@
     companyEl.textContent = company.name || 'Unternehmen';
     statusEl.textContent = statusLabels[state.status] || state.status || '–';
     planEl.textContent = plan ? plan.label + ' · ' + plan.price + '/Monat' : 'Noch nicht gewählt';
-    portal.hidden = !company.stripe_customer_id;
+    portal.hidden = !company.stripe_customer_id || !canManageBilling;
     dashboard.hidden = !state.allowed;
     setPlanUi(state);
 
@@ -121,9 +124,11 @@
       title.textContent = state.status === 'internal'
         ? 'Interner CRAwerk-Zugang.'
         : 'Ihr CRAwerk-Zugang ist aktiv.';
-      text.textContent = company.billing_cancel_at_period_end
-        ? 'Ihr Abo läuft noch bis zum angezeigten Abrechnungsende. Bis dahin bleibt CRAwerk freigeschaltet.'
-        : 'Tarif, Zahlungsart, Rechnungen und Kündigung können Sie über „Abo verwalten“ steuern.';
+      text.textContent = !canManageBilling
+        ? 'Tarif und Abrechnung werden von einem Inhaber oder Admin Ihres Unternehmens verwaltet.'
+        : (company.billing_cancel_at_period_end
+          ? 'Ihr Abo läuft noch bis zum angezeigten Abrechnungsende. Bis dahin bleibt CRAwerk freigeschaltet.'
+          : 'Tarif, Zahlungsart, Rechnungen und Kündigung können Sie über „Abo verwalten“ steuern.');
       return;
     }
 
@@ -178,6 +183,9 @@
       location.replace('login.html?next=zugang.html');
       return;
     }
+
+    const membership = await api.currentMembership();
+    canManageBilling = ['owner','admin'].includes(membership.role);
 
     const params = new URLSearchParams(location.search);
     const sessionId = params.get('session_id');
