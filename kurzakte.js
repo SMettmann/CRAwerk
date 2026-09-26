@@ -106,6 +106,18 @@
     ];
   };
 
+  const renderCompanyLogo = async company => {
+    if (!company?.logo_path) return;
+    const image = document.getElementById('short-company-logo');
+    if (!image) return;
+    try {
+      image.src = await CRAwerkBackend.companyLogoSignedUrl(company.logo_path, 3600);
+      image.hidden = false;
+    } catch (error) {
+      console.warn('Firmenlogo konnte nicht geladen werden.', error);
+    }
+  };
+
   const init = async () => {
     const session = await CRAwerkSupabase.requireSession();
     if (!session) return;
@@ -121,6 +133,8 @@
       document.getElementById('short-error').hidden = false;
       return;
     }
+
+    await renderCompanyLogo(company);
 
     const tasks = tasksForMachine(machine);
     const openTasks = tasks.filter(task => !task.done);
