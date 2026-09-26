@@ -4,6 +4,22 @@
   const submit = form && form.querySelector('button[type="submit"]');
   if (!form || !message || !window.CRAwerkSupabase) return;
 
+  const planOptions = {
+    starter:{label:'Starter', price:'79 €', limit:'Bis zu 3 aktive Produkte'},
+    business:{label:'Business', price:'149 €', limit:'Bis zu 20 aktive Produkte'},
+    pro:{label:'Pro', price:'299 €', limit:'Unbegrenzt aktive Produkte'}
+  };
+  const requestedPlan = new URLSearchParams(location.search).get('plan');
+  const planCode = planOptions[requestedPlan] ? requestedPlan : 'starter';
+  const selectedPlan = planOptions[planCode];
+
+  const planLabel = document.getElementById('register-plan-label');
+  const planPrice = document.getElementById('register-plan-price');
+  const planLimit = document.getElementById('register-plan-limit');
+  if (planLabel) planLabel.textContent = selectedPlan.label.toUpperCase();
+  if (planPrice) planPrice.textContent = selectedPlan.price;
+  if (planLimit) planLimit.textContent = selectedPlan.limit;
+
   const escapeHtml = (value = '') => String(value)
     .replaceAll('&','&amp;')
     .replaceAll('<','&lt;')
@@ -50,7 +66,8 @@
           data: {
             company_name: data.get('company').trim(),
             first_name: data.get('firstName').trim(),
-            last_name: data.get('lastName').trim()
+            last_name: data.get('lastName').trim(),
+            plan_code: planCode
           }
         }
       });
