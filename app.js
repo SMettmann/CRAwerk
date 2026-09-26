@@ -17,6 +17,25 @@
     return parts.length === 3 ? parts[2] + '.' + parts[1] + '.' + parts[0] : value;
   };
 
+  const formatFileSize = bytes => {
+    const value = Number(bytes || 0);
+    if (!value) return '';
+    if (value < 1024) return value + ' B';
+    if (value < 1024 * 1024) return Math.round(value / 1024) + ' KB';
+    return (value / (1024 * 1024)).toFixed(value < 10 * 1024 * 1024 ? 1 : 0) + ' MB';
+  };
+
+  const validDocumentFile = file => {
+    if (!file) return true;
+    if (file.size > 25 * 1024 * 1024) return 'Die Datei darf maximal 25 MB groß sein.';
+    const ext = String(file.name || '').split('.').pop().toLowerCase();
+    const allowed = ['pdf','docx','xlsx','pptx','txt','csv','jpg','jpeg','png','webp','zip'];
+    if (!allowed.includes(ext)) {
+      return 'Erlaubt sind PDF, DOCX, XLSX, PPTX, TXT, CSV, JPG, PNG, WEBP und ZIP.';
+    }
+    return true;
+  };
+
   const supportCommunicationReadyFor = machine => {
     const support = machine.supportPeriod || {};
     const basicReady = Boolean(
@@ -756,7 +775,16 @@
             escapeHtml(item.type) + ' · ' + escapeHtml(item.related || 'Gesamtmaschine') +
             (item.date ? ' · ' + escapeHtml(formatDate(item.date)) : '') +
             (item.note ? '<br>' + escapeHtml(item.note) : '') +
-            '</span></div><div class="item-actions"><button type="button" class="item-edit" data-edit-document="' + item.id + '">Bearbeiten</button>' +
+            (item.storagePath
+              ? '<br><span class="document-file-meta">Datei: ' + escapeHtml(item.originalFilename || 'Dokument') +
+                (item.fileSize ? ' · ' + escapeHtml(formatFileSize(item.fileSize)) : '') + '</span>'
+              : '<br><span class="document-file-meta no-file">Nur Verweis · keine Datei gespeichert</span>') +
+            '</span></div><div class="item-actions document-actions">' +
+            (item.storagePath
+              ? '<button type="button" class="item-edit" data-open-document="' + item.id + '">Öffnen</button>' +
+                '<button type="button" class="item-edit" data-download-document="' + item.id + '">Download</button>'
+              : '') +
+            '<button type="button" class="item-edit" data-edit-document="' + item.id + '">Bearbeiten</button>' +
             '<button type="button" class="item-remove" data-remove-document="' + item.id + '" aria-label="Unterlage löschen">×</button></div></div>'
           ).join('')
         : '<div class="module-empty">Noch keine Unterlage erfasst.</div>';
@@ -1284,13 +1312,23 @@
       editingDocumentId = null;
       documentForm.reset();
       populateDocumentRelated('Gesamtmaschine');
-      setDialogMode(documentDialog, documentForm, 'Unterlage hinzufügen', 'Hinzufügen');
+      const currentFile = document.getElementById('document-current-file');
+      currentFile.hidden = true;
+      currentFile.textContent = '';
+      setDialogMode(documentDialog, documentForm, 'Unterlage hinzufügen', 'Hochladen & speichern');
       documentDialog.showModal();
     });
 
     documentForm.addEventListener('submit', async event => {
       event.preventDefault();
       const data = new FormData(documentForm);
+      const file = documentForm.elements.file.files[0] || null;
+      const fileCheck = validDocumentFile(file);
+      if (fileCheck !== true) {
+        showToast(fileCheck);
+        return;
+      }
+
       const values = {
         title:data.get('title').trim(),
         type:data.get('type'),
@@ -1298,23 +1336,74 @@
         related:data.get('related'),
         note:data.get('note').trim()
       };
+
+      const button = documentForm.querySelector('button[type="submit"]');
+      const oldText = button.textContent;
+      button.disabled = true;
+      button.textContent = file ? 'Datei wird hochgeladen…' : 'Speichert…';
+
       try {
-        if (editingDocumentId) await backend.updateDocument(editingDocumentId, values);
-        else await backend.addDocument(machine.id, values);
+        if (editingDocumentId) await backend.updateDocument(editingDocumentId, values, file);
+        else await backend.addDocument(machine.id, values, file);
         machine.documentsComplete = false;
         await backend.updateMachine(machine);
         const wasEditing = Boolean(editingDocumentId);
         editingDocumentId = null;
         documentForm.reset();
         documentDialog.close();
-        await refresh(wasEditing ? 'Unterlage wurde aktualisiert.' : 'Unterlage wurde zugeordnet.');
+        await refresh(
+          file
+            ? (wasEditing ? 'Unterlage und Datei wurden aktualisiert.' : 'Unterlage wurde sicher hochgeladen.')
+            : (wasEditing ? 'Unterlage wurde aktualisiert.' : 'Unterlage wurde zugeordnet.')
+        );
       } catch (error) {
         console.error(error);
-        showToast('Unterlage konnte nicht gespeichert werden.');
+        showToast('Unterlage oder Datei konnte nicht gespeichert werden.');
+      } finally {
+        button.disabled = false;
+        button.textContent = oldText;
       }
     });
 
     document.getElementById('document-list').addEventListener('click', async event => {
+      const open = event.target.closest('[data-open-document]');
+      if (open) {
+        const item = machine.documentItems.find(x => x.id === open.dataset.openDocument);
+        if (!item || !item.storagePath) return;
+        const previewWindow = window.open('', '_blank');
+        try {
+          const url = await backend.documentSignedUrl(item.storagePath);
+          if (previewWindow) previewWindow.location.href = url;
+          else location.href = url;
+        } catch (error) {
+          if (previewWindow) previewWindow.close();
+          console.error(error);
+          showToast('Datei konnte nicht geöffnet werden.');
+        }
+        return;
+      }
+
+      const download = event.target.closest('[data-download-document]');
+      if (download) {
+        const item = machine.documentItems.find(x => x.id === download.dataset.downloadDocument);
+        if (!item || !item.storagePath) return;
+        try {
+          const blob = await backend.downloadDocument(item.storagePath);
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = item.originalFilename || 'CRAwerk-Dokument';
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        } catch (error) {
+          console.error(error);
+          showToast('Datei konnte nicht heruntergeladen werden.');
+        }
+        return;
+      }
+
       const edit = event.target.closest('[data-edit-document]');
       if (edit) {
         const item = machine.documentItems.find(x => x.id === edit.dataset.editDocument);
@@ -1325,6 +1414,18 @@
         documentForm.elements.date.value = item.date || '';
         populateDocumentRelated(item.related || 'Gesamtmaschine');
         documentForm.elements.note.value = item.note || '';
+        documentForm.elements.file.value = '';
+        const currentFile = document.getElementById('document-current-file');
+        if (item.storagePath) {
+          currentFile.hidden = false;
+          currentFile.textContent =
+            'Gespeichert: ' + (item.originalFilename || 'Dokument') +
+            (item.fileSize ? ' · ' + formatFileSize(item.fileSize) : '') +
+            ' · Neue Datei auswählen, um sie zu ersetzen.';
+        } else {
+          currentFile.hidden = false;
+          currentFile.textContent = 'Noch keine Datei gespeichert. Sie können jetzt eine Datei hinzufügen.';
+        }
         setDialogMode(documentDialog, documentForm, 'Unterlage bearbeiten', 'Änderungen speichern');
         documentDialog.showModal();
         return;
