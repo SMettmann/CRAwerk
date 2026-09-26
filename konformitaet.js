@@ -21,6 +21,18 @@
     eu_certification:'Europäisches Cybersicherheitszertifizierungsschema'
   };
 
+  const renderCompanyLogo = async company => {
+    if (!company?.logo_path) return;
+    const image = document.getElementById('declaration-company-logo');
+    if (!image) return;
+    try {
+      image.src = await CRAwerkBackend.companyLogoSignedUrl(company.logo_path, 3600);
+      image.hidden = false;
+    } catch (error) {
+      console.warn('Firmenlogo konnte nicht geladen werden.', error);
+    }
+  };
+
   const init = async () => {
     const session = await auth.requireSession();
     if (!session) return;
@@ -32,6 +44,7 @@
     ]);
 
     if (!machine || !bundle.assessment) throw new Error('Fehlende Daten');
+    await renderCompanyLogo(company);
     const a = bundle.assessment;
 
     document.title = 'EU-Konformitätserklärung ' + machine.name + ' – CRAwerk';
