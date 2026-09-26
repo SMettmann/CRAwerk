@@ -5,9 +5,9 @@
   if (!form || !message || !window.CRAwerkSupabase) return;
 
   const planOptions = {
-    starter:{label:'Starter', price:'79 €', limit:'Bis zu 3 aktive Produkte'},
-    business:{label:'Business', price:'149 €', limit:'Bis zu 20 aktive Produkte'},
-    pro:{label:'Pro', price:'299 €', limit:'Unbegrenzt aktive Produkte'}
+    starter:{label:'Starter', price:'79 €', limit:'Bis zu 3 Produkte'},
+    business:{label:'Business', price:'149 €', limit:'Bis zu 20 Produkte'},
+    pro:{label:'Pro', price:'299 €', limit:'Unbegrenzt Produkte'}
   };
   const requestedPlan = new URLSearchParams(location.search).get('plan');
   const planCode = planOptions[requestedPlan] ? requestedPlan : 'starter';
