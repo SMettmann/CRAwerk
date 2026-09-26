@@ -56,7 +56,7 @@
 
     try {
       const data = new FormData(form);
-      const redirectUrl = 'https://smettmann.github.io/CRAwerk/login.html?confirmed=1';
+      const redirectUrl = new URL('login.html?confirmed=1', window.location.href).href;
 
       const { data: signUpData, error } = await CRAwerkSupabase.client.auth.signUp({
         email: data.get('email').trim(),
