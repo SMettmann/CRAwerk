@@ -614,6 +614,87 @@
     return data;
   };
 
+  const companyLogoSignedUrl = async (storagePath, expiresIn = 3600) => {
+    if (!storagePath) return '';
+    const { data, error } = await db.storage
+      .from('cra-documents')
+      .createSignedUrl(storagePath, expiresIn);
+    if (error) throw error;
+    return data.signedUrl;
+  };
+
+  const uploadCompanyLogo = async file => {
+    if (!file) throw new Error('Bitte wählen Sie eine Bilddatei aus.');
+    if (file.size > 2 * 1024 * 1024) {
+      throw new Error('Das Logo darf maximal 2 MB groß sein.');
+    }
+
+    const allowed = {
+      'image/png':'png',
+      'image/jpeg':'jpg',
+      'image/webp':'webp',
+      'image/svg+xml':'svg'
+    };
+    let ext = allowed[file.type] || '';
+    if (!ext) {
+      const candidate = String(file.name || '').split('.').pop().toLowerCase();
+      if (['png','jpg','jpeg','webp','svg'].includes(candidate)) {
+        ext = candidate === 'jpeg' ? 'jpg' : candidate;
+      }
+    }
+    if (!ext) {
+      throw new Error('Erlaubt sind PNG, JPG, WEBP und SVG.');
+    }
+
+    const company = await currentCompany();
+    const oldPath = company.logo_path || '';
+    const newPath = 'company-logos/' + company.id + '/logo-' + Date.now() + '.' + ext;
+
+    const { error:uploadError } = await db.storage
+      .from('cra-documents')
+      .upload(newPath, file, {
+        cacheControl:'3600',
+        upsert:false,
+        contentType:file.type || (ext === 'svg' ? 'image/svg+xml' : 'image/' + (ext === 'jpg' ? 'jpeg' : ext))
+      });
+    if (uploadError) throw uploadError;
+
+    const { data:updated, error:updateError } = await db
+      .from('companies')
+      .update({logo_path:newPath})
+      .eq('id', company.id)
+      .select()
+      .single();
+
+    if (updateError) {
+      await db.storage.from('cra-documents').remove([newPath]).catch(() => {});
+      throw updateError;
+    }
+
+    if (oldPath && oldPath !== newPath) {
+      await db.storage.from('cra-documents').remove([oldPath]).catch(() => {});
+    }
+
+    return updated;
+  };
+
+  const deleteCompanyLogo = async () => {
+    const company = await currentCompany();
+    const oldPath = company.logo_path || '';
+    if (!oldPath) return company;
+
+    const { data:updated, error:updateError } = await db
+      .from('companies')
+      .update({logo_path:null})
+      .eq('id', company.id)
+      .select()
+      .single();
+    if (updateError) throw updateError;
+
+    await db.storage.from('cra-documents').remove([oldPath]).catch(() => {});
+    return updated;
+  };
+
   const isSystemAdmin = async () => {
     const user = await api.getUser();
     if (!user) return false;
@@ -1045,6 +1126,9 @@
   window.CRAwerkBackend = {
     currentCompany,
     updateCompany,
+    companyLogoSignedUrl,
+    uploadCompanyLogo,
+    deleteCompanyLogo,
     isSystemAdmin,
     adminOverview,
     adminCompanies,
