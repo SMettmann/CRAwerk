@@ -20,6 +20,23 @@
     return data.user;
   }
 
+  async function currentMembership() {
+    const user = await getUser();
+    if (!user) throw new Error('Nicht angemeldet.');
+
+    const { data, error } = await client
+      .from('company_members')
+      .select('company_id, role, created_at')
+      .eq('user_id', user.id)
+      .order('created_at', {ascending:true})
+      .limit(1)
+      .maybeSingle();
+
+    if (error) throw error;
+    if (!data) throw new Error('Für diesen Benutzer ist keine Firma zugeordnet.');
+    return data;
+  }
+
   async function ensureCompany() {
     const user = await getUser();
     if (!user) throw new Error('Nicht angemeldet.');
@@ -137,6 +154,10 @@
       const accountLink = header.querySelector('.app-account');
       if (accountLink) accountLink.insertAdjacentElement('afterend', billingLink);
       else header.appendChild(billingLink);
+
+      currentMembership().then(membership => {
+        if (!['owner','admin'].includes(membership.role)) billingLink.remove();
+      }).catch(() => {});
     }
 
     if (document.getElementById('access-logout') || document.querySelector('[data-global-logout]')) return;
@@ -196,6 +217,7 @@
     client,
     getSession,
     getUser,
+    currentMembership,
     ensureCompany,
     evaluateAccount,
     getAccountState,
