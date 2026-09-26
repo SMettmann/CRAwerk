@@ -97,10 +97,24 @@
           <p>Firmenname, Anschrift und Ansprechpartner erscheinen automatisch in jeder neu erzeugten Produktakte.</p>
         </section>
 
-        <section class="side-card">
-          <span class="app-kicker">LOGO</span>
-          <strong>Firmenlogo folgt später</strong>
-          <p>Dokumentdateien können bereits direkt an Maschinen gespeichert werden. Ein eigenes Firmenlogo für die Ausgaben ergänzen wir später.</p>
+        <section class="side-card company-logo-card">
+          <span class="app-kicker">FIRMENLOGO</span>
+          <strong>Logo für Ihre Dokumente</strong>
+          <p>Das Logo wird in Produktakte, Kurzübersicht, Nutzerinformationen und EU-Konformitätserklärung verwendet.</p>
+
+          <div class="company-logo-preview" id="company-logo-preview">
+            <img id="company-logo-image" alt="Firmenlogo" hidden>
+            <span id="company-logo-empty">Noch kein Logo hinterlegt</span>
+          </div>
+
+          <input id="company-logo-input" type="file"
+            accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml" hidden>
+
+          <div class="company-logo-actions">
+            <button class="text-button" id="company-logo-upload" type="button">Logo hochladen</button>
+            <button class="text-button company-logo-delete" id="company-logo-delete" type="button" hidden>Logo löschen</button>
+          </div>
+          <small class="company-logo-hint">PNG, JPG, WEBP oder SVG · maximal 2 MB</small>
         </section>
 
         <section class="side-card">
