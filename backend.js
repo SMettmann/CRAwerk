@@ -607,7 +607,7 @@
 
   const adminOverview = async () => {
     const [companiesResult, membersResult, machinesResult] = await Promise.all([
-      db.from('companies').select('id, account_status, created_at'),
+      db.from('companies').select('id, account_status, trial_ends_at, created_at'),
       db.from('company_members').select('company_id, user_id'),
       db.from('machines').select('id, company_id')
     ]);
@@ -628,7 +628,7 @@
 
     return {
       companies_total:companies.length,
-      companies_trial:companies.filter(company => company.account_status === 'trial').length,
+      companies_trial:companies.filter(company => company.account_status === 'trial' && company.trial_ends_at && new Date(company.trial_ends_at).getTime() > Date.now()).length,
       companies_active:companies.filter(company => company.account_status === 'active').length,
       users_total:users.size,
       machines_total:machines.length,
