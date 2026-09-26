@@ -39,6 +39,10 @@
 
   finishExistingConfirmation().then(alreadySignedIn => {
     if (alreadySignedIn) return;
+    if (params.get('invite') === 'accepted') {
+      showMessage('Zugang eingerichtet.', 'Sie können sich jetzt mit Ihrem persönlichen CRAwerk-Zugang anmelden.');
+      return;
+    }
     if (params.get('password') === 'updated') {
       showMessage('Passwort geändert.', 'Sie können sich jetzt mit Ihrem neuen Passwort anmelden.');
       return;
