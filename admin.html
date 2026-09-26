@@ -59,6 +59,11 @@
         <strong id="admin-companies-week">–</strong>
         <small>in den letzten 7 Tagen</small>
       </article>
+      <article class="stat-card admin-stat-card admin-stat-support">
+        <span>Support offen</span>
+        <strong id="admin-support-open">–</strong>
+        <small>offene oder laufende Anfragen</small>
+      </article>
     </section>
 
     <section class="admin-panel">
@@ -82,6 +87,30 @@
       <div class="admin-empty" id="admin-empty" hidden>
         <strong>Noch keine passenden Firmen.</strong>
         <span>Sobald sich Kunden registrieren, erscheinen sie hier automatisch.</span>
+      </div>
+    </section>
+
+    <section class="admin-panel admin-support-panel" id="support">
+      <div class="admin-panel-head">
+        <div>
+          <span class="app-kicker">SUPPORT</span>
+          <h2>Supportanfragen</h2>
+          <p id="admin-support-summary">Wird geladen…</p>
+        </div>
+        <div class="admin-filters" role="group" aria-label="Support filtern">
+          <button class="admin-filter support-filter active" type="button" data-support-filter="all">Alle</button>
+          <button class="admin-filter support-filter" type="button" data-support-filter="open">Offen</button>
+          <button class="admin-filter support-filter" type="button" data-support-filter="in_progress">In Bearbeitung</button>
+          <button class="admin-filter support-filter" type="button" data-support-filter="answered">Beantwortet</button>
+          <button class="admin-filter support-filter" type="button" data-support-filter="closed">Erledigt</button>
+        </div>
+      </div>
+
+      <div class="admin-support-list" id="admin-support-list"></div>
+
+      <div class="admin-empty" id="admin-support-empty" hidden>
+        <strong>Keine passenden Supportanfragen.</strong>
+        <span>Neue Fragen Ihrer Kunden erscheinen hier automatisch.</span>
       </div>
     </section>
   </main>
