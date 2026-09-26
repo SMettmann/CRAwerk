@@ -3498,3 +3498,31 @@ a{color:inherit;text-decoration:none}
   .access-plan-card p{min-height:0}
   .access-plan-head{align-items:flex-start;flex-direction:column}
 }
+
+.app-logout{
+  flex:0 0 auto;
+  min-height:34px;
+  padding:0 13px;
+  border:1px solid #3a4540;
+  border-radius:6px;
+  color:#eef3ef;
+  background:transparent;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:750;
+}
+.app-logout:hover{
+  border-color:#67736d;
+  background:#202823;
+}
+.app-logout:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+@media(max-width:760px){
+  .app-logout{
+    min-height:32px;
+    padding:0 10px;
+    font-size:10px;
+  }
+}
