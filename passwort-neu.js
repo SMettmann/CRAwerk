@@ -26,9 +26,11 @@
     password.focus();
   };
 
+  const params = new URLSearchParams(location.search);
   const recoveryHint =
+    params.get('recovery') === '1' ||
     location.hash.includes('type=recovery') ||
-    new URLSearchParams(location.search).get('type') === 'recovery';
+    params.get('type') === 'recovery';
 
   CRAwerkSupabase.client.auth.onAuthStateChange((event, session) => {
     if (event === 'PASSWORD_RECOVERY' && session) enableForm();
