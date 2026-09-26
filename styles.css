@@ -2490,3 +2490,10 @@ h1 span{
   opacity:.55;
   cursor:default;
 }
+
+
+.auth-link-anchor{
+  display:block;
+  text-align:center;
+  box-sizing:border-box;
+}
