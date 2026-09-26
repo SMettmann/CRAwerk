@@ -110,6 +110,33 @@
     header.insertAdjacentElement('afterend', banner);
   }
 
+  function installGlobalLogout() {
+    const header = document.querySelector('.app-header');
+    if (!header || document.getElementById('access-logout') || document.querySelector('[data-global-logout]')) return;
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'app-logout';
+    button.dataset.globalLogout = 'true';
+    button.textContent = 'Abmelden';
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      button.textContent = 'Abmelden…';
+      try {
+        await client.auth.signOut();
+      } finally {
+        location.replace('login.html');
+      }
+    });
+    header.appendChild(button);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', installGlobalLogout);
+  } else {
+    installGlobalLogout();
+  }
+
   async function requireSession() {
     const session = await getSession();
     if (!session) {
