@@ -993,10 +993,6 @@
         softwareForm.reset();
         softwareDialog.close();
         await refresh(wasEditing ? 'Software wurde aktualisiert.' : 'Software wurde hinzugefügt.');
-        showMachineDetails(true);
-        requestAnimationFrame(() => {
-          document.getElementById('module-software')?.scrollIntoView({behavior:'smooth', block:'start'});
-        });
       } catch (error) {
         console.error(error);
         showToast('Software konnte nicht gespeichert werden.');
@@ -1074,6 +1070,10 @@
         componentForm.reset();
         componentDialog.close();
         await refresh(wasEditing ? 'Bauteil wurde aktualisiert.' : 'Bauteil wurde hinzugefügt.');
+        showMachineDetails(true);
+        requestAnimationFrame(() => {
+          document.getElementById('module-supplier')?.scrollIntoView({behavior:'smooth', block:'start'});
+        });
       } catch (error) {
         console.error(error);
         showToast('Bauteil konnte nicht gespeichert werden.');
