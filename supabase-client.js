@@ -100,19 +100,33 @@
     if (!header) return;
 
     const banner = document.createElement('div');
-    banner.className = 'account-trial-banner';
+    banner.className = 'account-trial-banner' + (state.daysRemaining <= 3 ? ' ending-soon' : '');
     banner.innerHTML =
-      '<div><strong>14 Tage kostenlos testen</strong>' +
-      '<span>Noch ' + state.daysRemaining + ' ' + (state.daysRemaining === 1 ? 'Tag' : 'Tage') +
-      ' · Testphase bis ' + formatDate(state.trialEndsAt) + '</span></div>' +
-      '<a href="zugang.html">Zugang & Tarif</a>';
+      '<div><strong>Testphase: noch ' + state.daysRemaining + ' ' + (state.daysRemaining === 1 ? 'Tag' : 'Tage') + '</strong>' +
+      '<span>Bis ' + formatDate(state.trialEndsAt) + ' kostenlos. Danach wird der Zugang gesperrt, bis ein Tarif gewählt wurde.</span></div>' +
+      '<a href="zugang.html">Tarif jetzt wählen</a>';
 
     header.insertAdjacentElement('afterend', banner);
   }
 
   function installGlobalLogout() {
     const header = document.querySelector('.app-header');
-    if (!header || document.getElementById('access-logout') || document.querySelector('[data-global-logout]')) return;
+    if (!header || document.getElementById('access-logout')) return;
+
+    const currentPage = location.pathname.split('/').pop();
+    if (currentPage !== 'zugang.html' && !document.querySelector('[data-billing-link]')) {
+      const billingLink = document.createElement('a');
+      billingLink.href = 'zugang.html';
+      billingLink.className = 'app-billing-link';
+      billingLink.dataset.billingLink = 'true';
+      billingLink.textContent = 'Tarif & Abrechnung';
+
+      const accountLink = header.querySelector('.app-account');
+      if (accountLink) accountLink.insertAdjacentElement('afterend', billingLink);
+      else header.appendChild(billingLink);
+    }
+
+    if (document.querySelector('[data-global-logout]')) return;
 
     const button = document.createElement('button');
     button.type = 'button';
