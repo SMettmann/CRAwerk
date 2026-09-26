@@ -7,6 +7,20 @@
   }
 
   const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+  const usageSessionId = crypto.randomUUID();
+
+  async function trackUsageEvent(eventType) {
+    try {
+      const { error } = await client.from('analytics_events').insert({
+        event_type:eventType,
+        session_id:usageSessionId,
+        path:location.pathname || '/'
+      });
+      if (error && error.code !== '23505') throw error;
+    } catch (error) {
+      console.debug('CRAwerk usage event skipped.', error);
+    }
+  }
 
   async function getSession() {
     const { data, error } = await client.auth.getSession();
@@ -179,10 +193,22 @@
     header.appendChild(button);
   }
 
+  function installHandbookTracking() {
+    document.addEventListener('click', event => {
+      const link = event.target.closest('a[href*="CRAwerk_Handbuch.pdf"]');
+      if (!link) return;
+      trackUsageEvent('handbook_download');
+    });
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', installGlobalLogout);
+    document.addEventListener('DOMContentLoaded', () => {
+      installGlobalLogout();
+      installHandbookTracking();
+    });
   } else {
     installGlobalLogout();
+    installHandbookTracking();
   }
 
   async function requireSession() {
@@ -217,6 +243,7 @@
     client,
     getSession,
     getUser,
+    trackUsageEvent,
     currentMembership,
     ensureCompany,
     evaluateAccount,
