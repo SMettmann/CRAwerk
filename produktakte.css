@@ -561,3 +561,35 @@ button,a{font:inherit}
     color:#65716a;
   }
 }
+
+
+/* Customer branding in generated documents */
+.report-brand-area{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  min-width:0;
+}
+.company-report-logo{
+  display:block;
+  max-width:170px;
+  max-height:58px;
+  object-fit:contain;
+}
+@media(max-width:720px){
+  .report-brand-area{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:10px;
+  }
+  .company-report-logo{
+    max-width:150px;
+    max-height:50px;
+  }
+}
+@media print{
+  .company-report-logo{
+    max-width:155px;
+    max-height:52px;
+  }
+}
