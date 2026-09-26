@@ -2691,3 +2691,6 @@ h1 span{
     min-height:0;
   }
 }
+
+/* Hide legacy single-price card until tariff selection is connected */
+.register-price-card{display:none}
