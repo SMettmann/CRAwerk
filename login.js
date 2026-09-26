@@ -38,7 +38,12 @@
   };
 
   finishExistingConfirmation().then(alreadySignedIn => {
-    if (!alreadySignedIn && params.get('confirmed') === '1') {
+    if (alreadySignedIn) return;
+    if (params.get('password') === 'updated') {
+      showMessage('Passwort geändert.', 'Sie können sich jetzt mit Ihrem neuen Passwort anmelden.');
+      return;
+    }
+    if (params.get('confirmed') === '1') {
       showMessage('E-Mail bestätigt.', 'Sie können sich jetzt anmelden.');
     }
   });
