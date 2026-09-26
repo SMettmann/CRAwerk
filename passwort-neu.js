@@ -8,6 +8,24 @@
   if (!form || !window.CRAwerkSupabase) return;
 
   let recoveryReady = false;
+  const params = new URLSearchParams(location.search);
+  const inviteHint =
+    params.get('invite') === '1' ||
+    location.hash.includes('type=invite') ||
+    params.get('type') === 'invite';
+  const recoveryHint =
+    params.get('recovery') === '1' ||
+    location.hash.includes('type=recovery') ||
+    params.get('type') === 'recovery';
+
+  if (inviteHint) {
+    document.getElementById('password-page-title').innerHTML = 'Einladung angenommen.<br><span>Jetzt Zugang abschließen.</span>';
+    document.getElementById('password-page-lead').textContent =
+      'Legen Sie Ihr persönliches Passwort fest. Danach können Sie mit Ihrem eigenen Zugang im CRAwerk-Unternehmen mitarbeiten.';
+    document.getElementById('invite-name-fields').hidden = false;
+    document.getElementById('password-reset-link').hidden = true;
+    message.innerHTML = '<strong>Einladung wird geprüft.</strong><span>Einen Moment bitte.</span>';
+  }
 
   const escapeHtml = (value = '') => String(value)
     .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
@@ -26,14 +44,9 @@
     password.focus();
   };
 
-  const params = new URLSearchParams(location.search);
-  const recoveryHint =
-    params.get('recovery') === '1' ||
-    location.hash.includes('type=recovery') ||
-    params.get('type') === 'recovery';
-
   CRAwerkSupabase.client.auth.onAuthStateChange((event, session) => {
     if (event === 'PASSWORD_RECOVERY' && session) enableForm();
+    if (inviteHint && session && ['SIGNED_IN','INITIAL_SESSION'].includes(event)) enableForm();
   });
 
   const checkSession = async () => {
@@ -41,7 +54,7 @@
       const { data, error } = await CRAwerkSupabase.client.auth.getSession();
       if (error) throw error;
 
-      if (data.session && recoveryHint) {
+      if (data.session && (recoveryHint || inviteHint)) {
         enableForm();
         return;
       }
@@ -49,19 +62,25 @@
       setTimeout(async () => {
         if (recoveryReady) return;
         const { data:retry } = await CRAwerkSupabase.client.auth.getSession();
-        if (retry.session && recoveryHint) {
+        if (retry.session && (recoveryHint || inviteHint)) {
           enableForm();
         } else {
           showMessage(
-            'Recovery-Link ungültig oder abgelaufen.',
-            'Fordern Sie bitte einen neuen Passwort-Link an.',
+            inviteHint ? 'Einladungslink ungültig oder abgelaufen.' : 'Recovery-Link ungültig oder abgelaufen.',
+            inviteHint
+              ? 'Bitten Sie einen Inhaber oder Admin Ihres Unternehmens, die Einladung erneut zu senden.'
+              : 'Fordern Sie bitte einen neuen Passwort-Link an.',
             true
           );
         }
       }, 700);
     } catch (error) {
       console.error(error);
-      showMessage('Recovery-Link konnte nicht geprüft werden.', 'Fordern Sie bitte einen neuen Link an.', true);
+      showMessage(
+        inviteHint ? 'Einladung konnte nicht geprüft werden.' : 'Recovery-Link konnte nicht geprüft werden.',
+        inviteHint ? 'Bitten Sie um eine neue Einladung.' : 'Fordern Sie bitte einen neuen Link an.',
+        true
+      );
     }
   };
 
@@ -89,13 +108,19 @@
     submit.textContent = 'Wird gespeichert…';
 
     try {
-      const { error } = await CRAwerkSupabase.client.auth.updateUser({
-        password:password.value
-      });
+      const payload = {password:password.value};
+      if (inviteHint) {
+        payload.data = {
+          first_name:document.getElementById('invite-first-name').value.trim(),
+          last_name:document.getElementById('invite-last-name').value.trim()
+        };
+      }
+
+      const { error } = await CRAwerkSupabase.client.auth.updateUser(payload);
       if (error) throw error;
 
       await CRAwerkSupabase.client.auth.signOut();
-      location.replace('login.html?password=updated');
+      location.replace(inviteHint ? 'login.html?invite=accepted' : 'login.html?password=updated');
     } catch (error) {
       console.error(error);
       showMessage(
