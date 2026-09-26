@@ -562,7 +562,7 @@
         <div>
           <span class="app-kicker">UNTERLAGEN & NACHWEISE</span>
           <h2>Unterlage hinzufügen</h2>
-          <p>Die Datei selbst kommt später mit der Online-Speicherung dazu.</p>
+          <p>Sie können die Datei direkt sicher zur Maschine speichern oder nur einen vorhandenen Nachweis referenzieren.</p>
         </div>
         <button class="dialog-close" type="button" data-close-dialog="document-dialog" aria-label="Schließen">×</button>
       </div>
@@ -594,6 +594,17 @@
         <select name="related" id="document-related">
           <option value="Gesamtmaschine">Gesamtmaschine</option>
         </select>
+      </label>
+
+      <label class="document-file-field">
+        <span>Datei hochladen</span>
+        <input
+          name="file"
+          type="file"
+          accept=".pdf,.docx,.xlsx,.pptx,.txt,.csv,.jpg,.jpeg,.png,.webp,.zip"
+        >
+        <small>PDF, Office, Text, Bilder oder ZIP · maximal 25 MB</small>
+        <small id="document-current-file" class="document-current-file" hidden></small>
       </label>
 
       <label>
