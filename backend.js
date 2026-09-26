@@ -1032,9 +1032,12 @@
   const adminSetCompanyStatus = async (companyId, status) => {
     const allowed = ['trial','active','paused','cancelled'];
     if (!allowed.includes(status)) throw new Error('Ungültiger Firmenstatus.');
-    const { error } = await db.rpc('system_admin_set_company_status', {
-      _company_id:companyId,
-      _status:status
+    const user = await api.getUser();
+    if (!user) throw new Error('Nicht angemeldet.');
+    const { error } = await db.from('system_admin_status_actions').insert({
+      company_id:companyId,
+      status,
+      created_by:user.id
     });
     if (error) throw error;
   };
