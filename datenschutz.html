@@ -39,12 +39,13 @@
       <p>
         Registrierung, Anmeldung und die Speicherung der CRAwerk-Anwendungsdaten erfolgen über Supabase.
         Dabei werden insbesondere E-Mail-Adresse, Kontodaten, Unternehmensstammdaten sowie die vom Nutzer
-        erfassten Maschinen-, Software-, Bauteil-, Risiko-, Update- und Nachweisdaten verarbeitet.
+        erfassten Maschinen-, Software-, Bauteil-, Risiko-, Update- und Nachweisdaten sowie hochgeladene Dokumentdateien verarbeitet.
       </p>
       <p>
         Das CRAwerk-Datenbankprojekt ist in der Supabase-Region eu-central-1 eingerichtet.
         Zugriff auf Unternehmens- und Maschinendaten wird innerhalb der Datenbank zusätzlich über
-        benutzerbezogene Zugriffsregeln beschränkt.
+        benutzerbezogene Zugriffsregeln beschränkt. Hochgeladene Dokumente werden in einem privaten
+        Supabase-Storage-Bereich gespeichert und sind nur für berechtigte Mitglieder der zugehörigen Maschine abrufbar.
       </p>
     </section>
 
