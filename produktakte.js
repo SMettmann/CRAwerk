@@ -3,6 +3,14 @@
     .replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')
     .replaceAll('"','&quot;').replaceAll("'",'&#039;');
 
+  const formatFileSize = bytes => {
+    const value = Number(bytes || 0);
+    if (!value) return '';
+    if (value < 1024) return value + ' B';
+    if (value < 1024 * 1024) return Math.round(value / 1024) + ' KB';
+    return (value / (1024 * 1024)).toFixed(value < 10 * 1024 * 1024 ? 1 : 0) + ' MB';
+  };
+
   const formatDate = value => {
     if (!value) return '–';
     const parts = String(value).split('-');
@@ -251,7 +259,11 @@
           '<div class="report-item"><div><strong>' + escapeHtml(item.title) + '</strong><span>' +
           escapeHtml(item.type || 'Unterlage') + ' · ' + escapeHtml(item.related || 'Gesamtmaschine') +
           (item.date ? ' · Stand ' + formatDate(item.date) : '') + '</span>' +
-          (item.note ? '<p>' + escapeHtml(item.note) + '</p>' : '') + '</div></div>'
+          (item.note ? '<p>' + escapeHtml(item.note) + '</p>' : '') +
+          (item.originalFilename
+            ? '<p><strong>Gespeicherte Datei:</strong> ' + escapeHtml(item.originalFilename) +
+              (item.fileSize ? ' · ' + escapeHtml(formatFileSize(item.fileSize)) : '') + '</p>'
+            : '') + '</div></div>'
         ).join('')
       : '<div class="report-empty">Keine Unterlagen erfasst.</div>';
 
