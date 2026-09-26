@@ -74,12 +74,28 @@
     try {
       const session = await CRAwerkSupabase.requireSession();
       if (!session) return;
-      const [company, systemAdmin] = await Promise.all([
+      const [company, systemAdmin, membership] = await Promise.all([
         CRAwerkBackend.currentCompany(),
-        CRAwerkBackend.isSystemAdmin()
+        CRAwerkBackend.isSystemAdmin(),
+        CRAwerkSupabase.currentMembership()
       ]);
+      const canManageCompany = ['owner','admin'].includes(membership.role);
+
       fill(company);
       await renderLogo(company);
+
+      if (!canManageCompany) {
+        [...form.elements].forEach(element => {
+          if (element.matches('input, select, textarea, button')) element.disabled = true;
+        });
+        const submit = form.querySelector('button[type="submit"]');
+        if (submit) submit.hidden = true;
+        saveState.textContent = 'Nur Inhaber oder Admins können Firmendaten ändern.';
+        logoUpload.hidden = true;
+        logoDelete.hidden = true;
+        const billingCard = document.querySelector('a[href="zugang.html"]')?.closest('.side-card');
+        if (billingCard) billingCard.hidden = true;
+      }
       if (systemAdmin) {
         document.querySelectorAll('[data-system-admin-link]').forEach(link => link.hidden = false);
       }
