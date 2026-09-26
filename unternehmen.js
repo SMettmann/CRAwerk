@@ -3,6 +3,11 @@
   const saveState = document.getElementById('company-save-state');
   const headerName = document.getElementById('company-header-name');
   const toast = document.getElementById('company-toast');
+  const logoImage = document.getElementById('company-logo-image');
+  const logoEmpty = document.getElementById('company-logo-empty');
+  const logoInput = document.getElementById('company-logo-input');
+  const logoUpload = document.getElementById('company-logo-upload');
+  const logoDelete = document.getElementById('company-logo-delete');
 
   const showToast = (message) => {
     toast.textContent = message;
@@ -36,6 +41,35 @@
     saveState.textContent = 'Firmendaten gespeichert';
   };
 
+  const renderLogo = async company => {
+    const hasLogo = Boolean(company?.logo_path);
+    logoDelete.hidden = !hasLogo;
+    logoUpload.textContent = hasLogo ? 'Logo ersetzen' : 'Logo hochladen';
+    logoImage.hidden = true;
+    logoImage.removeAttribute('src');
+    logoEmpty.hidden = false;
+    logoEmpty.textContent = hasLogo ? 'Logo wird geladen…' : 'Noch kein Logo hinterlegt';
+
+    if (!hasLogo) return;
+
+    try {
+      const url = await CRAwerkBackend.companyLogoSignedUrl(company.logo_path);
+      logoImage.onload = () => {
+        logoImage.hidden = false;
+        logoEmpty.hidden = true;
+      };
+      logoImage.onerror = () => {
+        logoImage.hidden = true;
+        logoEmpty.hidden = false;
+        logoEmpty.textContent = 'Logo konnte nicht geladen werden';
+      };
+      logoImage.src = url;
+    } catch (error) {
+      console.error(error);
+      logoEmpty.textContent = 'Logo konnte nicht geladen werden';
+    }
+  };
+
   const init = async () => {
     try {
       const session = await CRAwerkSupabase.requireSession();
@@ -45,6 +79,7 @@
         CRAwerkBackend.isSystemAdmin()
       ]);
       fill(company);
+      await renderLogo(company);
       if (systemAdmin) {
         document.querySelectorAll('[data-system-admin-link]').forEach(link => link.hidden = false);
       }
@@ -61,6 +96,47 @@
     } catch (error) {
       console.error(error);
       showToast('Abmelden war nicht möglich.');
+    }
+  });
+
+  logoUpload.addEventListener('click', () => logoInput.click());
+
+  logoInput.addEventListener('change', async () => {
+    const file = logoInput.files?.[0];
+    if (!file) return;
+
+    logoUpload.disabled = true;
+    logoUpload.textContent = 'Wird hochgeladen…';
+
+    try {
+      const company = await CRAwerkBackend.uploadCompanyLogo(file);
+      await renderLogo(company);
+      showToast('Firmenlogo wurde gespeichert.');
+    } catch (error) {
+      console.error(error);
+      showToast(error?.message || 'Logo konnte nicht hochgeladen werden.');
+      try {
+        await renderLogo(await CRAwerkBackend.currentCompany());
+      } catch (_) {}
+    } finally {
+      logoInput.value = '';
+      logoUpload.disabled = false;
+    }
+  });
+
+  logoDelete.addEventListener('click', async () => {
+    if (!confirm('Firmenlogo wirklich löschen?')) return;
+
+    logoDelete.disabled = true;
+    try {
+      const company = await CRAwerkBackend.deleteCompanyLogo();
+      await renderLogo(company);
+      showToast('Firmenlogo wurde gelöscht.');
+    } catch (error) {
+      console.error(error);
+      showToast('Logo konnte nicht gelöscht werden.');
+    } finally {
+      logoDelete.disabled = false;
     }
   });
 
