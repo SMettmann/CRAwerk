@@ -490,7 +490,9 @@
         location.href = 'maschine.html?id=' + encodeURIComponent(id);
       } catch (error) {
         console.error(error);
-        showToast('Maschine konnte nicht angelegt werden.');
+        showToast(error?.code === 'PLAN_LIMIT'
+          ? error.message
+          : 'Maschine konnte nicht angelegt werden.');
         submit.disabled = false;
         submit.textContent = 'Maschine anlegen';
       }
