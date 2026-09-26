@@ -110,7 +110,7 @@
       showToast('Supportanfrage wurde gesendet.');
     } catch (error) {
       console.error(error);
-      showToast('Supportanfrage konnte nicht gesendet werden.');
+      showToast(error?.message || 'Supportanfrage konnte nicht gesendet werden.');
     } finally {
       submit.disabled = false;
       submit.textContent = 'Anfrage senden';
@@ -134,7 +134,7 @@
       showToast('Nachricht wurde gesendet.');
     } catch (error) {
       console.error(error);
-      showToast('Nachricht konnte nicht gesendet werden.');
+      showToast(error?.message || 'Nachricht konnte nicht gesendet werden.');
     } finally {
       submit.disabled = false;
       submit.textContent = 'Nachricht senden';
