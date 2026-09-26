@@ -1,1 +1,61 @@
-ss="manual-number">8. Digitale Bauteile und Zulieferer</p><p class="manual-number">9. Risiken und Aufgaben richtig erfassen</p><p class="manual-number">10. Sicherheitsluecken und Updates</p><p class="manual-number">11. Unterlagen und Nachweise</p><p class="manual-number">12. Unterstuetzungszeitraum</p><p class="manual-number">13. Gefuehrter CRA-Abschluss in sechs Schritten</p><p class="manual-number">14. Die 22 Schutzanforderungen in normaler Sprache</p><p class="manual-number">15. Technische Dokumentation und Nutzerinformationen</p><p class="manual-number">16. Sicherheitsprozess und CVD</p><p class="manual-number">17. Konformitaet, EU-Erklaerung und CE</p><p class="manual-number">18. Sonderfaelle: Meldung, Nichtkonformitaet und Behörde</p><p class="manual-number">19. Beispiel: Verpackungsanlage VP-240</p><p class="manual-number">20. Checkliste fuer den ersten Durchlauf</p><p class="manual-number">21. Glossar</p><p class="manual-number">22. Offizielle Quellen</p></section><section class="chapter"><div class="chapter-label">CRAwerk Handbuch</div><h1>1. Der Cyber Resilience Act in 10 Minuten</h1><h2>Was sich fuer Hersteller von vernetzten Maschinen aendert</h2><p>Der Cyber Resilience Act (CRA) ist die Verordnung (EU) 2024/2847. Er schafft EU-weite Cybersicherheitsanforderungen fuer Hardware- und Softwareprodukte mit digitalen Elementen, die auf dem EU-Markt bereitgestellt werden. Dazu gehoeren Endprodukte ebenso wie separat in Verkehr gebrachte Software- und Hardwarekomponenten. [1][2]</p><p>Fuer Maschinenbauer ist vor allem wichtig: Eine Maschine ist nicht nur wegen ihres mechanischen Aufbaus zu betrachten. Sobald Steuerungen, Software, Firmware, Netzwerkschnittstellen, Fernwartung oder andere digitale Funktionen zur Maschine gehoeren, kann der CRA relevant sein. Entscheidend ist immer das konkrete Produkt, seine Zweckbestimmung, seine vorhersehbare Verwendung und der rechtliche Anwendungsbereich.</p><h2>Was der CRA vom Hersteller verlangt</h2><div class="table-wrap"><table><tr><th>Pflichtbereich</th><th>In normaler Sprache</th></tr><tr><td>Sicher entwickeln</td><td>Cyberrisiken muessen schon bei Planung, Entwicklung und Herstellung beruecksichtigt werden.</td></tr><tr><td>Risiken bewerten</td><td>Der Hersteller muss die Cyberrisiken des Produkts bewerten und die Bewertung dokumentieren und bei Bedarf aktualisieren.</td></tr><tr><td>Schwachstellen behandeln</td><td>Bekannte Sicherheitsluecken und Schwachstellen in eigenen und zugelieferten Komponenten muessen waehrend des Supportzeitraums bearbeitet werden.</td></tr><tr><td>Updates bereitstellen</td><td>Wenn Sicherheitsupdates noetig sind, muessen sie sicher und nachvollziehbar bereitgestellt werden.</td></tr><tr><td>Dokumentieren</td><td>Technische Dokumentation, Nutzerinformationen, Konformitaetsnachweise und weitere Unterlagen muessen vorhanden sein.</td></tr><tr><td>Konformitaet nachweisen</td><td>Vor dem Inverkehrbringen muss das passende Konformitaetsverfahren durchlaufen und die EU-Konformitaet erklaert werden.</td></tr><tr><td>Melden</td><td>Aktiv ausgenutzte Schwachstellen und bestimmte schwere Sicherheitsvorfaelle unterliegen seit 11.09.2026 gesetzlichen Meldefristen.</td></tr></table></div><div class="callout"><p>Die Grundidee fuer CRAwerk</p><p>Sie bauen und kennen Ihre Maschine. CRAwerk soll Ihnen nicht beibringen, Jurist zu werden. Die Anwendung fuehrt Sie durch die Informationen, Entscheidungen und Nachweise, die fuer den CRA-Prozess benoetigt werden, und fuehrt daraus eine nachvollziehbare Maschinen- und CRA-Akte.</p></div></section><section class="chapter"><div class="chapter-label">CRAwerk Handbuch</div><h1>2. Faellt unsere Maschine unter den CRA?</h1><h2>Ein einfacher Vorcheck fuer Maschinenbauer</h2><p>Der CRA gilt grundsaetzlich fuer Hardware- und Softwareprodukte mit digitalen Elementen, die auf dem Unionsmarkt bereitgestellt werden. Nach der Zusammenfassung der EU-Kommission fallen Produkte in den Anwendungsbereich, wenn ihre Zweckbestimmung oder vernünftigerweise vorhersehbare Verwendung eine direkte oder indirekte logische oder physische Datenverbindung zu einem Geraet oder Netzwerk umfasst. [2]</p><h2>Typische Hinweise bei einer Maschine</h2><div class="table-wrap"><table><tr><th>Frage</th><th>Wenn Ja, ist der CRA oft relevant</th></tr><tr><td>Hat die Maschine eine SPS, CNC, Robotik- oder andere programmierbare Steuerung?</td><td>Die Steuerung enthaelt Software bzw. Firmware und ist ein wichtiger digitaler Bestandteil.</td></tr><tr><td>Gibt es ein HMI oder einen Industrie-PC?</td><td>Betriebssystem, Runtime, Applikation und Kommunikationsschnittstellen sind digitale Elemente.</td></tr><tr><td>Ist Ethernet, WLAN, Feldbus, OPC UA, MQTT oder eine andere Datenverbindung vorhanden?</td><td>Netzwerk- und Busschnittstellen koennen Angriffswege und Sicherheitsanforderungen erzeugen.</td></tr><tr><td>Gibt es Fernwartung oder Cloud-/Portalzugriff?</td><td>Fernzugriff, VPN, Gateways und Remote-Dienste gehoeren in die Sicherheitsbetrachtung.</td></tr><tr><td>Werden Updates ueber USB, Netzwerk oder Service-Tool eingespielt?</td><td>Der Updateweg muss gegen Manipulation und Fehlbedienung betrachtet werden.</td></tr><tr><td>Wird die Maschine unter Ihrem Namen oder Ihrer Marke verkauft?</td><td>Dann sind Sie im CRA-Kontext regelmaessig der Hersteller des Gesamtprodukts.</td></tr></table></div><div class="callout"><p>Nicht jede Maschine ist automatisch gleich zu behandeln</p><p>Es gibt Ausnahmen und Abgrenzungen zu anderen EU-Rechtsakten
+: 9.3pt; }
+#checklist .step span { font-size: 8.2pt; line-height: 1.4; }
+.checklist { list-style:none; margin-left:0; padding-left:0; }
+.checklist li { position:relative; padding-left:8mm; margin:2.2mm 0; }
+.checklist li::before { content:"✓"; position:absolute; left:0; top:0; color:#315d44; font-weight:900; }
+.toc { display:grid; grid-template-columns:1fr 1fr; gap:0 10mm; margin-top:7mm; }
+.toc a { display:flex; gap:4mm; padding:2.1mm 0; border-bottom:1px solid #edf0ed; color:#25312a; font-size:9.2pt; }
+.toc b { width:8mm; color:#567261; }
+.legal-source { font-size:8.5pt; overflow-wrap:anywhere; }
+.page-break { page-break-before: always; }
+.keep { break-inside:avoid; page-break-inside:avoid; }
+hr { border:0; border-top:1px solid #dfe4e0; margin:8mm 0; }
+.footer-note { margin-top:10mm; padding-top:4mm; border-top:1px solid #dfe4e0; color:#7b857f; font-size:8pt; }
+@media screen {
+  .document { box-shadow:0 8px 40px rgba(18,28,22,.08); }
+  .content-page { padding: 60px 74px; }
+  .chapter { page-break-before:auto; break-before:auto; padding-top:30px; margin-top:20px; border-top:1px solid #e0e5e1; }
+  .chapter.first-after-cover { border-top:0; }
+  .cover { min-height:720px; padding:70px; }
+}
+@media print {
+  .web-toolbar { display:none !important; }
+  body { background:#fff; }
+  .manual-shell { max-width:none; }
+  .content-page { padding:0; }
+}
+</style>
+</head>
+<body>
+<div class="manual-shell">
+  <div class="web-toolbar">
+    <a class="brand" href="index.html"><span>CRA</span>werk</a>
+    <div class="web-actions">
+      <a href="dashboard.html">Zu CRAwerk</a>
+      <a class="primary" href="CRAwerk_Handbuch.pdf" download="CRAwerk-Handbuch.pdf">PDF herunterladen</a>
+    </div>
+  </div>
+  <main class="document">
+    <section class="cover">
+      <div class="cover-top"><div class="cover-logo"><span>CRA</span>werk</div><div class="cover-pill">Handbuch · Version 2.0</div></div>
+      <div class="cover-main">
+        <div class="cover-kicker">Praxisleitfaden für CRAwerk</div>
+        <h1>Schritt für Schritt durch den Cyber Resilience Act.</h1>
+        <p class="cover-sub">Ein verständliches Handbuch für kleine und mittlere Maschinen- und Anlagenbauer - von der ersten Einrichtung bis zur vollständigen CRA-Akte.</p>
+        <div class="cover-grid">
+          <div><strong>CRA verstehen</strong><span>Wichtige Begriffe, Termine und Anforderungen in klarer Sprache.</span></div>
+          <div><strong>CRAwerk bedienen</strong><span>Unternehmen, Team, Produkte, Support, Abrechnung und Exporte.</span></div>
+          <div><strong>Akte abschließen</strong><span>Offene Punkte erkennen und strukturiert bis zur Vollständigkeit bearbeiten.</span></div>
+        </div>
+      </div>
+      <div class="cover-bottom"><span>Stand: September 2026</span><span>CRAwerk · info@crawerk.de</span></div>
+    </section>
+    <div class="content-page"><section class="chapter first-after-cover" id="start"><div class="chapter-label">Handbuch</div><h1>So benutzen Sie dieses Handbuch</h1>
+<p class="lead">Dieses Handbuch erklärt zuerst, wie CRAwerk benutzt wird, und danach die CRA-Themen, die hinter den Eingaben stehen. Sie müssen den Cyber Resilience Act nicht auswendig kennen. Wichtig ist, dass Ihre Angaben technisch belastbar und nachvollziehbar sind.</p>
+<div class="callout"><strong>Empfohlener Start</strong><p>Vervollständigen Sie zuerst die Unternehmensdaten. Danach legen Sie ein Produkt an und arbeiten die offenen Bereiche nacheinander ab. CRAwerk zeigt Ihnen, was fehlt und führt Sie direkt zur passenden Eingabe.</p></div>
+<div class="two-col">
+<div class="card"><h3>CRAwerk organisiert</h3><p>Produkte, Software, Bauteile, Risiken, Nachweise, Supportzeitraum, CRA-Abschluss und Exporte bleiben an einem Ort zusammen.</p></div>
+<div class="card"><h3>Sie entscheiden fachlich</h3><p>Technische Bewertungen, Risikoeinschätzungen, Konformitätsentscheidungen und Freigaben müssen von den zuständigen Personen im Unternehmen getroffen werden.</p></div>
+</div>
+<div class="warning"><strong>Wichtig</strong><p>CRAwerk ist eine Organisations- und Dokumentationshilfe. Es ersetzt keine Rechtsberatung, keine technische Sicherheitsprüfung und keine Konformitätsbewertungsstelle.</p></div>
+</section><section class="chapter" id="inhalt"><div class="chapter-label">Navigation</div><h1>Inhalt</h1><p class="lead">Die Kapitel sind so sortiert, wie ein neuer CRAwerk-Kunde normalerweise arbeitet.</p><div class="toc"><a href="#cra"><b>1</b><span>Der Cyber Resilience Act in kurzer Form</span></a><a href="#scope"><b>2</b><span>Fällt unser Produkt unter den CRA?</span></a><a href="#dates"><b>3</b><span>Wichtige Termine</span></a><a href="#concepts"><b>4</b><span>Begriffe, die in CRAwerk vorkommen</span></a><a href="#structure"><b>5</b><span>So ist CRAwerk aufgebaut</span></a><a href="#company"><b>6</b><span>Unternehmensdaten zuerst</span></a><a href="#logo"><b>7</b><span>Firmenlogo hinterlegen</span></a><a href="#team"><b>8</b><span>Benutzer & Team</span></a><a href="#machine"><b>9</b><span>Produkt oder Maschine anlegen</span></a><a href="#software"><b>10</b><span>Software, Firmware und Versionen</span></a><a href="#components"><b>11</b><span>Digitale Bauteile und Zulieferer</span></a><a href="#risks"><b>12</b><span>Risiken und Schutzmaßnahmen</span></a><a href="#vulns"><b>13</b><span>Sicherheitsprobleme und Updates</span></a><a href="#documents"><b>14</b><span>Unterlagen und Nachweise</span></a><a href="#supportperiod"><b>15</b><span>Unterstützungszeitraum</span></a><a href="#closure"><b>16</b><span>Geführter CRA-Abschluss</span></a><a href="#requirements"><b>17</b><span>Die 22 Schutzanforderungen verständlich</span></a><a href="#techdocs"><b>18</b><span>Technische Dokumentation und Nutzerinformationen</span></a><a href="#cvd"><b>19</b><span>Sicherheitsprozess, CVD und Meldungen</span></a><a href="#conformity"><b>20</b><span>Konformität, EU-Erklärung und CE</span></a><a href="#special"><b>21</b><span>Sonderfälle und Behördenanfragen</span></a><a href="#support"><

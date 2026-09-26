@@ -1,3 +1,118 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CRAwerk - Handbuch fuer Einsteiger</title><style>
-:root{--ink:#17201b;--muted:#66736c;--light:#eef3ef;--line:#d7ded8;--accent:#2f4a3a}*{box-sizing:border-box}body{margin:0;background:#eef1ee;color:var(--ink);font-family:Arial,sans-serif}.toolbar{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#17201b;color:#fff}.toolbar a,.toolbar button{font:inherit;border:1px solid #66736c;border-radius:6px;background:#fff;color:#17201b;padding:10px 14px;text-decoration:none;cursor:pointer;font-weight:700}.toolbar .brand{font-weight:800;font-size:18px}.book{max-width:210mm;margin:24px auto;background:#fff;box-shadow:0 16px 50px rgba(20,30,25,.12)}.page,.chapter{padding:20mm 19mm;min-height:297mm;background:#fff}.cover{display:flex;flex-direction:column;justify-content:center}.cover .brandline{font-size:18px;font-weight:800;margin-bottom:14px}.cover h1{font-size:36px;line-height:1.05;margin:0 0 18px}.cover .lead{font-size:17px;color:var(--muted);line-height:1.5;max-width:150mm}.cover .meta{margin-top:38px;color:var(--muted);font-size:12px;line-height:1.7}.chapter{break-before:page;page-break-before:always}.chapter h1,.page h1{font-size:30px;line-height:1.12;margin:0 0 8px}.chapter h2,.page h2{font-size:19px;line-height:1.2;margin:24px 0 8px;color:var(--accent)}.chapter p,.page p{font-size:12.2pt;line-height:1.55;margin:0 0 9px}.chapter ul,.page ul{margin:5px 0 14px 22px;padding:0}.chapter li,.page li{font-size:12pt;line-height:1.45;margin:4px 0}.manual-number{padding-left:20px;text-indent:-18px}.table-wrap{margin:12px 0 18px;overflow:hidden;border:1px solid var(--line);border-radius:5px}table{width:100%;border-collapse:collapse;font-size:10.3pt;line-height:1.35}th{background:var(--ink);color:#fff;text-align:left;padding:8px 9px;font-weight:700}td{border-top:1px solid var(--line);border-right:1px solid var(--line);padding:8px 9px;vertical-align:top}td:last-child{border-right:0}tr:nth-child(even) td{background:#f8faf8}.callout{margin:12px 0 18px;padding:12px 14px;background:var(--light);border-left:4px solid var(--accent);font-size:11pt;line-height:1.45}.callout p{font-size:11pt;margin:0}.toc p{font-size:11pt;margin:4px 0}.chapter-label{font-size:10px;font-weight:800;letter-spacing:.08em;color:#7b877f;text-transform:uppercase;margin-bottom:8px}@page{size:A4;margin:0}@media print{body{background:#fff}.toolbar{display:none}.book{max-width:none;margin:0;box-shadow:none}.page,.chapter{min-height:297mm;padding:18mm 18mm}.page,.cover{break-after:page;page-break-after:always}.chapter h1,.page h1{font-size:25pt}.chapter h2,.page h2{font-size:16pt}.chapter p,.page p{font-size:11.5pt}table{font-size:9.3pt}.callout p{font-size:10.5pt}}
-</style></head><body><div class="toolbar"><span class="brand">CRAwerk Handbuch</span><div><a href="index.html">Zurueck zu CRAwerk</a> <button onclick="window.print()">Als PDF speichern / drucken</button></div></div><main class="book"><section class="page cover"><div class="brandline">CRAwerk</div><h1>Handbuch fuer Einsteiger</h1><p class="lead">Cyber Resilience Act verstaendlich erklaert - fuer Maschinenbauer ohne Cybersecurity-Vorwissen</p><div class="callout"><p><strong>Worum es in diesem Handbuch geht</strong><br>Dieses Handbuch erklaert zuerst, warum es den Cyber Resilience Act gibt, welche Begriffe wichtig sind und was Sie in jedem Bereich eintragen sollen. Beispiele zeigen, wie gute Eintraege fuer typische Maschinen aussehen.</p></div><div class="meta">Fuer kleine und mittlere Maschinenbauer<br>Version 1.0 | Stand: 25. September 2026<br>Rechtsgrundlage: Verordnung (EU) 2024/2847 (Cyber Resilience Act)</div></section><section class="page"><h1>So benutzen Sie dieses Handbuch</h1><p>Sie muessen kein IT-Sicherheitsprofi sein, um mit CRAwerk zu arbeiten. Lesen Sie dieses Handbuch beim ersten Durchlauf einmal von vorne bis hinten. Danach reicht es in der Regel, bei einem offenen CRAwerk-Schritt das passende Kapitel nachzuschlagen.</p><ul><li>Teil A erklaert den CRA und die wichtigsten Fachbegriffe in normaler Sprache.</li></ul><ul><li>Teil B erklaert die acht Bereiche der Maschinenakte und zeigt, was dort hineingehoert.</li></ul><ul><li>Teil C fuehrt durch den gefuehrten CRA-Abschluss und die gesetzlichen Sonderfaelle.</li></ul><ul><li>Teil D enthaelt ein vollstaendiges Beispiel fuer eine fiktive Maschine sowie eine Start-Checkliste.</li></ul><div class="callout"><p>Wichtiger Hinweis</p><p>CRAwerk organisiert, fuehrt und dokumentiert den Prozess. Die Software kann nicht pruefen, ob eine technische Massnahme fachlich ausreichend ist, ob eine Risikobewertung inhaltlich richtig ist oder ob eine konkrete Maschine rechtlich korrekt eingestuft wurde. Diese Verantwortung bleibt beim Hersteller. Bei Zweifelsfaellen sollte fachkundige technische oder rechtliche Beratung einbezogen werden.</p></div></section><section class="page toc"><h1>Inhalt</h1><p class="manual-number">1. Der Cyber Resilience Act in 10 Minuten</p><p class="manual-number">2. Faellt unsere Maschine unter den CRA?</p><p class="manual-number">3. Die wichtigsten Fristen</p><p class="manual-number">4. Begriffe, die jeder Nutzer von CRAwerk kennen sollte</p><p class="manual-number">5. So ist CRAwerk aufgebaut</p><p class="manual-number">6. Grunddaten der Maschine</p><p class="manual-number">7. Software, Firmware und Versionen</p><p cla
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>CRAwerk Handbuch - Version 2.0</title>
+<style>
+@page {
+  size: A4;
+  margin: 19mm 18mm 18mm 18mm;
+  @bottom-left {
+    content: "CRAwerk Handbuch  |  Stand September 2026";
+    color: #748078;
+    font-size: 8pt;
+  }
+  @bottom-right {
+    content: "Seite " counter(page) " / " counter(pages);
+    color: #748078;
+    font-size: 8pt;
+  }
+}
+@page :first {
+  margin: 0;
+  @bottom-left { content: none; }
+  @bottom-right { content: none; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: #18221d;
+  background: #eef2ee;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10.3pt;
+  line-height: 1.55;
+}
+a { color: #244d37; text-decoration: none; }
+.manual-shell { max-width: 1180px; margin: 0 auto; background: #fff; }
+.web-toolbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px 28px; border-bottom: 1px solid #d8dfda; background: rgba(255,255,255,.96);
+}
+.web-toolbar .brand { font-weight: 900; font-size: 19px; letter-spacing: -.04em; color: #162019; }
+.web-toolbar .brand span { color: #315d44; }
+.web-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.web-actions a { display:inline-flex; align-items:center; min-height:36px; padding:0 13px; border:1px solid #cad3cc; border-radius:6px; font-size:10px; font-weight:800; color:#18221d; }
+.web-actions .primary { color:#fff; background:#18221d; border-color:#18221d; }
+.document { background:#fff; }
+.cover {
+  min-height: 297mm;
+  padding: 32mm 24mm 24mm;
+  display: flex; flex-direction: column; justify-content: space-between;
+  color: #f7faf7;
+  background: #18221d;
+  page-break-after: always;
+}
+.cover-top { display:flex; align-items:center; justify-content:space-between; gap:30px; }
+.cover-logo { font-size: 24pt; font-weight: 900; letter-spacing: -.05em; }
+.cover-logo span { color:#a8c5b1; }
+.cover-pill { padding:7px 11px; border:1px solid #617168; border-radius:999px; font-size:8.5pt; letter-spacing:.1em; text-transform:uppercase; color:#d7e1da; }
+.cover-main { margin-top: 35mm; }
+.cover-kicker { font-size: 9pt; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; color:#a8c5b1; }
+.cover h1 { margin: 8mm 0 5mm; max-width: 150mm; font-size: 34pt; line-height:1.05; letter-spacing:-.045em; }
+.cover-sub { max-width: 145mm; margin:0; color:#d6dfd9; font-size:14pt; line-height:1.45; }
+.cover-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10mm; margin-top:20mm; }
+.cover-grid div { border-top:1px solid #526158; padding-top:5mm; }
+.cover-grid strong, .cover-grid span { display:block; }
+.cover-grid strong { font-size:10pt; }
+.cover-grid span { margin-top:2mm; color:#aebbb2; font-size:8.5pt; line-height:1.45; }
+.cover-bottom { display:flex; justify-content:space-between; gap:20px; color:#9fada4; font-size:8.5pt; }
+.content-page { padding: 20mm 18mm; }
+.chapter { page-break-before: always; break-before: page; }
+.chapter.first-after-cover { page-break-before: auto; break-before: auto; }
+.chapter-label { margin-bottom:3mm; color:#567261; font-size:8pt; font-weight:900; letter-spacing:.14em; text-transform:uppercase; }
+h1 { margin:0 0 5mm; font-size:24pt; line-height:1.08; letter-spacing:-.035em; }
+h2 { margin:8mm 0 3mm; font-size:15pt; line-height:1.2; letter-spacing:-.02em; page-break-after: avoid; }
+h3 { margin:6mm 0 2mm; font-size:11pt; line-height:1.3; page-break-after: avoid; }
+p { margin:0 0 3.5mm; }
+ul, ol { margin:2mm 0 4mm 6mm; padding-left:5mm; }
+li { margin:1.2mm 0; }
+.lead { margin-bottom:7mm; color:#526059; font-size:12.5pt; line-height:1.55; }
+.note, .callout, .warning, .success {
+  margin:6mm 0; padding:5mm 5.5mm; border-radius:4mm; break-inside: avoid;
+}
+.note { border:1px solid #d7dfd9; background:#f7f9f7; }
+.callout { border-left:4px solid #315d44; background:#f1f6f2; }
+.warning { border-left:4px solid #a47b32; background:#fbf7ed; }
+.success { border-left:4px solid #477456; background:#eef6f0; }
+.note strong, .callout strong, .warning strong, .success strong { display:block; margin-bottom:1.5mm; }
+.step-list { counter-reset: step; display:grid; gap:3mm; margin:5mm 0 7mm; }
+.step {
+  counter-increment: step; display:grid; grid-template-columns:11mm 1fr; gap:4mm;
+  padding:4mm 4.5mm; border:1px solid #dce3de; border-radius:3mm; background:#fff; break-inside: avoid;
+}
+.step::before { content: counter(step); width:9mm; height:9mm; display:grid; place-items:center; border-radius:50%; color:#fff; background:#18221d; font-size:8pt; font-weight:900; }
+.step strong { display:block; margin-bottom:1mm; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:5mm; margin:5mm 0; }
+.card { padding:5mm; border:1px solid #dce3de; border-radius:3mm; background:#fafbfa; break-inside:avoid; }
+.card h3 { margin-top:0; }
+.role-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3mm; margin:5mm 0; }
+.role { padding:4.5mm; border:1px solid #dce3de; border-radius:3mm; break-inside:avoid; }
+.role strong { display:block; margin-bottom:2mm; font-size:11pt; }
+.role.owner { background:#18221d; color:#fff; }
+.role.owner p { color:#dce5df; }
+.role.admin { background:#eef5ef; }
+.role.member { background:#f7f8f7; }
+table { width:100%; border-collapse:collapse; margin:4mm 0 6mm; font-size:9pt; break-inside:auto; }
+thead { display:table-header-group; }
+tr { page-break-inside:avoid; break-inside:avoid; }
+th, td { padding:3mm 3.5mm; vertical-align:top; border:1px solid #d8dfda; }
+th { background:#eef3ef; text-align:left; font-size:8.4pt; letter-spacing:.02em; }
+.small { color:#6f7b74; font-size:8.6pt; }
+#checklist .step-list { grid-template-columns: 1fr 1fr; gap: 2.5mm; }
+#checklist .step { padding: 3mm 3.5mm; gap: 3mm; }
+#checklist .step::before { width: 8mm; height: 8mm; font-size: 7.5pt; }
+#checklist .step strong { font-size:
