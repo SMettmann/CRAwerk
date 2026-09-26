@@ -47,6 +47,69 @@
     return company;
   }
 
+  function evaluateAccount(company) {
+    const status = company?.account_status || 'trial';
+    const trialEndsAt = company?.trial_ends_at ? new Date(company.trial_ends_at) : null;
+    const now = Date.now();
+    const trialActive = status === 'trial' && trialEndsAt && trialEndsAt.getTime() > now;
+    const allowed = status === 'active' || status === 'internal' || trialActive;
+
+    let reason = '';
+    if (!allowed) {
+      if (status === 'trial') reason = 'trial_expired';
+      else if (status === 'paused') reason = 'paused';
+      else if (status === 'cancelled') reason = 'cancelled';
+      else reason = 'inactive';
+    }
+
+    const daysRemaining = trialActive
+      ? Math.max(1, Math.ceil((trialEndsAt.getTime() - now) / 86400000))
+      : 0;
+
+    return {
+      company,
+      status,
+      allowed,
+      reason,
+      trialActive,
+      trialEndsAt: trialEndsAt ? trialEndsAt.toISOString() : null,
+      daysRemaining
+    };
+  }
+
+  async function getAccountState() {
+    const company = await ensureCompany();
+    return evaluateAccount(company);
+  }
+
+  function formatDate(value) {
+    if (!value) return '';
+    return new Intl.DateTimeFormat('de-DE', {
+      day:'2-digit',
+      month:'2-digit',
+      year:'numeric'
+    }).format(new Date(value));
+  }
+
+  function renderTrialNotice(state) {
+    const existing = document.querySelector('.account-trial-banner');
+    if (existing) existing.remove();
+    if (!state?.trialActive) return;
+
+    const header = document.querySelector('.app-header');
+    if (!header) return;
+
+    const banner = document.createElement('div');
+    banner.className = 'account-trial-banner';
+    banner.innerHTML =
+      '<div><strong>14 Tage kostenlos testen</strong>' +
+      '<span>Noch ' + state.daysRemaining + ' ' + (state.daysRemaining === 1 ? 'Tag' : 'Tage') +
+      ' · Testphase bis ' + formatDate(state.trialEndsAt) + '</span></div>' +
+      '<a href="zugang.html">Zugang & Tarif</a>';
+
+    header.insertAdjacentElement('afterend', banner);
+  }
+
   async function requireSession() {
     const session = await getSession();
     if (!session) {
@@ -54,6 +117,24 @@
       location.replace('login.html?next=' + next);
       return null;
     }
+
+    try {
+      const state = await getAccountState();
+      window.CRAwerkAccountState = state;
+
+      if (!state.allowed) {
+        const currentPage = location.pathname.split('/').pop();
+        if (currentPage !== 'zugang.html') {
+          location.replace('zugang.html?reason=' + encodeURIComponent(state.reason));
+          return null;
+        }
+      } else {
+        renderTrialNotice(state);
+      }
+    } catch (error) {
+      console.error('Accountstatus konnte nicht geprüft werden.', error);
+    }
+
     return session;
   }
 
@@ -62,6 +143,8 @@
     getSession,
     getUser,
     ensureCompany,
+    evaluateAccount,
+    getAccountState,
     requireSession
   };
 })();
