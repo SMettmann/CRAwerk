@@ -172,6 +172,27 @@
 
   const createMachine = async values => {
     const company = await currentCompany();
+    const limits = {starter:3, business:20, pro:Infinity};
+    const limit = company.account_status === 'internal'
+      ? Infinity
+      : (limits[company.plan_code] ?? 20);
+
+    if (Number.isFinite(limit)) {
+      const { count, error:countError } = await db
+        .from('machines')
+        .select('id', {count:'exact', head:true})
+        .eq('company_id', company.id);
+      if (countError) throw countError;
+      if ((count || 0) >= limit) {
+        const planName = company.plan_code === 'starter' ? 'Starter'
+          : company.plan_code === 'business' ? 'Business'
+          : 'Ihrem Tarif';
+        const error = new Error(planName + ' erlaubt maximal ' + limit + ' aktive Produkte. Einen höheren Tarif können Sie unter „Zugang & Tarif“ wählen.');
+        error.code = 'PLAN_LIMIT';
+        throw error;
+      }
+    }
+
     const user = await api.getUser();
     const { data, error } = await db.from('machines').insert({
       company_id:company.id,
@@ -639,7 +660,7 @@
   const adminCompanies = async () => {
     const [companiesResult, membersResult, machinesResult] = await Promise.all([
       db.from('companies')
-        .select('id, name, email, account_status, trial_started_at, trial_ends_at, created_at')
+        .select('id, name, email, account_status, trial_started_at, trial_ends_at, plan_code, billing_status, billing_current_period_end, created_at')
         .neq('account_status', 'internal')
         .order('created_at', {ascending:false}),
       db.from('company_members').select('company_id, user_id, role'),
@@ -660,6 +681,9 @@
       account_status:company.account_status,
       trial_started_at:company.trial_started_at,
       trial_ends_at:company.trial_ends_at,
+      plan_code:company.plan_code || '',
+      billing_status:company.billing_status || '',
+      billing_current_period_end:company.billing_current_period_end || null,
       created_at:company.created_at,
       member_count:members.filter(member => member.company_id === company.id).length,
       machine_count:machines.filter(machine => machine.company_id === company.id).length
@@ -1008,10 +1032,10 @@
   const adminSetCompanyStatus = async (companyId, status) => {
     const allowed = ['trial','active','paused','cancelled'];
     if (!allowed.includes(status)) throw new Error('Ungültiger Firmenstatus.');
-    const { error } = await db
-      .from('companies')
-      .update({account_status:status})
-      .eq('id', companyId);
+    const { error } = await db.rpc('system_admin_set_company_status', {
+      _company_id:companyId,
+      _status:status
+    });
     if (error) throw error;
   };
 
